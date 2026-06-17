@@ -16,7 +16,7 @@ export const CategoryFilter = ({ active, onChange }: Props) => (
         aria-pressed={active === cat}
         onClick={() => onChange(cat)}
         className={cn(
-          "px-3.75 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer",
+          "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer",
           active === cat
             ? "bg-(--color-primary) text-white border-none"
             : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",

@@ -4,14 +4,17 @@ import { MerchantCard, MERCHANTS } from "@entities/merchant";
 
 interface Props {
   category: string;
+  search: string;
 }
 
-export const MerchantList = ({ category }: Props) => {
+export const MerchantList = ({ category, search }: Props) => {
   const { t } = useTranslation();
-  const merchants =
-    category === "Все"
-      ? MERCHANTS
-      : MERCHANTS.filter((m) => m.category === category);
+  const query = search.trim().toLowerCase();
+  const merchants = MERCHANTS.filter(
+    (m) =>
+      (category === "Все" || m.category === category) &&
+      (!query || m.name.toLowerCase().includes(query)),
+  );
 
   return (
     <section aria-label={t('home.merchantsSection')}>

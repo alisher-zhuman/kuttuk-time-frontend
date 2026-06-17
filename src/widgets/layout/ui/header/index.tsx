@@ -1,7 +1,8 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { LANGUAGE_BADGE } from "@shared/constants";
-import { Icon } from "@shared/ui";
+import { Globe, User } from 'lucide-react';
+
+import { LANGUAGE_BADGE } from '@shared/constants';
 
 export const Header = () => {
   const { t, i18n } = useTranslation();
@@ -20,9 +21,9 @@ export const Header = () => {
         <button
           type="button"
           aria-label={t('aria.changeLanguage')}
-          className="flex items-center gap-1.25 h-7.5 px-2.75 rounded-full bg-(--color-surface) text-(--color-ink) shrink-0"
+          className="flex items-center gap-1.5 h-7.5 px-3 rounded-full bg-(--color-surface) text-(--color-ink) shrink-0"
         >
-          <Icon name="globe" size={15} strokeWidth={2} color="var(--color-primary)" />
+          <Globe size={15} strokeWidth={2} color="var(--color-primary)" />
           <span className="text-sm font-extrabold tracking-wide">{badge.code}</span>
         </button>
 
@@ -31,7 +32,7 @@ export const Header = () => {
           aria-label={t('aria.profile')}
           className="w-8 h-8 rounded-full bg-(--color-surface) flex items-center justify-center shrink-0"
         >
-          <Icon name="user" size={19} strokeWidth={2} color="var(--color-primary)" />
+          <User size={19} strokeWidth={2} color="var(--color-primary)" />
         </button>
       </div>
     </header>

@@ -1,9 +1,21 @@
 {
-  "common": {
-    "language": {
-      "label": "Тил",
-      "kg": "КР",
-      "ru": "RU"
-    }
+  "language": {
+    "label": "Тил",
+    "kg": "КР",
+    "ru": "RU"
+  },
+  "search": {
+    "placeholder": "Мекемелерди издөө",
+    "clear": "Тазалоо"
+  },
+  "home": {
+    "merchantsSection": "МЕКЕМЕЛЕР"
+  },
+  "merchant": {
+    "from": "баштап"
+  },
+  "aria": {
+    "changeLanguage": "Тил алмаштыруу",
+    "profile": "Профиль"
   }
 }

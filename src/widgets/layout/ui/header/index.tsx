@@ -1,32 +1,31 @@
-import { Icon } from "@shared/ui/icon";
+import { useTranslation } from "react-i18next";
 
-export const Header = () => (
-  <header className="px-4 h-12 bg-(--color-header) border-b border-(--color-line) flex items-center gap-2.5">
-    <div className="flex items-center flex-1 min-w-0 leading-none">
-      <div className="text-lg font-extrabold text-(--color-ink) tracking-tight whitespace-nowrap">
-        Kuttuk<span className="text-(--color-primary)">Time</span>
-      </div>
-    </div>
+import { User } from "lucide-react";
 
-    <div className="flex items-center gap-2.5 shrink-0">
-      <div className="flex items-center gap-1.25 h-7.5 px-2.75 rounded-full bg-(--color-surface) text-(--color-ink) shrink-0">
-        <Icon
-          name="globe"
-          size={15}
-          strokeWidth={2}
-          color="var(--color-primary)"
-        />
-        <span className="text-sm font-extrabold tracking-wide">РУ</span>
+import { LangSwitcher } from "../lang-switcher";
+
+export const Header = () => {
+  const { t } = useTranslation();
+
+  return (
+    <header className="px-4 h-12 flex items-center gap-2.5">
+      <div className="flex items-center flex-1 min-w-0 leading-none">
+        <span className="text-lg font-extrabold text-(--color-ink) tracking-tight whitespace-nowrap">
+          Kuttuk<span className="text-(--color-primary)">Time</span>
+        </span>
       </div>
 
-      <div className="w-8 h-8 rounded-full bg-(--color-surface) flex items-center justify-center shrink-0">
-        <Icon
-          name="user"
-          size={19}
-          strokeWidth={2}
-          color="var(--color-primary)"
-        />
+      <div className="flex items-center gap-2.5 shrink-0">
+        <LangSwitcher />
+
+        <button
+          type="button"
+          aria-label={t("aria.profile")}
+          className="w-8 h-8 rounded-full bg-(--color-card) border border-(--color-line) flex items-center justify-center shrink-0 cursor-pointer"
+        >
+          <User size={19} color="var(--color-primary)" />
+        </button>
       </div>
-    </div>
-  </header>
-);
+    </header>
+  );
+};

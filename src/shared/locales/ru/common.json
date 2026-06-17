@@ -1,9 +1,21 @@
 {
-  "common": {
-    "language": {
-      "label": "Язык",
-      "kg": "КР",
-      "ru": "RU"
-    }
+  "language": {
+    "label": "Язык",
+    "kg": "КР",
+    "ru": "RU"
+  },
+  "search": {
+    "placeholder": "Поиск заведений",
+    "clear": "Очистить"
+  },
+  "home": {
+    "merchantsSection": "ЗАВЕДЕНИЯ"
+  },
+  "merchant": {
+    "from": "от"
+  },
+  "aria": {
+    "changeLanguage": "Сменить язык",
+    "profile": "Профиль"
   }
 }

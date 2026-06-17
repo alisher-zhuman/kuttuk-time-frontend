@@ -7,12 +7,12 @@ export const HomePage = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <main>
+    <>
       <SearchBar value={search} onChange={setSearch} />
 
       <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
 
       <MerchantList category={activeCategory} search={search} />
-    </main>
+    </>
   );
 };

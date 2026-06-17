@@ -25,6 +25,24 @@
   --cert-to: #8B5CF6;
 }
 
+[data-theme="dark"] {
+  --color-bg: #111318;
+  --color-card: #1C2030;
+  --color-header: #1C2030;
+  --color-ink: #F1F2F4;
+  --color-slate: #9CA3AF;
+  --color-hint: #6B7280;
+  --color-line: #252A3A;
+  --color-primary-tint: #25205E;
+  --color-accent-tint: #3D1F1C;
+  --color-green-tint: #0F2D1C;
+  --color-amber-tint: #2D2010;
+  --color-field: #252A3A;
+  --color-chip: #252A3A;
+  --color-chip-ink: #9CA3AF;
+  --color-surface: #1A1F2E;
+}
+
 html,
 body {
   overscroll-behavior: none;

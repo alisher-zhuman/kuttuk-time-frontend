@@ -11,6 +11,7 @@ export const HomePage = () => {
 
   const contentSafeAreaInsets = useSignal(viewport.contentSafeAreaInsets);
   const safeAreaInsets = useSignal(viewport.safeAreaInsets);
+  
   return (
     <div
       className="min-h-dvh bg-(--color-bg) text-(--color-ink)"
@@ -24,7 +25,7 @@ export const HomePage = () => {
       <Header />
 
       <main>
-        <div>
+        <div className="px-4 pt-3.5">
           <SearchBar value={search} onChange={setSearch} />
           <CategoryFilter
             active={activeCategory}

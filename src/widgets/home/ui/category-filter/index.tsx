@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const CategoryFilter = ({ active, onChange }: Props) => (
-  <nav aria-label="Категории" className="flex gap-2 overflow-x-auto">
+  <nav aria-label="Категории" className="flex gap-2 mt-3.5 overflow-x-auto">
     {CATEGORIES.map((cat) => (
       <button
         key={cat}

@@ -9,6 +9,7 @@ interface Props {
 
 export const MerchantList = ({ category, search }: Props) => {
   const { t } = useTranslation();
+  
   const query = search.trim().toLowerCase();
   const merchants = MERCHANTS.filter(
     (m) =>

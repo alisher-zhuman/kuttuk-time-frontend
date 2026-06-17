@@ -10,7 +10,7 @@ export const Header = () => {
   const badge = LANGUAGE_BADGE[lang] ?? LANGUAGE_BADGE.ru;
 
   return (
-    <header className="h-12 bg-(--color-header) border-b border-(--color-line) flex items-center gap-2.5">
+    <header className="px-4 h-12 bg-(--color-header) border-b border-(--color-line) flex items-center gap-2.5">
         <div className="flex items-center flex-1 min-w-0 leading-none">
           <span className="text-lg font-extrabold text-(--color-ink) tracking-tight whitespace-nowrap">
             Kuttuk<span className="text-(--color-primary)">Time</span>

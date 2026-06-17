@@ -1,23 +1,24 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { viewport } from '@tma.js/sdk-react';
+import { useSignal, viewport } from "@tma.js/sdk-react";
 
-import { CategoryFilter, MerchantList, SearchBar } from '@widgets/home';
-import { Header } from '@widgets/layout';
+import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
+import { Header } from "@widgets/layout";
 
 export const HomePage = () => {
-  const [activeCategory, setActiveCategory] = useState('Все');
-  const [search, setSearch] = useState('');
-  const contentSafeAreaInsets = viewport.contentSafeAreaInsets();
+  const [activeCategory, setActiveCategory] = useState("Все");
+  const [search, setSearch] = useState("");
 
+  const contentSafeAreaInsets = useSignal(viewport.contentSafeAreaInsets);
+  const safeAreaInsets = useSignal(viewport.safeAreaInsets);
   return (
     <div
       className="min-h-dvh bg-(--color-bg) text-(--color-ink)"
       style={{
-        paddingTop: contentSafeAreaInsets.top,
-        paddingRight: contentSafeAreaInsets.right,
-        paddingBottom: contentSafeAreaInsets.bottom,
-        paddingLeft: contentSafeAreaInsets.left,
+        paddingTop: safeAreaInsets.top + contentSafeAreaInsets.top,
+        paddingRight: safeAreaInsets.right + contentSafeAreaInsets.right,
+        paddingBottom: safeAreaInsets.bottom + contentSafeAreaInsets.bottom,
+        paddingLeft: safeAreaInsets.left + contentSafeAreaInsets.left,
       }}
     >
       <Header />
@@ -25,7 +26,10 @@ export const HomePage = () => {
       <main>
         <div>
           <SearchBar value={search} onChange={setSearch} />
-          <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+          <CategoryFilter
+            active={activeCategory}
+            onChange={setActiveCategory}
+          />
         </div>
 
         <MerchantList category={activeCategory} search={search} />

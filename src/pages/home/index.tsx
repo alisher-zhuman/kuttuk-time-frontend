@@ -2,10 +2,14 @@ import { useState } from "react";
 
 import { useSignal, viewport } from "@tma.js/sdk-react";
 
+import { useSettingsButton } from "@app/hooks/useSettingsButton";
+
 import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
 import { Header } from "@widgets/layout";
 
 export const HomePage = () => {
+  useSettingsButton();
+
   const [activeCategory, setActiveCategory] = useState("Все");
   const [search, setSearch] = useState("");
 

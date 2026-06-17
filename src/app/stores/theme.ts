@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { applyTheme, detectTheme } from "@app/helpers/theme";
+import { applyTheme, detectTheme } from "@app/helpers";
 
 import { type Theme, THEME_STORAGE_KEY } from "@shared/constants";
 

@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from "react";
 
-import { init, miniApp, swipeBehavior, themeParams, viewport } from "@tma.js/sdk-react";
+import { init, miniApp, swipeBehavior, themeParams, useSignal, viewport } from "@tma.js/sdk-react";
 
 try {
   init();
@@ -11,6 +11,21 @@ try {
 interface Props {
   children: ReactNode;
 }
+
+const SafeArea = ({ children }: Props) => {
+  const insets = useSignal(viewport.contentSafeAreaInsets);
+
+  return (
+    <div style={{
+      paddingTop: insets.top,
+      paddingRight: insets.right,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+    }}>
+      {children}
+    </div>
+  );
+};
 
 export const TMAProvider = ({ children }: Props) => {
   useEffect(() => {
@@ -33,7 +48,7 @@ export const TMAProvider = ({ children }: Props) => {
     if (viewport.mount.isAvailable()) {
       void viewport.mount().then(() => {
         viewport.bindCssVars();
-        
+
         if (viewport.requestFullscreen.isAvailable()) {
           void viewport.requestFullscreen();
         }
@@ -41,5 +56,5 @@ export const TMAProvider = ({ children }: Props) => {
     }
   }, []);
 
-  return <>{children}</>;
+  return <SafeArea>{children}</SafeArea>;
 };

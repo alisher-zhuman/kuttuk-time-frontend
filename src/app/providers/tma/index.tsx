@@ -12,21 +12,6 @@ interface Props {
   children: ReactNode;
 }
 
-const SafeArea = ({ children }: Props) => {
-  const insets = viewport.contentSafeAreaInsets();
-
-  return (
-    <div style={{
-      paddingTop: insets.top,
-      paddingRight: insets.right,
-      paddingBottom: insets.bottom,
-      paddingLeft: insets.left,
-    }}>
-      {children}
-    </div>
-  );
-};
-
 export const TMAProvider = ({ children }: Props) => {
   useEffect(() => {
     if (themeParams.mount.isAvailable()) {
@@ -56,5 +41,5 @@ export const TMAProvider = ({ children }: Props) => {
     }
   }, []);
 
-  return <SafeArea>{children}</SafeArea>;
+  return <>{children}</>;
 };

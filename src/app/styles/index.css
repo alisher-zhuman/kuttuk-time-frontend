@@ -41,8 +41,8 @@ body {
 }
 
 #root {
-  padding-top: var(--content-safe-top);
-  padding-right: var(--content-safe-right);
-  padding-bottom: var(--content-safe-bottom);
-  padding-left: var(--content-safe-left);
+  padding-top: var(--safe-top);
+  padding-right: var(--safe-right);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
 }

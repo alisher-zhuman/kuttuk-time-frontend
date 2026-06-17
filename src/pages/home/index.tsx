@@ -12,7 +12,7 @@ export const HomePage = () => {
       <Header />
 
       <main>
-        <div className="px-4 pt-3.5">
+        <div>
           <SearchBar value={search} onChange={setSearch} />
           <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
         </div>

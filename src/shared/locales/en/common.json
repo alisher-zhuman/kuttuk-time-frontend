@@ -6,7 +6,8 @@
     "en": "EN"
   },
   "search": {
-    "placeholder": "Search venues"
+    "placeholder": "Search venues",
+    "clear": "Clear"
   },
   "home": {
     "merchantsSection": "VENUES"

@@ -5,7 +5,8 @@
     "ru": "RU"
   },
   "search": {
-    "placeholder": "Мекемелерди издөө"
+    "placeholder": "Мекемелерди издөө",
+    "clear": "Тазалоо"
   },
   "home": {
     "merchantsSection": "МЕКЕМЕЛЕР"

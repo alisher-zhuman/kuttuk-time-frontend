@@ -19,7 +19,7 @@ export const MerchantCard = ({ merchant }: Props) => {
       aria-label={`${merchant.name}, ${t('merchant.from')} ${formatMoney(merchant.minAmount)}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
-      <span className="size-12 rounded-xl shrink-0 bg-(--color-primary) flex items-center justify-center text-white text-xl font-extrabold tracking-tight">
+      <span className="size-12 rounded-xl shrink-0 bg-(--color-primary) flex items-center justify-center text-(--color-card) text-xl font-extrabold tracking-tight">
         {merchant.monogram}
       </span>
 

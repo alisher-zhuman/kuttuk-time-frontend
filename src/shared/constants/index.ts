@@ -5,3 +5,4 @@ export {
   LANGUAGE_BADGE,
   SUPPORTED_LANGUAGES,
 } from "./i18n";
+export { ROUTES } from "./routes";

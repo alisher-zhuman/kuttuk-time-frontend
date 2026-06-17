@@ -3,17 +3,19 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { HomePage } from "@pages/home";
 import { ProfilePage } from "@pages/profile";
 
+import { ROUTES } from "@shared/constants";
+
 export const ROUTER = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/app" replace />,
+    element: <Navigate to={ROUTES.HOME} replace />,
   },
   {
-    path: "/app",
+    path: ROUTES.HOME,
     element: <HomePage />,
   },
   {
-    path: "/app/profile",
+    path: ROUTES.PROFILE,
     element: <ProfilePage />,
   },
 ]);

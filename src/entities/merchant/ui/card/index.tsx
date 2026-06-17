@@ -33,7 +33,7 @@ export const MerchantCard = ({ merchant }: Props) => {
         <span className="text-sm text-(--color-primary) font-extrabold">{formatMoney(merchant.minAmount)}</span>
       </span>
 
-      <ChevronRight size={17} strokeWidth={2.4} color="var(--color-hint)" />
+      <ChevronRight size={17} color="var(--color-hint)" />
     </button>
   );
 };

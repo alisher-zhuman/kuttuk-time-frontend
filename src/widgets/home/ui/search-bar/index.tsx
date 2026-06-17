@@ -12,7 +12,7 @@ export const SearchBar = ({ value, onChange }: Props) => {
 
   return (
     <label className="w-full flex items-center gap-2.5 h-10 px-3.5 bg-(--color-field) rounded-xl text-(--color-hint) border border-(--color-line)">
-      <Search size={19} strokeWidth={2.2} color="var(--color-hint)" />
+      <Search size={19} color="var(--color-hint)" />
       
       <input
         type="search"

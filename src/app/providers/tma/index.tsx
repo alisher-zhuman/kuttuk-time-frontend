@@ -32,6 +32,8 @@ export const TMAProvider = ({ children }: Props) => {
 
     if (viewport.mount.isAvailable()) {
       void viewport.mount().then(() => {
+        viewport.bindCssVars();
+        
         if (viewport.requestFullscreen.isAvailable()) {
           void viewport.requestFullscreen();
         }

@@ -1,11 +1,21 @@
 import { type ReactNode, useEffect } from "react";
 
-import { init, miniApp, swipeBehavior, themeParams, viewport } from "@tma.js/sdk-react";
+import {
+  init,
+  miniApp,
+  swipeBehavior,
+  themeParams,
+  viewport,
+} from "@tma.js/sdk-react";
+
+import { AppNotFoundPage } from "@pages/app-not-found";
+
+let isTMA = true;
 
 try {
   init();
 } catch {
-  console.warn('TMA SDK: running outside Telegram');
+  isTMA = false;
 }
 
 interface Props {
@@ -20,8 +30,8 @@ export const TMAProvider = ({ children }: Props) => {
 
     if (miniApp.mount.isAvailable()) {
       miniApp.mount();
-      miniApp.setHeaderColor('#FFFFFF');
-      miniApp.setBgColor('#F4F5F7');
+      miniApp.setHeaderColor("#FFFFFF");
+      miniApp.setBgColor("#F4F5F7");
       miniApp.ready();
     }
 
@@ -39,8 +49,9 @@ export const TMAProvider = ({ children }: Props) => {
         }
       });
     }
-
   }, []);
+
+  if (!isTMA) return <AppNotFoundPage />;
 
   return <>{children}</>;
 };

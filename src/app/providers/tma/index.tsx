@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from "react";
 
-import { init, miniApp, swipeBehavior, themeParams, useSignal, viewport } from "@tma.js/sdk-react";
+import { init, miniApp, swipeBehavior, themeParams, viewport } from "@tma.js/sdk-react";
 
 try {
   init();
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const SafeArea = ({ children }: Props) => {
-  const insets = useSignal(viewport.contentSafeAreaInsets);
+  const insets = viewport.contentSafeAreaInsets();
 
   return (
     <div style={{

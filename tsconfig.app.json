@@ -27,6 +27,14 @@
       "@shared/*": ["src/shared/*"]
     },
 
+    /* Strict */
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedSideEffectImports": true,
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

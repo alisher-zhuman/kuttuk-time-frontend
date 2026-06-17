@@ -1,30 +1,39 @@
-import { Icon } from "@shared/ui/icon";
+import { useTranslation } from "react-i18next";
 
-export const Header = () => (
-  <header className="px-4 h-12 bg-(--color-header) border-b border-(--color-line) flex items-center gap-2.5">
-    <div className="flex items-center flex-1 min-w-0 leading-none">
-      <span className="text-lg font-extrabold text-(--color-ink) tracking-tight whitespace-nowrap">
-        Kuttuk<span className="text-(--color-primary)">Time</span>
-      </span>
-    </div>
+import { LANGUAGE_BADGE } from "@shared/constants";
+import { Icon } from "@shared/ui";
 
-    <div className="flex items-center gap-2.5 shrink-0">
-      <button
-        type="button"
-        aria-label="Сменить язык"
-        className="flex items-center gap-1.25 h-7.5 px-2.75 rounded-full bg-(--color-surface) text-(--color-ink) shrink-0"
-      >
-        <Icon name="globe" size={15} strokeWidth={2} color="var(--color-primary)" />
-        <span className="text-sm font-extrabold tracking-wide">РУ</span>
-      </button>
+export const Header = () => {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as keyof typeof LANGUAGE_BADGE;
+  const badge = LANGUAGE_BADGE[lang] ?? LANGUAGE_BADGE.ru;
 
-      <button
-        type="button"
-        aria-label="Профиль"
-        className="w-8 h-8 rounded-full bg-(--color-surface) flex items-center justify-center shrink-0"
-      >
-        <Icon name="user" size={19} strokeWidth={2} color="var(--color-primary)" />
-      </button>
-    </div>
-  </header>
-);
+  return (
+    <header className="px-4 h-12 bg-(--color-header) border-b border-(--color-line) flex items-center gap-2.5">
+      <div className="flex items-center flex-1 min-w-0 leading-none">
+        <span className="text-lg font-extrabold text-(--color-ink) tracking-tight whitespace-nowrap">
+          Kuttuk<span className="text-(--color-primary)">Time</span>
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2.5 shrink-0">
+        <button
+          type="button"
+          aria-label={t('aria.changeLanguage')}
+          className="flex items-center gap-1.25 h-7.5 px-2.75 rounded-full bg-(--color-surface) text-(--color-ink) shrink-0"
+        >
+          <Icon name="globe" size={15} strokeWidth={2} color="var(--color-primary)" />
+          <span className="text-sm font-extrabold tracking-wide">{badge.code}</span>
+        </button>
+
+        <button
+          type="button"
+          aria-label={t('aria.profile')}
+          className="w-8 h-8 rounded-full bg-(--color-surface) flex items-center justify-center shrink-0"
+        >
+          <Icon name="user" size={19} strokeWidth={2} color="var(--color-primary)" />
+        </button>
+      </div>
+    </header>
+  );
+};

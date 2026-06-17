@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { MerchantCard, MERCHANTS } from "@entities/merchant";
 
 interface Props {
@@ -5,15 +7,16 @@ interface Props {
 }
 
 export const MerchantList = ({ category }: Props) => {
+  const { t } = useTranslation();
   const merchants =
     category === "Все"
       ? MERCHANTS
       : MERCHANTS.filter((m) => m.category === category);
 
   return (
-    <section aria-label="Заведения">
+    <section aria-label={t('home.merchantsSection')}>
       <h2 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-5">
-        ЗАВЕДЕНИЯ
+        {t('home.merchantsSection')}
       </h2>
 
       <ul className="px-4 pb-5 flex flex-col gap-2.5 list-none">

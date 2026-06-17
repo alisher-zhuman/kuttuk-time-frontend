@@ -1,0 +1,21 @@
+{
+  "language": {
+    "label": "Language",
+    "kg": "KG",
+    "ru": "RU",
+    "en": "EN"
+  },
+  "search": {
+    "placeholder": "Search venues"
+  },
+  "home": {
+    "merchantsSection": "VENUES"
+  },
+  "merchant": {
+    "from": "from"
+  },
+  "aria": {
+    "changeLanguage": "Change language",
+    "profile": "Profile"
+  }
+}

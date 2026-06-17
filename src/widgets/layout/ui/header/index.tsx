@@ -16,9 +16,13 @@ export const Header = () => {
 
   return (
     <header className="px-4 h-12 flex items-center gap-2.5">
-      <div className="flex items-center flex-1 min-w-0 leading-none">
+      <button
+        type="button"
+        onClick={() => void navigate(ROUTES.HOME)}
+        className="flex items-center flex-1 min-w-0 leading-none cursor-pointer"
+      >
         <Logo />
-      </div>
+      </button>
 
       <div className="flex items-center gap-2.5 shrink-0">
         <LangSwitcher />

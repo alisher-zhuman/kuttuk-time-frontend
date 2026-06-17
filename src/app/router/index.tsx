@@ -3,6 +3,8 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { HomePage } from "@pages/home";
 import { ProfilePage } from "@pages/profile";
 
+import { AppLayout } from "@widgets/layout";
+
 import { ROUTES } from "@shared/constants";
 
 export const ROUTER = createBrowserRouter([
@@ -11,11 +13,16 @@ export const ROUTER = createBrowserRouter([
     element: <Navigate to={ROUTES.HOME} replace />,
   },
   {
-    path: ROUTES.HOME,
-    element: <HomePage />,
-  },
-  {
-    path: ROUTES.PROFILE,
-    element: <ProfilePage />,
+    element: <AppLayout />,
+    children: [
+      {
+        path: ROUTES.HOME,
+        element: <HomePage />,
+      },
+      {
+        path: ROUTES.PROFILE,
+        element: <ProfilePage />,
+      },
+    ],
   },
 ]);

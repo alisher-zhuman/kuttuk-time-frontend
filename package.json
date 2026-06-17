@@ -15,16 +15,20 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint --max-warnings=0 --fix"]
+    "*.{ts,tsx}": [
+      "eslint --max-warnings=0 --fix"
+    ]
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
+    "clsx": "^2.1.1",
     "i18next": "^26.3.1",
     "i18next-browser-languagedetector": "^8.2.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-i18next": "^17.0.8",
     "react-router": "^7.17.0",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.1"
   },
   "devDependencies": {

@@ -39,6 +39,7 @@ export const TMAProvider = ({ children }: Props) => {
         }
       });
     }
+
   }, []);
 
   return <>{children}</>;

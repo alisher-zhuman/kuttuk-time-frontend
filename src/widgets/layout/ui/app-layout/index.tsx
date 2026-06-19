@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-import { useBackButton, useSafeArea, useSettingsButton } from "@app/hooks";
+import { useBackButton, useSafeArea, useSettingsButton } from "@shared/hooks";
 
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";

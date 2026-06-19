@@ -8,9 +8,7 @@ import {
   I18N_STORAGE_KEY,
   SUPPORTED_LANGUAGES,
 } from "@shared/constants";
-import enCommon from "@shared/locales/en/common.json";
-import kgCommon from "@shared/locales/kg/common.json";
-import ruCommon from "@shared/locales/ru/common.json";
+import { enCommon, kgCommon, ruCommon } from "@shared/locales";
 
 import LanguageDetector from "i18next-browser-languagedetector";
 

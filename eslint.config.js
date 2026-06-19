@@ -6,14 +6,9 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
-import {
-  createSameLayerImportConfig,
-  createSelfLayerImportConfig,
-  createBarrelImportConfig,
-} from "./eslint/helpers/internal-imports.js";
 
 export default defineConfig([
-  globalIgnores(["dist"]),
+  globalIgnores(["dist", "steiger.config.ts"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
@@ -85,40 +80,6 @@ export default defineConfig([
         },
       ],
       "simple-import-sort/exports": "error",
-    },
-  },
-  createSelfLayerImportConfig("shared"),
-  createSelfLayerImportConfig("app"),
-  createSameLayerImportConfig("entities"),
-  createSameLayerImportConfig("features"),
-  createSameLayerImportConfig("widgets"),
-  createSameLayerImportConfig("pages"),
-  createBarrelImportConfig({
-    files: ["src/app/**/*.{ts,tsx}"],
-    layer: "widgets",
-    pattern: "*/*",
-    message: "Use widget barrel exports.",
-  }),
-  createBarrelImportConfig({
-    files: ["src/**/*.{ts,tsx}"],
-    layer: "features",
-    pattern: "*/*",
-    message: "Use feature barrel exports.",
-  }),
-  {
-    files: ["src/features/**/*.{ts,tsx}"],
-    rules: {
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: [
-            {
-              group: ["@entities/*/ui/*", "@entities/*/hooks/*"],
-              message: "Use entity barrel exports.",
-            },
-          ],
-        },
-      ],
     },
   },
 ]);

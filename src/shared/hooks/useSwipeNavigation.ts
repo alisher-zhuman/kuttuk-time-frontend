@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router";
 
 const THRESHOLD = 75;
+const EDGE_ZONE = 30;
 
 export const useSwipeNavigation = () => {
   const navigate = useNavigate();
@@ -9,7 +10,16 @@ export const useSwipeNavigation = () => {
   const startX = useRef<number | null>(null);
 
   const onTouchStart = (e: React.TouchEvent) => {
-    startX.current = e.touches[0]?.clientX ?? null;
+    const x = e.touches[0]?.clientX ?? null;
+
+    if (x === null) return;
+
+    const fromLeftEdge = x <= EDGE_ZONE;
+    const fromRightEdge = x >= window.innerWidth - EDGE_ZONE;
+
+    if (!fromLeftEdge && !fromRightEdge) return;
+
+    startX.current = x;
   };
 
   const onTouchEnd = (e: React.TouchEvent) => {

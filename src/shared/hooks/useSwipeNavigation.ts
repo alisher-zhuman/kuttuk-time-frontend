@@ -5,6 +5,7 @@ const THRESHOLD = 75;
 
 export const useSwipeNavigation = () => {
   const navigate = useNavigate();
+
   const startX = useRef<number | null>(null);
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -12,14 +13,24 @@ export const useSwipeNavigation = () => {
   };
 
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (startX.current === null) return;
+    if (startX.current === null) {
+      return;
+    }
+
     const endX = e.changedTouches[0]?.clientX;
-    if (endX === undefined) return;
+
+    if (endX === undefined) {
+      return;
+    }
+
     const diff = endX - startX.current;
     startX.current = null;
 
-    if (diff > THRESHOLD) void navigate(-1);
-    else if (diff < -THRESHOLD) void navigate(1);
+    if (diff > THRESHOLD) {
+      void navigate(-1);
+    } else if (diff < -THRESHOLD) {
+      void navigate(1);
+    }
   };
 
   return { onTouchStart, onTouchEnd };

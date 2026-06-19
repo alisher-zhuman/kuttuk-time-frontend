@@ -2,12 +2,13 @@ import { Outlet } from "react-router";
 
 import { useSignal, viewport } from "@tma.js/sdk-react";
 
-import { useSettingsButton } from "@app/hooks/useSettingsButton";
+import { useBackButton, useSettingsButton } from "@app/hooks";
 
 import { Header } from "../header";
 
 export const AppLayout = () => {
   useSettingsButton();
+  useBackButton();
 
   const contentSafeAreaInsets = useSignal(viewport.contentSafeAreaInsets);
   const safeAreaInsets = useSignal(viewport.safeAreaInsets);

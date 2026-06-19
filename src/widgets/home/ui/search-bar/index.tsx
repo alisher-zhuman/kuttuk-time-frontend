@@ -11,7 +11,7 @@ export const SearchBar = ({ value, onChange }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <label className="mx-4 mt-3.5 flex items-center gap-2.5 h-10 px-4.5 bg-(--color-field) rounded-xl text-(--color-hint) border border-(--color-line)">
+    <label className="mt-3.5 flex items-center gap-2.5 h-10 px-4.5 bg-(--color-field) rounded-xl text-(--color-hint) border border-(--color-line)">
       <Search size={19} color="var(--color-hint)" />
 
       <input

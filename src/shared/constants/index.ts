@@ -5,3 +5,10 @@ export {
   LANGUAGE_BADGE,
   SUPPORTED_LANGUAGES,
 } from "./i18n";
+export { ROUTES } from "./routes";
+export {
+  DEFAULT_THEME,
+  SUPPORTED_THEMES,
+  type Theme,
+  THEME_STORAGE_KEY,
+} from "./theme";

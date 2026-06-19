@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 
 import { settingsButton } from "@tma.js/sdk-react";
 
+import { ROUTES } from "@shared/constants";
+
 export const useSettingsButton = () => {
   const navigate = useNavigate();
 
@@ -13,7 +15,7 @@ export const useSettingsButton = () => {
     settingsButton.show();
 
     const off = settingsButton.onClick(() => {
-      void navigate("/app/profile");
+      void navigate(ROUTES.PROFILE);
     });
 
     return () => {

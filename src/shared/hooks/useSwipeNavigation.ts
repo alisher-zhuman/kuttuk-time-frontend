@@ -1,5 +1,4 @@
 import { useRef } from "react";
-
 import { useNavigate } from "react-router";
 
 const THRESHOLD = 75;

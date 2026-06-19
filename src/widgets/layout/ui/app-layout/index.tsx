@@ -1,34 +1,27 @@
 import { Outlet } from "react-router";
 
-import { useSignal, viewport } from "@tma.js/sdk-react";
-
-import { useBackButton, useSettingsButton } from "@app/hooks";
+import { useBackButton, useSafeArea, useSettingsButton } from "@app/hooks";
 
 import { Header } from "../header";
+import { TopBlur } from "../top-blur";
 
 export const AppLayout = () => {
   useSettingsButton();
   useBackButton();
 
-  const contentSafeAreaInsets = useSignal(viewport.contentSafeAreaInsets);
-  const safeAreaInsets = useSignal(viewport.safeAreaInsets);
-  const topInset = safeAreaInsets.top + contentSafeAreaInsets.top;
+  const insets = useSafeArea();
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        className="fixed top-0 inset-x-0 pointer-events-none z-20 backdrop-blur-xs mask-[linear-gradient(to_bottom,black_80%,rgba(0,0,0,0.25))]"
-        style={{ height: topInset }}
-      />
+      <TopBlur height={insets.top} />
 
       <div
         className="min-h-dvh bg-(--color-bg) text-(--color-ink)"
         style={{
-          paddingTop: safeAreaInsets.top + contentSafeAreaInsets.top,
-          paddingRight: safeAreaInsets.right + contentSafeAreaInsets.right,
-          paddingBottom: safeAreaInsets.bottom + contentSafeAreaInsets.bottom,
-          paddingLeft: safeAreaInsets.left + contentSafeAreaInsets.left,
+          paddingTop: insets.top,
+          paddingRight: insets.right,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
         }}
       >
         <Header />

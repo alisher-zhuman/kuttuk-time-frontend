@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 import { useBackButton, useSafeArea, useSettingsButton, useSwipeNavigation } from "@shared/hooks";
 
@@ -11,6 +11,8 @@ export const AppLayout = () => {
 
   const insets = useSafeArea();
   const swipe = useSwipeNavigation();
+  
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -29,7 +31,7 @@ export const AppLayout = () => {
       >
         <Header />
 
-        <main className="px-4">
+        <main key={pathname} className="px-4 animate-page-enter">
           <Outlet />
         </main>
       </div>

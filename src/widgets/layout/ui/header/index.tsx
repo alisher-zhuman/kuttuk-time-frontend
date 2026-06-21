@@ -18,7 +18,7 @@ export const Header = () => {
       <button
         type="button"
         onClick={() => navigateTo(ROUTES.HOME)}
-        className="flex items-center flex-1 min-w-0 leading-none cursor-pointer"
+        className="flex items-center leading-none cursor-pointer"
       >
         <Logo />
       </button>

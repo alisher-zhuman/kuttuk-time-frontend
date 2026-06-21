@@ -24,6 +24,13 @@
       "settings": "Жөндөөлөр"
     }
   },
+  "certificate": {
+    "currency": "сом",
+    "status": {
+      "active": "Активдүү",
+      "used": "Колдонулду"
+    }
+  },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "Бул Telegram Mini App. Аны Telegramдагы бот аркылуу ачыңыз.",

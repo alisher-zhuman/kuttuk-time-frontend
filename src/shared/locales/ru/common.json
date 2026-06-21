@@ -24,6 +24,13 @@
       "settings": "Настройки"
     }
   },
+  "certificate": {
+    "currency": "сом",
+    "status": {
+      "active": "Активный",
+      "used": "Использован"
+    }
+  },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "Это Telegram Mini App. Открой его через бота в Telegram.",

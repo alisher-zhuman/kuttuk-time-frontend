@@ -25,6 +25,13 @@
       "settings": "Settings"
     }
   },
+  "certificate": {
+    "currency": "som",
+    "status": {
+      "active": "Active",
+      "used": "Used"
+    }
+  },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "This is a Telegram Mini App. Open it via the bot in Telegram.",

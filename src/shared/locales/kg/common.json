@@ -17,5 +17,11 @@
   "aria": {
     "changeLanguage": "Тил алмаштыруу",
     "profile": "Профиль"
+  },
+  "profile": {
+    "tabs": {
+      "certificates": "Менин сертификаттарым",
+      "settings": "Жөндөөлөр"
+    }
   }
 }

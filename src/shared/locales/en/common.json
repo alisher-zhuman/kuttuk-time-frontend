@@ -18,5 +18,11 @@
   "aria": {
     "changeLanguage": "Change language",
     "profile": "Profile"
+  },
+  "profile": {
+    "tabs": {
+      "certificates": "My Certificates",
+      "settings": "Settings"
+    }
   }
 }

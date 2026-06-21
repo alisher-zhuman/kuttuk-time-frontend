@@ -17,5 +17,11 @@
   "aria": {
     "changeLanguage": "Сменить язык",
     "profile": "Профиль"
+  },
+  "profile": {
+    "tabs": {
+      "certificates": "Мои сертификаты",
+      "settings": "Настройки"
+    }
   }
 }

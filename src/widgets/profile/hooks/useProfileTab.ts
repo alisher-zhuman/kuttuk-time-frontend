@@ -25,7 +25,7 @@ export const useProfileTab = () => {
         ? "animate-tab-enter-right"
         : "animate-tab-enter-left",
     );
-    setSearchParams({ tab });
+    setSearchParams({ tab }, { replace: true });
   };
 
   return { activeTab, contentAnimation, handleTabChange };

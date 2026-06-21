@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router";
 
+import { ROUTES } from "@shared/constants";
 import { useBackButton, useSafeArea, useSettingsButton, useSwipeNavigation } from "@shared/hooks";
 
 import { Header } from "../header";
@@ -29,7 +30,7 @@ export const AppLayout = () => {
           paddingLeft: insets.left,
         }}
       >
-        <Header />
+        {pathname !== ROUTES.PROFILE && <Header />}
 
         <main key={pathname} className="px-4 animate-page-enter">
           <Outlet />

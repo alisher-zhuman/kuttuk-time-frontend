@@ -5,6 +5,7 @@ export {
   LANGUAGE_BADGE,
   SUPPORTED_LANGUAGES,
 } from "./i18n";
+export { PROFILE_TABS } from "./profile";
 export { ROUTES } from "./routes";
 export {
   DEFAULT_THEME,

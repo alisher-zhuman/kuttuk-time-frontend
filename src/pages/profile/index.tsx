@@ -1,8 +1,10 @@
 import { useState } from "react";
 
-import { CertificatesTab, ProfileInfo, ProfileTabs, SettingsTab, type Tab,TABS } from "@widgets/profile";
+import { CertificatesTab, ProfileInfo, ProfileTabs, SettingsTab } from "@widgets/profile";
 
+import { PROFILE_TABS } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
+import type { Tab } from "@shared/types";
 
 const user = getTMAUserInfo();
 
@@ -15,7 +17,7 @@ export const ProfilePage = () => {
   const handleTabChange = (tab: Tab) => {
     if (tab === activeTab) return;
     setContentAnimation(
-      TABS.indexOf(tab) > TABS.indexOf(activeTab)
+      PROFILE_TABS.indexOf(tab) > PROFILE_TABS.indexOf(activeTab)
         ? "animate-tab-enter-right"
         : "animate-tab-enter-left",
     );

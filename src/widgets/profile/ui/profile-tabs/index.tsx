@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 
+import { PROFILE_TABS } from "@shared/constants";
 import { cn } from "@shared/helpers";
-
-import { type Tab,TABS } from "../../model";
+import type { Tab } from "@shared/types";
 
 interface Props {
   activeTab: Tab;
@@ -23,7 +23,7 @@ export const ProfileTabs = ({ activeTab, onTabChange }: Props) => {
         )}
       />
 
-      {TABS.map((tab) => (
+      {PROFILE_TABS.map((tab) => (
         <button
           key={tab}
           type="button"

@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 
 import { LANGUAGE_BADGE, SUPPORTED_LANGUAGES } from "@shared/constants";
-import { cn } from "@shared/helpers";
+
+import { SegmentedControl } from "../segmented-control";
 
 type Lang = keyof typeof LANGUAGE_BADGE;
 
@@ -22,28 +23,26 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
   };
 
   if (variant === "segmented") {
-    return (
-      <div className="flex rounded-xl bg-(--color-surface) p-1 gap-1">
-        {SUPPORTED_LANGUAGES.map((l) => {
-          const b = LANGUAGE_BADGE[l];
-          const isActive = lang === l;
+    const items = SUPPORTED_LANGUAGES.map((l) => {
+      const b = LANGUAGE_BADGE[l];
+      
+      return {
+        value: l,
+        label: (
+          <span className="flex items-center gap-1.5">
+            <span className="text-base leading-none">{b.flag}</span>
+            <span>{b.code}</span>
+          </span>
+        ),
+      };
+    });
 
-          return (
-            <button
-              key={l}
-              type="button"
-              onClick={() => void i18n.changeLanguage(l)}
-              className={cn(
-                "flex flex-1 items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-bold transition-colors cursor-pointer",
-                isActive ? "bg-(--color-card) text-(--color-ink)" : "text-(--color-slate)",
-              )}
-            >
-              <span className="text-base leading-none">{b.flag}</span>
-              <span>{b.code}</span>
-            </button>
-          );
-        })}
-      </div>
+    return (
+      <SegmentedControl
+        items={items}
+        value={lang}
+        onChange={(l) => void i18n.changeLanguage(l)}
+      />
     );
   }
 

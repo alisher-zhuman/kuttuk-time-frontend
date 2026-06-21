@@ -1,53 +1,53 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #F4F5F7;
-  --color-card: #FFFFFF;
-  --color-header: #FFFFFF;
-  --color-ink: #1B2238;
-  --color-slate: #6B7280;
-  --color-hint: #9CA3AF;
-  --color-line: #E6E8EE;
-  --color-primary: #5A4BE8;
-  --color-primary-press: #4A3CD0;
-  --color-primary-tint: #EDEBFC;
-  --color-accent: #FF6B5E;
-  --color-accent-tint: #FFE9E6;
-  --color-green: #16A34A;
-  --color-green-tint: #E7F7EC;
-  --color-amber: #D97706;
-  --color-amber-tint: #FEF3E2;
-  --color-field: #FFFFFF;
-  --color-chip: #FFFFFF;
-  --color-chip-ink: #6B7280;
-  --color-surface: #F1F2F4;
-  --cert-from: #5A4BE8;
-  --cert-to: #8B5CF6;
+  --color-bg: #f4f5f7;
+  --color-card: #ffffff;
+  --color-header: #ffffff;
+  --color-ink: #1b2238;
+  --color-slate: #6b7280;
+  --color-hint: #9ca3af;
+  --color-line: #e6e8ee;
+  --color-primary: #5a4be8;
+  --color-primary-press: #4a3cd0;
+  --color-primary-tint: #edebfc;
+  --color-accent: #ff6b5e;
+  --color-accent-tint: #ffe9e6;
+  --color-green: #16a34a;
+  --color-green-tint: #e7f7ec;
+  --color-amber: #d97706;
+  --color-amber-tint: #fef3e2;
+  --color-field: #ffffff;
+  --color-chip: #ffffff;
+  --color-chip-ink: #6b7280;
+  --color-surface: #f1f2f4;
+  --cert-from: #5a4be8;
+  --cert-to: #8b5cf6;
 }
 
 [data-theme="dark"] {
-  --color-bg: #0F1422;
-  --color-card: #1A2133;
-  --color-header: #161D2E;
-  --color-ink: #F4F6FB;
-  --color-slate: #9AA3B5;
-  --color-hint: #6B7488;
-  --color-line: #2C3447;
-  --color-primary: #8B7DFB;
-  --color-primary-press: #6F5FF0;
+  --color-bg: #0f1422;
+  --color-card: #1a2133;
+  --color-header: #161d2e;
+  --color-ink: #f4f6fb;
+  --color-slate: #9aa3b5;
+  --color-hint: #6b7488;
+  --color-line: #2c3447;
+  --color-primary: #8b7dfb;
+  --color-primary-press: #6f5ff0;
   --color-primary-tint: rgba(139, 125, 251, 0.18);
-  --color-accent: #FF8A7E;
+  --color-accent: #ff8a7e;
   --color-accent-tint: rgba(255, 138, 126, 0.18);
-  --color-green: #34D399;
+  --color-green: #34d399;
   --color-green-tint: rgba(52, 211, 153, 0.18);
-  --color-amber: #FBBF24;
+  --color-amber: #fbbf24;
   --color-amber-tint: rgba(251, 191, 36, 0.18);
-  --color-field: #1A2133;
-  --color-chip: #1A2133;
-  --color-chip-ink: #9AA3B5;
-  --color-surface: #0A0F1B;
-  --cert-from: #7C6FF5;
-  --cert-to: #A78BFA;
+  --color-field: #1a2133;
+  --color-chip: #1a2133;
+  --color-chip-ink: #9aa3b5;
+  --color-surface: #0a0f1b;
+  --cert-from: #7c6ff5;
+  --cert-to: #a78bfa;
 }
 
 html,
@@ -78,6 +78,8 @@ textarea,
 @theme {
   --animate-page-enter: page-enter 180ms ease-out both;
   --animate-lang-flip: lang-flip 180ms ease-out both;
+  --animate-tab-enter-right: tab-enter-right 180ms ease-out both;
+  --animate-tab-enter-left: tab-enter-left 180ms ease-out both;
 
   @keyframes lang-flip {
     from {
@@ -100,9 +102,6 @@ textarea,
       transform: scale(1) translateY(0);
     }
   }
-
-  --animate-tab-enter-right: tab-enter-right 180ms ease-out both;
-  --animate-tab-enter-left: tab-enter-left 180ms ease-out both;
 
   @keyframes tab-enter-right {
     from {

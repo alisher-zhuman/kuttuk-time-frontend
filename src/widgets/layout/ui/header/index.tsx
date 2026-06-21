@@ -14,7 +14,7 @@ export const Header = () => {
   const navigateTo = useNavigateTo();
 
   return (
-    <header className="px-4 h-12 flex items-center gap-2.5">
+    <header className="px-4 h-12 flex items-center justify-between gap-2.5">
       <button
         type="button"
         onClick={() => navigateTo(ROUTES.HOME)}

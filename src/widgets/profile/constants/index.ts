@@ -1,1 +1,3 @@
-export { PROFILE_TABS } from "./profile";
+import type { Tab } from "../types";
+
+export const PROFILE_TABS: Tab[] = ["certificates", "settings"];

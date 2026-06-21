@@ -21,8 +21,18 @@
   },
   "profile": {
     "tabs": {
-      "certificates": "My Certificates",
+      "certificates": "Certificates",
       "settings": "Settings"
     }
+  },
+  "appNotFound": {
+    "subtitle": "Mini App",
+    "description": "This is a Telegram Mini App. Open it via the bot in Telegram.",
+    "openInTelegram": "Open in Telegram"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Page not found",
+    "goHome": "Go home"
   }
 }

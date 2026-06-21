@@ -20,8 +20,18 @@
   },
   "profile": {
     "tabs": {
-      "certificates": "Мои сертификаты",
+      "certificates": "Сертификаты",
       "settings": "Настройки"
     }
+  },
+  "appNotFound": {
+    "subtitle": "Mini App",
+    "description": "Это Telegram Mini App. Открой его через бота в Telegram.",
+    "openInTelegram": "Открыть в Telegram"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Страница не найдена",
+    "goHome": "На главную"
   }
 }

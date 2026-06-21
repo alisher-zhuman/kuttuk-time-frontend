@@ -20,8 +20,18 @@
   },
   "profile": {
     "tabs": {
-      "certificates": "Менин сертификаттарым",
+      "certificates": "Сертификаттар",
       "settings": "Жөндөөлөр"
     }
+  },
+  "appNotFound": {
+    "subtitle": "Mini App",
+    "description": "Бул Telegram Mini App. Аны Telegramдагы бот аркылуу ачыңыз.",
+    "openInTelegram": "Telegramда ачуу"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Бет табылган жок",
+    "goHome": "Башкы бетке"
   }
 }

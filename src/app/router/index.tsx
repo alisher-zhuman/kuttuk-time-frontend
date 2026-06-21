@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router";
 
 import { HomePage } from "@pages/home";
+import { NotFoundPage } from "@pages/not-found";
 import { ProfilePage } from "@pages/profile";
 
 import { AppLayout } from "@widgets/layout";
@@ -22,6 +23,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTES.PROFILE,
         element: <ProfilePage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },

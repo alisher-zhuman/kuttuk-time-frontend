@@ -1,1 +1,1 @@
-export type { Tab } from "./profile";
+export type Tab = "certificates" | "settings";

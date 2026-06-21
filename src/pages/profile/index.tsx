@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 import {
   CertificatesTab,
@@ -13,8 +14,15 @@ import { getTMAUserInfo } from "@shared/helpers";
 
 const user = getTMAUserInfo();
 
+const isValidTab = (value: string | null): value is Tab =>
+  PROFILE_TABS.includes(value as Tab);
+
 export const ProfilePage = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("certificates");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const tabParam = searchParams.get("tab");
+  const activeTab: Tab = isValidTab(tabParam) ? tabParam : "certificates";
+
   const [contentAnimation, setContentAnimation] = useState(
     "animate-tab-enter-right",
   );
@@ -26,7 +34,7 @@ export const ProfilePage = () => {
         ? "animate-tab-enter-right"
         : "animate-tab-enter-left",
     );
-    setActiveTab(tab);
+    setSearchParams({ tab });
   };
 
   return (

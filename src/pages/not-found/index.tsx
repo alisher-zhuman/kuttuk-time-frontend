@@ -9,8 +9,14 @@ export const NotFoundPage = () => {
 
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center gap-4 px-8 text-center">
-      <span className="text-6xl font-bold text-(--color-primary)">{t("notFound.title")}</span>
-      <p className="text-(--color-slate) text-base">{t("notFound.description")}</p>
+      <span className="text-6xl font-bold text-(--color-primary)">
+        {t("notFound.title")}
+      </span>
+
+      <p className="text-(--color-slate) text-base">
+        {t("notFound.description")}
+      </p>
+
       <button
         type="button"
         onClick={() => navigateTo(ROUTES.HOME)}

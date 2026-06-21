@@ -24,6 +24,11 @@
       "settings": "Жөндөөлөр"
     }
   },
+  "theme": {
+    "label": "Тема",
+    "light": "Жарык",
+    "dark": "Күңүрт"
+  },
   "certificate": {
     "currency": "сом",
     "status": {

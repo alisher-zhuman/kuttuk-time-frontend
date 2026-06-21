@@ -25,6 +25,11 @@
       "settings": "Settings"
     }
   },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "certificate": {
     "currency": "som",
     "status": {

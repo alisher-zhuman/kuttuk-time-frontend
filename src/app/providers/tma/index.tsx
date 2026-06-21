@@ -8,7 +8,7 @@ import {
   viewport,
 } from "@tma.js/sdk-react";
 
-import { useThemeStore } from "@app/stores";
+import { useThemeStore } from "@shared/store";
 
 import { AppNotFoundPage } from "@pages/app-not-found";
 

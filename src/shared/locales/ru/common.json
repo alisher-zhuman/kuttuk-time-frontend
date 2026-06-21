@@ -24,6 +24,11 @@
       "settings": "Настройки"
     }
   },
+  "theme": {
+    "label": "Тема",
+    "light": "Светлая",
+    "dark": "Тёмная"
+  },
   "certificate": {
     "currency": "сом",
     "status": {

@@ -1,3 +1,5 @@
+export { PROFILE_TABS } from './constants';
+export type { Tab } from './types';
 export { CertificatesTab } from './ui/certificates-tab';
 export { ProfileInfo } from './ui/profile-info';
 export { ProfileTabs } from './ui/profile-tabs';

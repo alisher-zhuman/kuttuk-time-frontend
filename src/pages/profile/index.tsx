@@ -1,10 +1,15 @@
 import { useState } from "react";
 
-import { CertificatesTab, ProfileInfo, ProfileTabs, SettingsTab } from "@widgets/profile";
+import {
+  CertificatesTab,
+  PROFILE_TABS,
+  ProfileInfo,
+  ProfileTabs,
+  SettingsTab,
+  type Tab,
+} from "@widgets/profile";
 
-import { PROFILE_TABS } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
-import type { Tab } from "@shared/types";
 
 const user = getTMAUserInfo();
 

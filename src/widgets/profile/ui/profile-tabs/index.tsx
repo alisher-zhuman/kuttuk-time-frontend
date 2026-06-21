@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { PROFILE_TABS } from "@shared/constants";
 import { cn } from "@shared/helpers";
-import type { Tab } from "@shared/types";
+
+import { PROFILE_TABS } from "../../constants";
+import type { Tab } from "../../types";
 
 interface Props {
   activeTab: Tab;

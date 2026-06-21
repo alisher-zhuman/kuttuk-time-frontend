@@ -1,4 +1,5 @@
 export { PROFILE_TABS } from './constants';
+export { useProfileTab } from './hooks/useProfileTab';
 export type { Tab } from './types';
 export { CertificatesTab } from './ui/certificates-tab';
 export { ProfileInfo } from './ui/profile-info';

@@ -4,9 +4,7 @@ import { User } from "lucide-react";
 
 import { ROUTES } from "@shared/constants";
 import { useNavigateTo } from "@shared/hooks";
-import { Logo } from "@shared/ui";
-
-import { LangSwitcher } from "../lang-switcher";
+import { LangSwitcher, Logo } from "@shared/ui";
 
 export const Header = () => {
   const { t } = useTranslation();

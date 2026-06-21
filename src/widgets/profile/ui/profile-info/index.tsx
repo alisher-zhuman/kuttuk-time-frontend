@@ -1,4 +1,4 @@
-import { type TmaUserInfo } from "@shared/helpers";
+import type { TmaUserInfo } from "@shared/types";
 
 interface Props {
   user: TmaUserInfo | null;

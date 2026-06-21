@@ -1,10 +1,6 @@
 import { retrieveLaunchParams } from "@tma.js/sdk-react";
 
-export interface TmaUserInfo {
-  fullName: string;
-  username: string | null;
-  photoUrl: string | null;
-}
+import type { TmaUserInfo } from "../types";
 
 export const getTMAUserInfo = (): TmaUserInfo | null => {
   try {

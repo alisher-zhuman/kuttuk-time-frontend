@@ -1,12 +1,8 @@
 import { useState } from "react";
 
-import { getTMAUserInfo } from "@shared/helpers";
+import { CertificatesTab, ProfileInfo, ProfileTabs, SettingsTab, type Tab,TABS } from "@widgets/profile";
 
-import { CertificatesTab } from "./ui/certificates-tab";
-import { ProfileInfo } from "./ui/profile-info";
-import { ProfileTabs } from "./ui/profile-tabs";
-import { SettingsTab } from "./ui/settings-tab";
-import { type Tab,TABS } from "./ui/tabs-model";
+import { getTMAUserInfo } from "@shared/helpers";
 
 const user = getTMAUserInfo();
 

@@ -8,9 +8,9 @@ import {
   viewport,
 } from "@tma.js/sdk-react";
 
-import { useThemeStore } from "@shared/store";
-
 import { AppNotFoundPage } from "@pages/app-not-found";
+
+import { useThemeStore } from "@shared/store";
 
 const TMA_COLORS = {
   light: { header: "#FFFFFF", bg: "#F4F5F7" },

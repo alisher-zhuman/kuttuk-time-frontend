@@ -8,8 +8,13 @@ import { QUERY_CLIENT } from "@app/configs/query";
 import { ThemeProvider, TMAProvider } from "@app/providers";
 import { ROUTER } from "@app/router";
 
+import { applyTheme } from "@shared/helpers";
+import { useThemeStore } from "@shared/store";
+
 import "./styles/index.css";
 import "./configs/i18n";
+
+applyTheme(useThemeStore.getState());
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { type Theme, THEME_STORAGE_KEY } from "@shared/constants";
-import { applyTheme, detectTheme } from "@shared/helpers";
+import { detectTheme } from "@shared/helpers";
 
 export interface ThemeState {
   theme: Theme;
@@ -19,5 +19,3 @@ export const useThemeStore = create<ThemeState>()(
   ),
 );
 
-useThemeStore.subscribe(applyTheme);
-applyTheme(useThemeStore.getState());

@@ -1,33 +1,33 @@
+import { getTMAUserInfo } from "@shared/helpers";
+
+const user = getTMAUserInfo();
+
 export const ProfilePage = () => {
   return (
     <div className="flex flex-col gap-4 py-4">
-      <div className="flex items-center gap-3">
-        <div className="w-16 h-16 rounded-full bg-(--color-card)" />
-        <div className="flex flex-col gap-2">
-          <div className="w-32 h-4 rounded-md bg-(--color-card)" />
-          <div className="w-20 h-3 rounded-md bg-(--color-line)" />
-        </div>
-      </div>
+      <div className="flex items-center gap-4">
+        {user?.photoUrl ? (
+          <img
+            src={user.photoUrl}
+            alt={user.fullName}
+            className="w-16 h-16 rounded-full object-cover shrink-0"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-(--color-card) shrink-0" />
+        )}
 
-      <div className="flex flex-col gap-2">
-        <div className="w-24 h-3 rounded-md bg-(--color-line)" />
-        <div className="w-full h-14 rounded-xl bg-(--color-card)" />
-      </div>
+        <div className="flex flex-col gap-1 min-w-0">
+          {user?.fullName && (
+            <span className="text-lg font-bold text-(--color-ink) truncate">
+              {user.fullName}
+            </span>
+          )}
 
-      <div className="flex flex-col gap-2">
-        <div className="w-24 h-3 rounded-md bg-(--color-line)" />
-        <div className="flex flex-col gap-px rounded-xl overflow-hidden">
-          <div className="w-full h-12 bg-(--color-card)" />
-          <div className="w-full h-12 bg-(--color-card)" />
-          <div className="w-full h-12 bg-(--color-card)" />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <div className="w-24 h-3 rounded-md bg-(--color-line)" />
-        <div className="flex flex-col gap-px rounded-xl overflow-hidden">
-          <div className="w-full h-12 bg-(--color-card)" />
-          <div className="w-full h-12 bg-(--color-card)" />
+          {user?.username && (
+            <span className="text-sm text-(--color-slate)">
+              @{user.username}
+            </span>
+          )}
         </div>
       </div>
     </div>

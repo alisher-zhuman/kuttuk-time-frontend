@@ -1,6 +1,6 @@
 import { retrieveLaunchParams } from "@tma.js/sdk-react";
 
-import { DEFAULT_THEME, type Theme } from "@shared/constants";
+import { DEFAULT_THEME, type Theme } from "@app/constants";
 
 export const detectTheme = (): Theme => {
   try {

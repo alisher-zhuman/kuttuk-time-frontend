@@ -1,9 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { type Theme, THEME_STORAGE_KEY } from "@app/constants";
 import { applyTheme, detectTheme } from "@app/helpers";
-
-import { type Theme, THEME_STORAGE_KEY } from "@shared/constants";
 
 export interface State {
   theme: Theme;

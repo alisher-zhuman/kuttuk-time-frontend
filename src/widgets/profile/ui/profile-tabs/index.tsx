@@ -5,6 +5,7 @@ import { cn } from "@shared/helpers";
 import { PROFILE_TABS } from "../../constants";
 import type { Tab } from "../../types";
 
+
 interface Props {
   activeTab: Tab;
   onTabChange: (tab: Tab) => void;

@@ -40,7 +40,6 @@ export const TMAProvider = ({ children }: Props) => {
 
     if (miniApp.mount.isAvailable()) {
       miniApp.mount();
-      miniApp.ready();
     }
 
     if (swipeBehavior.mount.isAvailable()) {

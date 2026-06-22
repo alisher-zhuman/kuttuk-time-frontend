@@ -24,8 +24,9 @@ export const SegmentedControl = <T extends string>({
   return (
     <div className="relative flex w-full rounded-xl bg-(--color-surface) p-1 gap-1">
       <div
-        className="absolute top-1 bottom-1 left-1 rounded-lg bg-(--color-card) shadow-sm transition-transform duration-200 ease-out"
+        className="absolute top-1 bottom-1 left-1 rounded-lg bg-(--color-card) transition-transform duration-200 ease-out"
         style={{
+          boxShadow: "var(--shadow-card)",
           width: `calc((100% - ${8 + 4 * (n - 1)}px) / ${n})`,
           transform: `translateX(calc(${activeIndex} * (100% + 4px)))`,
         }}

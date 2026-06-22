@@ -2,8 +2,7 @@ import { type ReactNode, useEffect } from "react";
 
 import { retrieveLaunchParams } from "@tma.js/sdk-react";
 
-import { logIn } from "@entities/auth";
-
+import { logIn } from "@shared/api";
 import { useAuthStore } from "@shared/store";
 
 interface Props {

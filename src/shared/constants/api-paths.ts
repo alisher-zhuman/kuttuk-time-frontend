@@ -1,3 +1,3 @@
 export const API_PATHS = {
-  LOGIN: "/auth/login",
+  LOG_IN: "/auth/login",
 } as const;

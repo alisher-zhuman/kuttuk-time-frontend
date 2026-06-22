@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 
 import { cn } from "@shared/helpers";
+import { useHaptic } from "@shared/hooks";
 
 interface SegmentedItem<T extends string> {
   value: T;
@@ -18,6 +19,7 @@ export const SegmentedControl = <T extends string>({
   value,
   onChange,
 }: Props<T>) => {
+  const haptic = useHaptic();
   const n = items.length;
   const activeIndex = items.findIndex((item) => item.value === value);
 
@@ -36,7 +38,7 @@ export const SegmentedControl = <T extends string>({
         <button
           key={item.value}
           type="button"
-          onClick={() => onChange(item.value)}
+          onClick={() => { haptic.selection(); onChange(item.value); }}
           className={cn(
             "relative z-10 flex flex-1 items-center justify-center py-2 rounded-lg text-sm font-bold transition-colors duration-200 cursor-pointer",
             value === item.value ? "text-(--color-ink)" : "text-(--color-slate)",

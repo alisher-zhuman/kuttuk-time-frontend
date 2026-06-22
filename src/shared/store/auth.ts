@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-const TOKEN_KEY = "kt_access_token";
-const ROLE_KEY = "kt_role";
+const TOKEN_KEY = "kuttuk-time-access-token";
+const ROLE_KEY = "kuttuk-time-role";
 
 export interface AuthState {
   accessToken: string | null;

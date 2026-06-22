@@ -27,7 +27,8 @@
   "theme": {
     "label": "Тема",
     "light": "Жарык",
-    "dark": "Күңүрт"
+    "dark": "Күңүрт",
+    "system": "Система"
   },
   "certificate": {
     "currency": "сом",

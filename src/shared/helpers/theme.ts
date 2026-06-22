@@ -1,8 +1,8 @@
 import { retrieveLaunchParams } from "@tma.js/sdk-react";
 
-import { DEFAULT_THEME, type Theme } from "@shared/constants";
+import { type Theme } from "@shared/constants";
 
-export const detectTheme = (): Theme => {
+export const detectTheme = (): "light" | "dark" => {
   try {
     const params = retrieveLaunchParams();
     const scheme = params["tgWebAppColorScheme"];
@@ -14,9 +14,10 @@ export const detectTheme = (): Theme => {
 
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
 
-  return DEFAULT_THEME;
+  return "light";
 };
 
 export const applyTheme = (state: { theme: Theme }) => {
-  document.documentElement.setAttribute("data-theme", state.theme);
+  const resolved = state.theme === "system" ? detectTheme() : state.theme;
+  document.documentElement.setAttribute("data-theme", resolved);
 };

@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { type Theme, THEME_STORAGE_KEY } from "@shared/constants";
-import { detectTheme } from "@shared/helpers";
 
 export interface ThemeState {
   theme: Theme;
@@ -12,7 +11,7 @@ export interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      theme: detectTheme(),
+      theme: "system",
       setTheme: (theme) => set({ theme }),
     }),
     { name: THEME_STORAGE_KEY },

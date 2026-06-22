@@ -27,7 +27,8 @@
   "theme": {
     "label": "Тема",
     "light": "Светлая",
-    "dark": "Тёмная"
+    "dark": "Тёмная",
+    "system": "Система"
   },
   "certificate": {
     "currency": "сом",

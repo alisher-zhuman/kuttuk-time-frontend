@@ -13,6 +13,7 @@ interface Props {
 
 export const LangSwitcher = ({ variant = "compact" }: Props) => {
   const { t, i18n } = useTranslation();
+  
   const haptic = useHaptic();
 
   const lang = i18n.language as Lang;

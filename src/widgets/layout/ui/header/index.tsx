@@ -10,6 +10,7 @@ export const Header = () => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
+  
   const haptic = useHaptic();
 
   return (

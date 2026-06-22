@@ -15,7 +15,9 @@ const user = getTMAUserInfo();
 
 export const ProfilePage = () => {
   const { activeTab, contentAnimation, handleTabChange } = useProfileTab();
+  
   const navigateTo = useNavigateTo();
+
   const haptic = useHaptic();
 
   return (

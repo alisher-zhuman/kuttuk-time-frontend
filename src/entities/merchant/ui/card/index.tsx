@@ -13,6 +13,7 @@ interface Props {
 
 export const MerchantCard = ({ merchant }: Props) => {
   const { t } = useTranslation();
+  
   const haptic = useHaptic();
 
   return (

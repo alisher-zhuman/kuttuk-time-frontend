@@ -5,7 +5,9 @@ import { useHaptic, useNavigateTo } from "@shared/hooks";
 
 export const NotFoundPage = () => {
   const { t } = useTranslation();
+  
   const navigateTo = useNavigateTo();
+
   const haptic = useHaptic();
 
   return (

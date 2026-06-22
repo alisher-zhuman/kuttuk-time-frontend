@@ -20,6 +20,7 @@ export const SegmentedControl = <T extends string>({
   onChange,
 }: Props<T>) => {
   const haptic = useHaptic();
+  
   const n = items.length;
   const activeIndex = items.findIndex((item) => item.value === value);
 

@@ -11,6 +11,7 @@ interface Props {
 
 export const SearchBar = ({ value, onChange }: Props) => {
   const { t } = useTranslation();
+  
   const haptic = useHaptic();
 
   return (

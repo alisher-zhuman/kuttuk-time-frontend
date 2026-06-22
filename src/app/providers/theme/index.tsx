@@ -16,8 +16,10 @@ export const ThemeProvider = ({ children }: Props) => {
     if (theme !== "system") return;
 
     const handleChange = () => applyTheme({ theme: "system" });
+
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     mq.addEventListener("change", handleChange);
+
     return () => mq.removeEventListener("change", handleChange);
   }, [theme]);
 

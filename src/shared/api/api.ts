@@ -1,4 +1,4 @@
-import { retrieveLaunchParams } from "@tma.js/sdk-react";
+import { retrieveRawInitData } from "@tma.js/sdk-react";
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 import { API_URL } from "@shared/constants";
@@ -29,10 +29,13 @@ api.interceptors.response.use(
       original._retry = true;
 
       try {
-        const telegramId = retrieveLaunchParams().tgWebAppData?.user?.id;
-        if (!telegramId) return Promise.reject(error);
+        const initData = retrieveRawInitData();
 
-        const { accessToken, role } = await logIn({ telegramId });
+        if (!initData) {
+          return Promise.reject(error);
+        }
+
+        const { accessToken, role } = await logIn({ initData });
 
         useAuthStore.getState().setAuth(accessToken, role);
         original.headers.Authorization = `Bearer ${accessToken}`;

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { UserRoleSchema } from "./user-role";
 
 export const LogInPayloadSchema = z.object({
-  telegramId: z.number().positive(),
+  initData: z.string().min(1),
 });
 
 export const LogInResponseSchema = z.object({

@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from "react";
 
-import { miniApp, retrieveLaunchParams } from "@tma.js/sdk-react";
+import { miniApp, retrieveRawInitData } from "@tma.js/sdk-react";
 
 import { logIn } from "@shared/api";
 import { useAuthStore } from "@shared/store";
@@ -15,9 +15,9 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const { accessToken, setAuth, setReady } = useAuthStore.getState();
 
-    const telegramId = retrieveLaunchParams().tgWebAppData?.user?.id;
+    const initData = retrieveRawInitData();
 
-    if (!telegramId || accessToken) {
+    if (!initData || accessToken) {
       setReady();
       if (miniApp.ready.isAvailable()) {
         miniApp.ready();
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: Props) => {
       return;
     }
 
-    logIn({ telegramId })
+    logIn({ initData })
       .then(({ accessToken: token, role }) => {
         setAuth(token, role);
       })

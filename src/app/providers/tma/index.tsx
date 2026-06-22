@@ -8,9 +8,10 @@ import {
   viewport,
 } from "@tma.js/sdk-react";
 
-import { useThemeStore } from "@app/stores";
-
 import { AppNotFoundPage } from "@pages/app-not-found";
+
+import { detectTheme } from "@shared/helpers";
+import { useThemeStore } from "@shared/store";
 
 const TMA_COLORS = {
   light: { header: "#FFFFFF", bg: "#F4F5F7" },
@@ -61,7 +62,8 @@ export const TMAProvider = ({ children }: Props) => {
   useEffect(() => {
     if (!miniApp.mount.isAvailable()) return;
 
-    const { header, bg } = TMA_COLORS[theme];
+    const resolved = theme === "system" ? detectTheme() : theme;
+    const { header, bg } = TMA_COLORS[resolved];
 
     miniApp.setHeaderColor(header);
     miniApp.setBgColor(bg);

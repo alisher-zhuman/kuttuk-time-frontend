@@ -20,7 +20,7 @@ export const AppLayout = () => {
       <TopBlur height={insets.top} />
 
       <div
-        className="min-h-dvh bg-(--color-bg) text-(--color-ink)"
+        className="min-h-dvh flex flex-col bg-(--color-bg) text-(--color-ink)"
         onTouchStart={swipe.onTouchStart}
         onTouchEnd={swipe.onTouchEnd}
         style={{
@@ -32,9 +32,13 @@ export const AppLayout = () => {
       >
         {pathname !== ROUTES.PROFILE && <Header />}
 
-        <main key={pathname} className="px-4 animate-page-enter">
+        <main key={pathname} className="flex-1 flex flex-col px-4 animate-page-enter">
           <Outlet />
         </main>
+
+        <footer className="flex justify-center py-3">
+          <span className="text-xs text-(--color-hint)">С любовью KuttukTime ♥</span>
+        </footer>
       </div>
     </>
   );

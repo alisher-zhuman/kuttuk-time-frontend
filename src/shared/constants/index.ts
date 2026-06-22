@@ -6,3 +6,8 @@ export {
   SUPPORTED_LANGUAGES,
 } from "./i18n";
 export { ROUTES } from "./routes";
+export {
+  SUPPORTED_THEMES,
+  type Theme,
+  THEME_STORAGE_KEY,
+} from "./theme";

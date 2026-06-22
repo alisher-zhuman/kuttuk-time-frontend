@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'lucide-react';
 
 import { formatMoney } from '@shared/helpers';
+import { useHaptic } from '@shared/hooks';
 
 import type { Merchant } from '../../model/types';
 
@@ -12,10 +13,13 @@ interface Props {
 
 export const MerchantCard = ({ merchant }: Props) => {
   const { t } = useTranslation();
+  
+  const haptic = useHaptic();
 
   return (
     <button
       type="button"
+      onClick={() => haptic.light()}
       aria-label={`${merchant.name}, ${t('merchant.from')} ${formatMoney(merchant.minAmount)}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >

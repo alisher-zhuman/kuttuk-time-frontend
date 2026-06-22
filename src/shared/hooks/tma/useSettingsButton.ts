@@ -1,12 +1,16 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
 
 import { settingsButton } from "@tma.js/sdk-react";
 
 import { ROUTES } from "@shared/constants";
+import { useNavigateTo } from "@shared/hooks";
+
+import { useHaptic } from "./useHaptic";
 
 export const useSettingsButton = () => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
+  
+  const haptic = useHaptic();
 
   useEffect(() => {
     if (!settingsButton.mount.isAvailable()) return;
@@ -15,12 +19,13 @@ export const useSettingsButton = () => {
     settingsButton.show();
 
     const off = settingsButton.onClick(() => {
-      void navigate(ROUTES.PROFILE);
+      haptic.light();
+      navigateTo(ROUTES.PROFILE);
     });
 
     return () => {
       off();
       settingsButton.unmount();
     };
-  }, [navigate]);
+  }, [navigateTo, haptic]);
 };

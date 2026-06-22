@@ -7,7 +7,10 @@ import type { LogInPayload, LogInResponse } from "@shared/types";
 export const logIn = async (payload: LogInPayload): Promise<LogInResponse> => {
   const validPayload = LogInPayloadSchema.parse(payload);
 
-  const { data } = await axios.post<unknown>(`${API_URL}${API_PATHS.LOG_IN}`, validPayload);
-  
-  return LogInResponseSchema.parse(data);
+  const response = await axios.post(
+    `${API_URL}${API_PATHS.LOG_IN}`,
+    validPayload,
+  );
+
+  return LogInResponseSchema.parse(response.data);
 };

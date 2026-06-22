@@ -1,3 +1,4 @@
+export { API_PATHS } from "./api-paths";
 export { BOT_URL } from "./base";
 export {
   DEFAULT_LANGUAGE,

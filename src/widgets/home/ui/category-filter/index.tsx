@@ -19,6 +19,12 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
 
   const all = ["all", ...categories];
 
+  const handleSelect = (cat: string, el: HTMLButtonElement) => {
+    haptic.selection();
+    onChange(cat);
+    el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  };
+
   return (
     <nav
       aria-label="Категории"
@@ -29,12 +35,9 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
           key={cat}
           type="button"
           aria-pressed={active === cat}
-          onClick={() => {
-            haptic.selection();
-            onChange(cat);
-          }}
+          onClick={(e) => handleSelect(cat, e.currentTarget)}
           className={cn(
-            "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer first:ml-4 last:mr-4",
+            "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer transition-colors duration-150 first:ml-4 last:mr-4",
             active === cat
               ? "bg-(--color-primary) text-(--color-card) border-none"
               : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",

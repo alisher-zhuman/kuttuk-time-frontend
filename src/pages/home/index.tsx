@@ -3,7 +3,7 @@ import { useState } from "react";
 import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
 
 export const HomePage = () => {
-  const [activeCategory, setActiveCategory] = useState("Все");
+  const [activeCategory, setActiveCategory] = useState("all");
   const [search, setSearch] = useState("");
 
   return (

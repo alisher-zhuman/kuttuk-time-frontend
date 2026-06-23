@@ -46,5 +46,12 @@
     "title": "404",
     "description": "Страница не найдена",
     "goHome": "На главную"
+  },
+  "categories": {
+    "all": "Все",
+    "coffee": "Кофейни",
+    "restaurant": "Рестораны",
+    "spa": "Спа и красота",
+    "fitness": "Фитнес"
   }
 }

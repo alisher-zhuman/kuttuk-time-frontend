@@ -1,3 +1,5 @@
+import i18n from "i18next";
+
 import { retrieveRawInitData } from "@tma.js/sdk-react";
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
@@ -14,6 +16,8 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  config.headers["Accept-Language"] = i18n.language;
 
   return config;
 });

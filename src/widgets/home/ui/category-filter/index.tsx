@@ -1,4 +1,6 @@
-import { CATEGORIES } from "@entities/category";
+import { useTranslation } from "react-i18next";
+
+import { useCategories } from "@entities/merchant";
 
 import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -11,9 +13,15 @@ interface Props {
 export const CategoryFilter = ({ active, onChange }: Props) => {
   const haptic = useHaptic();
 
+  const { t } = useTranslation();
+  
+  const { data: categories = [] } = useCategories();
+
+  const all = ["all", ...categories];
+
   return (
     <nav aria-label="Категории" className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto">
-      {CATEGORIES.map((cat) => (
+      {all.map((cat) => (
         <button
           key={cat}
           type="button"
@@ -26,7 +34,7 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
               : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",
           )}
         >
-          {cat}
+          {t(`categories.${cat}`, { defaultValue: cat })}
         </button>
       ))}
     </nav>

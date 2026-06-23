@@ -6,7 +6,6 @@ export const MerchantSchema = z.object({
   id: z.number(),
   name: z.string(),
   description: z.string(),
-  category: z.string(),
   minNominal: z.number(),
 });
 

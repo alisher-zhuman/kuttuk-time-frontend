@@ -9,10 +9,11 @@
     "clear": "Тазалоо"
   },
   "home": {
-    "merchantsSection": "МЕКЕМЕЛЕР"
+    "merchantsSection": "МЕКЕМЕЛЕР",
+    "empty": "Мекемелер табылган жок"
   },
   "merchant": {
-    "from": "баштап"
+    "from": "баштапкы"
   },
   "aria": {
     "changeLanguage": "Тил алмаштыруу",
@@ -46,5 +47,12 @@
     "title": "404",
     "description": "Бет табылган жок",
     "goHome": "Башкы бетке"
+  },
+  "categories": {
+    "all": "Баары",
+    "coffee": "Кофейналар",
+    "restaurant": "Ресторандар",
+    "spa": "Спа жана сулуулук",
+    "fitness": "Фитнес"
   }
 }

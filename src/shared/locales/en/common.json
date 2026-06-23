@@ -10,7 +10,8 @@
     "clear": "Clear"
   },
   "home": {
-    "merchantsSection": "VENUES"
+    "merchantsSection": "VENUES",
+    "empty": "No venues found"
   },
   "merchant": {
     "from": "from"
@@ -47,5 +48,12 @@
     "title": "404",
     "description": "Page not found",
     "goHome": "Go home"
+  },
+  "categories": {
+    "all": "All",
+    "coffee": "Coffee shops",
+    "restaurant": "Restaurants",
+    "spa": "Spa & beauty",
+    "fitness": "Fitness"
   }
 }

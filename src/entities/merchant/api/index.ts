@@ -1,5 +1,6 @@
 import { api } from "@shared/api";
-import { CategoriesSchema } from "@shared/schemas";
+
+import { CategoriesSchema } from "../model/schemas";
 
 export const getCategories = async (): Promise<string[]> => {
   const response = await api.get("/merchants/categories");

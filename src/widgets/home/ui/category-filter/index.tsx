@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { useCategories } from "@entities/merchant";
+import { useCategoriesQuery } from "@entities/merchant";
 
 import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -15,7 +15,7 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
 
   const { t } = useTranslation();
   
-  const { data: categories = [] } = useCategories();
+  const { categories } = useCategoriesQuery();
 
   const all = ["all", ...categories];
 

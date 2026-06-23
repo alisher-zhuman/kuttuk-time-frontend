@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { MerchantCard, MERCHANTS } from "@entities/merchant";
+import { MerchantCard, useMerchantsQuery } from "@entities/merchant";
 
 interface Props {
   category: string;
@@ -9,22 +9,23 @@ interface Props {
 
 export const MerchantList = ({ category, search }: Props) => {
   const { t } = useTranslation();
-  
+  const { merchants } = useMerchantsQuery();
+
   const query = search.trim().toLowerCase();
-  const merchants = MERCHANTS.filter(
+  const filtered = merchants.filter(
     (m) =>
-      (category === "Все" || m.category === category) &&
+      (category === "all" || m.category === category) &&
       (!query || m.name.toLowerCase().includes(query)),
   );
 
   return (
-    <section aria-label={t('home.merchantsSection')}>
+    <section aria-label={t("home.merchantsSection")}>
       <h2 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-1">
-        {t('home.merchantsSection')}
+        {t("home.merchantsSection")}
       </h2>
 
       <ul className="pb-5 flex flex-col gap-2.5 list-none">
-        {merchants.map((merchant) => (
+        {filtered.map((merchant) => (
           <li key={merchant.id}>
             <MerchantCard merchant={merchant} />
           </li>

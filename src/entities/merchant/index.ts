@@ -1,4 +1,4 @@
-export { MERCHANTS } from './model/mock';
-export type { Merchant } from './model/types';
-export { useCategories } from './model/useCategories';
-export { MerchantCard } from './ui/card';
+export { useCategoriesQuery } from "./hooks/useCategoriesQuery";
+export { useMerchantsQuery } from "./hooks/useMerchantsQuery";
+export type { Merchant } from "./model/types";
+export { MerchantCard } from "./ui/card";

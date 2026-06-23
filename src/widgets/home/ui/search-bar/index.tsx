@@ -24,7 +24,7 @@ export const SearchBar = ({ value, onChange, isLoading }: Props) => {
       )}
 
       <input
-        type="search"
+        type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={t("search.placeholder")}

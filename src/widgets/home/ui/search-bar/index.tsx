@@ -1,22 +1,27 @@
 import { useTranslation } from "react-i18next";
 
-import { Search, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 
 import { useHaptic } from "@shared/hooks";
 
 interface Props {
   value: string;
   onChange: (value: string) => void;
+  isLoading?: boolean;
 }
 
-export const SearchBar = ({ value, onChange }: Props) => {
+export const SearchBar = ({ value, onChange, isLoading }: Props) => {
   const { t } = useTranslation();
-  
+
   const haptic = useHaptic();
 
   return (
     <label className="mt-3.5 flex items-center gap-2.5 h-10 px-4.5 bg-(--color-field) rounded-xl text-(--color-hint) border border-(--color-line)">
-      <Search size={19} color="var(--color-hint)" />
+      {isLoading ? (
+        <Loader2 size={19} color="var(--color-hint)" className="animate-spin shrink-0" />
+      ) : (
+        <Search size={19} color="var(--color-hint)" />
+      )}
 
       <input
         type="search"

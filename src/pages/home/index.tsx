@@ -12,7 +12,7 @@ export const HomePage = () => {
 
   return (
     <>
-      <SearchBar value={search} onChange={setSearch} />
+      <SearchBar value={search} onChange={setSearch} isLoading={search !== debouncedSearch} />
 
       <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
 

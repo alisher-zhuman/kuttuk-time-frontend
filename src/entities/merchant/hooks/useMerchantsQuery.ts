@@ -8,10 +8,15 @@ import type { z } from "zod";
 
 export type Merchant = z.infer<typeof MerchantSchema>;
 
-export const useMerchantsQuery = () => {
+interface Params {
+  search: string;
+  category: string;
+}
+
+export const useMerchantsQuery = ({ search, category }: Params) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: merchantKeys.all(),
-    queryFn: getMerchants,
+    queryKey: merchantKeys.list(search, category),
+    queryFn: () => getMerchants({ search, category }),
   });
 
   return { merchants: data ?? [], isLoading, isError };

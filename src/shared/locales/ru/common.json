@@ -9,7 +9,8 @@
     "clear": "Очистить"
   },
   "home": {
-    "merchantsSection": "ЗАВЕДЕНИЯ"
+    "merchantsSection": "ЗАВЕДЕНИЯ",
+    "empty": "Заведения не найдены"
   },
   "merchant": {
     "from": "от"

@@ -10,7 +10,8 @@
     "clear": "Clear"
   },
   "home": {
-    "merchantsSection": "VENUES"
+    "merchantsSection": "VENUES",
+    "empty": "No venues found"
   },
   "merchant": {
     "from": "from"

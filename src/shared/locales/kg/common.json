@@ -9,7 +9,8 @@
     "clear": "Тазалоо"
   },
   "home": {
-    "merchantsSection": "МЕКЕМЕЛЕР"
+    "merchantsSection": "МЕКЕМЕЛЕР",
+    "empty": "Мекемелер табылган жок"
   },
   "merchant": {
     "from": "баштап"

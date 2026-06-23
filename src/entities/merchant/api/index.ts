@@ -9,8 +9,18 @@ export const getMerchantsCategories = async (): Promise<string[]> => {
   return CategoriesSchema.parse(response.data);
 };
 
-export const getMerchants = async () => {
-  const response = await api.get(API_PATHS.MERCHANTS);
+interface GetMerchantsParams {
+  search?: string;
+  category?: string;
+}
+
+export const getMerchants = async (params: GetMerchantsParams = {}) => {
+  const response = await api.get(API_PATHS.MERCHANTS, {
+    params: {
+      ...(params.search && { search: params.search }),
+      ...(params.category && params.category !== "all" && { category: params.category }),
+    },
+  });
 
   return MerchantsSchema.parse(response.data);
 };

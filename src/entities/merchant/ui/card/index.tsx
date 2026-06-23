@@ -20,7 +20,7 @@ export const MerchantCard = ({ merchant }: Props) => {
     <button
       type="button"
       onClick={() => haptic.light()}
-      aria-label={`${merchant.name}, ${t("merchant.from")} ${formatMoney(merchant.minNominal)}`}
+      aria-label={`${merchant.name}, ${t("merchant.from")} ${formatMoney(merchant.minNominal, t("certificate.currency"))}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
       <span className="size-12 rounded-xl shrink-0 bg-(--color-primary) flex items-center justify-center text-(--color-card) text-xl font-extrabold tracking-tight">
@@ -41,7 +41,7 @@ export const MerchantCard = ({ merchant }: Props) => {
           {t("merchant.from")}
         </span>
         <span className="text-sm text-(--color-primary) font-extrabold">
-          {formatMoney(merchant.minNominal)}
+          {formatMoney(merchant.minNominal, t("certificate.currency"))}
         </span>
       </span>
 

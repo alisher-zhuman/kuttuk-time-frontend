@@ -13,26 +13,26 @@ interface Props {
 
 export const MerchantCard = ({ merchant }: Props) => {
   const { t } = useTranslation();
-
+  
   const haptic = useHaptic();
 
   return (
     <button
       type="button"
       onClick={() => haptic.light()}
-      aria-label={`${merchant.name}, ${t("merchant.from")} ${formatMoney(merchant.minAmount)}`}
+      aria-label={`${merchant.name}, ${t("merchant.from")} ${formatMoney(merchant.minNominal)}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
       <span className="size-12 rounded-xl shrink-0 bg-(--color-primary) flex items-center justify-center text-(--color-card) text-xl font-extrabold tracking-tight">
-        {merchant.monogram}
+        {merchant.name[0]?.toUpperCase()}
       </span>
 
       <span className="flex-1 min-w-0 flex flex-col">
         <span className="text-base font-extrabold tracking-tight text-(--color-ink)">
           {merchant.name}
         </span>
-        <span className="text-sm text-(--color-slate) font-semibold mt-0.5">
-          {merchant.category}
+        <span className="text-sm text-(--color-slate) font-semibold mt-0.5 truncate">
+          {merchant.description}
         </span>
       </span>
 
@@ -41,7 +41,7 @@ export const MerchantCard = ({ merchant }: Props) => {
           {t("merchant.from")}
         </span>
         <span className="text-sm text-(--color-primary) font-extrabold">
-          {formatMoney(merchant.minAmount)}
+          {formatMoney(merchant.minNominal)}
         </span>
       </span>
 

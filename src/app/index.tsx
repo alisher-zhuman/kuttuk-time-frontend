@@ -5,7 +5,7 @@ import { RouterProvider } from "react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 import { QUERY_CLIENT } from "@app/configs/query";
-import { ThemeProvider, TMAProvider } from "@app/providers";
+import { AuthProvider, ThemeProvider, TMAProvider } from "@app/providers";
 import { ROUTER } from "@app/router";
 
 import { applyTheme } from "@shared/helpers";
@@ -20,9 +20,11 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
       <TMAProvider>
-        <QueryClientProvider client={QUERY_CLIENT}>
-          <RouterProvider router={ROUTER} />
-        </QueryClientProvider>
+        <AuthProvider>
+          <QueryClientProvider client={QUERY_CLIENT}>
+            <RouterProvider router={ROUTER} />
+          </QueryClientProvider>
+        </AuthProvider>
       </TMAProvider>
     </ThemeProvider>
   </StrictMode>,

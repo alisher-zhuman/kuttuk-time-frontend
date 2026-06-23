@@ -1,4 +1,4 @@
-export { useCategoriesQuery } from "./hooks/useCategoriesQuery";
+export { useMerchantsCategoriesQuery } from "./hooks/useMerchantsCategoriesQuery";
+export type { Merchant } from "./hooks/useMerchantsQuery";
 export { useMerchantsQuery } from "./hooks/useMerchantsQuery";
-export type { Merchant } from "./model/types";
 export { MerchantCard } from "./ui/card";

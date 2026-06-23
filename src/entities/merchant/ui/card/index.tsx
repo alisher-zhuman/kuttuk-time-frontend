@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react";
 import { formatMoney } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
-import type { Merchant } from "../../model/types";
+import type { Merchant } from "../../hooks/useMerchantsQuery";
 
 interface Props {
   merchant: Merchant;

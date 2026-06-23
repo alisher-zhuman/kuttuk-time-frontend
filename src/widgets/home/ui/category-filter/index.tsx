@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { useCategoriesQuery } from "@entities/merchant";
+import { useMerchantsCategoriesQuery } from "@entities/merchant";
 
 import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -14,19 +14,25 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
   const haptic = useHaptic();
 
   const { t } = useTranslation();
-  
-  const { categories } = useCategoriesQuery();
+
+  const { categories } = useMerchantsCategoriesQuery();
 
   const all = ["all", ...categories];
 
   return (
-    <nav aria-label="Категории" className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto">
+    <nav
+      aria-label="Категории"
+      className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto"
+    >
       {all.map((cat) => (
         <button
           key={cat}
           type="button"
           aria-pressed={active === cat}
-          onClick={() => { haptic.selection(); onChange(cat); }}
+          onClick={() => {
+            haptic.selection();
+            onChange(cat);
+          }}
           className={cn(
             "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer first:ml-4 last:mr-4",
             active === cat

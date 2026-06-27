@@ -11,7 +11,9 @@ interface Props {
 
 export const NominalList = ({ nominals, selected, onSelect }: Props) => {
   const { t } = useTranslation();
+
   const haptic = useHaptic();
+
   const currency = t("certificate.currency");
 
   return (
@@ -23,6 +25,7 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
       <div className="flex flex-wrap gap-2">
         {nominals.map((nominal) => {
           const isSelected = nominal === selected;
+          
           return (
             <button
               key={nominal}

@@ -51,7 +51,8 @@
   "merchantDetail": {
     "nominal": "НОМИНАЛ",
     "buy": "Купить",
-    "validity": "Действует {{months}} мес."
+    "validity": "Действует {{months}} месяцев",
+    "notFound": "Заведение не найдено"
   },
   "categories": {
     "all": "Все",

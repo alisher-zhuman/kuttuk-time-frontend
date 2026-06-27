@@ -23,6 +23,6 @@ export const MerchantDetailSchema = z.object({
   name: z.string(),
   description: z.string(),
   logo: z.string(),
-  nominals: z.array(z.number()),
+  nominals: z.array(z.number()).nonempty(),
   validityMonths: z.number(),
 });

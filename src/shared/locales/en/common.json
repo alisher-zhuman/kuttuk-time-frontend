@@ -52,7 +52,8 @@
   "merchantDetail": {
     "nominal": "AMOUNT",
     "buy": "Buy",
-    "validity": "Valid for {{months}} months"
+    "validity": "Valid for {{months}} months",
+    "notFound": "Venue not found"
   },
   "categories": {
     "all": "All",

@@ -51,7 +51,8 @@
   "merchantDetail": {
     "nominal": "НОМИНАЛ",
     "buy": "Сатып алуу",
-    "validity": "{{months}} айга чейин колдонулат"
+    "validity": "{{months}} айга чейин колдонулат",
+    "notFound": "Мекеме табылган жок"
   },
   "categories": {
     "all": "Баары",

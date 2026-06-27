@@ -4,9 +4,11 @@ import { API_PATHS } from "@shared/constants";
 import { CategoriesSchema, MerchantsSchema } from "../model/schemas";
 
 export const getMerchantsCategories = async (): Promise<string[]> => {
-  const response = await api.get(API_PATHS.MERCHANTS_CATEGORIES);
+  const response = await api.get(API_PATHS.CATEGORIES);
 
-  return CategoriesSchema.parse(response.data);
+  const categories = CategoriesSchema.parse(response.data);
+
+  return categories.map((c) => c.name);
 };
 
 interface GetMerchantsParams {

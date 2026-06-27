@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import { Check } from "lucide-react";
-
 import { cn, formatMoney } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
@@ -13,9 +11,7 @@ interface Props {
 
 export const NominalList = ({ nominals, selected, onSelect }: Props) => {
   const { t } = useTranslation();
-
   const haptic = useHaptic();
-
   const currency = t("certificate.currency");
 
   return (
@@ -24,8 +20,8 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
         {t("merchantDetail.nominal")}
       </p>
 
-      <div className="bg-(--color-card) rounded-2xl border border-(--color-line) shadow-xs overflow-hidden">
-        {nominals.map((nominal, index) => {
+      <div className="flex flex-wrap gap-2">
+        {nominals.map((nominal) => {
           const isSelected = nominal === selected;
           return (
             <button
@@ -36,29 +32,13 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
                 onSelect(nominal);
               }}
               className={cn(
-                "w-full flex items-center justify-between px-4 py-3.5 cursor-pointer transition-colors",
-                index > 0 && "border-t border-(--color-line)",
-                isSelected && "bg-(--color-primary-tint)",
+                "px-4 py-2 rounded-full text-sm font-bold cursor-pointer transition-colors duration-150",
+                isSelected
+                  ? "bg-(--color-primary) text-(--color-card)"
+                  : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",
               )}
             >
-              <span
-                className={cn(
-                  "text-base",
-                  isSelected
-                    ? "font-extrabold text-(--color-primary)"
-                    : "font-semibold text-(--color-ink)",
-                )}
-              >
-                {formatMoney(nominal, currency)}
-              </span>
-
-              {isSelected && (
-                <Check
-                  size={18}
-                  color="var(--color-primary)"
-                  strokeWidth={2.5}
-                />
-              )}
+              {formatMoney(nominal, currency)}
             </button>
           );
         })}

@@ -48,6 +48,11 @@
     "description": "Страница не найдена",
     "goHome": "На главную"
   },
+  "merchantDetail": {
+    "nominal": "НОМИНАЛ",
+    "buy": "Купить",
+    "validity": "Действует {{months}} мес."
+  },
   "categories": {
     "all": "Все",
     "coffee": "Кофейни",

@@ -49,6 +49,11 @@
     "description": "Page not found",
     "goHome": "Go home"
   },
+  "merchantDetail": {
+    "nominal": "AMOUNT",
+    "buy": "Buy",
+    "validity": "Valid for {{months}} months"
+  },
   "categories": {
     "all": "All",
     "coffee": "Coffee shops",

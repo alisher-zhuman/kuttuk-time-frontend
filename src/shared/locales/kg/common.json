@@ -48,6 +48,11 @@
     "description": "Бет табылган жок",
     "goHome": "Башкы бетке"
   },
+  "merchantDetail": {
+    "nominal": "НОМИНАЛ",
+    "buy": "Сатып алуу",
+    "validity": "{{months}} айга чейин колдонулат"
+  },
   "categories": {
     "all": "Баары",
     "coffee": "Кофейналар",

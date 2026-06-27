@@ -1,3 +1,5 @@
+export type { MerchantDetail } from "./hooks/useMerchantQuery";
+export { useMerchantQuery } from "./hooks/useMerchantQuery";
 export { useMerchantsCategoriesQuery } from "./hooks/useMerchantsCategoriesQuery";
 export type { Merchant } from "./hooks/useMerchantsQuery";
 export { useMerchantsQuery } from "./hooks/useMerchantsQuery";

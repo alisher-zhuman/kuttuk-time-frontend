@@ -17,3 +17,12 @@ export const MerchantSchema = z.object({
 });
 
 export const MerchantsSchema = z.array(MerchantSchema);
+
+export const MerchantDetailSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+  logo: z.string(),
+  nominals: z.array(z.number()),
+  validityMonths: z.number(),
+});

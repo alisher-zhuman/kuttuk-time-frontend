@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
 export const NotFoundPage = () => {
   const { t } = useTranslation();
-  
+
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
@@ -22,7 +22,10 @@ export const NotFoundPage = () => {
 
       <button
         type="button"
-        onClick={() => { haptic.light(); navigateTo(ROUTES.HOME); }}
+        onClick={() => {
+          haptic.light();
+          navigateTo(ROUTE_PATTERNS.HOME);
+        }}
         className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
       >
         {t("notFound.goHome")}

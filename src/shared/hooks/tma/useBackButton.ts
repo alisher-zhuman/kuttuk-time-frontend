@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 
 import { backButton } from "@tma.js/sdk-react";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 
 import { useHaptic } from "./useHaptic";
 
@@ -24,7 +24,7 @@ export const useBackButton = () => {
   useEffect(() => {
     if (!backButton.mount.isAvailable()) return;
 
-    if (pathname === ROUTES.HOME) {
+    if (pathname === ROUTE_PATTERNS.HOME) {
       backButton.hide();
       return;
     }

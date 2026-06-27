@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
-import { ROUTES } from "@shared/constants";
+import { getMerchantRoute } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
@@ -15,12 +15,11 @@ interface Props {
 export const MerchantCard = ({ merchant }: Props) => {
   const { t } = useTranslation();
   const haptic = useHaptic();
-  
   const navigateTo = useNavigateTo();
 
   const handleClick = () => {
     haptic.light();
-    navigateTo(ROUTES.MERCHANT.replace(":merchantId", String(merchant.id)));
+    navigateTo(getMerchantRoute(merchant.id));
   };
 
   return (

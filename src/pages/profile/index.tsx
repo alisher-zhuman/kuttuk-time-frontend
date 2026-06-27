@@ -6,7 +6,7 @@ import {
   useProfileTab,
 } from "@widgets/profile";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { Logo } from "@shared/ui";
@@ -15,7 +15,7 @@ const user = getTMAUserInfo();
 
 export const ProfilePage = () => {
   const { activeTab, contentAnimation, handleTabChange } = useProfileTab();
-  
+
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
@@ -34,7 +34,10 @@ export const ProfilePage = () => {
       <div className="mt-auto flex justify-center pt-6 pb-2">
         <button
           type="button"
-          onClick={() => { haptic.light(); navigateTo(ROUTES.HOME); }}
+          onClick={() => {
+            haptic.light();
+            navigateTo(ROUTE_PATTERNS.HOME);
+          }}
           className="cursor-pointer"
         >
           <Logo />

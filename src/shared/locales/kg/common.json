@@ -46,7 +46,8 @@
   "notFound": {
     "title": "404",
     "description": "Бет табылган жок",
-    "goHome": "Башкы бетке"
+    "goHome": "Башкы бетке",
+    "goBack": "Артка"
   },
   "merchantDetail": {
     "nominal": "НОМИНАЛ",

@@ -47,7 +47,8 @@
   "notFound": {
     "title": "404",
     "description": "Page not found",
-    "goHome": "Go home"
+    "goHome": "Go home",
+    "goBack": "Go back"
   },
   "merchantDetail": {
     "nominal": "AMOUNT",

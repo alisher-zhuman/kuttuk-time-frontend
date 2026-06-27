@@ -46,7 +46,8 @@
   "notFound": {
     "title": "404",
     "description": "Страница не найдена",
-    "goHome": "На главную"
+    "goHome": "На главную",
+    "goBack": "Назад"
   },
   "merchantDetail": {
     "nominal": "НОМИНАЛ",

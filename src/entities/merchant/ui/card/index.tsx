@@ -2,8 +2,9 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
+import { ROUTES } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
-import { useHaptic } from "@shared/hooks";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
 
 import type { Merchant } from "../../hooks/useMerchantsQuery";
 
@@ -13,13 +14,19 @@ interface Props {
 
 export const MerchantCard = ({ merchant }: Props) => {
   const { t } = useTranslation();
-  
   const haptic = useHaptic();
+  
+  const navigateTo = useNavigateTo();
+
+  const handleClick = () => {
+    haptic.light();
+    navigateTo(ROUTES.MERCHANT.replace(":merchantId", String(merchant.id)));
+  };
 
   return (
     <button
       type="button"
-      onClick={() => haptic.light()}
+      onClick={handleClick}
       aria-label={`${merchant.name}, ${t("merchant.from")} ${formatMoney(merchant.minNominal, t("certificate.currency"))}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >

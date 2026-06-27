@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router";
 
 import { HomePage } from "@pages/home";
+import { MerchantPage } from "@pages/merchant";
 import { NotFoundPage } from "@pages/not-found";
 import { ProfilePage } from "@pages/profile";
 
@@ -23,6 +24,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTES.PROFILE,
         element: <ProfilePage />,
+      },
+      {
+        path: ROUTES.MERCHANT,
+        element: <MerchantPage />,
       },
       {
         path: "*",

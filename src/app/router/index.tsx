@@ -1,28 +1,33 @@
 import { createBrowserRouter, Navigate } from "react-router";
 
 import { HomePage } from "@pages/home";
+import { MerchantPage } from "@pages/merchant";
 import { NotFoundPage } from "@pages/not-found";
 import { ProfilePage } from "@pages/profile";
 
 import { AppLayout } from "@widgets/layout";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 
 export const ROUTER = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to={ROUTES.HOME} replace />,
+    element: <Navigate to={ROUTE_PATTERNS.HOME} replace />,
   },
   {
     element: <AppLayout />,
     children: [
       {
-        path: ROUTES.HOME,
+        path: ROUTE_PATTERNS.HOME,
         element: <HomePage />,
       },
       {
-        path: ROUTES.PROFILE,
+        path: ROUTE_PATTERNS.PROFILE,
         element: <ProfilePage />,
+      },
+      {
+        path: ROUTE_PATTERNS.MERCHANT,
+        element: <MerchantPage />,
       },
       {
         path: "*",

@@ -2,8 +2,9 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
+import { getMerchantRoute } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
-import { useHaptic } from "@shared/hooks";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
 
 import type { Merchant } from "../../hooks/useMerchantsQuery";
 
@@ -13,19 +14,26 @@ interface Props {
 
 export const MerchantCard = ({ merchant }: Props) => {
   const { t } = useTranslation();
-  
   const haptic = useHaptic();
+  const navigateTo = useNavigateTo();
+
+  const handleClick = () => {
+    haptic.light();
+    navigateTo(getMerchantRoute(merchant.id));
+  };
 
   return (
     <button
       type="button"
-      onClick={() => haptic.light()}
+      onClick={handleClick}
       aria-label={`${merchant.name}, ${t("merchant.from")} ${formatMoney(merchant.minNominal, t("certificate.currency"))}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
-      <span className="size-12 rounded-xl shrink-0 bg-(--color-primary) flex items-center justify-center text-(--color-card) text-xl font-extrabold tracking-tight">
-        {merchant.name[0]?.toUpperCase()}
-      </span>
+      <img
+        src={merchant.logo}
+        alt={merchant.name}
+        className="size-12 rounded-xl shrink-0 object-cover"
+      />
 
       <span className="flex-1 min-w-0 flex flex-col">
         <span className="text-base font-extrabold tracking-tight text-(--color-ink)">

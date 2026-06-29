@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 import { useBackButton, useSafeArea, useSettingsButton, useSwipeNavigation } from "@shared/hooks";
 
 import { Header } from "../header";
@@ -30,7 +30,7 @@ export const AppLayout = () => {
           paddingLeft: insets.left,
         }}
       >
-        {pathname !== ROUTES.PROFILE && <Header />}
+        {pathname !== ROUTE_PATTERNS.PROFILE && <Header />}
 
         <main key={pathname} className="flex-1 flex flex-col px-4 animate-page-enter">
           <Outlet />

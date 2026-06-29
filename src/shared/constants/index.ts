@@ -7,7 +7,7 @@ export {
   LANGUAGE_BADGE,
   SUPPORTED_LANGUAGES,
 } from "./i18n";
-export { ROUTES } from "./routes";
+export { getMerchantRoute, ROUTE_PATTERNS, ROUTES } from "./routes";
 export {
   SUPPORTED_THEMES,
   type Theme,

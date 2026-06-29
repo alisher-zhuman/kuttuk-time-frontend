@@ -1,0 +1,9 @@
+pre-push:
+  piped: true
+  commands:
+    lint:
+      run: pnpm run lint
+    typecheck:
+      run: pnpm run typecheck
+    steiger:
+      run: pnpm steiger ./src

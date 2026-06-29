@@ -47,7 +47,14 @@
   "notFound": {
     "title": "404",
     "description": "Page not found",
-    "goHome": "Go home"
+    "goHome": "Go home",
+    "goBack": "Go back"
+  },
+  "merchantDetail": {
+    "nominal": "AMOUNT",
+    "buy": "Buy",
+    "validity": "Valid for {{months}} months",
+    "notFound": "Venue not found"
   },
   "categories": {
     "all": "All",

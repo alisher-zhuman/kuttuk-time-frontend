@@ -1,4 +1,4 @@
-export const MerchantPageSkeleton = () => (
+export const MerchantSkeleton = () => (
   <div className="flex-1 flex flex-col py-4 gap-5">
     <div className="flex items-center gap-3.5">
       <span className="size-16 rounded-xl shrink-0 bg-(--color-chip) animate-pulse" />

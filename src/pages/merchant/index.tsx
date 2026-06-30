@@ -9,9 +9,9 @@ import {
 import { useMerchantQuery } from "@entities/merchant";
 
 export const MerchantPage = () => {
-  const { merchantId } = useParams<{ merchantId: string }>();
+  const { handle } = useParams<{ handle: string }>();
 
-  const { merchant, isLoading, isError } = useMerchantQuery(merchantId);
+  const { merchant, isLoading, isError } = useMerchantQuery(handle);
 
   if (isLoading) return <MerchantSkeleton />;
   if (isError || !merchant) return <MerchantNotFound />;

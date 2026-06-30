@@ -9,6 +9,7 @@ export const RootRedirect = () => {
 
   useEffect(() => {
     const startParam = getLaunchParams()?.tgWebAppStartParam;
+
     if (startParam) {
       void navigate(getMerchantRoute(startParam), { replace: true });
     } else {

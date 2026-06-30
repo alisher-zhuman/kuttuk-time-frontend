@@ -14,6 +14,7 @@ export const getLaunchParams = (): LaunchParams | null => {
   } catch {
     return null;
   }
+
   return cached;
 };
 

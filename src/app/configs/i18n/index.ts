@@ -6,8 +6,8 @@ import {
   I18N_STORAGE_KEY,
   SUPPORTED_LANGUAGES,
 } from "@shared/constants";
-import { enCommon, kgCommon, ruCommon } from "@shared/locales";
 import { getLaunchParams } from "@shared/helpers";
+import { enCommon, kgCommon, ruCommon } from "@shared/locales";
 
 import LanguageDetector from "i18next-browser-languagedetector";
 

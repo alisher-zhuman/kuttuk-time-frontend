@@ -1,17 +1,21 @@
+import { useEffect } from "react";
+
+import { useNavigate } from "react-router";
+
 import { getLaunchParams } from "@shared/helpers";
+import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
 
 export const RootRedirect = () => {
-  const params = getLaunchParams();
-  const startParam = params?.tgWebAppStartParam;
-  const href = window.location.href;
+  const navigate = useNavigate();
 
-  return (
-    <div style={{ padding: 16, wordBreak: "break-all", fontSize: 12 }}>
-      <b>startParam:</b> {String(startParam)}
-      <br />
-      <b>href:</b> {href}
-      <br />
-      <b>params:</b> {JSON.stringify(params)}
-    </div>
-  );
+  useEffect(() => {
+    const startParam = getLaunchParams()?.tgWebAppStartParam;
+    if (startParam) {
+      void navigate(getMerchantRoute(startParam), { replace: true });
+    } else {
+      void navigate(ROUTE_PATTERNS.HOME, { replace: true });
+    }
+  }, [navigate]);
+
+  return null;
 };

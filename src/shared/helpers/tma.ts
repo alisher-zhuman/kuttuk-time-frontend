@@ -12,7 +12,7 @@ export const getLaunchParams = (): LaunchParams | null => {
   try {
     cached = retrieveLaunchParams();
   } catch {
-    cached = null;
+    return null;
   }
   return cached;
 };

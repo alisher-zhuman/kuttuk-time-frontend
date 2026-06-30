@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { getLaunchParams } from "@shared/helpers";
 import {
   useBackButton,
+  useNavigateTo,
   useSafeArea,
   useSettingsButton,
   useSwipeNavigation,
 } from "@shared/hooks";
 
+import { Footer } from "../footer";
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";
 
@@ -21,16 +23,17 @@ export const AppLayout = () => {
 
   const swipe = useSwipeNavigation();
 
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
 
   const { pathname } = useLocation();
 
   useEffect(() => {
     const startParam = getLaunchParams()?.tgWebAppStartParam;
+
     if (startParam) {
-      void navigate(getMerchantRoute(startParam), { replace: true });
+      navigateTo(getMerchantRoute(startParam));
     }
-  }, []);
+  }, [navigateTo]);
 
   return (
     <>
@@ -56,11 +59,7 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        <footer className="flex justify-center py-3">
-          <span className="text-xs text-(--color-hint)">
-            С любовью KuttukTime ♥
-          </span>
-        </footer>
+        <Footer />
       </div>
     </>
   );

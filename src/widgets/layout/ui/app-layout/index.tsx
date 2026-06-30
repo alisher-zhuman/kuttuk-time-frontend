@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
-import { retrieveLaunchParams } from "@tma.js/sdk-react";
-
 import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
-import { useBackButton, useSafeArea, useSettingsButton, useSwipeNavigation } from "@shared/hooks";
+import { getLaunchParams } from "@shared/helpers";
+import {
+  useBackButton,
+  useSafeArea,
+  useSettingsButton,
+  useSwipeNavigation,
+} from "@shared/hooks";
 
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";
@@ -14,19 +18,17 @@ export const AppLayout = () => {
   useBackButton();
 
   const insets = useSafeArea();
+
   const swipe = useSwipeNavigation();
+
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
 
   useEffect(() => {
-    try {
-      const { tgWebAppStartParam } = retrieveLaunchParams();
-      if (tgWebAppStartParam) {
-        void navigate(getMerchantRoute(tgWebAppStartParam), { replace: true });
-      }
-    } catch {
-      // вне TMA — launch params недоступны
+    const startParam = getLaunchParams()?.tgWebAppStartParam;
+    if (startParam) {
+      void navigate(getMerchantRoute(startParam), { replace: true });
     }
   }, []);
 
@@ -47,12 +49,17 @@ export const AppLayout = () => {
       >
         {pathname !== ROUTE_PATTERNS.PROFILE && <Header />}
 
-        <main key={pathname} className="flex-1 flex flex-col px-4 animate-page-enter">
+        <main
+          key={pathname}
+          className="flex-1 flex flex-col px-4 animate-page-enter"
+        >
           <Outlet />
         </main>
 
         <footer className="flex justify-center py-3">
-          <span className="text-xs text-(--color-hint)">С любовью KuttukTime ♥</span>
+          <span className="text-xs text-(--color-hint)">
+            С любовью KuttukTime ♥
+          </span>
         </footer>
       </div>
     </>

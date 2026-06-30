@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-
 import { useNavigate } from "react-router";
 
-import { getLaunchParams } from "@shared/helpers";
 import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
+import { getLaunchParams } from "@shared/helpers";
 
 export const RootRedirect = () => {
   const navigate = useNavigate();

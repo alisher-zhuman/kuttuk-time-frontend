@@ -10,5 +10,5 @@ export const ROUTE_PATTERNS = {
   MERCHANT: `/${ROUTES.APP}/${ROUTES.MERCHANTS}/:merchantId`,
 } as const;
 
-export const getMerchantRoute = (merchantId: number) =>
+export const getMerchantRoute = (merchantId: string | number) =>
   `/${ROUTES.APP}/${ROUTES.MERCHANTS}/${merchantId}`;

@@ -10,7 +10,7 @@ import { useHaptic } from "./useHaptic";
 export const useBackButton = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  
+
   const haptic = useHaptic();
 
   useEffect(() => {
@@ -31,7 +31,15 @@ export const useBackButton = () => {
 
     backButton.show();
 
-    const off = backButton.onClick(() => { haptic.light(); void navigate(-1); });
+    const off = backButton.onClick(() => {
+      haptic.light();
+
+      if (window.history.length <= 1) {
+        void navigate(ROUTE_PATTERNS.HOME);
+      } else {
+        void navigate(-1);
+      }
+    });
 
     return () => off();
   }, [pathname, navigate, haptic]);

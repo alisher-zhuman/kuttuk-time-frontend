@@ -1,11 +1,8 @@
-import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 
-import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
-import { getLaunchParams } from "@shared/helpers";
+import { ROUTE_PATTERNS } from "@shared/constants";
 import {
   useBackButton,
-  useNavigateTo,
   useSafeArea,
   useSettingsButton,
   useSwipeNavigation,
@@ -23,17 +20,7 @@ export const AppLayout = () => {
 
   const swipe = useSwipeNavigation();
 
-  const navigateTo = useNavigateTo();
-
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    const startParam = getLaunchParams()?.tgWebAppStartParam;
-
-    if (startParam) {
-      navigateTo(getMerchantRoute(startParam));
-    }
-  }, [navigateTo]);
 
   return (
     <>

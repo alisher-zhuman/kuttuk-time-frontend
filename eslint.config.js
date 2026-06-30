@@ -30,6 +30,7 @@ export default defineConfig([
       "simple-import-sort": simpleImportSort,
     },
     rules: {
+      "curly": ["error", "multi-line"],
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-var": "error",
       "prefer-const": "error",

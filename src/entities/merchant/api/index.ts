@@ -27,7 +27,7 @@ export const getMerchants = async (params: GetMerchantsParams = {}) => {
   return MerchantsSchema.parse(response.data);
 };
 
-export const getMerchant = async (id: number) => {
+export const getMerchant = async (id: string | number) => {
   const response = await api.get(`${API_PATHS.MERCHANTS}/${id}`);
 
   return MerchantDetailSchema.parse(response.data);

@@ -8,11 +8,11 @@ import type { z } from "zod";
 
 export type MerchantDetail = z.infer<typeof MerchantDetailSchema>;
 
-export const useMerchantQuery = (id: number) => {
+export const useMerchantQuery = (id: string | undefined) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: merchantKeys.detail(id),
-    queryFn: () => getMerchant(id),
-    enabled: !isNaN(id),
+    queryKey: merchantKeys.detail(id ?? ""),
+    queryFn: () => getMerchant(id!),
+    enabled: Boolean(id),
   });
 
   return { merchant: data, isLoading, isError };

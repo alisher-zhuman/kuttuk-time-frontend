@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router";
+import { createBrowserRouter } from "react-router";
 
 import { HomePage } from "@pages/home";
 import { MerchantPage } from "@pages/merchant";
@@ -9,10 +9,12 @@ import { AppLayout } from "@widgets/layout";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 
+import { RootRedirect } from "./guards/root-redirect";
+
 export const ROUTER = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to={ROUTE_PATTERNS.HOME} replace />,
+    element: <RootRedirect />,
   },
   {
     element: <AppLayout />,

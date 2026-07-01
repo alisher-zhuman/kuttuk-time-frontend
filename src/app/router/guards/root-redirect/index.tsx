@@ -11,9 +11,9 @@ export const RootRedirect = () => {
     const startParam = getLaunchParams()?.tgWebAppStartParam;
 
     if (startParam) {
-      navigateTo(getMerchantRoute(startParam));
+      navigateTo(getMerchantRoute(startParam), { replace: true });
     } else {
-      navigateTo(ROUTE_PATTERNS.HOME);
+      navigateTo(ROUTE_PATTERNS.HOME, { replace: true });
     }
   }, [navigateTo]);
 

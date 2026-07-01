@@ -6,8 +6,12 @@ export const useNavigateTo = () => {
   const { pathname } = useLocation();
 
   return useCallback(
-    (to: string, options?: { replace?: boolean }) => {
-      void navigate(to, { replace: options?.replace ?? pathname === to });
+    (to: string | number, options?: { replace?: boolean }) => {
+      if (typeof to === "number") {
+        void navigate(to);
+      } else {
+        void navigate(to, { replace: options?.replace ?? pathname === to });
+      }
     },
     [navigate, pathname],
   );

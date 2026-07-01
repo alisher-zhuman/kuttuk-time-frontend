@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { NavigationType, useLocation, useNavigationType } from "react-router";
 
 import { backButton } from "@tma.js/sdk-react";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
+import { useNavigateTo } from "@shared/hooks";
 
 import { useHaptic } from "./useHaptic";
 
 export const useBackButton = () => {
-  const navigate = useNavigate();
+  const navigationType = useNavigationType();
   const { pathname } = useLocation();
+  const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
 
@@ -34,13 +36,13 @@ export const useBackButton = () => {
     const off = backButton.onClick(() => {
       haptic.light();
 
-      if (window.history.length <= 1) {
-        void navigate(ROUTE_PATTERNS.HOME);
+      if (navigationType === NavigationType.Replace) {
+        navigateTo(ROUTE_PATTERNS.HOME);
       } else {
-        void navigate(-1);
+        navigateTo(-1);
       }
     });
 
     return () => off();
-  }, [pathname, navigate, haptic]);
+  }, [pathname, navigateTo, haptic, navigationType]);
 };

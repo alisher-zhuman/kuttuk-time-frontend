@@ -65,7 +65,10 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **Tailwind spacing**: только целые числа или шаг 0.5 (1, 1.5, 2, 2.5…) — никаких 0.75 или произвольных `[Npx]`
 - Комментарии только если `WHY` неочевиден
 - Без лишней абстракции — три похожих строки лучше преждевременного хелпера
-- **Навигация**: всегда использовать `useNavigateTo` из `@shared/hooks` — не `useNavigate` напрямую
+- **Навигация**: всегда `useNavigateTo` из `@shared/hooks` — не `useNavigate` напрямую
+- **Роуты**: только через `ROUTE_PATTERNS` и `getMerchantRoute()` из `@shared/constants` — никаких хардкодных строк
+- **TMA launch params**: только через `getLaunchParams()` из `@shared/helpers` — не `retrieveLaunchParams()` из SDK напрямую
+- **Конфиги** (`vercel.json`, BotFather, CI): не менять без явного одобрения
 
 ## TMA SDK
 

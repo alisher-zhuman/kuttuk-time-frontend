@@ -6,8 +6,8 @@ export const useNavigateTo = () => {
   const { pathname } = useLocation();
 
   return useCallback(
-    (to: string) => {
-      void navigate(to, { replace: pathname === to });
+    (to: string, options?: { replace?: boolean }) => {
+      void navigate(to, { replace: options?.replace ?? pathname === to });
     },
     [navigate, pathname],
   );

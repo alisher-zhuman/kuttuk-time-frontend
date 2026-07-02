@@ -31,6 +31,10 @@
     "dark": "Күңүрт",
     "system": "Система"
   },
+  "support": {
+    "label": "Колдоо",
+    "contact": "Колдоо кызматына жазуу"
+  },
   "certificate": {
     "currency": "сом",
     "status": {

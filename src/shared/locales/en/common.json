@@ -32,6 +32,10 @@
     "dark": "Dark",
     "system": "System"
   },
+  "support": {
+    "label": "Support",
+    "contact": "Contact support"
+  },
   "certificate": {
     "currency": "som",
     "status": {

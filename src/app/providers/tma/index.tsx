@@ -66,6 +66,10 @@ export const TMAProvider = ({ children }: Props) => {
 
     miniApp.setHeaderColor(header);
     miniApp.setBgColor(bg);
+
+    if (miniApp.setBottomBarColor.isAvailable()) {
+      miniApp.setBottomBarColor(bg);
+    }
   }, [theme]);
 
   if (!isTMA) return <AppNotFoundPage />;

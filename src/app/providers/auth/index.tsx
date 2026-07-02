@@ -13,11 +13,11 @@ export const AuthProvider = ({ children }: Props) => {
   const isReady = useAuthStore((s) => s.isReady);
 
   useEffect(() => {
-    const { accessToken, setAuth, setReady } = useAuthStore.getState();
+    const { setAuth, setReady } = useAuthStore.getState();
 
     const initData = retrieveRawInitData();
 
-    if (!initData || accessToken) {
+    if (!initData) {
       setReady();
       if (miniApp.ready.isAvailable()) {
         miniApp.ready();
@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }: Props) => {
     }
 
     logIn({ initData })
-      .then(({ accessToken: token, role }) => {
-        setAuth(token, role);
+      .then(({ accessToken, role }) => {
+        setAuth(accessToken, role);
       })
       .catch(console.error)
       .finally(() => {

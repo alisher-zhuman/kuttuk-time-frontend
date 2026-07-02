@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { type Theme, THEME_STORAGE_KEY } from "@shared/constants";
+import { getScopedStorageKey } from "@shared/helpers";
 
 export interface ThemeState {
   theme: Theme;
@@ -14,7 +15,7 @@ export const useThemeStore = create<ThemeState>()(
       theme: "system",
       setTheme: (theme) => set({ theme }),
     }),
-    { name: THEME_STORAGE_KEY },
+    { name: getScopedStorageKey(THEME_STORAGE_KEY) },
   ),
 );
 

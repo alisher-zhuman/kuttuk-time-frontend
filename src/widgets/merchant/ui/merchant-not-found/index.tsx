@@ -1,15 +1,18 @@
-import { useNavigate } from "react-router";
+import { NavigationType, useNavigationType } from "react-router";
 
 import { useTranslation } from "react-i18next";
 
 import { Store } from "lucide-react";
 
-import { useHaptic } from "@shared/hooks";
+import { ROUTE_PATTERNS } from "@shared/constants";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
 
 export const MerchantNotFound = () => {
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
+  const navigationType = useNavigationType();
+
+  const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
 
@@ -25,7 +28,12 @@ export const MerchantNotFound = () => {
         type="button"
         onClick={() => {
           haptic.light();
-          void navigate(-1);
+
+          if (navigationType === NavigationType.Replace) {
+            navigateTo(ROUTE_PATTERNS.HOME);
+          } else {
+            navigateTo(-1);
+          }
         }}
         className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
       >

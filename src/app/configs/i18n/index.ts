@@ -6,7 +6,7 @@ import {
   I18N_STORAGE_KEY,
   SUPPORTED_LANGUAGES,
 } from "@shared/constants";
-import { getLaunchParams } from "@shared/helpers";
+import { getLaunchParams, getScopedStorageKey } from "@shared/helpers";
 import { enCommon, kgCommon, ruCommon } from "@shared/locales";
 
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -17,12 +17,15 @@ const tmaLanguageDetector = {
   name: "tmaLanguage",
   lookup: (): string | undefined => {
     const code = getLaunchParams()?.tgWebAppData?.user?.language_code;
+
     if (!code) return undefined;
+
     return TMA_LANG_MAP[code] ?? code;
   },
 };
 
 const detector = new LanguageDetector();
+
 detector.addDetector(tmaLanguageDetector);
 
 void i18n
@@ -39,7 +42,7 @@ void i18n
     defaultNS: "common",
     detection: {
       order: ["localStorage", "tmaLanguage", "navigator"],
-      lookupLocalStorage: I18N_STORAGE_KEY,
+      lookupLocalStorage: getScopedStorageKey(I18N_STORAGE_KEY),
       caches: ["localStorage"],
     },
     interpolation: { escapeValue: false },

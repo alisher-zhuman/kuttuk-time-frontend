@@ -1,5 +1,5 @@
 export { API_PATHS } from "./api-paths";
-export { BOT_URL } from "./base";
+export { BOT_URL, SUPPORT_URL } from "./base";
 export { API_URL } from "./env";
 export {
   DEFAULT_LANGUAGE,

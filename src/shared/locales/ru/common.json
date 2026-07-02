@@ -31,6 +31,10 @@
     "dark": "Тёмная",
     "system": "Система"
   },
+  "support": {
+    "label": "Поддержка",
+    "contact": "Написать в поддержку"
+  },
   "certificate": {
     "currency": "сом",
     "status": {

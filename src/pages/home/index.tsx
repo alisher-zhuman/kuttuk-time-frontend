@@ -5,7 +5,7 @@ import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
 import { useDebounce } from "@shared/hooks";
 
 export const HomePage = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [search, setSearch] = useState("");
 
   const debouncedSearch = useDebounce(search);

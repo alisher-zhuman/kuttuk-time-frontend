@@ -3,24 +3,22 @@ import { API_PATHS } from "@shared/constants";
 
 import { CategoriesSchema, MerchantDetailSchema, MerchantsSchema } from "../model/schemas";
 
-export const getMerchantsCategories = async (): Promise<string[]> => {
+export const getMerchantsCategories = async () => {
   const response = await api.get(API_PATHS.CATEGORIES);
 
-  const categories = CategoriesSchema.parse(response.data);
-
-  return categories.map((c) => c.name);
+  return CategoriesSchema.parse(response.data);
 };
 
 interface GetMerchantsParams {
   search?: string;
-  category?: string;
+  category?: number | null;
 }
 
 export const getMerchants = async (params: GetMerchantsParams = {}) => {
   const response = await api.get(API_PATHS.MERCHANTS, {
     params: {
       ...(params.search && { search: params.search }),
-      ...(params.category && params.category !== "all" && { category: params.category }),
+      ...(params.category != null && { category: params.category }),
     },
   });
 

@@ -1,7 +1,7 @@
 export const merchantKeys = {
-  list: (search: string, category: string, lang: string) =>
+  list: (search: string, category: number | null, lang: string) =>
     ["merchants", "list", search, category, lang] as const,
-  categories: () => ["merchants", "categories"] as const,
+  categories: (lang: string) => ["merchants", "categories", lang] as const,
   detail: (id: string | number, lang: string) =>
     ["merchants", "detail", id, lang] as const,
 };

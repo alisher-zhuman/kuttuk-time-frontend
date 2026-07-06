@@ -6,8 +6,8 @@ import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
 interface Props {
-  active: string;
-  onChange: (cat: string) => void;
+  active: number | null;
+  onChange: (categoryId: number | null) => void;
 }
 
 export const CategoryFilter = ({ active, onChange }: Props) => {
@@ -17,11 +17,14 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
 
   const { categories } = useMerchantsCategoriesQuery();
 
-  const all = ["all", ...categories];
+  const items = [
+    { id: null, label: t("categories.all") },
+    ...categories.map((category) => ({ id: category.id, label: category.name })),
+  ];
 
-  const handleSelect = (cat: string, el: HTMLButtonElement) => {
+  const handleSelect = (categoryId: number | null, el: HTMLButtonElement) => {
     haptic.selection();
-    onChange(cat);
+    onChange(categoryId);
     el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   };
 
@@ -30,20 +33,20 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
       aria-label="Категории"
       className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto"
     >
-      {all.map((cat) => (
+      {items.map((item) => (
         <button
-          key={cat}
+          key={item.id ?? "all"}
           type="button"
-          aria-pressed={active === cat}
-          onClick={(e) => handleSelect(cat, e.currentTarget)}
+          aria-pressed={active === item.id}
+          onClick={(e) => handleSelect(item.id, e.currentTarget)}
           className={cn(
             "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer transition-colors duration-150 first:ml-4 last:mr-4",
-            active === cat
+            active === item.id
               ? "bg-(--color-primary) text-(--color-card) border-none"
               : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",
           )}
         >
-          {t(`categories.${cat}`, { defaultValue: cat })}
+          {item.label}
         </button>
       ))}
     </nav>

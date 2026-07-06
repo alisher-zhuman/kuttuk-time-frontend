@@ -1,20 +1,57 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
 
 import { useDebounce } from "@shared/hooks";
 
 export const HomePage = () => {
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const search = searchParams.get("search") ?? "";
+  const categoryParam = searchParams.get("category");
+  const activeCategory = categoryParam ? Number(categoryParam) : null;
 
   const debouncedSearch = useDebounce(search);
 
+  const handleSearchChange = (value: string) => {
+    setSearchParams(
+      (prev) => {
+        if (value) {
+          prev.set("search", value);
+        } else {
+          prev.delete("search");
+        }
+
+        return prev;
+      },
+      { replace: true },
+    );
+  };
+
+  const handleCategoryChange = (category: number | null) => {
+    setSearchParams(
+      (prev) => {
+        if (category !== null) {
+          prev.set("category", String(category));
+        } else {
+          prev.delete("category");
+        }
+
+        return prev;
+      },
+      { replace: true },
+    );
+  };
+
   return (
     <>
-      <SearchBar value={search} onChange={setSearch} isLoading={search !== debouncedSearch} />
+      <SearchBar
+        value={search}
+        onChange={handleSearchChange}
+        isLoading={search !== debouncedSearch}
+      />
 
-      <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+      <CategoryFilter active={activeCategory} onChange={handleCategoryChange} />
 
       <MerchantList category={activeCategory} search={debouncedSearch} />
     </>

@@ -1,11 +1,12 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router";
+
+import { useNavigateTo } from "./useNavigateTo";
 
 const THRESHOLD = 75;
 const EDGE_ZONE = 30;
 
 export const useSwipeNavigation = () => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
 
   const startX = useRef<number | null>(null);
 
@@ -37,9 +38,9 @@ export const useSwipeNavigation = () => {
     startX.current = null;
 
     if (diff > THRESHOLD) {
-      void navigate(-1);
+      navigateTo(-1);
     } else if (diff < -THRESHOLD) {
-      void navigate(1);
+      navigateTo(1);
     }
   };
 

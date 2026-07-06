@@ -17,7 +17,7 @@ export const NotFoundPage = () => {
     viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME;
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center gap-4 px-8 text-center">
+    <div className="flex-1 flex flex-col items-center justify-center gap-4 px-8 text-center">
       <span className="text-6xl font-bold text-(--color-primary)">
         {t("notFound.title")}
       </span>

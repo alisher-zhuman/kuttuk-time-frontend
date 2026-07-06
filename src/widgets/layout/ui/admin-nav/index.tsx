@@ -32,7 +32,10 @@ export const AdminNav = () => {
   }));
 
   return (
-    <div className="mx-4 mb-4">
+    <div
+      className="mx-4 mb-4 rounded-3xl bg-(--color-card) p-1.5"
+      style={{ boxShadow: "var(--shadow-card)" }}
+    >
       <SegmentedControl
         items={items}
         value={pathname}

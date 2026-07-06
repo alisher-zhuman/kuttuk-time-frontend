@@ -16,7 +16,5 @@ export const ROUTE_PATTERNS = {
   ADMIN_PAYMENTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.PAYMENTS}`,
 } as const;
 
-export const ADMIN_ROUTE_PREFIX = `/${ROUTES.APP}/${ROUTES.ADMIN}`;
-
 export const getMerchantRoute = (handle: string | number) =>
   `/${ROUTES.APP}/${ROUTES.MERCHANTS}/${handle}`;

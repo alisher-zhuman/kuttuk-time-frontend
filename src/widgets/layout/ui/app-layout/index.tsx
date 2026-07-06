@@ -1,12 +1,13 @@
 import { Outlet, useLocation } from "react-router";
 
-import { ADMIN_ROUTE_PREFIX, ROUTE_PATTERNS } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 import {
   useBackButton,
   useSafeArea,
   useSettingsButton,
   useSwipeNavigation,
 } from "@shared/hooks";
+import { useViewModeStore } from "@shared/store";
 
 import { AdminNav } from "../admin-nav";
 import { Footer } from "../footer";
@@ -23,7 +24,7 @@ export const AppLayout = () => {
 
   const { pathname } = useLocation();
 
-  const isAdminSection = pathname.startsWith(ADMIN_ROUTE_PREFIX);
+  const viewMode = useViewModeStore((s) => s.viewMode);
 
   return (
     <>
@@ -49,7 +50,7 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        {isAdminSection ? <AdminNav /> : <Footer />}
+        {viewMode === "admin" ? <AdminNav /> : <Footer />}
       </div>
     </>
   );

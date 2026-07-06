@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router";
 
-import { AdminMerchantsPage } from "@pages/admin-merchants";
-import { AdminOrdersPage } from "@pages/admin-orders";
-import { AdminPaymentsPage } from "@pages/admin-payments";
+import { AdminMerchantsPage } from "@pages/admin/merchants";
+import { AdminOrdersPage } from "@pages/admin/orders";
+import { AdminPaymentsPage } from "@pages/admin/payments";
 import { HomePage } from "@pages/home";
 import { MerchantPage } from "@pages/merchant";
 import { NotFoundPage } from "@pages/not-found";

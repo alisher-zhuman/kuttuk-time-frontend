@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 import {
   AdminMerchantList,
   AdminMerchantStatusFilter,
-} from "@widgets/admin-merchants";
+} from "@widgets/admin/merchants";
 import { CategoryFilter, SearchBar } from "@widgets/home";
 
 import { useDebounce } from "@shared/hooks";

@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { ClipboardList, Store, Wallet } from "lucide-react";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { cn } from "@shared/helpers";
-import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { useNavigateTo } from "@shared/hooks";
+import { SegmentedControl } from "@shared/ui";
 
 const TABS = [
   { path: ROUTE_PATTERNS.ADMIN_MERCHANTS, labelKey: "admin.nav.merchants", icon: Store },
@@ -19,38 +19,25 @@ export const AdminNav = () => {
 
   const navigateTo = useNavigateTo();
 
-  const haptic = useHaptic();
-
   const { pathname } = useLocation();
 
-  return (
-    <nav
-      className="mx-4 mb-4 flex items-center gap-1 rounded-3xl bg-(--color-card) p-1.5"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      {TABS.map(({ path, labelKey, icon: Icon }) => {
-        const isActive = pathname === path;
+  const items = TABS.map(({ path, labelKey, icon: Icon }) => ({
+    value: path,
+    label: (
+      <span className="flex items-center gap-1.5">
+        <Icon size={14} />
+        {t(labelKey)}
+      </span>
+    ),
+  }));
 
-        return (
-          <button
-            key={path}
-            type="button"
-            onClick={() => {
-              haptic.selection();
-              navigateTo(path, { replace: true });
-            }}
-            className={cn(
-              "flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-2.5 cursor-pointer transition-colors duration-150",
-              isActive
-                ? "bg-(--color-primary) text-(--color-card)"
-                : "text-(--color-hint)",
-            )}
-          >
-            <Icon size={19} strokeWidth={isActive ? 2.2 : 1.8} />
-            <span className="text-xs font-semibold">{t(labelKey)}</span>
-          </button>
-        );
-      })}
-    </nav>
+  return (
+    <div className="mx-4 mb-4">
+      <SegmentedControl
+        items={items}
+        value={pathname}
+        onChange={(path) => navigateTo(path, { replace: true })}
+      />
+    </div>
   );
 };

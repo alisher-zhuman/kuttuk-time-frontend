@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useMatches } from "react-router";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import {
@@ -24,9 +24,13 @@ export const AppLayout = () => {
 
   const { pathname } = useLocation();
 
+  const matches = useMatches();
+
+  const isNotFound = matches.some((match) => match.id === "not-found");
+
   const viewMode = useViewModeStore((s) => s.viewMode);
 
-  const showAdminNav = viewMode === "admin" && pathname !== ROUTE_PATTERNS.PROFILE;
+  const showAdminNav = viewMode === "admin" && pathname !== ROUTE_PATTERNS.PROFILE && !isNotFound;
 
   return (
     <>
@@ -52,7 +56,7 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        {showAdminNav ? <AdminNav /> : <Footer />}
+        {!isNotFound && (showAdminNav ? <AdminNav /> : <Footer />)}
       </div>
     </>
   );

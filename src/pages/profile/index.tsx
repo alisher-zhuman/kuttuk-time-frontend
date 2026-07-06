@@ -9,6 +9,7 @@ import {
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { useViewModeStore } from "@shared/store";
 import { Logo } from "@shared/ui";
 
 const user = getTMAUserInfo();
@@ -19,6 +20,11 @@ export const ProfilePage = () => {
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
+
+  const viewMode = useViewModeStore((s) => s.viewMode);
+
+  const homeRoute =
+    viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME;
 
   return (
     <div className="flex-1 flex flex-col gap-4 py-4">
@@ -36,7 +42,7 @@ export const ProfilePage = () => {
           type="button"
           onClick={() => {
             haptic.light();
-            navigateTo(ROUTE_PATTERNS.HOME);
+            navigateTo(homeRoute);
           }}
           className="cursor-pointer"
         >

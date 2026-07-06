@@ -47,6 +47,7 @@ export const ROUTER = createBrowserRouter([
         element: <AdminPaymentsPage />,
       },
       {
+        id: "not-found",
         path: "*",
         element: <NotFoundPage />,
       },

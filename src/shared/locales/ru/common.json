@@ -35,6 +35,12 @@
     "label": "Поддержка",
     "contact": "Написать в поддержку"
   },
+  "admin": {
+    "badge": "Админ",
+    "label": "Режим отображения",
+    "viewAsUser": "Пользователь",
+    "viewAsAdmin": "Админ"
+  },
   "certificate": {
     "currency": "сом",
     "status": {

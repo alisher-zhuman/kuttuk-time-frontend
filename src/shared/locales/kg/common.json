@@ -35,6 +35,12 @@
     "label": "Колдоо",
     "contact": "Колдоо кызматына жазуу"
   },
+  "admin": {
+    "badge": "Админ",
+    "label": "Көрүнүш режими",
+    "viewAsUser": "Колдонуучу",
+    "viewAsAdmin": "Админ"
+  },
   "certificate": {
     "currency": "сом",
     "status": {

@@ -1,3 +1,4 @@
+import { AdminModeSection } from "../admin-mode-section";
 import { LanguageSection } from "../language-section";
 import { SupportSection } from "../support-section";
 import { ThemeSection } from "../theme-section";
@@ -7,5 +8,6 @@ export const SettingsTab = () => (
     <LanguageSection />
     <ThemeSection />
     <SupportSection />
+    <AdminModeSection />
   </div>
 );

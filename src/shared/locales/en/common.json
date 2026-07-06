@@ -36,6 +36,12 @@
     "label": "Support",
     "contact": "Contact support"
   },
+  "admin": {
+    "badge": "Admin",
+    "label": "View mode",
+    "viewAsUser": "User",
+    "viewAsAdmin": "Admin"
+  },
   "certificate": {
     "currency": "som",
     "status": {

@@ -14,8 +14,8 @@ export const SettingsTab = () => {
       <LanguageSection />
       <ThemeSection />
 
-      {viewMode !== "admin" && <SupportSection />}
       {role === "admin" && <AdminModeSection />}
+      {viewMode !== "admin" && <SupportSection />}
     </div>
   );
 };

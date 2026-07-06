@@ -35,6 +35,22 @@
     "label": "Поддержка",
     "contact": "Написать в поддержку"
   },
+  "admin": {
+    "badge": "Админ",
+    "label": "Режим отображения",
+    "viewAsUser": "Пользователь",
+    "viewAsAdmin": "Админ",
+    "nav": {
+      "merchants": "Заведения",
+      "orders": "Заказы",
+      "payments": "Платежи"
+    },
+    "merchants": {
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "empty": "Заведения не найдены"
+    }
+  },
   "certificate": {
     "currency": "сом",
     "status": {
@@ -60,10 +76,6 @@
     "notFound": "Заведение не найдено"
   },
   "categories": {
-    "all": "Все",
-    "coffee": "Кофейни",
-    "restaurant": "Рестораны",
-    "spa": "Спа и красота",
-    "fitness": "Фитнес"
+    "all": "Все"
   }
 }

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { settingsButton } from "@tma.js/sdk-react";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTE_PATTERNS } from "@shared/constants";
 import { useNavigateTo } from "@shared/hooks";
 
 import { useHaptic } from "./useHaptic";
@@ -20,7 +20,7 @@ export const useSettingsButton = () => {
 
     const off = settingsButton.onClick(() => {
       haptic.light();
-      navigateTo(ROUTES.PROFILE);
+      navigateTo(`${ROUTE_PATTERNS.PROFILE}?tab=settings`);
     });
 
     return () => {

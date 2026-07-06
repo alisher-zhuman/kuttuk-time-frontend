@@ -35,6 +35,22 @@
     "label": "Колдоо",
     "contact": "Колдоо кызматына жазуу"
   },
+  "admin": {
+    "badge": "Админ",
+    "label": "Көрүнүш режими",
+    "viewAsUser": "Колдонуучу",
+    "viewAsAdmin": "Админ",
+    "nav": {
+      "merchants": "Мекемелер",
+      "orders": "Буйрутмалар",
+      "payments": "Төлөмдөр"
+    },
+    "merchants": {
+      "active": "Активдүү",
+      "inactive": "Активдүү эмес",
+      "empty": "Мекемелер табылган жок"
+    }
+  },
   "certificate": {
     "currency": "сом",
     "status": {
@@ -60,10 +76,6 @@
     "notFound": "Мекеме табылган жок"
   },
   "categories": {
-    "all": "Баары",
-    "coffee": "Кофейналар",
-    "restaurant": "Ресторандар",
-    "spa": "Спа жана сулуулук",
-    "fitness": "Фитнес"
+    "all": "Баары"
   }
 }

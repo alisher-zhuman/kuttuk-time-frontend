@@ -1,26 +1,47 @@
 import { api } from "@shared/api";
 import { API_PATHS } from "@shared/constants";
 
-import { CategoriesSchema, MerchantDetailSchema, MerchantsSchema } from "../model/schemas";
+import {
+  AdminMerchantsSchema,
+  CategoriesSchema,
+  MerchantDetailSchema,
+  MerchantsSchema,
+} from "../model/schemas";
 
-export const getMerchantsCategories = async (): Promise<string[]> => {
+interface GetAdminMerchantsParams {
+  search?: string;
+  category?: number | null;
+  isActive?: boolean | null;
+}
+
+export const getAdminMerchants = async (params: GetAdminMerchantsParams = {}) => {
+  const response = await api.get(API_PATHS.ADMIN_MERCHANTS, {
+    params: {
+      ...(params.search && { search: params.search }),
+      ...(params.category != null && { category: params.category }),
+      ...(params.isActive != null && { isActive: params.isActive }),
+    },
+  });
+
+  return AdminMerchantsSchema.parse(response.data);
+};
+
+export const getMerchantsCategories = async () => {
   const response = await api.get(API_PATHS.CATEGORIES);
 
-  const categories = CategoriesSchema.parse(response.data);
-
-  return categories.map((c) => c.name);
+  return CategoriesSchema.parse(response.data);
 };
 
 interface GetMerchantsParams {
   search?: string;
-  category?: string;
+  category?: number | null;
 }
 
 export const getMerchants = async (params: GetMerchantsParams = {}) => {
   const response = await api.get(API_PATHS.MERCHANTS, {
     params: {
       ...(params.search && { search: params.search }),
-      ...(params.category && params.category !== "all" && { category: params.category }),
+      ...(params.category != null && { category: params.category }),
     },
   });
 

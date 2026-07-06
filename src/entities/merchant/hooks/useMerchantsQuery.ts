@@ -12,7 +12,7 @@ export type Merchant = z.infer<typeof MerchantSchema>;
 
 interface Params {
   search: string;
-  category: string;
+  category: number | null;
 }
 
 export const useMerchantsQuery = ({ search, category }: Params) => {

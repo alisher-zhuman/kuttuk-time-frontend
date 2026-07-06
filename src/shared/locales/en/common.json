@@ -36,6 +36,22 @@
     "label": "Support",
     "contact": "Contact support"
   },
+  "admin": {
+    "badge": "Admin",
+    "label": "View mode",
+    "viewAsUser": "User",
+    "viewAsAdmin": "Admin",
+    "nav": {
+      "merchants": "Venues",
+      "orders": "Orders",
+      "payments": "Payments"
+    },
+    "merchants": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "empty": "No venues found"
+    }
+  },
   "certificate": {
     "currency": "som",
     "status": {
@@ -61,10 +77,6 @@
     "notFound": "Venue not found"
   },
   "categories": {
-    "all": "All",
-    "coffee": "Coffee shops",
-    "restaurant": "Restaurants",
-    "spa": "Spa & beauty",
-    "fitness": "Fitness"
+    "all": "All"
   }
 }

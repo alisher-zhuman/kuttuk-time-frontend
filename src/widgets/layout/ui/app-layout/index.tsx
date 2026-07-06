@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useMatches } from "react-router";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import {
@@ -7,7 +7,9 @@ import {
   useSettingsButton,
   useSwipeNavigation,
 } from "@shared/hooks";
+import { useViewModeStore } from "@shared/store";
 
+import { AdminNav } from "../admin-nav";
 import { Footer } from "../footer";
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";
@@ -21,6 +23,14 @@ export const AppLayout = () => {
   const swipe = useSwipeNavigation();
 
   const { pathname } = useLocation();
+
+  const matches = useMatches();
+
+  const isNotFound = matches.some((match) => match.id === "not-found");
+
+  const viewMode = useViewModeStore((s) => s.viewMode);
+
+  const showAdminNav = viewMode === "admin" && pathname !== ROUTE_PATTERNS.PROFILE && !isNotFound;
 
   return (
     <>
@@ -46,7 +56,14 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        <Footer />
+        {!isNotFound &&
+          (showAdminNav ? (
+            <div className="sticky z-10" style={{ bottom: insets.bottom }}>
+              <AdminNav />
+            </div>
+          ) : (
+            <Footer />
+          ))}
       </div>
     </>
   );

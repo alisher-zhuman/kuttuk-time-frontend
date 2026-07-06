@@ -3,20 +3,21 @@ import { useTranslation } from "react-i18next";
 import { Store } from "lucide-react";
 
 import {
-  MerchantCard,
-  MerchantCardSkeleton,
-  useMerchantsQuery,
+  AdminMerchantCard,
+  AdminMerchantCardSkeleton,
+  useAdminMerchantsQuery,
 } from "@entities/merchant";
 
 interface Props {
-  category: number | null;
   search: string;
+  category: number | null;
+  isActive: boolean | null;
 }
 
-export const MerchantList = ({ category, search }: Props) => {
+export const AdminMerchantList = ({ search, category, isActive }: Props) => {
   const { t } = useTranslation();
 
-  const { merchants, isLoading } = useMerchantsQuery({ search, category });
+  const { merchants, isLoading } = useAdminMerchantsQuery({ search, category, isActive });
 
   return (
     <section aria-label={t("home.merchantsSection")}>
@@ -28,7 +29,7 @@ export const MerchantList = ({ category, search }: Props) => {
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {Array.from({ length: 8 }).map((_, i) => (
             <li key={i}>
-              <MerchantCardSkeleton />
+              <AdminMerchantCardSkeleton />
             </li>
           ))}
         </ul>
@@ -38,13 +39,13 @@ export const MerchantList = ({ category, search }: Props) => {
             <Store size={32} strokeWidth={1.5} />
           </span>
 
-          <p className="text-sm font-semibold">{t("home.empty")}</p>
+          <p className="text-sm font-semibold">{t("admin.merchants.empty")}</p>
         </div>
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {merchants.map((merchant) => (
             <li key={merchant.id}>
-              <MerchantCard merchant={merchant} />
+              <AdminMerchantCard merchant={merchant} />
             </li>
           ))}
         </ul>

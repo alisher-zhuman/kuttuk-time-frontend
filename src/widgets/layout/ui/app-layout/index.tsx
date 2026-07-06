@@ -56,7 +56,14 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        {!isNotFound && (showAdminNav ? <AdminNav /> : <Footer />)}
+        {!isNotFound &&
+          (showAdminNav ? (
+            <div className="sticky z-10" style={{ bottom: insets.bottom }}>
+              <AdminNav />
+            </div>
+          ) : (
+            <Footer />
+          ))}
       </div>
     </>
   );

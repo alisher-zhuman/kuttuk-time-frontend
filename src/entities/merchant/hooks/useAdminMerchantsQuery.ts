@@ -10,12 +10,18 @@ import type { z } from "zod";
 
 export type AdminMerchant = z.infer<typeof AdminMerchantSchema>;
 
-export const useAdminMerchantsQuery = () => {
+interface Params {
+  search: string;
+  category: number | null;
+  isActive: boolean | null;
+}
+
+export const useAdminMerchantsQuery = ({ search, category, isActive }: Params) => {
   const { i18n } = useTranslation();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: merchantKeys.adminList(i18n.language),
-    queryFn: getAdminMerchants,
+    queryKey: merchantKeys.adminList(search, category, isActive, i18n.language),
+    queryFn: () => getAdminMerchants({ search, category, isActive }),
   });
 
   return { merchants: data ?? [], isLoading, isError };

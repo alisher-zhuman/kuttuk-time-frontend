@@ -8,8 +8,20 @@ import {
   MerchantsSchema,
 } from "../model/schemas";
 
-export const getAdminMerchants = async () => {
-  const response = await api.get(API_PATHS.ADMIN_MERCHANTS);
+interface GetAdminMerchantsParams {
+  search?: string;
+  category?: number | null;
+  isActive?: boolean | null;
+}
+
+export const getAdminMerchants = async (params: GetAdminMerchantsParams = {}) => {
+  const response = await api.get(API_PATHS.ADMIN_MERCHANTS, {
+    params: {
+      ...(params.search && { search: params.search }),
+      ...(params.category != null && { category: params.category }),
+      ...(params.isActive != null && { isActive: params.isActive }),
+    },
+  });
 
   return AdminMerchantsSchema.parse(response.data);
 };

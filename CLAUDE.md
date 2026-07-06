@@ -1,51 +1,51 @@
 # kuttuk-time-frontend
 
-Telegram Mini App для покупки подарочных сертификатов.
+Telegram Mini App for buying gift certificates.
 
-## Бизнес-модель
+## Business model
 
-**KuttukTime** — платформа подарочных сертификатов от локальных бизнесов (кофейни, рестораны, спа, фитнес) в Кыргызстане.
+**KuttukTime** — a gift certificate platform for local businesses (coffee shops, restaurants, spas, fitness studios) in Kyrgyzstan.
 
-**Flow покупки (пользователь):**
-1. Открыл TMA → выбрал мерчанта → выбрал номинал → оплатил → получил код
-2. Время: 30 секунд. Регистрация и номер телефона не нужны.
-3. Код можно поделиться в Telegram.
+**Purchase flow (buyer):**
+1. Opened the TMA → picked a merchant → picked an amount → paid → got a code
+2. Time: 30 seconds. No registration, no phone number required.
+3. The code can be shared in Telegram.
 
-**Flow мерчанта:**
-- Подключение: получает специальную ссылку, открывает один раз → система запомнила
-- Кабинет: статистика за неделю, список активных кодов, кнопка "Отметить использованным"
-- Выплаты: каждый понедельник автоматически (Finik / Bakai / Freedom)
+**Merchant flow:**
+- Onboarding: gets a special link, opens it once → the system remembers them
+- Dashboard: weekly stats, list of active codes, "Mark as used" button
+- Payouts: automatic every Monday (Finik / Bakai / Freedom)
 
-**Монетизация:** комиссия 10% с каждой продажи.
-- Пример: пользователь платит 1000 сом → платёжка −20 сом → мерчанту 900 сом → KuttukTime зарабатывает 80 сом
+**Monetization:** 10% commission per sale.
+- Example: buyer pays 1000 som → payment provider −20 som → merchant gets 900 som → KuttukTime earns 80 som
 
-**Текущий статус:** MVP, 2 мерчанта готовы к тестированию.
+**Current status:** MVP, 2 merchants ready for testing.
 
-**Метрики:**
-- Точка беспокойства: < 10 заказов/неделю
-- Точка успеха: > 50 заказов/неделю после месяца
+**Metrics:**
+- Concern threshold: < 10 orders/week
+- Success threshold: > 50 orders/week after a month
 
-**Роадмап:**
-- Месяц 1–2: 2 мерчанта, 20–50 заказов/неделю, проверка модели
-- Месяц 3–4: 5–10 мерчантов, 100+ заказов/неделю
-- Месяц 6+: 20–50 мерчантов, 500+ заказов/неделю, персональные ссылки мерчантов
-- Год+: 100+ мерчантов, расширение на другие города КГ
+**Roadmap:**
+- Month 1–2: 2 merchants, 20–50 orders/week, validate the model
+- Month 3–4: 5–10 merchants, 100+ orders/week
+- Month 6+: 20–50 merchants, 500+ orders/week, personal merchant links
+- Year+: 100+ merchants, expansion to other cities in Kyrgyzstan
 
-## Стек
+## Stack
 
 - **React 19** + **TypeScript** + **Vite**
-- **Tailwind CSS v4** (через `@tailwindcss/vite`)
-- **TanStack Query** — серверный стейт
-- **Zustand** — клиентский стейт
-- **React Router v7** — роутинг
+- **Tailwind CSS v4** (via `@tailwindcss/vite`)
+- **TanStack Query** — server state
+- **Zustand** — client state
+- **React Router v7** — routing
 - **@tma.js/sdk-react** — Telegram Mini Apps SDK
-- **react-i18next** — i18n (локали: `ru`, `kg`, `en`)
-- **Zod** — валидация API-ответов
-- **pnpm** — пакетный менеджер
+- **react-i18next** — i18n (locales: `ru`, `kg`, `en`)
+- **Zod** — API response validation
+- **pnpm** — package manager
 
-## Архитектура — FSD
+## Architecture — FSD
 
-Слои (импорт только вниз по списку):
+Layers (imports only go downward through this list):
 
 ```
 app → pages → widgets → features → entities → shared
@@ -53,69 +53,80 @@ app → pages → widgets → features → entities → shared
 
 Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 
-**Правила:**
-- Entity UI (`entities/*/ui/`) — переиспользуемые компоненты (карточки, скелетоны карточек)
-- Widget UI (`widgets/*/ui/`) — компоненты конкретной страницы (скелетон страницы, составные блоки)
-- Каждый компонент в отдельной папке с `index.tsx`
-- Публичный API слоя только через `index.ts` в корне слоя
+**Rules:**
+- Entity UI (`entities/*/ui/`) — reusable components (cards, card skeletons)
+- Widget UI (`widgets/*/ui/`) — page-specific components (page skeleton, composite blocks)
+- Each component lives in its own folder with `index.tsx`
+- A layer's public API is exposed only through the root `index.ts`
 
-## Код
+## Code
 
-- Только **стрелочные функции** — никаких `function` деклараций
-- **Tailwind spacing**: только целые числа или шаг 0.5 (1, 1.5, 2, 2.5…) — никаких 0.75 или произвольных `[Npx]`
-- Комментарии только если `WHY` неочевиден
-- Без лишней абстракции — три похожих строки лучше преждевременного хелпера
-- **Навигация**: всегда `useNavigateTo` из `@shared/hooks` — не `useNavigate` напрямую
-- **Роуты**: только через `ROUTE_PATTERNS` и `getMerchantRoute()` из `@shared/constants` — никаких хардкодных строк
-- **TMA launch params**: только через `getLaunchParams()` из `@shared/helpers` — не `retrieveLaunchParams()` из SDK напрямую
-- **Конфиги** (`vercel.json`, BotFather, CI): не менять без явного одобрения
+- **Arrow functions only** — no `function` declarations
+- **Tailwind spacing**: whole numbers or 0.5 steps only (1, 1.5, 2, 2.5…) — never 0.75 or arbitrary `[Npx]`
+- Comments only when the `WHY` isn't obvious
+- No unnecessary abstraction — three similar lines beat a premature helper
+- **Navigation**: always `useNavigateTo` from `@shared/hooks` — never `useNavigate` directly
+- **Routes**: only through `ROUTE_PATTERNS` and `getMerchantRoute()` from `@shared/constants` — no hardcoded strings
+- **TMA launch params**: only through `getLaunchParams()` from `@shared/helpers` — never `retrieveLaunchParams()` from the SDK directly
+- **Configs** (`vercel.json`, BotFather, CI): don't change without explicit approval
 
 ## TMA SDK
 
-Инициализация в `src/app/providers/tma/index.tsx`:
-- `themeParams.mount()` — монтируется первым (нужен для MainButton)
-- `miniApp.mount()` + цвета хедера/фона
+Initialization in `src/app/providers/tma/index.tsx`:
+- `themeParams.mount()` — mounted first (needed for MainButton)
+- `miniApp.mount()` + header/background colors
 - `swipeBehavior.disableVertical()`
 - `viewport.mount()` → `bindCssVars()` → `requestFullscreen()`
 
-Shared TMA хуки в `src/shared/hooks/tma/`:
-- `useBackButton` — нативная кнопка "Назад"
-- `useHaptic` — тактильный отклик (`light`, `medium`, `selection`)
-- `useMainButton` — нативная кнопка действия внизу экрана
-- `useSafeArea` — безопасная зона
-- `useSettingsButton` — кнопка настроек
+Shared TMA hooks in `src/shared/hooks/tma/`:
+- `useBackButton` — native "Back" button
+- `useHaptic` — haptic feedback (`light`, `medium`, `selection`)
+- `useMainButton` — native action button at the bottom of the screen
+- `useSafeArea` — safe area
+- `useSettingsButton` — settings button
 
-Всегда проверять `isAvailable()` перед вызовом SDK методов.
+Always check `isAvailable()` before calling SDK methods.
 
-**Стоит добавить (когда дойдут руки):**
-- `shareURL` (`links`) — шер кода сертификата в Telegram, это прямо часть бизнес-флоу ("код можно поделиться в Telegram")
-- `ClosingBehavior.enableConfirmation()` — защита от случайного закрытия свайпом/бэком на экране оплаты
-- `Popup.show` — нативные диалоги подтверждения вместо кастомных модалок (например "Отметить использованным?")
-- `QrScanner.open` — сканирование кода мерчантом в кабинете вместо ручного ввода
-- `requestWriteAccess` — НЕ запрашивать на первом заходе (сжигает единственный шанс без контекста, добавляет трение в 30-секундный флоу). Запрашивать контекстно — сразу после первой успешной покупки, в моменте "продублировать код сообщением на всякий случай". См. `../backend/CLAUDE.md` — там же логика отправки сообщений ботом
+**Worth adding (when there's time):**
+- `shareURL` (`links`) — share the certificate code in Telegram, this is literally part of the business flow ("the code can be shared in Telegram")
+- `ClosingBehavior.enableConfirmation()` — guard against accidentally closing the app on the payment screen (swipe/back)
+- `Popup.show` — native confirmation dialogs instead of custom modals (e.g. "Mark as used?")
+- `QrScanner.open` — merchant scans the code in the dashboard instead of typing it in manually
+- `requestWriteAccess` — do NOT request it on first launch (burns the one shot with no context, adds friction to the 30-second flow). Request it contextually — right after the first successful purchase, at the point of "also send you the code as a backup message." See `../backend/CLAUDE.md` — same place has the bot messaging logic
 
-**Не подходят продукту / не встраивать без повода:**
-- `Invoice` (`openInvoice`/`openSlug`) — это Telegram Stars, у нас оплата через Finik/Bakai/Freedom
-- `Biometry`, `LocationManager`, `SecureStorage`, `emoji-status`, `shareStory` — не по профилю продукта
-- `requestPhoneAccess`/`requestContact` — бизнес-модель: "номер телефона не нужен"
-- `CloudStorage` — НЕ использовать для auth-токена/языка/темы: `i18next-browser-languagedetector` синхронный, `CloudStorage.getItem` асинхронный → несовместимо без вспышки языка на другом значении при рендере; для токена и темы нет ощутимого выигрыша (см. `AuthProvider` — реавторизация через `initData` и так прозрачна). Годится только для некритичных данных, которым нормально подтянуться чуть позже (когда появится такая фича)
+**Doesn't fit the product / don't add without a reason:**
+- `Invoice` (`openInvoice`/`openSlug`) — that's Telegram Stars, our payments go through Finik/Bakai/Freedom
+- `Biometry`, `LocationManager`, `SecureStorage`, `emoji-status`, `shareStory` — not relevant to this product
+- `requestPhoneAccess`/`requestContact` — business model: "no phone number required"
+- `CloudStorage` — do NOT use it for the auth token/language/theme: `i18next-browser-languagedetector` is synchronous, `CloudStorage.getItem` is async → incompatible without a flash of the wrong language on render; there's no meaningful benefit for the token or theme either (see `AuthProvider` — re-authenticating via `initData` is already transparent). Only fits non-critical data that's fine to load in a bit later (once such a feature exists)
 
 ## i18n
 
-Файлы локалей: `src/shared/locales/{ru,kg,en}/common.json`
-При добавлении нового ключа — добавлять во все три файла.
+Locale files: `src/shared/locales/{ru,kg,en}/common.json`
+When adding a new key — add it to all three files.
 
-## Команды
+## Testing
+
+No test setup exists yet (no Vitest/Jest, no test files, nothing in `package.json`). Correctness is currently covered only by `pnpm typecheck` + `pnpm lint` + manual testing in the browser/Telegram.
+
+Worth adding once the codebase grows past the 2-merchant MVP stage:
+- **Vitest** — unit tests for pure logic in `@shared/helpers` (e.g. `getScopedStorageKey`, `formatMoney`) and Zod schemas in `entities/*/model`
+- **React Testing Library** — component tests for anything with real branching logic (e.g. `MerchantContent`/`MerchantNotFound` state switching in `pages/merchant`)
+- **Playwright** (or similar) — e2e for the critical path only: deep link → merchant page → pick amount → buy, since that's the entire business
+
+Not a priority before the payment flow ships — don't add test infra just to have it.
+
+## Commands
 
 ```bash
-pnpm dev          # dev сервер
-pnpm typecheck    # tsc -b (то же что pre-push хук)
+pnpm dev          # dev server
+pnpm typecheck    # tsc -b (same as the pre-push hook)
 pnpm lint         # eslint
 pnpm lint:fix     # eslint --fix
 ```
 
-Pre-push хук (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`)
+Pre-push hook (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`)
 
 ## Git
 
-Коммиты подписывает только Alisher. Никаких `Co-Authored-By`.
+Commits are signed by Alisher only. No `Co-Authored-By`.

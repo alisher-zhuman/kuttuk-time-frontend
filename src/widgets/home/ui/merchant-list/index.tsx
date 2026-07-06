@@ -2,7 +2,11 @@ import { useTranslation } from "react-i18next";
 
 import { Store } from "lucide-react";
 
-import { MerchantCard, MerchantCardSkeleton, useMerchantsQuery } from "@entities/merchant";
+import {
+  MerchantCard,
+  MerchantCardSkeleton,
+  useMerchantsQuery,
+} from "@entities/merchant";
 
 interface Props {
   category: number | null;
@@ -33,6 +37,7 @@ export const MerchantList = ({ category, search }: Props) => {
           <span className="size-16 rounded-2xl bg-(--color-chip) flex items-center justify-center">
             <Store size={32} strokeWidth={1.5} />
           </span>
+
           <p className="text-sm font-semibold">{t("home.empty")}</p>
         </div>
       ) : (

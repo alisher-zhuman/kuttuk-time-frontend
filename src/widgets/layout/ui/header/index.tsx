@@ -22,7 +22,7 @@ export const Header = () => {
         type="button"
         onClick={() => {
           haptic.light();
-          navigateTo(ROUTE_PATTERNS.HOME);
+          navigateTo(viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME);
         }}
         className="flex items-center gap-2 leading-none cursor-pointer min-w-0"
       >

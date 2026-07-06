@@ -37,7 +37,7 @@ export const AdminNav = () => {
             type="button"
             onClick={() => {
               haptic.selection();
-              navigateTo(path);
+              navigateTo(path, { replace: true });
             }}
             className={cn(
               "flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-2.5 cursor-pointer transition-colors duration-150",

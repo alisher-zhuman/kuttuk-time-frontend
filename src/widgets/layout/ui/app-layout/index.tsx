@@ -26,6 +26,8 @@ export const AppLayout = () => {
 
   const viewMode = useViewModeStore((s) => s.viewMode);
 
+  const showAdminNav = viewMode === "admin" && pathname !== ROUTE_PATTERNS.PROFILE;
+
   return (
     <>
       <TopBlur height={insets.top} />
@@ -50,7 +52,7 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        {viewMode === "admin" ? <AdminNav /> : <Footer />}
+        {showAdminNav ? <AdminNav /> : <Footer />}
       </div>
     </>
   );

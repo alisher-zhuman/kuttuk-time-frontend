@@ -8,6 +8,15 @@ export const CategorySchema = z.object({
 
 export const CategoriesSchema = z.array(CategorySchema);
 
+export const AdminMerchantSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  logo: z.string(),
+  isActive: z.boolean(),
+});
+
+export const AdminMerchantsSchema = z.array(AdminMerchantSchema);
+
 export const MerchantSchema = z.object({
   id: z.number(),
   logo: z.string(),

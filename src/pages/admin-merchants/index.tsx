@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router";
 
+import { AdminMerchantList } from "@widgets/admin-merchants";
 import { CategoryFilter } from "@widgets/home";
 
 export const AdminMerchantsPage = () => {
@@ -24,8 +25,10 @@ export const AdminMerchantsPage = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col">
+    <>
       <CategoryFilter active={activeCategory} onChange={handleCategoryChange} />
-    </div>
+
+      <AdminMerchantList />
+    </>
   );
 };

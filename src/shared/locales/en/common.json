@@ -45,6 +45,11 @@
       "merchants": "Venues",
       "orders": "Orders",
       "payments": "Payments"
+    },
+    "merchants": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "empty": "No venues found"
     }
   },
   "certificate": {

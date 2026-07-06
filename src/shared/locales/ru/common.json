@@ -44,6 +44,11 @@
       "merchants": "Заведения",
       "orders": "Заказы",
       "payments": "Платежи"
+    },
+    "merchants": {
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "empty": "Заведения не найдены"
     }
   },
   "certificate": {

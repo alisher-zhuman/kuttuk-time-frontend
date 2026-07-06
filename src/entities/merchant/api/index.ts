@@ -1,7 +1,18 @@
 import { api } from "@shared/api";
 import { API_PATHS } from "@shared/constants";
 
-import { CategoriesSchema, MerchantDetailSchema, MerchantsSchema } from "../model/schemas";
+import {
+  AdminMerchantsSchema,
+  CategoriesSchema,
+  MerchantDetailSchema,
+  MerchantsSchema,
+} from "../model/schemas";
+
+export const getAdminMerchants = async () => {
+  const response = await api.get(API_PATHS.ADMIN_MERCHANTS);
+
+  return AdminMerchantsSchema.parse(response.data);
+};
 
 export const getMerchantsCategories = async () => {
   const response = await api.get(API_PATHS.CATEGORIES);

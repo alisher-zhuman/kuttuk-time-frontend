@@ -44,6 +44,11 @@
       "merchants": "Мекемелер",
       "orders": "Буйрутмалар",
       "payments": "Төлөмдөр"
+    },
+    "merchants": {
+      "active": "Активдүү",
+      "inactive": "Активдүү эмес",
+      "empty": "Мекемелер табылган жок"
     }
   },
   "certificate": {

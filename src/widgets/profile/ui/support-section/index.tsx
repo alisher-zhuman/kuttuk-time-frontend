@@ -5,16 +5,11 @@ import { MessageCircle } from "lucide-react";
 
 import { SUPPORT_URL } from "@shared/constants";
 import { useHaptic } from "@shared/hooks";
-import { useViewModeStore } from "@shared/store";
 
 export const SupportSection = () => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
-
-  const viewMode = useViewModeStore((s) => s.viewMode);
-
-  if (viewMode === "admin") return null;
 
   const handleClick = () => {
     haptic.light();

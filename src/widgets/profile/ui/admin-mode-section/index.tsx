@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { VIEW_MODES } from "@shared/constants";
-import { useAuthStore, useViewModeStore } from "@shared/store";
+import { useViewModeStore } from "@shared/store";
 import { SegmentedControl } from "@shared/ui";
 
 const VIEW_MODE_LABELS = {
@@ -12,11 +12,8 @@ const VIEW_MODE_LABELS = {
 export const AdminModeSection = () => {
   const { t } = useTranslation();
 
-  const role = useAuthStore((s) => s.role);
   const viewMode = useViewModeStore((s) => s.viewMode);
   const setViewMode = useViewModeStore((s) => s.setViewMode);
-
-  if (role !== "admin") return null;
 
   const items = VIEW_MODES.map((mode) => ({
     value: mode,

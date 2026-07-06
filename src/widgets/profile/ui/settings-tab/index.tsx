@@ -13,6 +13,7 @@ export const SettingsTab = () => {
     <div className="flex flex-col gap-4">
       <LanguageSection />
       <ThemeSection />
+
       {viewMode !== "admin" && <SupportSection />}
       {role === "admin" && <AdminModeSection />}
     </div>

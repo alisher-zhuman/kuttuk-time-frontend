@@ -1,7 +1,13 @@
 import { useTranslation } from "react-i18next";
 
+import { VIEW_MODES } from "@shared/constants";
 import { useAuthStore, useViewModeStore } from "@shared/store";
 import { SegmentedControl } from "@shared/ui";
+
+const VIEW_MODE_LABELS = {
+  user: "admin.viewAsUser",
+  admin: "admin.viewAsAdmin",
+} as const;
 
 export const AdminModeSection = () => {
   const { t } = useTranslation();
@@ -12,10 +18,10 @@ export const AdminModeSection = () => {
 
   if (role !== "admin") return null;
 
-  const items = [
-    { value: "user" as const, label: t("admin.viewAsUser") },
-    { value: "admin" as const, label: t("admin.viewAsAdmin") },
-  ];
+  const items = VIEW_MODES.map((mode) => ({
+    value: mode,
+    label: t(VIEW_MODE_LABELS[mode]),
+  }));
 
   return (
     <div className="flex flex-col gap-2">

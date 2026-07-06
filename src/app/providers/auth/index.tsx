@@ -3,7 +3,7 @@ import { type ReactNode, useEffect } from "react";
 import { miniApp, retrieveRawInitData } from "@tma.js/sdk-react";
 
 import { logIn } from "@shared/api";
-import { useAuthStore } from "@shared/store";
+import { useAuthStore, useViewModeStore } from "@shared/store";
 
 interface Props {
   children: ReactNode;
@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const { setAuth, setReady } = useAuthStore.getState();
+    const { setViewMode } = useViewModeStore.getState();
 
     const initData = retrieveRawInitData();
 
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }: Props) => {
     logIn({ initData })
       .then(({ accessToken, role }) => {
         setAuth(accessToken, role);
+        setViewMode(role === "admin" ? "admin" : "user");
       })
       .catch(console.error)
       .finally(() => {

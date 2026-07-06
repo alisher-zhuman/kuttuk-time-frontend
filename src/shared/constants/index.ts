@@ -13,8 +13,4 @@ export {
   type Theme,
   THEME_STORAGE_KEY,
 } from "./theme";
-export {
-  VIEW_MODE_STORAGE_KEY,
-  VIEW_MODES,
-  type ViewMode,
-} from "./view-mode";
+export { VIEW_MODES,type ViewMode } from "./view-mode";

@@ -36,10 +36,6 @@
     "label": "Support",
     "contact": "Contact support"
   },
-  "debug": {
-    "label": "Debug",
-    "notFoundTest": "Test 404 page"
-  },
   "admin": {
     "badge": "Admin",
     "label": "View mode",

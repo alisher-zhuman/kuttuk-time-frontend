@@ -2,7 +2,6 @@ import { useAuthStore, useViewModeStore } from "@shared/store";
 
 import { AdminModeSection } from "../admin-mode-section";
 import { LanguageSection } from "../language-section";
-import { NotFoundTestSection } from "../not-found-test-section";
 import { SupportSection } from "../support-section";
 import { ThemeSection } from "../theme-section";
 
@@ -16,7 +15,6 @@ export const SettingsTab = () => {
       <ThemeSection />
       {viewMode !== "admin" && <SupportSection />}
       {role === "admin" && <AdminModeSection />}
-      <NotFoundTestSection />
     </div>
   );
 };

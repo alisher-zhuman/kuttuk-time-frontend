@@ -42,7 +42,7 @@
     "viewAsUser": "User",
     "viewAsAdmin": "Admin",
     "nav": {
-      "merchants": "Merchants",
+      "merchants": "Venues",
       "orders": "Orders",
       "payments": "Payments"
     }

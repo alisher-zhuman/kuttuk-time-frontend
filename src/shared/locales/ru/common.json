@@ -41,7 +41,7 @@
     "viewAsUser": "Пользователь",
     "viewAsAdmin": "Админ",
     "nav": {
-      "merchants": "Мерчанты",
+      "merchants": "Заведения",
       "orders": "Заказы",
       "payments": "Платежи"
     }

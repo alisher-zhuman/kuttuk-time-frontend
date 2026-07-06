@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { VIEW_MODES } from "@shared/constants";
+import { ROUTE_PATTERNS, VIEW_MODES, type ViewMode } from "@shared/constants";
+import { useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 import { SegmentedControl } from "@shared/ui";
 
@@ -12,8 +13,15 @@ const VIEW_MODE_LABELS = {
 export const AdminModeSection = () => {
   const { t } = useTranslation();
 
+  const navigateTo = useNavigateTo();
+
   const viewMode = useViewModeStore((s) => s.viewMode);
   const setViewMode = useViewModeStore((s) => s.setViewMode);
+
+  const handleChange = (mode: ViewMode) => {
+    setViewMode(mode);
+    navigateTo(mode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME);
+  };
 
   const items = VIEW_MODES.map((mode) => ({
     value: mode,
@@ -26,7 +34,7 @@ export const AdminModeSection = () => {
         {t("admin.label")}
       </span>
 
-      <SegmentedControl items={items} value={viewMode} onChange={setViewMode} />
+      <SegmentedControl items={items} value={viewMode} onChange={handleChange} />
     </div>
   );
 };

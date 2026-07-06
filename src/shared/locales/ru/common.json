@@ -39,7 +39,12 @@
     "badge": "Админ",
     "label": "Режим отображения",
     "viewAsUser": "Пользователь",
-    "viewAsAdmin": "Админ"
+    "viewAsAdmin": "Админ",
+    "nav": {
+      "merchants": "Мерчанты",
+      "orders": "Заказы",
+      "payments": "Платежи"
+    }
   },
   "certificate": {
     "currency": "сом",

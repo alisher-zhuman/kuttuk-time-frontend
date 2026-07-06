@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { ADMIN_ROUTE_PREFIX, ROUTE_PATTERNS } from "@shared/constants";
 import {
   useBackButton,
   useSafeArea,
@@ -8,6 +8,7 @@ import {
   useSwipeNavigation,
 } from "@shared/hooks";
 
+import { AdminNav } from "../admin-nav";
 import { Footer } from "../footer";
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";
@@ -21,6 +22,8 @@ export const AppLayout = () => {
   const swipe = useSwipeNavigation();
 
   const { pathname } = useLocation();
+
+  const isAdminSection = pathname.startsWith(ADMIN_ROUTE_PREFIX);
 
   return (
     <>
@@ -46,7 +49,7 @@ export const AppLayout = () => {
           <Outlet />
         </main>
 
-        <Footer />
+        {isAdminSection ? <AdminNav /> : <Footer />}
       </div>
     </>
   );

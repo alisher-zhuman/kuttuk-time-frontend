@@ -39,7 +39,12 @@
     "badge": "Админ",
     "label": "Көрүнүш режими",
     "viewAsUser": "Колдонуучу",
-    "viewAsAdmin": "Админ"
+    "viewAsAdmin": "Админ",
+    "nav": {
+      "merchants": "Мерчанттар",
+      "orders": "Буйрутмалар",
+      "payments": "Төлөмдөр"
+    }
   },
   "certificate": {
     "currency": "сом",

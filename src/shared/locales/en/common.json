@@ -40,7 +40,12 @@
     "badge": "Admin",
     "label": "View mode",
     "viewAsUser": "User",
-    "viewAsAdmin": "Admin"
+    "viewAsAdmin": "Admin",
+    "nav": {
+      "merchants": "Merchants",
+      "orders": "Orders",
+      "payments": "Payments"
+    }
   },
   "certificate": {
     "currency": "som",

@@ -1,25 +1,31 @@
+import { useTranslation } from "react-i18next";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { useCreateCategoryMutation } from "@entities/category";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { useHaptic, useNavigateTo, usePopup } from "@shared/hooks";
 
 import { CategoryFormSchema } from "../model/schemas";
 import type { CategoryFormValues } from "../model/types";
 
 export const useCategoryForm = () => {
+  const { t } = useTranslation();
+
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
+
+  const showPopup = usePopup();
 
   const { mutate, isPending } = useCreateCategoryMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<CategoryFormValues>({
     resolver: zodResolver(CategoryFormSchema),
     mode: "onChange",
@@ -41,10 +47,16 @@ export const useCategoryForm = () => {
           haptic.success();
           navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
         },
-        onError: () => haptic.error(),
+        onError: () => {
+          haptic.error();
+          showPopup({
+            title: t("errors.genericTitle"),
+            message: t("errors.generic"),
+          });
+        },
       },
     );
   });
 
-  return { register, errors, isValid, isPending, submit };
+  return { register, errors, isPending, submit };
 };

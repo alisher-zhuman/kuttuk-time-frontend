@@ -93,5 +93,9 @@
   },
   "categories": {
     "all": "All"
+  },
+  "errors": {
+    "genericTitle": "Error",
+    "generic": "Something went wrong. Please try again."
   }
 }

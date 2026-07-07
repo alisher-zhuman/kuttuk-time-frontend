@@ -8,18 +8,17 @@ import { useCategoryForm } from "../../hooks/useCategoryForm";
 export const CategoryForm = () => {
   const { t } = useTranslation();
 
-  const { register, errors, isValid, isPending, submit } = useCategoryForm();
+  const { register, errors, isPending, submit } = useCategoryForm();
 
   useMainButton({
     text: t("admin.categories.create"),
     onClick: () => void submit(),
-    disabled: !isValid,
     loading: isPending,
   });
 
   return (
     <div className="flex flex-col gap-4 mt-3.5">
-      <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight mt-1">
+      <h1 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-1">
         {t("admin.categories.title")}
       </h1>
 

@@ -6,6 +6,7 @@ export const ROUTES = {
   ORDERS: "orders",
   PAYMENTS: "payments",
   CATEGORIES: "categories",
+  CATEGORY_CREATE: "category-create",
 } as const;
 
 export const ROUTE_PATTERNS = {
@@ -16,7 +17,7 @@ export const ROUTE_PATTERNS = {
   ADMIN_ORDERS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}`,
   ADMIN_PAYMENTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.PAYMENTS}`,
   ADMIN_CATEGORIES: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORIES}`,
-  ADMIN_CATEGORIES_NEW: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORIES}/new`,
+  ADMIN_CATEGORY_CREATE: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_CREATE}`,
 } as const;
 
 export const getMerchantRoute = (handle: string | number) =>

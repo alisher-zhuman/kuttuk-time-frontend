@@ -18,26 +18,25 @@ export const AdminCategoriesPage = () => {
 
   return (
     <>
-      <CategoryList />
-
-      <div className="h-20" />
+      <div style={{ paddingBottom: insets.bottom + 80 }}>
+        <CategoryList />
+      </div>
 
       <button
         type="button"
+        aria-label={t("admin.categories.create")}
         onClick={() => {
           haptic.light();
-          navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES_NEW);
+          navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORY_CREATE);
         }}
-        className="fixed z-20 flex items-center justify-center gap-2 h-12 rounded-2xl bg-(--color-primary) text-(--color-card) font-bold text-sm cursor-pointer"
+        className="fixed z-20 flex items-center justify-center size-14 rounded-full bg-(--color-primary) text-(--color-card) cursor-pointer"
         style={{
           bottom: insets.bottom + 16,
-          left: insets.left + 16,
           right: insets.right + 16,
           boxShadow: "var(--shadow-card)",
         }}
       >
-        <Plus size={18} />
-        {t("admin.categories.create")}
+        <Plus size={24} />
       </button>
     </>
   );

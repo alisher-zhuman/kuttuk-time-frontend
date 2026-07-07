@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 
 import { useHaptic, useSafeArea } from "@shared/hooks";
 
+const MARGIN = 16;
+
 interface Props {
   onClick: () => void;
   ariaLabel: string;
@@ -24,8 +26,8 @@ export const Fab = ({ onClick, ariaLabel, children }: Props) => {
       }}
       className="fixed z-20 flex items-center justify-center size-14 rounded-full bg-(--color-primary) text-(--color-card) cursor-pointer"
       style={{
-        bottom: insets.bottom + 16,
-        right: insets.right + 16,
+        bottom: insets.bottom + MARGIN,
+        right: insets.right + MARGIN,
         boxShadow: "var(--shadow-card)",
       }}
     >

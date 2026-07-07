@@ -17,7 +17,8 @@ export const AdminCategoriesPage = () => {
 
   return (
     <>
-      <div style={{ paddingBottom: insets.bottom + 80 }}>
+      {/* 72 = высота Fab (56) + отступ от края (16) */}
+      <div style={{ paddingBottom: insets.bottom + 72 }}>
         <CategoryList />
       </div>
 

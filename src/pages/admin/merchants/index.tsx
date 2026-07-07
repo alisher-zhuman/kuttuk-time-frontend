@@ -4,10 +4,12 @@ import {
   AdminMerchantList,
   AdminMerchantStatusFilter,
 } from "@widgets/admin/merchants";
-import { CategoryFilter, SearchBar } from "@widgets/home";
+
+import { CategoryFilter } from "@features/category-filter";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useDebounce, useNavigateTo } from "@shared/hooks";
+import { SearchBar } from "@shared/ui";
 
 export const AdminMerchantsPage = () => {
   const navigateTo = useNavigateTo();

@@ -1,8 +1,11 @@
 import { useSearchParams } from "react-router";
 
-import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
+import { MerchantList } from "@widgets/home";
+
+import { CategoryFilter } from "@features/category-filter";
 
 import { useDebounce } from "@shared/hooks";
+import { SearchBar } from "@shared/ui";
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

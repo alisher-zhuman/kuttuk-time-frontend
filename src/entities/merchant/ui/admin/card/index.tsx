@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { cn } from "@shared/helpers";
 
-import type { AdminMerchant } from "../../../hooks/useAdminMerchantsQuery";
+import type { AdminMerchant } from "../../../model/types";
 
 interface Props {
   merchant: AdminMerchant;

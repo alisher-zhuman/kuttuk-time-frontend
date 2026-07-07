@@ -8,7 +8,7 @@ export const useCreateCategoryMutation = () => {
   return useMutation({
     mutationFn: createCategory,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["merchants", "categories"] });
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
   });
 };

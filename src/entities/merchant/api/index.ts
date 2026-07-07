@@ -3,7 +3,6 @@ import { API_PATHS } from "@shared/constants";
 
 import {
   AdminMerchantsSchema,
-  CategoriesSchema,
   MerchantDetailSchema,
   MerchantsSchema,
 } from "../model/schemas";
@@ -24,21 +23,6 @@ export const getAdminMerchants = async (params: GetAdminMerchantsParams = {}) =>
   });
 
   return AdminMerchantsSchema.parse(response.data);
-};
-
-export const getMerchantsCategories = async () => {
-  const response = await api.get(API_PATHS.CATEGORIES);
-
-  return CategoriesSchema.parse(response.data);
-};
-
-interface CreateCategoryPayload {
-  name: { ru: string; kg: string; en: string };
-  order?: number;
-}
-
-export const createCategory = async (payload: CreateCategoryPayload) => {
-  await api.post(API_PATHS.ADMIN_CATEGORIES, payload);
 };
 
 interface GetMerchantsParams {

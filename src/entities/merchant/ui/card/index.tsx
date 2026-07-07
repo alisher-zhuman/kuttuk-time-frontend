@@ -6,7 +6,7 @@ import { getMerchantRoute } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
-import type { Merchant } from "../../hooks/useMerchantsQuery";
+import type { Merchant } from "../../model/types";
 
 interface Props {
   merchant: Merchant;

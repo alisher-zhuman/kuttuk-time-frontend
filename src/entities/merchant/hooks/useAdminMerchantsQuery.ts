@@ -4,11 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getAdminMerchants } from "../api";
 import { merchantKeys } from "../model/keys";
-import type { AdminMerchantSchema } from "../model/schemas";
-
-import type { z } from "zod";
-
-export type AdminMerchant = z.infer<typeof AdminMerchantSchema>;
 
 interface Params {
   search: string;

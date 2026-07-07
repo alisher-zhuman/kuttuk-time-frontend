@@ -1,12 +1,7 @@
-export type { AdminMerchant } from "./hooks/useAdminMerchantsQuery";
 export { useAdminMerchantsQuery } from "./hooks/useAdminMerchantsQuery";
-export { useCreateCategoryMutation } from "./hooks/useCreateCategoryMutation";
-export type { MerchantDetail } from "./hooks/useMerchantQuery";
 export { useMerchantQuery } from "./hooks/useMerchantQuery";
-export type { Category } from "./hooks/useMerchantsCategoriesQuery";
-export { useMerchantsCategoriesQuery } from "./hooks/useMerchantsCategoriesQuery";
-export type { Merchant } from "./hooks/useMerchantsQuery";
 export { useMerchantsQuery } from "./hooks/useMerchantsQuery";
+export type { AdminMerchant, Merchant, MerchantDetail } from "./model/types";
 export { AdminMerchantCard } from "./ui/admin/card";
 export { AdminMerchantCardSkeleton } from "./ui/admin/card-skeleton";
 export { MerchantCard } from "./ui/card";

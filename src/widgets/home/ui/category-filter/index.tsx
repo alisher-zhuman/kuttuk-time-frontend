@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Plus } from "lucide-react";
 
-import { useMerchantsCategoriesQuery } from "@entities/merchant";
+import { useCategoriesQuery } from "@entities/category";
 
 import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -18,7 +18,7 @@ export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
 
   const { t } = useTranslation();
 
-  const { categories } = useMerchantsCategoriesQuery();
+  const { categories } = useCategoriesQuery();
 
   const items = [
     { id: null, label: t("categories.all") },

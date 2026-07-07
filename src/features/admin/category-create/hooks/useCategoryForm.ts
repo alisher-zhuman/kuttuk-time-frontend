@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useCreateCategoryMutation } from "@entities/merchant";
+import { useCreateCategoryMutation } from "@entities/category";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";

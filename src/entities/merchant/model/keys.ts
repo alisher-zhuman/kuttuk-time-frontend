@@ -7,7 +7,6 @@ export const merchantKeys = {
     isActive: boolean | null,
     lang: string,
   ) => ["merchants", "admin-list", search, category, isActive, lang] as const,
-  categories: (lang: string) => ["merchants", "categories", lang] as const,
   detail: (id: string | number, lang: string) =>
     ["merchants", "detail", id, lang] as const,
 };

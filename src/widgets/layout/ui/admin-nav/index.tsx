@@ -2,19 +2,12 @@ import { useLocation } from "react-router";
 
 import { useTranslation } from "react-i18next";
 
-import { ClipboardList, Store, Wallet } from "lucide-react";
-
-import { ROUTE_PATTERNS } from "@shared/constants";
 import { cn } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
-const TABS = [
-  { path: ROUTE_PATTERNS.ADMIN_MERCHANTS, labelKey: "admin.nav.merchants", icon: Store },
-  { path: ROUTE_PATTERNS.ADMIN_ORDERS, labelKey: "admin.nav.orders", icon: ClipboardList },
-  { path: ROUTE_PATTERNS.ADMIN_PAYMENTS, labelKey: "admin.nav.payments", icon: Wallet },
-] as const;
+import { ADMIN_NAV_TABS } from "../../constants";
 
-const N = TABS.length;
+const N = ADMIN_NAV_TABS.length;
 
 export const AdminNav = () => {
   const { t } = useTranslation();
@@ -25,7 +18,7 @@ export const AdminNav = () => {
 
   const { pathname } = useLocation();
 
-  const activeIndex = TABS.findIndex((tab) => tab.path === pathname);
+  const activeIndex = ADMIN_NAV_TABS.findIndex((tab) => tab.path === pathname);
 
   return (
     <div
@@ -40,7 +33,7 @@ export const AdminNav = () => {
         }}
       />
 
-      {TABS.map(({ path, labelKey, icon: Icon }) => {
+      {ADMIN_NAV_TABS.map(({ path, labelKey, icon: Icon }) => {
         const isActive = path === pathname;
 
         return (

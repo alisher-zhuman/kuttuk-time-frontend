@@ -9,6 +9,7 @@ import {
 } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 
+import { ADMIN_NAV_PATHS } from "../../constants";
 import { AdminNav } from "../admin-nav";
 import { Footer } from "../footer";
 import { Header } from "../header";
@@ -30,7 +31,8 @@ export const AppLayout = () => {
 
   const viewMode = useViewModeStore((s) => s.viewMode);
 
-  const showAdminNav = viewMode === "admin" && pathname !== ROUTE_PATTERNS.PROFILE && !isNotFound;
+  const showAdminNav =
+    viewMode === "admin" && ADMIN_NAV_PATHS.includes(pathname) && !isNotFound;
 
   return (
     <>

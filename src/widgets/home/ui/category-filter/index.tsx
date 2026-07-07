@@ -22,13 +22,20 @@ export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
 
   const items = [
     { id: null, label: t("categories.all") },
-    ...categories.map((category) => ({ id: category.id, label: category.name })),
+    ...categories.map((category) => ({
+      id: category.id,
+      label: category.name,
+    })),
   ];
 
   const handleSelect = (categoryId: number | null, el: HTMLButtonElement) => {
     haptic.selection();
     onChange(categoryId);
-    el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    el.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
   };
 
   return (
@@ -36,6 +43,20 @@ export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
       aria-label="Категории"
       className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto"
     >
+      {onCreate && (
+        <button
+          type="button"
+          aria-label={t("admin.categories.add")}
+          onClick={() => {
+            haptic.light();
+            onCreate();
+          }}
+          className="flex items-center justify-center size-9 rounded-full border border-dashed border-(--color-line) text-(--color-hint) shrink-0 cursor-pointer first:ml-4 last:mr-4"
+        >
+          <Plus size={16} />
+        </button>
+      )}
+
       {items.map((item) => (
         <button
           key={item.id ?? "all"}
@@ -52,17 +73,6 @@ export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
           {item.label}
         </button>
       ))}
-
-      {onCreate && (
-        <button
-          type="button"
-          aria-label={t("admin.categories.add")}
-          onClick={() => { haptic.light(); onCreate(); }}
-          className="flex items-center justify-center size-9 rounded-full border border-dashed border-(--color-line) text-(--color-hint) shrink-0 cursor-pointer last:mr-4"
-        >
-          <Plus size={16} />
-        </button>
-      )}
     </nav>
   );
 };

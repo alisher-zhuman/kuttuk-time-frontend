@@ -45,7 +45,7 @@ export const useCategoryForm = () => {
       {
         onSuccess: () => {
           haptic.success();
-          navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
+          navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES);
         },
         onError: () => {
           haptic.error();

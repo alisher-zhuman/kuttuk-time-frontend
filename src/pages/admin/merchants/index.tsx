@@ -6,9 +6,12 @@ import {
 } from "@widgets/admin/merchants";
 import { CategoryFilter, SearchBar } from "@widgets/home";
 
-import { useDebounce } from "@shared/hooks";
+import { ROUTE_PATTERNS } from "@shared/constants";
+import { useDebounce, useNavigateTo } from "@shared/hooks";
 
 export const AdminMerchantsPage = () => {
+  const navigateTo = useNavigateTo();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
@@ -47,6 +50,7 @@ export const AdminMerchantsPage = () => {
         onChange={(category) =>
           setParam("category", category !== null ? String(category) : null)
         }
+        onCreate={() => navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES_NEW)}
       />
 
       <AdminMerchantStatusFilter

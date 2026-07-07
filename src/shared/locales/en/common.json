@@ -50,6 +50,15 @@
       "active": "Active",
       "inactive": "Inactive",
       "empty": "No venues found"
+    },
+    "categories": {
+      "add": "Add category",
+      "title": "New category",
+      "nameRu": "Name in Russian",
+      "nameKg": "Name in Kyrgyz",
+      "nameEn": "Name in English",
+      "namePlaceholder": "Enter a name",
+      "create": "Create"
     }
   },
   "certificate": {

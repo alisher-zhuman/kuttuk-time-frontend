@@ -32,6 +32,15 @@ export const getMerchantsCategories = async () => {
   return CategoriesSchema.parse(response.data);
 };
 
+interface CreateCategoryPayload {
+  name: { ru: string; kg: string; en: string };
+  order?: number;
+}
+
+export const createCategory = async (payload: CreateCategoryPayload) => {
+  await api.post(API_PATHS.ADMIN_CATEGORIES, payload);
+};
+
 interface GetMerchantsParams {
   search?: string;
   category?: number | null;

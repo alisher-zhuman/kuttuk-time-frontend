@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
+import { AdminCategoriesPage } from "@pages/admin/categories";
 import { AdminMerchantsPage } from "@pages/admin/merchants";
 import { AdminOrdersPage } from "@pages/admin/orders";
 import { AdminPaymentsPage } from "@pages/admin/payments";
@@ -37,6 +38,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTE_PATTERNS.ADMIN_MERCHANTS,
         element: <AdminMerchantsPage />,
+      },
+      {
+        path: ROUTE_PATTERNS.ADMIN_CATEGORIES_NEW,
+        element: <AdminCategoriesPage />,
       },
       {
         path: ROUTE_PATTERNS.ADMIN_ORDERS,

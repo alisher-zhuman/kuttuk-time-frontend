@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { Plus } from "lucide-react";
+
 import { useMerchantsCategoriesQuery } from "@entities/merchant";
 
 import { cn } from "@shared/helpers";
@@ -8,9 +10,10 @@ import { useHaptic } from "@shared/hooks";
 interface Props {
   active: number | null;
   onChange: (categoryId: number | null) => void;
+  onCreate?: () => void;
 }
 
-export const CategoryFilter = ({ active, onChange }: Props) => {
+export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
   const haptic = useHaptic();
 
   const { t } = useTranslation();
@@ -49,6 +52,17 @@ export const CategoryFilter = ({ active, onChange }: Props) => {
           {item.label}
         </button>
       ))}
+
+      {onCreate && (
+        <button
+          type="button"
+          aria-label={t("admin.categories.add")}
+          onClick={() => { haptic.light(); onCreate(); }}
+          className="flex items-center justify-center size-9 rounded-full border border-dashed border-(--color-line) text-(--color-hint) shrink-0 cursor-pointer last:mr-4"
+        >
+          <Plus size={16} />
+        </button>
+      )}
     </nav>
   );
 };

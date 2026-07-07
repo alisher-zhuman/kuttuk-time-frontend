@@ -52,7 +52,9 @@
       "empty": "No venues found"
     },
     "categories": {
-      "add": "Add category",
+      "manage": "Manage categories",
+      "listTitle": "CATEGORIES",
+      "empty": "No categories found",
       "title": "New category",
       "nameRu": "Name in Russian",
       "nameKg": "Name in Kyrgyz",

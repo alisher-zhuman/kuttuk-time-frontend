@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { Plus } from "lucide-react";
+import { Settings2 } from "lucide-react";
 
 import { useCategoriesQuery } from "@entities/category";
 
@@ -10,10 +10,10 @@ import { useHaptic } from "@shared/hooks";
 interface Props {
   active: number | null;
   onChange: (categoryId: number | null) => void;
-  onCreate?: () => void;
+  onManage?: () => void;
 }
 
-export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
+export const CategoryFilter = ({ active, onChange, onManage }: Props) => {
   const haptic = useHaptic();
 
   const { t } = useTranslation();
@@ -43,17 +43,17 @@ export const CategoryFilter = ({ active, onChange, onCreate }: Props) => {
       aria-label="Категории"
       className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto"
     >
-      {onCreate && (
+      {onManage && (
         <button
           type="button"
-          aria-label={t("admin.categories.add")}
+          aria-label={t("admin.categories.manage")}
           onClick={() => {
             haptic.light();
-            onCreate();
+            onManage();
           }}
-          className="flex items-center justify-center size-9 rounded-full border border-dashed border-(--color-line) text-(--color-hint) shrink-0 cursor-pointer first:ml-4 last:mr-4"
+          className="flex items-center justify-center size-9 rounded-full border border-(--color-line) bg-(--color-chip) text-(--color-hint) shrink-0 cursor-pointer first:ml-4 last:mr-4"
         >
-          <Plus size={16} />
+          <Settings2 size={16} />
         </button>
       )}
 

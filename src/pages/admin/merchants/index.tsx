@@ -50,7 +50,7 @@ export const AdminMerchantsPage = () => {
         onChange={(category) =>
           setParam("category", category !== null ? String(category) : null)
         }
-        onCreate={() => navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES_NEW)}
+        onManage={() => navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES)}
       />
 
       <AdminMerchantStatusFilter

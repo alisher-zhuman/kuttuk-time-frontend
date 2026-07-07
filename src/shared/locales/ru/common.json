@@ -60,7 +60,7 @@
       "nameEn": "Название на английском",
       "namePlaceholder": "Введите название",
       "order": "Порядок",
-      "orderPlaceholder": "Необязательно",
+      "orderPlaceholder": "Например: 0",
       "create": "Создать",
       "required": "Обязательное поле",
       "orderInvalid": "Введите число"

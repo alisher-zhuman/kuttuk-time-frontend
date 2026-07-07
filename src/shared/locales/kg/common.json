@@ -60,7 +60,7 @@
       "nameEn": "Англисче аталышы",
       "namePlaceholder": "Аталышын киргизиңиз",
       "order": "Тартип",
-      "orderPlaceholder": "Милдеттүү эмес",
+      "orderPlaceholder": "Мисалы: 0",
       "create": "Түзүү",
       "required": "Милдеттүү талаа",
       "orderInvalid": "Санды киргизиңиз"

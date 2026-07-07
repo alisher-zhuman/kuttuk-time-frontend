@@ -19,7 +19,7 @@ export const CategoryForm = () => {
 
   return (
     <div className="flex flex-col gap-4 mt-3.5">
-      <h1 className="text-xs font-bold text-(--color-hint) tracking-wider pb-1 px-1">
+      <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight mt-1">
         {t("admin.categories.title")}
       </h1>
 

@@ -61,7 +61,7 @@
       "nameEn": "Name in English",
       "namePlaceholder": "Enter a name",
       "order": "Order",
-      "orderPlaceholder": "Optional",
+      "orderPlaceholder": "e.g. 0",
       "create": "Create",
       "required": "Required field",
       "orderInvalid": "Enter a number"

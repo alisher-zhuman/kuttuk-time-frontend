@@ -57,7 +57,11 @@
       "nameKg": "Название на кыргызском",
       "nameEn": "Название на английском",
       "namePlaceholder": "Введите название",
-      "create": "Создать"
+      "order": "Порядок",
+      "orderPlaceholder": "Необязательно",
+      "create": "Создать",
+      "required": "Обязательное поле",
+      "orderInvalid": "Введите число"
     }
   },
   "certificate": {

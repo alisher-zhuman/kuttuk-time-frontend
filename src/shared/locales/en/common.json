@@ -58,7 +58,11 @@
       "nameKg": "Name in Kyrgyz",
       "nameEn": "Name in English",
       "namePlaceholder": "Enter a name",
-      "create": "Create"
+      "order": "Order",
+      "orderPlaceholder": "Optional",
+      "create": "Create",
+      "required": "Required field",
+      "orderInvalid": "Enter a number"
     }
   },
   "certificate": {

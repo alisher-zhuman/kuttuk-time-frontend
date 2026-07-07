@@ -57,7 +57,11 @@
       "nameKg": "Кыргызча аталышы",
       "nameEn": "Англисче аталышы",
       "namePlaceholder": "Аталышын киргизиңиз",
-      "create": "Түзүү"
+      "order": "Тартип",
+      "orderPlaceholder": "Милдеттүү эмес",
+      "create": "Түзүү",
+      "required": "Милдеттүү талаа",
+      "orderInvalid": "Санды киргизиңиз"
     }
   },
   "certificate": {

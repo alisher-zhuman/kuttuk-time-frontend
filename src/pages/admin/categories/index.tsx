@@ -1,12 +1,15 @@
-import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { useCreateCategoryMutation } from "@entities/merchant";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useMainButton, useNavigateTo } from "@shared/hooks";
 import { Input } from "@shared/ui";
+
+import { CategoryFormSchema, type CategoryFormValues } from "./schema";
 
 export const AdminCategoriesPage = () => {
   const { t } = useTranslation();
@@ -15,19 +18,24 @@ export const AdminCategoriesPage = () => {
 
   const haptic = useHaptic();
 
-  const [ru, setRu] = useState("");
-  const [kg, setKg] = useState("");
-  const [en, setEn] = useState("");
-
   const { mutate, isPending } = useCreateCategoryMutation();
 
-  const canSubmit = Boolean(ru.trim() && kg.trim() && en.trim());
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<CategoryFormValues>({
+    resolver: zodResolver(CategoryFormSchema),
+    mode: "onChange",
+    defaultValues: { ru: "", kg: "", en: "", order: "" },
+  });
 
-  const handleSubmit = () => {
-    if (!canSubmit) return;
-
+  const onSubmit = handleSubmit((values) => {
     mutate(
-      { name: { ru: ru.trim(), kg: kg.trim(), en: en.trim() } },
+      {
+        name: { ru: values.ru.trim(), kg: values.kg.trim(), en: values.en.trim() },
+        ...(values.order.trim() && { order: Number(values.order) }),
+      },
       {
         onSuccess: () => {
           haptic.success();
@@ -36,12 +44,12 @@ export const AdminCategoriesPage = () => {
         onError: () => haptic.error(),
       },
     );
-  };
+  });
 
   useMainButton({
     text: t("admin.categories.create"),
-    onClick: handleSubmit,
-    disabled: !canSubmit,
+    onClick: () => void onSubmit(),
+    disabled: !isValid,
     loading: isPending,
   });
 
@@ -53,23 +61,31 @@ export const AdminCategoriesPage = () => {
 
       <Input
         label={t("admin.categories.nameRu")}
-        value={ru}
-        onChange={(e) => setRu(e.target.value)}
         placeholder={t("admin.categories.namePlaceholder")}
+        error={errors.ru?.message && t(errors.ru.message)}
+        {...register("ru")}
       />
 
       <Input
         label={t("admin.categories.nameKg")}
-        value={kg}
-        onChange={(e) => setKg(e.target.value)}
         placeholder={t("admin.categories.namePlaceholder")}
+        error={errors.kg?.message && t(errors.kg.message)}
+        {...register("kg")}
       />
 
       <Input
         label={t("admin.categories.nameEn")}
-        value={en}
-        onChange={(e) => setEn(e.target.value)}
         placeholder={t("admin.categories.namePlaceholder")}
+        error={errors.en?.message && t(errors.en.message)}
+        {...register("en")}
+      />
+
+      <Input
+        type="number"
+        label={t("admin.categories.order")}
+        placeholder={t("admin.categories.orderPlaceholder")}
+        error={errors.order?.message && t(errors.order.message)}
+        {...register("order")}
       />
     </div>
   );

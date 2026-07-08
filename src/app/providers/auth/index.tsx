@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect } from "react";
 
-import { miniApp, retrieveRawInitData } from "@tma.js/sdk-react";
+import { retrieveRawInitData } from "@tma.js/sdk-react";
+import { Loader2 } from "lucide-react";
 
 import { logIn } from "@shared/api";
 import { useAuthStore, useViewModeStore } from "@shared/store";
@@ -20,10 +21,6 @@ export const AuthProvider = ({ children }: Props) => {
 
     if (!initData) {
       setReady();
-      if (miniApp.ready.isAvailable()) {
-        miniApp.ready();
-      }
-
       return;
     }
 
@@ -37,14 +34,16 @@ export const AuthProvider = ({ children }: Props) => {
       .catch(console.error)
       .finally(() => {
         setReady();
-
-        if (miniApp.ready.isAvailable()) {
-          miniApp.ready();
-        }
       });
   }, []);
 
-  if (!isReady) return null;
+  if (!isReady) {
+    return (
+      <div className="min-h-dvh flex items-center justify-center bg-(--color-bg)">
+        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
+      </div>
+    );
+  }
 
   return <>{children}</>;
 };

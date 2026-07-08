@@ -42,6 +42,10 @@ export const TMAProvider = ({ children }: Props) => {
       miniApp.mount();
     }
 
+    if (miniApp.ready.isAvailable()) {
+      miniApp.ready();
+    }
+
     if (swipeBehavior.mount.isAvailable()) {
       swipeBehavior.mount();
       swipeBehavior.disableVertical();

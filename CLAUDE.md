@@ -100,6 +100,12 @@ Always check `isAvailable()` before calling SDK methods.
 - `requestPhoneAccess`/`requestContact` — business model: "no phone number required"
 - `CloudStorage` — do NOT use it for the auth token/language/theme: `i18next-browser-languagedetector` is synchronous, `CloudStorage.getItem` is async → incompatible without a flash of the wrong language on render; there's no meaningful benefit for the token or theme either (see `AuthProvider` — re-authenticating via `initData` is already transparent). Only fits non-critical data that's fine to load in a bit later (once such a feature exists)
 
+## Mutation feedback
+
+No success toast/message pattern yet — mutations that redirect on success (e.g. `createCategory` → back to the categories list) rely on haptic + the result being visible on the destination page, which is enough on its own.
+
+**Worth adding (when there's time):** a minimal custom toast (own component + small store/hook, same "hand-roll it, don't pull a library" approach as `ErrorBoundary`) for mutations that *don't* navigate away on success (e.g. future "Mark as used", inline edits) — those need a visible confirmation since there's no destination-page context to imply success.
+
 ## i18n
 
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`

@@ -21,9 +21,14 @@ import "./configs/i18n";
 
 applyTheme(useThemeStore.getState());
 
+const Broken = () => {
+  throw new Error("TEST: verifying ErrorBoundary");
+};
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
+      <Broken />
       <ThemeProvider>
         <TMAProvider>
           <AuthProvider>

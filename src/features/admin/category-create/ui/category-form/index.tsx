@@ -18,7 +18,7 @@ export const CategoryForm = () => {
 
   return (
     <div className="flex flex-col gap-4 mt-3.5">
-      <h1 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-1">
+      <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight px-1">
         {t("admin.categories.title")}
       </h1>
 
@@ -45,6 +45,7 @@ export const CategoryForm = () => {
 
       <Input
         type="number"
+        min={0}
         label={t("admin.categories.order")}
         placeholder={t("admin.categories.orderPlaceholder")}
         error={errors.order?.message && t(errors.order.message)}

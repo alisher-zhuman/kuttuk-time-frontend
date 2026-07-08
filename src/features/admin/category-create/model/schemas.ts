@@ -7,7 +7,7 @@ export const CategoryFormSchema = z.object({
   order: z
     .string()
     .trim()
-    .refine((value) => value === "" || !Number.isNaN(Number(value)), {
+    .refine((value) => value === "" || (!Number.isNaN(Number(value)) && Number(value) >= 0), {
       message: "admin.categories.orderInvalid",
     }),
 });

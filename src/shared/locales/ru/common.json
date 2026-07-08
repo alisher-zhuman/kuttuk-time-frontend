@@ -64,6 +64,7 @@
       "orderPlaceholder": "Например: 0",
       "create": "Создать",
       "save": "Сохранить",
+      "reorder": "Изменить порядок",
       "required": "Обязательное поле",
       "orderInvalid": "Введите число"
     }

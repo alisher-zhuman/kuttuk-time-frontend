@@ -65,6 +65,7 @@
       "orderPlaceholder": "e.g. 0",
       "create": "Create",
       "save": "Save",
+      "reorder": "Reorder",
       "required": "Required field",
       "orderInvalid": "Enter a number"
     }

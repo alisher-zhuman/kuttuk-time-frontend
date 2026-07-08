@@ -32,3 +32,7 @@ interface EditCategoryPayload {
 export const editCategory = async ({ id, name }: EditCategoryPayload) => {
   await api.patch(`${API_PATHS.ADMIN_CATEGORIES}/${id}`, { name });
 };
+
+export const reorderCategories = async (ids: number[]) => {
+  await api.patch(`${API_PATHS.ADMIN_CATEGORIES}/reorder`, { ids });
+};

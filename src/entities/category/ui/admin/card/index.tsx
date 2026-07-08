@@ -30,16 +30,17 @@ export const AdminCategoryCard = ({
         isDragging && "shadow-lg",
       )}
     >
+      <span className="flex-1 min-w-0 text-base font-bold text-(--color-ink) truncate">
+        {name}
+      </span>
+
       <button
         type="button"
         onClick={onClick}
-        className="flex-1 min-w-0 flex items-center gap-2 text-left cursor-pointer"
+        aria-label={t("admin.categories.edit")}
+        className="shrink-0 p-2 -m-2 text-(--color-hint) cursor-pointer"
       >
-        <span className="flex-1 min-w-0 text-base font-bold text-(--color-ink) truncate">
-          {name}
-        </span>
-
-        <Pencil size={16} className="text-(--color-hint) shrink-0" />
+        <Pencil size={16} />
       </button>
 
       <button

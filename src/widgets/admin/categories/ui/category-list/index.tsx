@@ -33,7 +33,7 @@ export const CategoryList = () => {
 
       {isLoading ? (
         <ul className="pb-5 flex flex-col gap-2 list-none">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <li key={i}>
               <CategoryCardSkeleton />
             </li>

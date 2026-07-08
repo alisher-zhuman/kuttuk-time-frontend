@@ -1,12 +1,18 @@
 import { api } from "@shared/api";
 import { API_PATHS } from "@shared/constants";
 
-import { CategoriesSchema } from "../model/schemas";
+import { AdminCategoriesSchema, CategoriesSchema } from "../model/schemas";
 
 export const getCategories = async () => {
   const response = await api.get(API_PATHS.CATEGORIES);
 
   return CategoriesSchema.parse(response.data);
+};
+
+export const getAdminCategories = async () => {
+  const response = await api.get(API_PATHS.ADMIN_CATEGORIES);
+
+  return AdminCategoriesSchema.parse(response.data);
 };
 
 interface CreateCategoryPayload {

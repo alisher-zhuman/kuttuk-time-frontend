@@ -3,15 +3,15 @@ import { useTranslation } from "react-i18next";
 import { Tag } from "lucide-react";
 
 import {
-  CategoryCard,
+  AdminCategoryCard,
   CategoryCardSkeleton,
-  useCategoriesQuery,
+  useAdminCategoriesQuery,
 } from "@entities/category";
 
 export const CategoryList = () => {
   const { t } = useTranslation();
 
-  const { categories, isLoading } = useCategoriesQuery();
+  const { categories, isLoading } = useAdminCategoriesQuery();
 
   return (
     <section aria-label={t("admin.categories.listTitle")}>
@@ -39,7 +39,7 @@ export const CategoryList = () => {
         <ul className="pb-5 flex flex-col gap-2 list-none">
           {categories.map((category) => (
             <li key={category.id}>
-              <CategoryCard category={category} />
+              <AdminCategoryCard category={category} />
             </li>
           ))}
         </ul>

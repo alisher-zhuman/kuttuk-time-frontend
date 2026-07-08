@@ -6,7 +6,7 @@ import { isSortable } from "@dnd-kit/react/sortable";
 
 import {
   type AdminCategory,
-  useReorderCategoriesMutation,
+  useReorderCategoriesMutation
 } from "@entities/category";
 
 import { useHaptic, usePopup } from "@shared/hooks";
@@ -19,6 +19,10 @@ export const useCategoryReorder = (categories: AdminCategory[]) => {
   const showPopup = usePopup();
 
   const { mutate: reorder } = useReorderCategoriesMutation();
+
+  const handleDragStart = () => {
+    haptic.medium();
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     if (event.canceled) return;
@@ -36,12 +40,12 @@ export const useCategoryReorder = (categories: AdminCategory[]) => {
           haptic.error();
           showPopup({
             title: t("errors.genericTitle"),
-            message: t("errors.generic"),
+            message: t("errors.generic")
           });
-        },
-      },
+        }
+      }
     );
   };
 
-  return { handleDragEnd };
+  return { handleDragStart, handleDragEnd };
 };

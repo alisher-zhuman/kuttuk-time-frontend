@@ -14,12 +14,13 @@ export const CategoryForm = ({ categoryId }: Props) => {
 
   const isEdit = categoryId !== undefined;
 
-  const { register, errors, isPending, submit } = useCategoryForm(categoryId);
+  const { register, errors, isPending, isDirty, submit } = useCategoryForm(categoryId);
 
   useMainButton({
     text: t(isEdit ? "admin.categories.save" : "admin.categories.create"),
     onClick: () => void submit(),
     loading: isPending,
+    hidden: isEdit && !isDirty
   });
 
   return (

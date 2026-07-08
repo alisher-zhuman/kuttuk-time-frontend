@@ -9,6 +9,7 @@ interface Options {
   onClick: () => void;
   disabled?: boolean;
   loading?: boolean;
+  hidden?: boolean;
 }
 
 const cssVar = (name: string) =>
@@ -19,6 +20,7 @@ export const useMainButton = ({
   onClick,
   disabled = false,
   loading = false,
+  hidden = false
 }: Options) => {
   const theme = useThemeStore((s) => s.theme);
 
@@ -26,7 +28,6 @@ export const useMainButton = ({
     if (!mainButton.mount.isAvailable()) return;
 
     mainButton.mount();
-    mainButton.show();
 
     return () => {
       mainButton.hide();
@@ -37,9 +38,19 @@ export const useMainButton = ({
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;
 
+    if (hidden) {
+      mainButton.hide();
+    } else {
+      mainButton.show();
+    }
+  }, [hidden]);
+
+  useEffect(() => {
+    if (!mainButton.mount.isAvailable()) return;
+
     mainButton.setParams({
       bgColor: cssVar("--color-primary"),
-      textColor: cssVar("--color-card"),
+      textColor: cssVar("--color-card")
     });
   }, [theme]);
 

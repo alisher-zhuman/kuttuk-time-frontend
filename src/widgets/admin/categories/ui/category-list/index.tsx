@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { DragDropProvider } from "@dnd-kit/react";
@@ -5,7 +7,7 @@ import { Tag } from "lucide-react";
 
 import {
   CategoryCardSkeleton,
-  useAdminCategoriesQuery,
+  useAdminCategoriesQuery
 } from "@entities/category";
 
 import { getCategoryEditRoute } from "@shared/constants";
@@ -23,7 +25,9 @@ export const CategoryList = () => {
 
   const { categories, isLoading } = useAdminCategoriesQuery();
 
-  const { handleDragEnd } = useCategoryReorder(categories);
+  const { handleDragStart, handleDragEnd } = useCategoryReorder(categories);
+
+  const listRef = useRef<HTMLUListElement>(null);
 
   return (
     <section aria-label={t("admin.categories.listTitle")}>
@@ -48,13 +52,14 @@ export const CategoryList = () => {
           <p className="text-sm font-semibold">{t("admin.categories.empty")}</p>
         </div>
       ) : (
-        <DragDropProvider onDragEnd={handleDragEnd}>
-          <ul className="pb-5 flex flex-col gap-2 list-none">
+        <DragDropProvider onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <ul ref={listRef} className="pb-5 flex flex-col gap-2 list-none">
             {categories.map((category, index) => (
               <SortableCategoryItem
                 index={index}
                 key={category.id}
                 category={category}
+                listRef={listRef}
                 onClick={() => {
                   haptic.light();
                   navigateTo(getCategoryEditRoute(category.id));

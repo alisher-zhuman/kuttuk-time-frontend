@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import {
   useAdminCategoriesQuery,
   useCreateCategoryMutation,
-  useEditCategoryMutation,
+  useEditCategoryMutation
 } from "@entities/category";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
@@ -36,11 +36,11 @@ export const useCategoryForm = (categoryId?: number) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty }
   } = useForm<CategoryFormValues>({
     resolver: zodResolver(CategoryFormSchema),
     mode: "onChange",
-    defaultValues: { ru: "", kg: "", en: "", order: "" },
+    defaultValues: { ru: "", kg: "", en: "", order: "" }
   });
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export const useCategoryForm = (categoryId?: number) => {
     const name = {
       ru: values.ru.trim(),
       kg: values.kg.trim(),
-      en: values.en.trim(),
+      en: values.en.trim()
     };
 
     const callbacks = {
@@ -65,9 +65,9 @@ export const useCategoryForm = (categoryId?: number) => {
         haptic.error();
         showPopup({
           title: t("errors.genericTitle"),
-          message: t("errors.generic"),
+          message: t("errors.generic")
         });
-      },
+      }
     };
 
     if (categoryId !== undefined) {
@@ -81,6 +81,7 @@ export const useCategoryForm = (categoryId?: number) => {
     register,
     errors,
     isPending: categoryId !== undefined ? isEditing : isCreating,
-    submit,
+    isDirty,
+    submit
   };
 };

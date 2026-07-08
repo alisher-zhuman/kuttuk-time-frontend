@@ -1,6 +1,7 @@
 export { useAdminCategoriesQuery } from "./hooks/useAdminCategoriesQuery";
 export { useCategoriesQuery } from "./hooks/useCategoriesQuery";
 export { useCreateCategoryMutation } from "./hooks/useCreateCategoryMutation";
+export { useDeleteCategoryMutation } from "./hooks/useDeleteCategoryMutation";
 export { useEditCategoryMutation } from "./hooks/useEditCategoryMutation";
 export { useReorderCategoriesMutation } from "./hooks/useReorderCategoriesMutation";
 export type { AdminCategory, Category } from "./model/types";

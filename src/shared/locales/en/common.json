@@ -67,6 +67,9 @@
       "create": "Create",
       "save": "Save",
       "reorder": "Reorder",
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete category?",
+      "deleteConfirmMessage": "The category will be deleted, and any venues assigned to it will lose that assignment. This action can't be undone.",
       "required": "Required field",
       "orderInvalid": "Enter a number"
     }

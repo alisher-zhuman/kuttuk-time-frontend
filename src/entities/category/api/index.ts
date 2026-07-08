@@ -36,3 +36,7 @@ export const editCategory = async ({ id, name }: EditCategoryPayload) => {
 export const reorderCategories = async (ids: number[]) => {
   await api.patch(`${API_PATHS.ADMIN_CATEGORIES}/reorder`, { ids });
 };
+
+export const deleteCategory = async (id: number) => {
+  await api.delete(`${API_PATHS.ADMIN_CATEGORIES}/${id}`);
+};

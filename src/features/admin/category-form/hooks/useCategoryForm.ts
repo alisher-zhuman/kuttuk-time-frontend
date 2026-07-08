@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import {
   useAdminCategoriesQuery,
   useCreateCategoryMutation,
+  useDeleteCategoryMutation,
   useEditCategoryMutation
 } from "@entities/category";
 
@@ -31,6 +32,7 @@ export const useCategoryForm = (categoryId?: number) => {
 
   const { mutate: create, isPending: isCreating } = useCreateCategoryMutation();
   const { mutate: edit, isPending: isEditing } = useEditCategoryMutation();
+  const { mutate: remove, isPending: isDeleting } = useDeleteCategoryMutation();
 
   const {
     register,
@@ -77,11 +79,42 @@ export const useCategoryForm = (categoryId?: number) => {
     }
   });
 
+  const handleDelete = async () => {
+    if (categoryId === undefined) return;
+
+    const buttonId = await showPopup({
+      title: t("admin.categories.deleteConfirmTitle"),
+      message: t("admin.categories.deleteConfirmMessage"),
+      buttons: [
+        { id: "cancel", type: "cancel" },
+        { id: "delete", type: "destructive", text: t("admin.categories.delete") }
+      ]
+    });
+
+    if (buttonId !== "delete") return;
+
+    remove(categoryId, {
+      onSuccess: () => {
+        haptic.success();
+        navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES);
+      },
+      onError: () => {
+        haptic.error();
+        showPopup({
+          title: t("errors.genericTitle"),
+          message: t("errors.generic")
+        });
+      }
+    });
+  };
+
   return {
     register,
     errors,
     isPending: categoryId !== undefined ? isEditing : isCreating,
+    isDeleting,
     isDirty,
-    submit
+    submit,
+    handleDelete
   };
 };

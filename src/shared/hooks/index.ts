@@ -4,7 +4,7 @@ export {
   useMainButton,
   usePopup,
   useSafeArea,
-  useSettingsButton,
+  useSettingsButton
 } from "./tma";
 export { useDebounce } from "./useDebounce";
 export { useNavigateTo } from "./useNavigateTo";

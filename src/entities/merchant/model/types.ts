@@ -1,7 +1,7 @@
 import type {
   AdminMerchantSchema,
   MerchantDetailSchema,
-  MerchantSchema,
+  MerchantSchema
 } from "./schemas";
 
 import type { z } from "zod";

@@ -13,6 +13,6 @@ export const useNavigateTo = () => {
         void navigate(to, { replace: options?.replace ?? pathname === to });
       }
     },
-    [navigate, pathname],
+    [navigate, pathname]
   );
 };

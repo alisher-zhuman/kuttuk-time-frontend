@@ -9,6 +9,6 @@ export const useEditCategoryMutation = () => {
     mutationFn: editCategory,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["categories"] });
-    },
+    }
   });
 };

@@ -15,7 +15,7 @@ export const useMerchantsQuery = ({ search, category }: Params) => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: merchantKeys.list(search, category, i18n.language),
-    queryFn: () => getMerchants({ search, category }),
+    queryFn: () => getMerchants({ search, category })
   });
 
   return { merchants: data ?? [], isLoading, isError };

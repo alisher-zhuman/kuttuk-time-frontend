@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router";
 
 import {
   AdminMerchantList,
-  AdminMerchantStatusFilter,
+  AdminMerchantStatusFilter
 } from "@widgets/admin/merchants";
 
 import { CategoryFilter } from "@features/category-filter";
@@ -35,7 +35,7 @@ export const AdminMerchantsPage = () => {
 
         return prev;
       },
-      { replace: true },
+      { replace: true }
     );
   };
 

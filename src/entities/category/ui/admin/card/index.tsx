@@ -17,7 +17,7 @@ export const AdminCategoryCard = ({
   category,
   onClick,
   handleRef,
-  isDragging,
+  isDragging
 }: Props) => {
   const { t, i18n } = useTranslation();
 
@@ -27,7 +27,7 @@ export const AdminCategoryCard = ({
     <div
       className={cn(
         "w-full bg-(--color-card) rounded-2xl px-4 py-3 border border-(--color-line) flex items-center gap-2",
-        isDragging && "shadow-lg",
+        isDragging && "shadow-lg"
       )}
     >
       <span className="flex-1 min-w-0 text-base font-bold text-(--color-ink) truncate">

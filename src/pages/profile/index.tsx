@@ -3,7 +3,7 @@ import {
   ProfileInfo,
   ProfileTabs,
   SettingsTab,
-  useProfileTab,
+  useProfileTab
 } from "@widgets/profile";
 
 import { ROUTE_PATTERNS } from "@shared/constants";

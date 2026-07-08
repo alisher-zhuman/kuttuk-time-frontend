@@ -7,7 +7,7 @@ type StatusValue = "all" | "active" | "inactive";
 const STATUS_VALUES: Record<StatusValue, boolean | null> = {
   all: null,
   active: true,
-  inactive: false,
+  inactive: false
 };
 
 interface Props {
@@ -23,7 +23,7 @@ export const AdminMerchantStatusFilter = ({ active, onChange }: Props) => {
 
   const items = (["all", "active", "inactive"] as const).map((status) => ({
     value: status,
-    label: t(status === "all" ? "categories.all" : `admin.merchants.${status}`),
+    label: t(status === "all" ? "categories.all" : `admin.merchants.${status}`)
   }));
 
   return (

@@ -5,7 +5,7 @@ import { Store } from "lucide-react";
 import {
   MerchantCard,
   MerchantCardSkeleton,
-  useMerchantsQuery,
+  useMerchantsQuery
 } from "@entities/merchant";
 
 interface Props {

@@ -5,17 +5,17 @@ export {
   DEFAULT_LANGUAGE,
   I18N_STORAGE_KEY,
   LANGUAGE_BADGE,
-  SUPPORTED_LANGUAGES,
+  SUPPORTED_LANGUAGES
 } from "./i18n";
 export {
   getCategoryEditRoute,
   getMerchantRoute,
   ROUTE_PATTERNS,
-  ROUTES,
+  ROUTES
 } from "./routes";
 export {
   SUPPORTED_THEMES,
   type Theme,
-  THEME_STORAGE_KEY,
+  THEME_STORAGE_KEY
 } from "./theme";
 export { VIEW_MODES,type ViewMode } from "./view-mode";

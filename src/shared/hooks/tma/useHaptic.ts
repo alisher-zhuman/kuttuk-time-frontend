@@ -22,7 +22,7 @@ export const useHaptic = () =>
       warning: () => fire(() => hapticFeedback.notificationOccurred("warning")),
 
       // selection
-      selection: () => fire(() => hapticFeedback.selectionChanged()),
+      selection: () => fire(() => hapticFeedback.selectionChanged())
     }),
-    [],
+    []
   );

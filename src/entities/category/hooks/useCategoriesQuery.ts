@@ -10,7 +10,7 @@ export const useCategoriesQuery = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: categoryKeys.list(i18n.language),
-    queryFn: getCategories,
+    queryFn: getCategories
   });
 
   const categories = data ?? [];

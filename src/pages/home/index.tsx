@@ -27,7 +27,7 @@ export const HomePage = () => {
 
         return prev;
       },
-      { replace: true },
+      { replace: true }
     );
   };
 
@@ -42,7 +42,7 @@ export const HomePage = () => {
 
         return prev;
       },
-      { replace: true },
+      { replace: true }
     );
   };
 

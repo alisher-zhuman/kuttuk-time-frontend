@@ -9,5 +9,5 @@ export interface ViewModeState {
 
 export const useViewModeStore = create<ViewModeState>((set) => ({
   viewMode: "user",
-  setViewMode: (viewMode) => set({ viewMode }),
+  setViewMode: (viewMode) => set({ viewMode })
 }));

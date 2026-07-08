@@ -20,52 +20,52 @@ import { RootRedirect } from "./guards/root-redirect";
 export const ROUTER = createBrowserRouter([
   {
     path: "/",
-    element: <RootRedirect />,
+    element: <RootRedirect />
   },
   {
     element: <AppLayout />,
     children: [
       {
         path: ROUTE_PATTERNS.HOME,
-        element: <HomePage />,
+        element: <HomePage />
       },
       {
         path: ROUTE_PATTERNS.PROFILE,
-        element: <ProfilePage />,
+        element: <ProfilePage />
       },
       {
         path: ROUTE_PATTERNS.MERCHANT,
-        element: <MerchantPage />,
+        element: <MerchantPage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_MERCHANTS,
-        element: <AdminMerchantsPage />,
+        element: <AdminMerchantsPage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_CATEGORIES,
-        element: <AdminCategoriesPage />,
+        element: <AdminCategoriesPage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_CATEGORY_CREATE,
-        element: <AdminCategoryCreatePage />,
+        element: <AdminCategoryCreatePage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_CATEGORY_EDIT,
-        element: <AdminCategoryEditPage />,
+        element: <AdminCategoryEditPage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_ORDERS,
-        element: <AdminOrdersPage />,
+        element: <AdminOrdersPage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_PAYMENTS,
-        element: <AdminPaymentsPage />,
+        element: <AdminPaymentsPage />
       },
       {
         id: "not-found",
         path: "*",
-        element: <NotFoundPage />,
-      },
-    ],
-  },
+        element: <NotFoundPage />
+      }
+    ]
+  }
 ]);

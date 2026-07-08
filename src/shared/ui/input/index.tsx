@@ -21,7 +21,7 @@ export const Input = ({ label, error, className, ref, ...props }: Props) => (
         error
           ? "border-(--color-accent)"
           : "border-(--color-line) focus:border-(--color-primary)",
-        className,
+        className
       )}
       {...props}
     />

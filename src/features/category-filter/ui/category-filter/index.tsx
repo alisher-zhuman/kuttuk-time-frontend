@@ -24,8 +24,8 @@ export const CategoryFilter = ({ active, onChange, onManage }: Props) => {
     { id: null, label: t("categories.all") },
     ...categories.map((category) => ({
       id: category.id,
-      label: category.name,
-    })),
+      label: category.name
+    }))
   ];
 
   const handleSelect = (categoryId: number | null, el: HTMLButtonElement) => {
@@ -34,7 +34,7 @@ export const CategoryFilter = ({ active, onChange, onManage }: Props) => {
     el.scrollIntoView({
       behavior: "smooth",
       inline: "center",
-      block: "nearest",
+      block: "nearest"
     });
   };
 
@@ -67,7 +67,7 @@ export const CategoryFilter = ({ active, onChange, onManage }: Props) => {
             "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer transition-colors duration-150 first:ml-4 last:mr-4",
             active === item.id
               ? "bg-(--color-primary) text-(--color-card) border-none"
-              : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",
+              : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)"
           )}
         >
           {item.label}

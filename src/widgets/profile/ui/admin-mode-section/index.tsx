@@ -7,7 +7,7 @@ import { SegmentedControl } from "@shared/ui";
 
 const VIEW_MODE_LABELS = {
   user: "admin.viewAsUser",
-  admin: "admin.viewAsAdmin",
+  admin: "admin.viewAsAdmin"
 } as const;
 
 export const AdminModeSection = () => {
@@ -20,13 +20,13 @@ export const AdminModeSection = () => {
 
   const items = VIEW_MODES.map((mode) => ({
     value: mode,
-    label: t(VIEW_MODE_LABELS[mode]),
+    label: t(VIEW_MODE_LABELS[mode])
   }));
 
   const handleChange = (mode: ViewMode) => {
     setViewMode(mode);
     navigateTo(
-      mode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME,
+      mode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME
     );
   };
 

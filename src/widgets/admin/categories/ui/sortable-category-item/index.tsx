@@ -13,7 +13,7 @@ export const SortableCategoryItem = ({ category, index, onClick }: Props) => {
   const { ref, handleRef, isDragging } = useSortable({
     id: category.id,
     index,
-    modifiers: [RestrictToVerticalAxis],
+    modifiers: [RestrictToVerticalAxis]
   });
 
   return (

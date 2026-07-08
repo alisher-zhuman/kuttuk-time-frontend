@@ -24,7 +24,7 @@ export const useReorderCategoriesMutation = () => {
               const category = byId.get(id);
               return category ? { ...category, order: index } : undefined;
             })
-            .filter((category): category is AdminCategory => category !== undefined),
+            .filter((category): category is AdminCategory => category !== undefined)
         );
       }
 
@@ -37,6 +37,6 @@ export const useReorderCategoriesMutation = () => {
     },
     onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: categoryKeys.adminList() });
-    },
+    }
   });
 };

@@ -14,7 +14,7 @@ export const useProfileTab = () => {
 
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [contentAnimation, setContentAnimation] = useState(
-    "animate-tab-enter-right",
+    "animate-tab-enter-right"
   );
 
   const handleTabChange = (tab: Tab) => {
@@ -23,7 +23,7 @@ export const useProfileTab = () => {
     setContentAnimation(
       PROFILE_TABS.indexOf(tab) > PROFILE_TABS.indexOf(activeTab)
         ? "animate-tab-enter-right"
-        : "animate-tab-enter-left",
+        : "animate-tab-enter-left"
     );
     setActiveTab(tab);
   };

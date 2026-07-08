@@ -20,7 +20,7 @@ export const RootRedirect = () => {
 
     navigateTo(
       viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME,
-      { replace: true },
+      { replace: true }
     );
   }, [navigateTo]);
 

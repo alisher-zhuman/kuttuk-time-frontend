@@ -11,7 +11,7 @@ export const useMerchantQuery = (id: string | undefined) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: merchantKeys.detail(id ?? "", i18n.language),
     queryFn: () => getMerchant(id!),
-    enabled: Boolean(id),
+    enabled: Boolean(id)
   });
 
   return { merchant: data, isLoading, isError };

@@ -9,7 +9,7 @@ import {
   AuthProvider,
   ErrorBoundary,
   ThemeProvider,
-  TMAProvider,
+  TMAProvider
 } from "@app/providers";
 import { ROUTER } from "@app/router";
 
@@ -34,5 +34,5 @@ createRoot(document.getElementById("root")!).render(
         </TMAProvider>
       </ThemeProvider>
     </ErrorBoundary>
-  </StrictMode>,
+  </StrictMode>
 );

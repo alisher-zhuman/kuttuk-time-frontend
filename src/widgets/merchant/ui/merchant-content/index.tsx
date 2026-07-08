@@ -25,7 +25,7 @@ export const MerchantContent = ({ merchant }: Props) => {
     text: t("merchantDetail.buy"),
     onClick: () => {
       // TODO: payment flow
-    },
+    }
   });
 
   return (

@@ -20,7 +20,7 @@ const MOCK_CERTS: MockCert[] = [
     code: "KUTT-7F3A-9B2C",
     amount: 2000,
     status: "active",
-    gradient: ["#5A4BE8", "#8B7DFB"],
+    gradient: ["#5A4BE8", "#8B7DFB"]
   },
   {
     id: "2",
@@ -28,7 +28,7 @@ const MOCK_CERTS: MockCert[] = [
     code: "KUTT-1D8E-4A55",
     amount: 1000,
     status: "active",
-    gradient: ["#FF6B5E", "#FF9486"],
+    gradient: ["#FF6B5E", "#FF9486"]
   },
   {
     id: "3",
@@ -36,8 +36,8 @@ const MOCK_CERTS: MockCert[] = [
     code: "KUTT-3E6A-2B19",
     amount: 500,
     status: "used",
-    gradient: ["#8B5CF6", "#A78BFA"],
-  },
+    gradient: ["#8B5CF6", "#A78BFA"]
+  }
 ];
 
 export const CertificatesTab = () => {
@@ -53,13 +53,13 @@ export const CertificatesTab = () => {
             key={cert.id}
             className={cn(
               "flex items-center gap-3 p-3 bg-(--color-card) rounded-2xl border border-(--color-line)",
-              isUsed && "opacity-55",
+              isUsed && "opacity-55"
             )}
           >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0"
               style={{
-                background: `linear-gradient(140deg, ${cert.gradient[0]}, ${cert.gradient[1]})`,
+                background: `linear-gradient(140deg, ${cert.gradient[0]}, ${cert.gradient[1]})`
               }}
             >
               {cert.merchant[0]}
@@ -84,7 +84,7 @@ export const CertificatesTab = () => {
                     "flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shrink-0",
                     isUsed
                       ? "bg-(--color-surface) text-(--color-hint)"
-                      : "bg-(--color-green-tint) text-(--color-green)",
+                      : "bg-(--color-green-tint) text-(--color-green)"
                   )}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />

@@ -38,7 +38,7 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
                 "px-4 py-2 rounded-full text-sm font-bold cursor-pointer transition-colors duration-150",
                 isSelected
                   ? "bg-(--color-primary) text-(--color-card)"
-                  : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)",
+                  : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)"
               )}
             >
               {formatMoney(nominal, currency)}

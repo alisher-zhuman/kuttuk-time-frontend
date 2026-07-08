@@ -5,7 +5,7 @@ import {
   useBackButton,
   useSafeArea,
   useSettingsButton,
-  useSwipeNavigation,
+  useSwipeNavigation
 } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 
@@ -46,7 +46,7 @@ export const AppLayout = () => {
           paddingTop: insets.top,
           paddingRight: insets.right,
           paddingBottom: insets.bottom,
-          paddingLeft: insets.left,
+          paddingLeft: insets.left
         }}
       >
         {pathname !== ROUTE_PATTERNS.PROFILE && <Header />}

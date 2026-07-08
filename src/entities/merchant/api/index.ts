@@ -4,7 +4,7 @@ import { API_PATHS } from "@shared/constants";
 import {
   AdminMerchantsSchema,
   MerchantDetailSchema,
-  MerchantsSchema,
+  MerchantsSchema
 } from "../model/schemas";
 
 interface GetAdminMerchantsParams {
@@ -18,8 +18,8 @@ export const getAdminMerchants = async (params: GetAdminMerchantsParams = {}) =>
     params: {
       ...(params.search && { search: params.search }),
       ...(params.category != null && { category: params.category }),
-      ...(params.isActive != null && { isActive: params.isActive }),
-    },
+      ...(params.isActive != null && { isActive: params.isActive })
+    }
   });
 
   return AdminMerchantsSchema.parse(response.data);
@@ -34,8 +34,8 @@ export const getMerchants = async (params: GetMerchantsParams = {}) => {
   const response = await api.get(API_PATHS.MERCHANTS, {
     params: {
       ...(params.search && { search: params.search }),
-      ...(params.category != null && { category: params.category }),
-    },
+      ...(params.category != null && { category: params.category })
+    }
   });
 
   return MerchantsSchema.parse(response.data);

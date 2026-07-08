@@ -6,7 +6,7 @@ import { categoryKeys } from "../model/keys";
 export const useAdminCategoriesQuery = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: categoryKeys.adminList(),
-    queryFn: getAdminCategories,
+    queryFn: getAdminCategories
   });
 
   return { categories: data ?? [], isLoading, isError };

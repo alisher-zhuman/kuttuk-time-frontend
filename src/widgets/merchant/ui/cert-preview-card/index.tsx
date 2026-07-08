@@ -13,7 +13,7 @@ interface Props {
 export const CertPreviewCard = ({
   merchantName,
   amount,
-  validityMonths,
+  validityMonths
 }: Props) => {
   const { t } = useTranslation();
 
@@ -21,7 +21,7 @@ export const CertPreviewCard = ({
     <div
       className="relative rounded-2xl overflow-hidden text-white p-5"
       style={{
-        background: "linear-gradient(125deg, var(--cert-from), var(--cert-to))",
+        background: "linear-gradient(125deg, var(--cert-from), var(--cert-to))"
       }}
     >
       <div className="absolute -right-7 -top-7 size-32 rounded-full bg-white/15 pointer-events-none" />

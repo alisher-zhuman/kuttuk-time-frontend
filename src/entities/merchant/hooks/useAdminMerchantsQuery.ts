@@ -16,7 +16,7 @@ export const useAdminMerchantsQuery = ({ search, category, isActive }: Params) =
 
   const { data, isLoading, isError } = useQuery({
     queryKey: merchantKeys.adminList(search, category, isActive, i18n.language),
-    queryFn: () => getAdminMerchants({ search, category, isActive }),
+    queryFn: () => getAdminMerchants({ search, category, isActive })
   });
 
   return { merchants: data ?? [], isLoading, isError };

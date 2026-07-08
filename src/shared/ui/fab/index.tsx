@@ -28,11 +28,11 @@ export const Fab = ({ onClick, ariaLabel, children }: Props) => {
       style={{
         bottom: insets.bottom + MARGIN,
         right: insets.right + MARGIN,
-        boxShadow: "var(--shadow-card)",
+        boxShadow: "var(--shadow-card)"
       }}
     >
       {children}
     </button>,
-    document.body,
+    document.body
   );
 };

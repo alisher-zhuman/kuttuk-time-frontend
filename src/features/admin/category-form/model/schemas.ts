@@ -11,4 +11,3 @@ export const CategoryFormSchema = z.object({
       message: "admin.categories.orderInvalid",
     }),
 });
-

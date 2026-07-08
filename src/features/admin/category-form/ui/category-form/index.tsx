@@ -5,13 +5,19 @@ import { Input } from "@shared/ui";
 
 import { useCategoryForm } from "../../hooks/useCategoryForm";
 
-export const CategoryForm = () => {
+interface Props {
+  categoryId?: number;
+}
+
+export const CategoryForm = ({ categoryId }: Props) => {
   const { t } = useTranslation();
 
-  const { register, errors, isPending, submit } = useCategoryForm();
+  const isEdit = categoryId !== undefined;
+
+  const { register, errors, isPending, submit } = useCategoryForm(categoryId);
 
   useMainButton({
-    text: t("admin.categories.create"),
+    text: t(isEdit ? "admin.categories.save" : "admin.categories.create"),
     onClick: () => void submit(),
     loading: isPending,
   });
@@ -19,7 +25,7 @@ export const CategoryForm = () => {
   return (
     <div className="flex flex-col gap-4 mt-3.5">
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
-        {t("admin.categories.title")}
+        {t(isEdit ? "admin.categories.editTitle" : "admin.categories.title")}
       </h1>
 
       <Input
@@ -43,14 +49,16 @@ export const CategoryForm = () => {
         {...register("en")}
       />
 
-      <Input
-        type="number"
-        min={0}
-        label={t("admin.categories.order")}
-        placeholder={t("admin.categories.orderPlaceholder")}
-        error={errors.order?.message && t(errors.order.message)}
-        {...register("order")}
-      />
+      {!isEdit && (
+        <Input
+          type="number"
+          min={0}
+          label={t("admin.categories.order")}
+          placeholder={t("admin.categories.orderPlaceholder")}
+          error={errors.order?.message && t(errors.order.message)}
+          {...register("order")}
+        />
+      )}
     </div>
   );
 };

@@ -1,3 +1,3 @@
-import { CategoryForm } from "@features/admin/category-create";
+import { CategoryForm } from "@features/admin/category-form";
 
 export const AdminCategoryCreatePage = () => <CategoryForm />;

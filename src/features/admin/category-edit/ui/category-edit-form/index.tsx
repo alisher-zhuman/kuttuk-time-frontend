@@ -3,15 +3,19 @@ import { useTranslation } from "react-i18next";
 import { useMainButton } from "@shared/hooks";
 import { Input } from "@shared/ui";
 
-import { useCategoryForm } from "../../hooks/useCategoryForm";
+import { useCategoryEditForm } from "../../hooks/useCategoryEditForm";
 
-export const CategoryForm = () => {
+interface Props {
+  categoryId: number;
+}
+
+export const CategoryEditForm = ({ categoryId }: Props) => {
   const { t } = useTranslation();
 
-  const { register, errors, isPending, submit } = useCategoryForm();
+  const { register, errors, isPending, submit } = useCategoryEditForm(categoryId);
 
   useMainButton({
-    text: t("admin.categories.create"),
+    text: t("admin.categories.save"),
     onClick: () => void submit(),
     loading: isPending,
   });
@@ -19,7 +23,7 @@ export const CategoryForm = () => {
   return (
     <div className="flex flex-col gap-4 mt-3.5">
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
-        {t("admin.categories.title")}
+        {t("admin.categories.editTitle")}
       </h1>
 
       <Input
@@ -41,15 +45,6 @@ export const CategoryForm = () => {
         placeholder={t("admin.categories.namePlaceholder")}
         error={errors.en?.message && t(errors.en.message)}
         {...register("en")}
-      />
-
-      <Input
-        type="number"
-        min={0}
-        label={t("admin.categories.order")}
-        placeholder={t("admin.categories.orderPlaceholder")}
-        error={errors.order?.message && t(errors.order.message)}
-        {...register("order")}
       />
     </div>
   );

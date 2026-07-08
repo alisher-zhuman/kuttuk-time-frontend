@@ -56,6 +56,7 @@
       "listTitle": "CATEGORIES",
       "empty": "No categories found",
       "title": "New category",
+      "editTitle": "Edit category",
       "nameRu": "Name in Russian",
       "nameKg": "Name in Kyrgyz",
       "nameEn": "Name in English",
@@ -63,6 +64,7 @@
       "order": "Order",
       "orderPlaceholder": "e.g. 0",
       "create": "Create",
+      "save": "Save",
       "required": "Required field",
       "orderInvalid": "Enter a number"
     }

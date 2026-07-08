@@ -23,3 +23,12 @@ interface CreateCategoryPayload {
 export const createCategory = async (payload: CreateCategoryPayload) => {
   await api.post(API_PATHS.ADMIN_CATEGORIES, payload);
 };
+
+interface EditCategoryPayload {
+  id: number;
+  name: { ru: string; kg: string; en: string };
+}
+
+export const editCategory = async ({ id, name }: EditCategoryPayload) => {
+  await api.patch(`${API_PATHS.ADMIN_CATEGORIES}/${id}`, { name });
+};

@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 
 import { AdminCategoriesPage } from "@pages/admin/categories";
 import { AdminCategoryCreatePage } from "@pages/admin/category-create";
+import { AdminCategoryEditPage } from "@pages/admin/category-edit";
 import { AdminMerchantsPage } from "@pages/admin/merchants";
 import { AdminOrdersPage } from "@pages/admin/orders";
 import { AdminPaymentsPage } from "@pages/admin/payments";
@@ -47,6 +48,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTE_PATTERNS.ADMIN_CATEGORY_CREATE,
         element: <AdminCategoryCreatePage />,
+      },
+      {
+        path: ROUTE_PATTERNS.ADMIN_CATEGORY_EDIT,
+        element: <AdminCategoryEditPage />,
       },
       {
         path: ROUTE_PATTERNS.ADMIN_ORDERS,

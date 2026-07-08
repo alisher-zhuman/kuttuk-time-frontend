@@ -8,8 +8,15 @@ import {
   useAdminCategoriesQuery,
 } from "@entities/category";
 
+import { getCategoryEditRoute } from "@shared/constants";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
+
 export const CategoryList = () => {
   const { t } = useTranslation();
+
+  const navigateTo = useNavigateTo();
+
+  const haptic = useHaptic();
 
   const { categories, isLoading } = useAdminCategoriesQuery();
 
@@ -39,7 +46,13 @@ export const CategoryList = () => {
         <ul className="pb-5 flex flex-col gap-2 list-none">
           {categories.map((category) => (
             <li key={category.id}>
-              <AdminCategoryCard category={category} />
+              <AdminCategoryCard
+                category={category}
+                onClick={() => {
+                  haptic.light();
+                  navigateTo(getCategoryEditRoute(category.id));
+                }}
+              />
             </li>
           ))}
         </ul>

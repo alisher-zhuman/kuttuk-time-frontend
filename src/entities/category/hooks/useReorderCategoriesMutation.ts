@@ -36,7 +36,7 @@ export const useReorderCategoriesMutation = () => {
       }
     },
     onSettled: () => {
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.adminList() });
+      void queryClient.invalidateQueries({ queryKey: ["categories"] });
     }
   });
 };

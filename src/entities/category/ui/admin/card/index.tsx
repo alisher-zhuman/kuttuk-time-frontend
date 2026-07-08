@@ -36,32 +36,34 @@ export const AdminCategoryCard = ({
         {name}
       </span>
 
-      <button
-        type="button"
-        onClick={onClick}
-        aria-label={t("admin.categories.edit")}
-        className="shrink-0 p-2 -m-2 text-(--color-hint) cursor-pointer"
-      >
-        <Pencil size={16} />
-      </button>
+      <div className="flex items-center gap-4">
+        <button
+          type="button"
+          onClick={onClick}
+          aria-label={t("admin.categories.edit")}
+          className="shrink-0 p-2 -m-2 text-(--color-hint) cursor-pointer"
+        >
+          <Pencil size={16} />
+        </button>
 
-      <button
-        type="button"
-        onClick={onDelete}
-        aria-label={t("admin.categories.delete")}
-        className="shrink-0 p-2 -m-2 text-(--color-accent) cursor-pointer"
-      >
-        <Trash2 size={16} />
-      </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          aria-label={t("admin.categories.delete")}
+          className="shrink-0 p-2 -m-2 text-(--color-accent) cursor-pointer"
+        >
+          <Trash2 size={16} />
+        </button>
 
-      <button
-        type="button"
-        ref={handleRef}
-        aria-label={t("admin.categories.reorder")}
-        className="shrink-0 p-2 -m-2 touch-none text-(--color-hint) cursor-grab active:cursor-grabbing"
-      >
-        <GripVertical size={18} />
-      </button>
+        <button
+          type="button"
+          ref={handleRef}
+          aria-label={t("admin.categories.reorder")}
+          className="shrink-0 p-2 -m-2 touch-none text-(--color-hint) cursor-grab active:cursor-grabbing"
+        >
+          <GripVertical size={18} />
+        </button>
+      </div>
     </div>
   );
 };

@@ -40,7 +40,7 @@ export const CategoryList = () => {
 
       {isLoading ? (
         <ul className="pb-5 flex flex-col gap-2 list-none">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: 13 }).map((_, i) => (
             <li key={i}>
               <CategoryCardSkeleton />
             </li>
@@ -55,8 +55,14 @@ export const CategoryList = () => {
           <p className="text-sm font-semibold">{t("admin.categories.empty")}</p>
         </div>
       ) : (
-        <DragDropProvider onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <ul ref={setListElement} className="pb-5 flex flex-col gap-2 list-none">
+        <DragDropProvider
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <ul
+            ref={setListElement}
+            className="pb-5 flex flex-col gap-2 list-none"
+          >
             {categories.map((category, index) => (
               <SortableCategoryItem
                 index={index}

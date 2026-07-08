@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +27,7 @@ export const CategoryList = () => {
 
   const { handleDragStart, handleDragEnd } = useCategoryReorder(categories);
 
-  const listRef = useRef<HTMLUListElement>(null);
+  const [listElement, setListElement] = useState<HTMLUListElement | null>(null);
 
   return (
     <section aria-label={t("admin.categories.listTitle")}>
@@ -53,13 +53,13 @@ export const CategoryList = () => {
         </div>
       ) : (
         <DragDropProvider onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <ul ref={listRef} className="pb-5 flex flex-col gap-2 list-none">
+          <ul ref={setListElement} className="pb-5 flex flex-col gap-2 list-none">
             {categories.map((category, index) => (
               <SortableCategoryItem
                 index={index}
                 key={category.id}
                 category={category}
-                listRef={listRef}
+                listElement={listElement}
                 onClick={() => {
                   haptic.light();
                   navigateTo(getCategoryEditRoute(category.id));

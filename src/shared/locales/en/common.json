@@ -96,6 +96,7 @@
   },
   "errors": {
     "genericTitle": "Error",
-    "generic": "Something went wrong. Please try again."
+    "generic": "Something went wrong. Please try again.",
+    "reload": "Reload page"
   }
 }

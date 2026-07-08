@@ -15,12 +15,12 @@ import { AppLayout } from "@widgets/layout";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 
-import { RootRedirect } from "./guards/root-redirect";
+import { rootRedirectLoader } from "./guards/root-redirect";
 
 export const ROUTER = createBrowserRouter([
   {
     path: "/",
-    element: <RootRedirect />
+    loader: rootRedirectLoader
   },
   {
     element: <AppLayout />,

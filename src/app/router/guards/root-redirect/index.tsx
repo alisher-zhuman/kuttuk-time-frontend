@@ -1,28 +1,19 @@
-import { useEffect } from "react";
+import { redirect } from "react-router";
 
 import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { getLaunchParams } from "@shared/helpers";
-import { useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 
-export const RootRedirect = () => {
-  const navigateTo = useNavigateTo();
+export const rootRedirectLoader = () => {
+  const startParam = getLaunchParams()?.tgWebAppStartParam;
 
-  useEffect(() => {
-    const startParam = getLaunchParams()?.tgWebAppStartParam;
+  if (startParam) {
+    return redirect(getMerchantRoute(startParam));
+  }
 
-    if (startParam) {
-      navigateTo(getMerchantRoute(startParam), { replace: true });
-      return;
-    }
+  const { viewMode } = useViewModeStore.getState();
 
-    const { viewMode } = useViewModeStore.getState();
-
-    navigateTo(
-      viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME,
-      { replace: true }
-    );
-  }, [navigateTo]);
-
-  return null;
+  return redirect(
+    viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME
+  );
 };

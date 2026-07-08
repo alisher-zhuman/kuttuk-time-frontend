@@ -21,15 +21,9 @@ import "./configs/i18n";
 
 applyTheme(useThemeStore.getState());
 
-// eslint-disable-next-line react-refresh/only-export-components -- temporary, for testing ErrorBoundary
-const Broken = () => {
-  throw new Error("TEST: verifying ErrorBoundary");
-};
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
-      <Broken />
       <ThemeProvider>
         <TMAProvider>
           <AuthProvider>

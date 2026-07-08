@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import { Trash2 } from "lucide-react";
-
 import { useMainButton } from "@shared/hooks";
 import { Input } from "@shared/ui";
 
@@ -16,8 +14,7 @@ export const CategoryForm = ({ categoryId }: Props) => {
 
   const isEdit = categoryId !== undefined;
 
-  const { register, errors, isPending, isDeleting, isDirty, submit, handleDelete } =
-    useCategoryForm(categoryId);
+  const { register, errors, isPending, isDirty, submit } = useCategoryForm(categoryId);
 
   useMainButton({
     text: t(isEdit ? "admin.categories.save" : "admin.categories.create"),
@@ -28,23 +25,9 @@ export const CategoryForm = ({ categoryId }: Props) => {
 
   return (
     <div className="flex flex-col gap-4 mt-3.5">
-      <div className="flex items-center justify-between gap-2">
-        <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
-          {t(isEdit ? "admin.categories.editTitle" : "admin.categories.title")}
-        </h1>
-
-        {isEdit && (
-          <button
-            type="button"
-            onClick={() => void handleDelete()}
-            disabled={isDeleting}
-            aria-label={t("admin.categories.delete")}
-            className="shrink-0 p-2 -m-2 text-(--color-accent) cursor-pointer disabled:opacity-50"
-          >
-            <Trash2 size={20} />
-          </button>
-        )}
-      </div>
+      <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
+        {t(isEdit ? "admin.categories.editTitle" : "admin.categories.title")}
+      </h1>
 
       <Input
         label={t("admin.categories.nameRu")}

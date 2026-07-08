@@ -9,13 +9,15 @@ interface Props {
   index: number;
   listElement: HTMLUListElement | null;
   onClick: () => void;
+  onDelete: () => void;
 }
 
 export const SortableCategoryItem = ({
   category,
   index,
   listElement,
-  onClick
+  onClick,
+  onDelete
 }: Props) => {
   const { ref, handleRef, isDragging } = useSortable({
     id: category.id,
@@ -31,6 +33,7 @@ export const SortableCategoryItem = ({
       <AdminCategoryCard
         category={category}
         onClick={onClick}
+        onDelete={onDelete}
         handleRef={handleRef}
         isDragging={isDragging}
       />

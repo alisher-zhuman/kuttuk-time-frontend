@@ -13,6 +13,7 @@ import {
 import { getCategoryEditRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
+import { useCategoryDelete } from "../../hooks/useCategoryDelete";
 import { useCategoryReorder } from "../../hooks/useCategoryReorder";
 import { SortableCategoryItem } from "../sortable-category-item";
 
@@ -26,6 +27,8 @@ export const CategoryList = () => {
   const { categories, isLoading } = useAdminCategoriesQuery();
 
   const { handleDragStart, handleDragEnd } = useCategoryReorder(categories);
+
+  const { handleDelete } = useCategoryDelete();
 
   const [listElement, setListElement] = useState<HTMLUListElement | null>(null);
 
@@ -64,6 +67,7 @@ export const CategoryList = () => {
                   haptic.light();
                   navigateTo(getCategoryEditRoute(category.id));
                 }}
+                onDelete={() => void handleDelete(category.id)}
               />
             ))}
           </ul>

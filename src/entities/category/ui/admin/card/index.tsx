@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { GripVertical, Pencil } from "lucide-react";
+import { GripVertical, Pencil, Trash2 } from "lucide-react";
 
 import { cn } from "@shared/helpers";
 
@@ -9,6 +9,7 @@ import type { AdminCategory } from "../../../model/types";
 interface Props {
   category: AdminCategory;
   onClick: () => void;
+  onDelete: () => void;
   handleRef: (element: Element | null) => void;
   isDragging: boolean;
 }
@@ -16,6 +17,7 @@ interface Props {
 export const AdminCategoryCard = ({
   category,
   onClick,
+  onDelete,
   handleRef,
   isDragging
 }: Props) => {
@@ -41,6 +43,15 @@ export const AdminCategoryCard = ({
         className="shrink-0 p-2 -m-2 text-(--color-hint) cursor-pointer"
       >
         <Pencil size={16} />
+      </button>
+
+      <button
+        type="button"
+        onClick={onDelete}
+        aria-label={t("admin.categories.delete")}
+        className="shrink-0 p-2 -m-2 text-(--color-accent) cursor-pointer"
+      >
+        <Trash2 size={16} />
       </button>
 
       <button

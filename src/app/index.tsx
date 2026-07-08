@@ -21,6 +21,7 @@ import "./configs/i18n";
 
 applyTheme(useThemeStore.getState());
 
+// eslint-disable-next-line react-refresh/only-export-components -- temporary, for testing ErrorBoundary
 const Broken = () => {
   throw new Error("TEST: verifying ErrorBoundary");
 };

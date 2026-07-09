@@ -19,6 +19,7 @@ const ROOT_PATHS: string[] = [
 
 export const useBackButton = () => {
   const { pathname } = useLocation();
+  
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();

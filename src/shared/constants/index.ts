@@ -7,13 +7,7 @@ export {
   LANGUAGE_BADGE,
   SUPPORTED_LANGUAGES
 } from "./i18n";
-export {
-  NOMINAL_MAX,
-  NOMINAL_MIN,
-  VALIDITY_MAX,
-  VALIDITY_MIN,
-  VALIDITY_PRESETS
-} from "./merchant";
+export { NOMINAL_PRESETS, VALIDITY_PRESETS } from "./merchant";
 export {
   getAdminMerchantDetailRoute,
   getCategoryEditRoute,

@@ -6,8 +6,8 @@ import { Input, Textarea } from "@shared/ui";
 import { useMerchantForm } from "../../hooks/useMerchantForm";
 import { CategorySelect } from "../category-select";
 import { LogoUpload } from "../logo-upload";
-import { NominalInput } from "../nominal-input";
-import { ValidityInput } from "../validity-input";
+import { NominalSelect } from "../nominal-select";
+import { ValiditySelect } from "../validity-select";
 
 export const MerchantForm = () => {
   const { t } = useTranslation();
@@ -92,13 +92,13 @@ export const MerchantForm = () => {
         error={errors.categories?.message && t(errors.categories.message)}
       />
 
-      <NominalInput
+      <NominalSelect
         value={nominals}
         onChange={setNominals}
         error={errors.nominals?.message && t(errors.nominals.message)}
       />
 
-      <ValidityInput
+      <ValiditySelect
         value={validityMonths}
         onChange={setValidityMonths}
         error={errors.validityMonths?.message && t(errors.validityMonths.message)}

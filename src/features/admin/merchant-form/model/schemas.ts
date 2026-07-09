@@ -1,11 +1,6 @@
 import { z } from "zod";
 
-import {
-  NOMINAL_MAX,
-  NOMINAL_MIN,
-  VALIDITY_MAX,
-  VALIDITY_MIN
-} from "@shared/constants";
+import { NOMINAL_PRESETS, VALIDITY_PRESETS } from "@shared/constants";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -28,14 +23,15 @@ export const MerchantFormSchema = z.object({
   descriptionEn: z.string().trim().min(1, "admin.merchants.form.required"),
   categories: z.array(z.number()).min(1, "admin.merchants.form.categoriesRequired"),
   nominals: z
-    .array(z.number().int().min(NOMINAL_MIN).max(NOMINAL_MAX))
+    .array(
+      z
+        .number()
+        .refine((value) => (NOMINAL_PRESETS as readonly number[]).includes(value))
+    )
     .min(1, "admin.merchants.form.nominalsRequired"),
   validityMonths: z
-    .string()
-    .trim()
-    .refine((value) => isIntegerInRange(value, VALIDITY_MIN, VALIDITY_MAX), {
-      message: "admin.merchants.form.validityInvalid"
-    }),
+    .number()
+    .refine((value) => (VALIDITY_PRESETS as readonly number[]).includes(value)),
   merchantTelegramId: z
     .string()
     .trim()

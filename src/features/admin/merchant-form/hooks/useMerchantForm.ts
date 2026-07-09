@@ -56,7 +56,7 @@ export const useMerchantForm = () => {
       descriptionEn: "",
       categories: [],
       nominals: [],
-      validityMonths: "12",
+      validityMonths: 12,
       merchantTelegramId: ""
     }
   });
@@ -73,7 +73,7 @@ export const useMerchantForm = () => {
   const setCategories = (next: number[]) => {
     setValue("categories", next, options);
   };
-  const setValidityMonths = (months: string) => {
+  const setValidityMonths = (months: number) => {
     setValue("validityMonths", months, options);
   };
 
@@ -88,7 +88,7 @@ export const useMerchantForm = () => {
         },
         categories: values.categories,
         nominals: values.nominals,
-        validityMonths: Number(values.validityMonths),
+        validityMonths: values.validityMonths,
         logo: values.logo,
         merchantTelegramId: Number(values.merchantTelegramId),
         slug: values.slug.trim()

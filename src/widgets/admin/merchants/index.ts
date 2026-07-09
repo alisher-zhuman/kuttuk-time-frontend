@@ -3,6 +3,7 @@ export { MerchantDetailChips } from "./ui/merchant-detail-chips";
 export { MerchantDetailDescription } from "./ui/merchant-detail-description";
 export { MerchantDetailHeader } from "./ui/merchant-detail-header";
 export { MerchantDetailMeta } from "./ui/merchant-detail-meta";
+export { MerchantDetailMetaField } from "./ui/merchant-detail-meta-field";
 export { AdminMerchantDetailSkeleton } from "./ui/merchant-detail-skeleton";
 export { AdminMerchantList } from "./ui/merchant-list";
 export { AdminMerchantNotFound } from "./ui/merchant-not-found";

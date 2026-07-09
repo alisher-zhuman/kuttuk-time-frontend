@@ -1,4 +1,9 @@
 export { AdminMerchantDetailContent } from "./ui/merchant-detail";
+export { MerchantDetailCategories } from "./ui/merchant-detail-categories";
+export { MerchantDetailDescription } from "./ui/merchant-detail-description";
+export { MerchantDetailHeader } from "./ui/merchant-detail-header";
+export { MerchantDetailMeta } from "./ui/merchant-detail-meta";
+export { MerchantDetailNominals } from "./ui/merchant-detail-nominals";
 export { AdminMerchantDetailSkeleton } from "./ui/merchant-detail-skeleton";
 export { AdminMerchantList } from "./ui/merchant-list";
 export { AdminMerchantNotFound } from "./ui/merchant-not-found";

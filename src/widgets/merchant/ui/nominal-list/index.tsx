@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { cn, formatMoney } from "@shared/helpers";
-import { useHaptic } from "@shared/hooks";
+import { formatMoney } from "@shared/helpers";
+import { ChipSelect } from "@shared/ui";
 
 interface Props {
   nominals: number[];
@@ -12,8 +12,6 @@ interface Props {
 export const NominalList = ({ nominals, selected, onSelect }: Props) => {
   const { t } = useTranslation();
 
-  const haptic = useHaptic();
-
   const currency = t("certificate.currency");
 
   return (
@@ -22,30 +20,15 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
         {t("merchantDetail.nominal")}
       </p>
 
-      <div className="flex flex-wrap gap-2">
-        {nominals.map((nominal) => {
-          const isSelected = nominal === selected;
-          
-          return (
-            <button
-              key={nominal}
-              type="button"
-              onClick={() => {
-                haptic.selection();
-                onSelect(nominal);
-              }}
-              className={cn(
-                "px-4 py-2 rounded-full text-sm font-bold cursor-pointer border transition-colors duration-150",
-                isSelected
-                  ? "bg-(--color-primary) text-(--color-card) border-transparent"
-                  : "bg-(--color-chip) text-(--color-chip-ink) border-(--color-line)"
-              )}
-            >
-              {formatMoney(nominal, currency)}
-            </button>
-          );
-        })}
-      </div>
+      <ChipSelect
+        size="md"
+        items={nominals.map((nominal) => ({
+          value: nominal,
+          label: formatMoney(nominal, currency)
+        }))}
+        isSelected={(nominal) => nominal === selected}
+        onSelect={onSelect}
+      />
     </div>
   );
 };

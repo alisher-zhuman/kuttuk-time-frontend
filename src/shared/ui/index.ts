@@ -1,3 +1,4 @@
+export { ChipSelect } from './chip-select';
 export { Fab } from './fab';
 export { Input } from './input';
 export { LangSwitcher } from './lang-switcher';

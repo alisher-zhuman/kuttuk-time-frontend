@@ -9,8 +9,13 @@ import {
 import { useCategoriesQuery } from "@entities/category";
 import { useAdminMerchantQuery } from "@entities/merchant";
 
+import { getMerchantEditRoute } from "@shared/constants";
+import { useNavigateTo } from "@shared/hooks";
+
 export const AdminMerchantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+
+  const navigateTo = useNavigateTo();
 
   const { merchant, isLoading, isError } = useAdminMerchantQuery(id);
 
@@ -20,6 +25,10 @@ export const AdminMerchantDetailPage = () => {
   if (isError || !merchant) return <AdminMerchantNotFound />;
 
   return (
-    <AdminMerchantDetailContent merchant={merchant} categories={categories} />
+    <AdminMerchantDetailContent
+      merchant={merchant}
+      categories={categories}
+      onEdit={() => navigateTo(getMerchantEditRoute(merchant.id))}
+    />
   );
 };

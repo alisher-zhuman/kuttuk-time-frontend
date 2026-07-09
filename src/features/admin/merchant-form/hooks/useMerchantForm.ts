@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,7 +7,11 @@ import { useForm, useWatch } from "react-hook-form";
 
 import { isAxiosError } from "axios";
 
-import { useCreateMerchantMutation } from "@entities/merchant";
+import {
+  useAdminMerchantQuery,
+  useCreateMerchantMutation,
+  useUpdateMerchantMutation
+} from "@entities/merchant";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo, usePopup } from "@shared/hooks";
@@ -26,7 +32,7 @@ const getConflictField = (error: unknown) => {
   return CONFLICT_FIELDS.find((name) => name === field) ?? null;
 };
 
-export const useMerchantForm = () => {
+export const useMerchantForm = (merchantId?: number) => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -35,15 +41,21 @@ export const useMerchantForm = () => {
 
   const showPopup = usePopup();
 
-  const { mutate: create, isPending } = useCreateMerchantMutation();
+  const { merchant } = useAdminMerchantQuery(
+    merchantId !== undefined ? String(merchantId) : undefined
+  );
+
+  const { mutate: create, isPending: isCreating } = useCreateMerchantMutation();
+  const { mutate: update, isPending: isUpdating } = useUpdateMerchantMutation();
 
   const {
     register,
     handleSubmit,
+    reset,
     setValue,
     setError,
     control,
-    formState: { errors }
+    formState: { errors, isDirty }
   } = useForm<MerchantFormValues>({
     resolver: zodResolver(MerchantFormSchema),
     mode: "onChange",
@@ -57,14 +69,34 @@ export const useMerchantForm = () => {
       categories: [],
       nominals: [500],
       validityMonths: 12,
+      isActive: true,
       merchantTelegramId: ""
     }
   });
+
+  useEffect(() => {
+    if (!merchant) return;
+
+    reset({
+      logo: merchant.logo,
+      name: merchant.name,
+      slug: merchant.slug,
+      descriptionRu: merchant.description?.ru ?? "",
+      descriptionKg: merchant.description?.kg ?? "",
+      descriptionEn: merchant.description?.en ?? "",
+      categories: merchant.categories,
+      nominals: merchant.nominals,
+      validityMonths: merchant.validityMonths,
+      isActive: merchant.isActive,
+      merchantTelegramId: String(merchant.merchantTelegramId)
+    });
+  }, [merchant, reset]);
 
   const logo = useWatch({ control, name: "logo" });
   const categories = useWatch({ control, name: "categories" });
   const nominals = useWatch({ control, name: "nominals" });
   const validityMonths = useWatch({ control, name: "validityMonths" });
+  const isActive = useWatch({ control, name: "isActive" });
 
   const options = { shouldValidate: true, shouldDirty: true };
 
@@ -76,59 +108,71 @@ export const useMerchantForm = () => {
   const setValidityMonths = (months: number) => {
     setValue("validityMonths", months, options);
   };
+  const setIsActive = (next: boolean) => setValue("isActive", next, options);
 
   const submit = handleSubmit((values) => {
-    create(
-      {
-        name: values.name.trim(),
-        description: {
-          ru: values.descriptionRu.trim(),
-          kg: values.descriptionKg.trim(),
-          en: values.descriptionEn.trim()
-        },
-        categories: values.categories,
-        nominals: values.nominals,
-        validityMonths: values.validityMonths,
-        logo: values.logo,
-        merchantTelegramId: Number(values.merchantTelegramId),
-        slug: values.slug.trim()
+    const payload = {
+      name: values.name.trim(),
+      description: {
+        ru: values.descriptionRu.trim(),
+        kg: values.descriptionKg.trim(),
+        en: values.descriptionEn.trim()
       },
-      {
-        onSuccess: () => {
-          haptic.success();
-          navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
-        },
-        onError: (error) => {
-          haptic.error();
+      categories: values.categories,
+      nominals: values.nominals,
+      validityMonths: values.validityMonths,
+      logo: values.logo,
+      merchantTelegramId: Number(values.merchantTelegramId),
+      slug: values.slug.trim()
+    };
 
-          const field = getConflictField(error);
+    const callbacks = {
+      onSuccess: () => {
+        haptic.success();
+        navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
+      },
+      onError: (error: unknown) => {
+        haptic.error();
 
-          if (field) {
-            setError(field, { message: "admin.merchants.form.alreadyInUse" });
-            return;
-          }
+        const field = getConflictField(error);
 
-          showPopup({
-            title: t("errors.genericTitle"),
-            message: t("errors.generic")
-          });
+        if (field) {
+          setError(field, { message: "admin.merchants.form.alreadyInUse" });
+          return;
         }
+
+        showPopup({
+          title: t("errors.genericTitle"),
+          message: t("errors.generic")
+        });
       }
-    );
+    };
+
+    if (merchantId !== undefined) {
+      update(
+        { id: merchantId, payload: { ...payload, isActive: values.isActive } },
+        callbacks
+      );
+    } else {
+      create(payload, callbacks);
+    }
   });
 
   return {
     register,
     errors,
-    isPending,
+    isPending: merchantId !== undefined ? isUpdating : isCreating,
+    isDirty,
     logo,
     categories,
     nominals,
     validityMonths,
+    isActive,
     setLogo,
     setCategories,
     setNominals,
     setValidityMonths,
+    setIsActive,
     submit
   };
 };

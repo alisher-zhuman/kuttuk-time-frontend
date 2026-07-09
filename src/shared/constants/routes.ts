@@ -8,7 +8,8 @@ export const ROUTES = {
   CATEGORIES: "categories",
   CATEGORY_CREATE: "category-create",
   CATEGORY_EDIT: "category-edit",
-  MERCHANT_CREATE: "merchant-create"
+  MERCHANT_CREATE: "merchant-create",
+  MERCHANT_EDIT: "merchant-edit"
 } as const;
 
 export const ROUTE_PATTERNS = {
@@ -18,6 +19,7 @@ export const ROUTE_PATTERNS = {
   ADMIN_MERCHANTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}`,
   ADMIN_MERCHANT_CREATE: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANT_CREATE}`,
   ADMIN_MERCHANT_DETAIL: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}/:id`,
+  ADMIN_MERCHANT_EDIT: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANT_EDIT}/:id`,
   ADMIN_ORDERS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}`,
   ADMIN_PAYMENTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.PAYMENTS}`,
   ADMIN_CATEGORIES: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORIES}`,
@@ -33,3 +35,6 @@ export const getAdminMerchantDetailRoute = (id: string | number) =>
 
 export const getCategoryEditRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_EDIT}/${id}`;
+
+export const getMerchantEditRoute = (id: string | number) =>
+  `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANT_EDIT}/${id}`;

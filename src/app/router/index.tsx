@@ -5,6 +5,7 @@ import { AdminCategoryCreatePage } from "@pages/admin/category-create";
 import { AdminCategoryEditPage } from "@pages/admin/category-edit";
 import { AdminMerchantCreatePage } from "@pages/admin/merchant-create";
 import { AdminMerchantDetailPage } from "@pages/admin/merchant-detail";
+import { AdminMerchantEditPage } from "@pages/admin/merchant-edit";
 import { AdminMerchantsPage } from "@pages/admin/merchants";
 import { AdminOrdersPage } from "@pages/admin/orders";
 import { AdminPaymentsPage } from "@pages/admin/payments";
@@ -50,6 +51,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTE_PATTERNS.ADMIN_MERCHANT_DETAIL,
         element: <AdminMerchantDetailPage />
+      },
+      {
+        path: ROUTE_PATTERNS.ADMIN_MERCHANT_EDIT,
+        element: <AdminMerchantEditPage />
       },
       {
         path: ROUTE_PATTERNS.ADMIN_CATEGORIES,

@@ -4,39 +4,50 @@ import { useMainButton } from "@shared/hooks";
 import { Input, Textarea } from "@shared/ui";
 
 import { useMerchantForm } from "../../hooks/useMerchantForm";
+import { ActiveToggle } from "../active-toggle";
 import { CategorySelect } from "../category-select";
 import { LogoUpload } from "../logo-upload";
 import { NominalSelect } from "../nominal-select";
 import { ValiditySelect } from "../validity-select";
 
-export const MerchantForm = () => {
+interface Props {
+  merchantId?: number;
+}
+
+export const MerchantForm = ({ merchantId }: Props) => {
   const { t } = useTranslation();
+
+  const isEdit = merchantId !== undefined;
 
   const {
     register,
     errors,
     isPending,
+    isDirty,
     logo,
     categories,
     nominals,
     validityMonths,
+    isActive,
     setLogo,
     setCategories,
     setNominals,
     setValidityMonths,
+    setIsActive,
     submit
-  } = useMerchantForm();
+  } = useMerchantForm(merchantId);
 
   useMainButton({
-    text: t("admin.merchants.form.create"),
+    text: t(isEdit ? "admin.merchants.form.save" : "admin.merchants.form.create"),
     onClick: () => void submit(),
-    loading: isPending
+    loading: isPending,
+    hidden: isEdit && !isDirty
   });
 
   return (
     <div className="flex flex-col gap-4 mt-3.5 pb-5">
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
-        {t("admin.merchants.form.title")}
+        {t(isEdit ? "admin.merchants.form.editTitle" : "admin.merchants.form.title")}
       </h1>
 
       <LogoUpload
@@ -64,6 +75,8 @@ export const MerchantForm = () => {
           {t("admin.merchants.form.slugHint")}
         </span>
       </div>
+
+      {isEdit && <ActiveToggle value={isActive} onChange={setIsActive} />}
 
       <Textarea
         label={t("admin.merchants.form.descriptionRu")}

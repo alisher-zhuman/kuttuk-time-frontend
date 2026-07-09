@@ -3,6 +3,7 @@ export { useAdminMerchantsQuery } from "./hooks/useAdminMerchantsQuery";
 export { useCreateMerchantMutation } from "./hooks/useCreateMerchantMutation";
 export { useMerchantQuery } from "./hooks/useMerchantQuery";
 export { useMerchantsQuery } from "./hooks/useMerchantsQuery";
+export { useUpdateMerchantMutation } from "./hooks/useUpdateMerchantMutation";
 export type {
   AdminMerchant,
   AdminMerchantDetail,

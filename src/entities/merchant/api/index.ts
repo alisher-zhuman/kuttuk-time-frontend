@@ -68,3 +68,11 @@ export interface CreateMerchantPayload {
 export const createMerchant = async (payload: CreateMerchantPayload) => {
   await api.post(API_PATHS.ADMIN_MERCHANTS, payload);
 };
+
+export interface UpdateMerchantPayload extends CreateMerchantPayload {
+  isActive: boolean;
+}
+
+export const updateMerchant = async (id: number, payload: UpdateMerchantPayload) => {
+  await api.patch(`${API_PATHS.ADMIN_MERCHANTS}/${id}`, payload);
+};

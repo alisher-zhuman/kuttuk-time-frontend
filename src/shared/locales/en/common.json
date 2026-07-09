@@ -62,7 +62,11 @@
       },
       "form": {
         "title": "New venue",
+        "editTitle": "Edit venue",
         "create": "Create",
+        "save": "Save",
+        "edit": "Edit",
+        "status": "Status",
         "logoHint": "Logo, up to 5 MB",
         "logoRequired": "Upload a logo",
         "fileType": "Images only",

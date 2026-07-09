@@ -1,17 +1,27 @@
 import { useTranslation } from "react-i18next";
 
+import { Pencil } from "lucide-react";
+
 import { type Category } from "@entities/category";
 import { type AdminMerchantDetail } from "@entities/merchant";
 
 import { cn, formatDate, formatMoney } from "@shared/helpers";
+import { useHaptic } from "@shared/hooks";
 
 interface Props {
   merchant: AdminMerchantDetail;
   categories: Category[];
+  onEdit: () => void;
 }
 
-export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
+export const AdminMerchantDetailContent = ({
+  merchant,
+  categories,
+  onEdit
+}: Props) => {
   const { t, i18n } = useTranslation();
+
+  const haptic = useHaptic();
 
   const merchantCategories = categories.filter((category) =>
     merchant.categories.includes(category.id)
@@ -44,8 +54,24 @@ export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
           )}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-          {t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
+          {t(
+            merchant.isActive
+              ? "admin.merchants.active"
+              : "admin.merchants.inactive"
+          )}
         </span>
+
+        <button
+          type="button"
+          aria-label={t("admin.merchants.form.edit")}
+          onClick={() => {
+            haptic.light();
+            onEdit();
+          }}
+          className="flex items-center justify-center size-9 rounded-full border border-(--color-line) bg-(--color-chip) text-(--color-hint) shrink-0 cursor-pointer"
+        >
+          <Pencil size={16} />
+        </button>
       </div>
 
       {merchant.description && (
@@ -54,7 +80,11 @@ export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
             {t("admin.merchants.detail.description")}
           </p>
           <p className="text-sm text-(--color-ink) font-medium px-1">
-            {merchant.description[i18n.language as keyof typeof merchant.description]}
+            {
+              merchant.description[
+                i18n.language as keyof typeof merchant.description
+              ]
+            }
           </p>
         </div>
       )}
@@ -101,7 +131,9 @@ export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
             {t("admin.merchants.detail.validity")}
           </p>
           <p className="text-sm font-bold text-(--color-ink) px-1">
-            {t("admin.merchants.detail.validityValue", { months: merchant.validityMonths })}
+            {t("admin.merchants.detail.validityValue", {
+              months: merchant.validityMonths
+            })}
           </p>
         </div>
 

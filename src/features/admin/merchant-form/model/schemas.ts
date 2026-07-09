@@ -32,6 +32,7 @@ export const MerchantFormSchema = z.object({
   validityMonths: z
     .number()
     .refine((value) => (VALIDITY_PRESETS as readonly number[]).includes(value)),
+  isActive: z.boolean(),
   merchantTelegramId: z
     .string()
     .trim()

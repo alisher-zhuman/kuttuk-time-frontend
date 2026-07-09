@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
-import { cn } from "@shared/helpers";
+import { StatusBadge } from "@shared/ui";
 
 import type { AdminMerchant } from "../../../model/types";
 
@@ -30,17 +30,10 @@ export const AdminMerchantCard = ({ merchant, onClick }: Props) => {
         {merchant.name}
       </span>
 
-      <span
-        className={cn(
-          "flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shrink-0",
-          merchant.isActive
-            ? "bg-(--color-green-tint) text-(--color-green)"
-            : "bg-(--color-surface) text-(--color-hint)"
-        )}
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-        {t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
-      </span>
+      <StatusBadge
+        active={merchant.isActive}
+        label={t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
+      />
 
       <ChevronRight size={17} color="var(--color-hint)" />
     </button>

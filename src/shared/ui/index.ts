@@ -1,8 +1,11 @@
 export { ChipSelect } from './chip-select';
+export { EmptyState } from './empty-state';
 export { Fab } from './fab';
+export { FieldLabel } from './field-label';
 export { Input } from './input';
 export { LangSwitcher } from './lang-switcher';
 export { Logo } from './logo';
 export { SearchBar } from './search-bar';
 export { SegmentedControl } from './segmented-control';
+export { StatusBadge } from './status-badge';
 export { Textarea } from './textarea';

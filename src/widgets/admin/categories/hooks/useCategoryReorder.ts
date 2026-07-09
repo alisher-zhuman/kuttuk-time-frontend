@@ -1,5 +1,3 @@
-import { useTranslation } from "react-i18next";
-
 import { move } from "@dnd-kit/helpers";
 import type { DragEndEvent } from "@dnd-kit/react";
 import { isSortable } from "@dnd-kit/react/sortable";
@@ -9,14 +7,12 @@ import {
   useReorderCategoriesMutation
 } from "@entities/category";
 
-import { useHaptic, usePopup } from "@shared/hooks";
+import { useGenericError, useHaptic } from "@shared/hooks";
 
 export const useCategoryReorder = (categories: AdminCategory[]) => {
-  const { t } = useTranslation();
-
   const haptic = useHaptic();
 
-  const showPopup = usePopup();
+  const showGenericError = useGenericError();
 
   const { mutate: reorder } = useReorderCategoriesMutation();
 
@@ -35,15 +31,7 @@ export const useCategoryReorder = (categories: AdminCategory[]) => {
 
     reorder(
       move(categories, event).map((category) => category.id),
-      {
-        onError: () => {
-          haptic.error();
-          showPopup({
-            title: t("errors.genericTitle"),
-            message: t("errors.generic")
-          });
-        }
-      }
+      { onError: showGenericError }
     );
   };
 

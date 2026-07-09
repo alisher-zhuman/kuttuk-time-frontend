@@ -2,8 +2,8 @@ import { useTranslation } from "react-i18next";
 
 import { Pencil } from "lucide-react";
 
-import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
+import { StatusBadge } from "@shared/ui";
 
 interface Props {
   logo: string;
@@ -31,17 +31,10 @@ export const MerchantDetailHeader = ({ logo, name, slug, isActive, onEdit }: Pro
         </span>
       </div>
 
-      <span
-        className={cn(
-          "flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shrink-0",
-          isActive
-            ? "bg-(--color-green-tint) text-(--color-green)"
-            : "bg-(--color-surface) text-(--color-hint)"
-        )}
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-        {t(isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
-      </span>
+      <StatusBadge
+        active={isActive}
+        label={t(isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
+      />
 
       <button
         type="button"

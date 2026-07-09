@@ -8,6 +8,8 @@ import {
   useMerchantsQuery
 } from "@entities/merchant";
 
+import { EmptyState } from "@shared/ui";
+
 interface Props {
   category: number | null;
   search: string;
@@ -33,13 +35,10 @@ export const MerchantList = ({ category, search }: Props) => {
           ))}
         </ul>
       ) : merchants.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-14 text-(--color-hint)">
-          <span className="size-16 rounded-2xl bg-(--color-chip) flex items-center justify-center">
-            <Store size={32} strokeWidth={1.5} />
-          </span>
-
-          <p className="text-sm font-semibold">{t("home.empty")}</p>
-        </div>
+        <EmptyState
+          icon={<Store size={32} strokeWidth={1.5} />}
+          message={t("home.empty")}
+        />
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {merchants.map((merchant) => (

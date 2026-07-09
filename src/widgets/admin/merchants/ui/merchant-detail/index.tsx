@@ -1,11 +1,14 @@
+import { useTranslation } from "react-i18next";
+
 import { type Category } from "@entities/category";
 import { type AdminMerchantDetail } from "@entities/merchant";
 
-import { MerchantDetailCategories } from "../merchant-detail-categories";
+import { formatMoney } from "@shared/helpers";
+
+import { MerchantDetailChips } from "../merchant-detail-chips";
 import { MerchantDetailDescription } from "../merchant-detail-description";
 import { MerchantDetailHeader } from "../merchant-detail-header";
 import { MerchantDetailMeta } from "../merchant-detail-meta";
-import { MerchantDetailNominals } from "../merchant-detail-nominals";
 
 interface Props {
   merchant: AdminMerchantDetail;
@@ -14,9 +17,13 @@ interface Props {
 }
 
 export const AdminMerchantDetailContent = ({ merchant, categories, onEdit }: Props) => {
+  const { t } = useTranslation();
+
   const merchantCategories = categories.filter((category) =>
     merchant.categories.includes(category.id)
   );
+
+  const currency = t("certificate.currency");
 
   return (
     <div className="flex-1 flex flex-col py-4 gap-5">
@@ -33,10 +40,22 @@ export const AdminMerchantDetailContent = ({ merchant, categories, onEdit }: Pro
       )}
 
       {merchantCategories.length > 0 && (
-        <MerchantDetailCategories categories={merchantCategories} />
+        <MerchantDetailChips
+          label={t("admin.merchants.detail.categories")}
+          items={merchantCategories.map((category) => ({
+            key: category.id,
+            label: category.name
+          }))}
+        />
       )}
 
-      <MerchantDetailNominals nominals={merchant.nominals} />
+      <MerchantDetailChips
+        label={t("admin.merchants.detail.nominals")}
+        items={merchant.nominals.map((nominal) => ({
+          key: nominal,
+          label: formatMoney(nominal, currency)
+        }))}
+      />
 
       <MerchantDetailMeta
         validityMonths={merchant.validityMonths}

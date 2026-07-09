@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-import { useTranslation } from "react-i18next";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -14,7 +12,7 @@ import {
 } from "@entities/merchant";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { useHaptic, useNavigateTo, usePopup } from "@shared/hooks";
+import { useGenericError, useHaptic, useNavigateTo } from "@shared/hooks";
 
 import { MerchantFormSchema } from "../model/schemas";
 import type { MerchantFormValues } from "../model/types";
@@ -33,13 +31,11 @@ const getConflictField = (error: unknown) => {
 };
 
 export const useMerchantForm = (merchantId?: number) => {
-  const { t } = useTranslation();
-
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
 
-  const showPopup = usePopup();
+  const showGenericError = useGenericError();
 
   const { merchant } = useAdminMerchantQuery(
     merchantId !== undefined ? String(merchantId) : undefined
@@ -132,19 +128,15 @@ export const useMerchantForm = (merchantId?: number) => {
         navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
       },
       onError: (error: unknown) => {
-        haptic.error();
-
         const field = getConflictField(error);
 
         if (field) {
+          haptic.error();
           setError(field, { message: "admin.merchants.form.alreadyInUse" });
           return;
         }
 
-        showPopup({
-          title: t("errors.genericTitle"),
-          message: t("errors.generic")
-        });
+        showGenericError();
       }
     };
 

@@ -10,6 +10,7 @@ import {
 
 import { getAdminMerchantDetailRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { EmptyState } from "@shared/ui";
 
 interface Props {
   search: string;
@@ -41,13 +42,10 @@ export const AdminMerchantList = ({ search, category, isActive }: Props) => {
           ))}
         </ul>
       ) : merchants.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-14 text-(--color-hint)">
-          <span className="size-16 rounded-2xl bg-(--color-chip) flex items-center justify-center">
-            <Store size={32} strokeWidth={1.5} />
-          </span>
-
-          <p className="text-sm font-semibold">{t("admin.merchants.empty")}</p>
-        </div>
+        <EmptyState
+          icon={<Store size={32} strokeWidth={1.5} />}
+          message={t("admin.merchants.empty")}
+        />
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {merchants.map((merchant) => (

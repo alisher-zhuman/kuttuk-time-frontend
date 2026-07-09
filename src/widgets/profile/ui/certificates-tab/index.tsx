@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { cn } from "@shared/helpers";
+import { StatusBadge } from "@shared/ui";
 
 type CertStatus = "active" | "used";
 
@@ -79,17 +80,10 @@ export const CertificatesTab = () => {
                 <span className="font-mono text-xs font-bold text-(--color-slate) tracking-wide whitespace-nowrap">
                   {cert.code}
                 </span>
-                <span
-                  className={cn(
-                    "flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shrink-0",
-                    isUsed
-                      ? "bg-(--color-surface) text-(--color-hint)"
-                      : "bg-(--color-green-tint) text-(--color-green)"
-                  )}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-                  {t(`certificate.status.${cert.status}`)}
-                </span>
+                <StatusBadge
+                  active={!isUsed}
+                  label={t(`certificate.status.${cert.status}`)}
+                />
               </div>
             </div>
           </div>

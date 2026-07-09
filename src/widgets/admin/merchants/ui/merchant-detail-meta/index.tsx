@@ -1,6 +1,20 @@
 import { useTranslation } from "react-i18next";
 
 import { formatDate } from "@shared/helpers";
+import { FieldLabel } from "@shared/ui";
+
+interface FieldProps {
+  label: string;
+  value: string | number;
+}
+
+const MetaField = ({ label, value }: FieldProps) => (
+  <div className="flex flex-col gap-1">
+    <FieldLabel>{label}</FieldLabel>
+
+    <p className="text-sm font-bold text-(--color-ink) px-1">{value}</p>
+  </div>
+);
 
 interface Props {
   validityMonths: number;
@@ -17,30 +31,20 @@ export const MerchantDetailMeta = ({
 
   return (
     <div className="grid grid-cols-2 gap-x-3 gap-y-4">
-      <div>
-        <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
-          {t("admin.merchants.detail.validity")}
-        </p>
-        <p className="text-sm font-bold text-(--color-ink) px-1">
-          {t("admin.merchants.detail.validityValue", { months: validityMonths })}
-        </p>
-      </div>
+      <MetaField
+        label={t("admin.merchants.detail.validity")}
+        value={t("admin.merchants.detail.validityValue", { months: validityMonths })}
+      />
 
-      <div>
-        <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
-          {t("admin.merchants.detail.telegramId")}
-        </p>
-        <p className="text-sm font-bold text-(--color-ink) px-1">{merchantTelegramId}</p>
-      </div>
+      <MetaField
+        label={t("admin.merchants.detail.telegramId")}
+        value={merchantTelegramId}
+      />
 
-      <div>
-        <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
-          {t("admin.merchants.detail.createdAt")}
-        </p>
-        <p className="text-sm font-bold text-(--color-ink) px-1">
-          {formatDate(createdAt)}
-        </p>
-      </div>
+      <MetaField
+        label={t("admin.merchants.detail.createdAt")}
+        value={formatDate(createdAt)}
+      />
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
 
 import { getCategoryEditRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { EmptyState } from "@shared/ui";
 
 import { useCategoryDelete } from "../../hooks/useCategoryDelete";
 import { useCategoryReorder } from "../../hooks/useCategoryReorder";
@@ -47,13 +48,10 @@ export const CategoryList = () => {
           ))}
         </ul>
       ) : categories.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-14 text-(--color-hint)">
-          <span className="size-16 rounded-2xl bg-(--color-chip) flex items-center justify-center">
-            <Tag size={32} strokeWidth={1.5} />
-          </span>
-
-          <p className="text-sm font-semibold">{t("admin.categories.empty")}</p>
-        </div>
+        <EmptyState
+          icon={<Tag size={32} strokeWidth={1.5} />}
+          message={t("admin.categories.empty")}
+        />
       ) : (
         <DragDropProvider
           onDragStart={handleDragStart}

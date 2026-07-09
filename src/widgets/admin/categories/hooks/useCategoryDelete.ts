@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDeleteCategoryMutation } from "@entities/category";
 
-import { useHaptic, usePopup } from "@shared/hooks";
+import { useGenericError, useHaptic, usePopup } from "@shared/hooks";
 
 export const useCategoryDelete = () => {
   const { t } = useTranslation();
@@ -10,6 +10,8 @@ export const useCategoryDelete = () => {
   const haptic = useHaptic();
 
   const showPopup = usePopup();
+
+  const showGenericError = useGenericError();
 
   const { mutate: remove } = useDeleteCategoryMutation();
 
@@ -29,13 +31,7 @@ export const useCategoryDelete = () => {
       onSuccess: () => {
         haptic.success();
       },
-      onError: () => {
-        haptic.error();
-        showPopup({
-          title: t("errors.genericTitle"),
-          message: t("errors.generic")
-        });
-      }
+      onError: showGenericError
     });
   };
 

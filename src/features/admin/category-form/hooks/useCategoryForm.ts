@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-import { useTranslation } from "react-i18next";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -12,19 +10,17 @@ import {
 } from "@entities/category";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { useHaptic, useNavigateTo, usePopup } from "@shared/hooks";
+import { useGenericError, useHaptic, useNavigateTo } from "@shared/hooks";
 
 import { CategoryFormSchema } from "../model/schemas";
 import type { CategoryFormValues } from "../model/types";
 
 export const useCategoryForm = (categoryId?: number) => {
-  const { t } = useTranslation();
-
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
 
-  const showPopup = usePopup();
+  const showGenericError = useGenericError();
 
   const { categories } = useAdminCategoriesQuery();
   const category = categories.find((c) => c.id === categoryId);
@@ -61,13 +57,7 @@ export const useCategoryForm = (categoryId?: number) => {
         haptic.success();
         navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES);
       },
-      onError: () => {
-        haptic.error();
-        showPopup({
-          title: t("errors.genericTitle"),
-          message: t("errors.generic")
-        });
-      }
+      onError: showGenericError
     };
 
     if (categoryId !== undefined) {

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { formatMoney } from "@shared/helpers";
-import { ChipSelect } from "@shared/ui";
+import { ChipSelect, FieldLabel } from "@shared/ui";
 
 interface Props {
   nominals: number[];
@@ -15,10 +15,8 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
   const currency = t("certificate.currency");
 
   return (
-    <div>
-      <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-2.5">
-        {t("merchantDetail.nominal")}
-      </p>
+    <div className="flex flex-col gap-2.5">
+      <FieldLabel>{t("merchantDetail.nominal")}</FieldLabel>
 
       <ChipSelect
         size="md"

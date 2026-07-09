@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 
-import { type AdminCategory } from "@entities/category";
+import { type Category } from "@entities/category";
 import { type AdminMerchantDetail } from "@entities/merchant";
 
 import { cn, formatDate, formatMoney } from "@shared/helpers";
 
 interface Props {
   merchant: AdminMerchantDetail;
-  categories: AdminCategory[];
+  categories: Category[];
 }
 
 export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
@@ -31,7 +31,7 @@ export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
             {merchant.name}
           </span>
           <span className="text-sm text-(--color-slate) font-semibold truncate">
-            /{merchant.slug}
+            {merchant.slug}
           </span>
         </div>
 
@@ -49,33 +49,13 @@ export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
       </div>
 
       {merchant.description && (
-        <div className="flex flex-col gap-3">
-          <div>
-            <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
-              {t("admin.merchants.detail.descriptionRu")}
-            </p>
-            <p className="text-sm text-(--color-ink) font-medium px-1">
-              {merchant.description.ru}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
-              {t("admin.merchants.detail.descriptionKg")}
-            </p>
-            <p className="text-sm text-(--color-ink) font-medium px-1">
-              {merchant.description.kg}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
-              {t("admin.merchants.detail.descriptionEn")}
-            </p>
-            <p className="text-sm text-(--color-ink) font-medium px-1">
-              {merchant.description.en}
-            </p>
-          </div>
+        <div>
+          <p className="text-xs font-bold text-(--color-hint) tracking-widest px-1 pb-1">
+            {t("admin.merchants.detail.description")}
+          </p>
+          <p className="text-sm text-(--color-ink) font-medium px-1">
+            {merchant.description[i18n.language as keyof typeof merchant.description]}
+          </p>
         </div>
       )}
 
@@ -91,7 +71,7 @@ export const AdminMerchantDetailContent = ({ merchant, categories }: Props) => {
                 key={category.id}
                 className="px-3 py-1.5 rounded-full text-sm font-bold bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)"
               >
-                {category.name[i18n.language as keyof typeof category.name]}
+                {category.name}
               </span>
             ))}
           </div>

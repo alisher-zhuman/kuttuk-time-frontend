@@ -51,9 +51,7 @@
       "inactive": "Inactive",
       "empty": "No venues found",
       "detail": {
-        "descriptionRu": "Description in Russian",
-        "descriptionKg": "Description in Kyrgyz",
-        "descriptionEn": "Description in English",
+        "description": "Description",
         "categories": "CATEGORIES",
         "nominals": "AMOUNTS",
         "validity": "VALIDITY",

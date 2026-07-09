@@ -50,9 +50,7 @@
       "inactive": "Активдүү эмес",
       "empty": "Мекемелер табылган жок",
       "detail": {
-        "descriptionRu": "Орусча сүрөттөмө",
-        "descriptionKg": "Кыргызча сүрөттөмө",
-        "descriptionEn": "Англисче сүрөттөмө",
+        "description": "Сүрөттөмө",
         "categories": "КАТЕГОРИЯЛАР",
         "nominals": "НОМИНАЛДАР",
         "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",

@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { ChevronRight } from "lucide-react";
+
 import { cn } from "@shared/helpers";
 
 import type { AdminMerchant } from "../../../model/types";
@@ -39,6 +41,8 @@ export const AdminMerchantCard = ({ merchant, onClick }: Props) => {
         <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
         {t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
       </span>
+
+      <ChevronRight size={17} color="var(--color-hint)" />
     </button>
   );
 };

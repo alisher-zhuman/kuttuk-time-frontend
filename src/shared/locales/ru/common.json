@@ -50,9 +50,7 @@
       "inactive": "Неактивен",
       "empty": "Заведения не найдены",
       "detail": {
-        "descriptionRu": "Описание на русском",
-        "descriptionKg": "Описание на кыргызском",
-        "descriptionEn": "Описание на английском",
+        "description": "Описание",
         "categories": "КАТЕГОРИИ",
         "nominals": "НОМИНАЛЫ",
         "validity": "СРОК ДЕЙСТВИЯ",

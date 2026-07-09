@@ -6,7 +6,7 @@ import {
   AdminMerchantNotFound
 } from "@widgets/admin/merchants";
 
-import { useAdminCategoriesQuery } from "@entities/category";
+import { useCategoriesQuery } from "@entities/category";
 import { useAdminMerchantQuery } from "@entities/merchant";
 
 export const AdminMerchantDetailPage = () => {
@@ -14,7 +14,7 @@ export const AdminMerchantDetailPage = () => {
 
   const { merchant, isLoading, isError } = useAdminMerchantQuery(id);
 
-  const { categories } = useAdminCategoriesQuery();
+  const { categories } = useCategoriesQuery();
 
   if (isLoading) return <AdminMerchantDetailSkeleton />;
   if (isError || !merchant) return <AdminMerchantNotFound />;

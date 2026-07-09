@@ -2,28 +2,26 @@ import { useTranslation } from "react-i18next";
 
 import { SegmentedControl } from "@shared/ui";
 
-type StatusValue = "all" | "active" | "inactive";
+type StatusValue = "active" | "inactive";
 
-const STATUS_VALUES: Record<StatusValue, boolean | null> = {
-  all: null,
+const STATUS_VALUES: Record<StatusValue, boolean> = {
   active: true,
   inactive: false
 };
 
 interface Props {
-  active: boolean | null;
-  onChange: (isActive: boolean | null) => void;
+  active: boolean;
+  onChange: (isActive: boolean) => void;
 }
 
 export const AdminMerchantStatusFilter = ({ active, onChange }: Props) => {
   const { t } = useTranslation();
 
-  const value: StatusValue =
-    active === null ? "all" : active ? "active" : "inactive";
+  const value: StatusValue = active ? "active" : "inactive";
 
-  const items = (["all", "active", "inactive"] as const).map((status) => ({
+  const items = (["active", "inactive"] as const).map((status) => ({
     value: status,
-    label: t(status === "all" ? "categories.all" : `admin.merchants.${status}`)
+    label: t(`admin.merchants.${status}`)
   }));
 
   return (

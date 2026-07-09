@@ -19,8 +19,7 @@ export const AdminMerchantsPage = () => {
   const search = searchParams.get("search") ?? "";
   const categoryParam = searchParams.get("category");
   const activeCategory = categoryParam ? Number(categoryParam) : null;
-  const isActiveParam = searchParams.get("isActive");
-  const activeStatus = isActiveParam === null ? null : isActiveParam === "true";
+  const activeStatus = searchParams.get("isActive") !== "false";
 
   const debouncedSearch = useDebounce(search);
 
@@ -57,9 +56,7 @@ export const AdminMerchantsPage = () => {
 
       <AdminMerchantStatusFilter
         active={activeStatus}
-        onChange={(isActive) =>
-          setParam("isActive", isActive !== null ? String(isActive) : null)
-        }
+        onChange={(isActive) => setParam("isActive", String(isActive))}
       />
 
       <AdminMerchantList

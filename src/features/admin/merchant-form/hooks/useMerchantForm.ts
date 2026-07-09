@@ -106,49 +106,55 @@ export const useMerchantForm = (merchantId?: number) => {
   };
   const setIsActive = (next: boolean) => setValue("isActive", next, options);
 
-  const submit = handleSubmit((values) => {
-    const payload = {
-      name: values.name.trim(),
-      description: {
-        ru: values.descriptionRu.trim(),
-        kg: values.descriptionKg.trim(),
-        en: values.descriptionEn.trim()
-      },
-      categories: values.categories,
-      nominals: values.nominals,
-      validityMonths: values.validityMonths,
-      logo: values.logo,
-      merchantTelegramId: Number(values.merchantTelegramId),
-      slug: values.slug.trim()
-    };
+  const submit = handleSubmit(
+    (values) => {
+      const payload = {
+        name: values.name.trim(),
+        description: {
+          ru: values.descriptionRu.trim(),
+          kg: values.descriptionKg.trim(),
+          en: values.descriptionEn.trim()
+        },
+        categories: values.categories,
+        nominals: values.nominals,
+        validityMonths: values.validityMonths,
+        logo: values.logo,
+        slug: values.slug.trim()
+      };
 
-    const callbacks = {
-      onSuccess: () => {
-        haptic.success();
-        navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
-      },
-      onError: (error: unknown) => {
-        const field = getConflictField(error);
+      const callbacks = {
+        onSuccess: () => {
+          haptic.success();
+          navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
+        },
+        onError: (error: unknown) => {
+          const field = getConflictField(error);
 
-        if (field) {
-          haptic.error();
-          setError(field, { message: "admin.merchants.form.alreadyInUse" });
-          return;
+          if (field) {
+            haptic.error();
+            setError(field, { message: "admin.merchants.form.alreadyInUse" });
+            return;
+          }
+
+          showGenericError();
         }
+      };
 
-        showGenericError();
+      if (merchantId !== undefined) {
+        update(
+          { id: merchantId, payload: { ...payload, isActive: values.isActive } },
+          callbacks
+        );
+      } else {
+        create(
+          { ...payload, merchantTelegramId: Number(values.merchantTelegramId) },
+          callbacks
+        );
       }
-    };
-
-    if (merchantId !== undefined) {
-      update(
-        { id: merchantId, payload: { ...payload, isActive: values.isActive } },
-        callbacks
-      );
-    } else {
-      create(payload, callbacks);
-    }
-  });
+    },
+    // Without this the button is a no-op whenever a field fails validation
+    () => haptic.error()
+  );
 
   return {
     register,

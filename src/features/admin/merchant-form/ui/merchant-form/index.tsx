@@ -74,7 +74,8 @@ export const MerchantForm = ({ merchantId }: Props) => {
         }
       />
 
-      <MerchantFormContact register={register} errors={errors} />
+      {/* PATCH /admin/merchants/:id does not accept merchantTelegramId */}
+      {!isEdit && <MerchantFormContact register={register} errors={errors} />}
     </div>
   );
 };

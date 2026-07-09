@@ -69,7 +69,9 @@ export const createMerchant = async (payload: CreateMerchantPayload) => {
   await api.post(API_PATHS.ADMIN_MERCHANTS, payload);
 };
 
-export interface UpdateMerchantPayload extends CreateMerchantPayload {
+// The API has no merchantTelegramId on its update DTO — it is create-only.
+export interface UpdateMerchantPayload
+  extends Omit<CreateMerchantPayload, "merchantTelegramId"> {
   isActive: boolean;
 }
 

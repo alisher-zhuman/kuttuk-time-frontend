@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
 
+import { VALIDITY_MAX, VALIDITY_MIN, VALIDITY_PRESETS } from "@shared/constants";
 import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 import { Input } from "@shared/ui";
-
-import { VALIDITY_MAX, VALIDITY_MIN, VALIDITY_PRESETS } from "../../model/schemas";
 
 interface Props {
   value: string;

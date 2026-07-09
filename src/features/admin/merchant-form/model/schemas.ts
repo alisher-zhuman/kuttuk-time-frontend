@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-export const NOMINAL_MIN = 500;
-export const NOMINAL_MAX = 10000;
-export const VALIDITY_MIN = 1;
-export const VALIDITY_MAX = 24;
-export const VALIDITY_PRESETS = [3, 6, 12, 24];
+import {
+  NOMINAL_MAX,
+  NOMINAL_MIN,
+  VALIDITY_MAX,
+  VALIDITY_MIN
+} from "@shared/constants";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

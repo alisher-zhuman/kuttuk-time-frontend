@@ -4,11 +4,10 @@ import { useTranslation } from "react-i18next";
 
 import { Plus, X } from "lucide-react";
 
+import { NOMINAL_MAX, NOMINAL_MIN } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 import { Input } from "@shared/ui";
-
-import { NOMINAL_MAX, NOMINAL_MIN } from "../../model/schemas";
 
 interface Props {
   value: number[];

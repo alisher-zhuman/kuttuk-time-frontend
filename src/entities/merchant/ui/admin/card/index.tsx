@@ -6,13 +6,18 @@ import type { AdminMerchant } from "../../../model/types";
 
 interface Props {
   merchant: AdminMerchant;
+  onClick: () => void;
 }
 
-export const AdminMerchantCard = ({ merchant }: Props) => {
+export const AdminMerchantCard = ({ merchant, onClick }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5">
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
+    >
       <img
         src={merchant.logo}
         alt={merchant.name}
@@ -34,6 +39,6 @@ export const AdminMerchantCard = ({ merchant }: Props) => {
         <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
         {t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
       </span>
-    </div>
+    </button>
   );
 };

@@ -27,3 +27,23 @@ export const MerchantDetailSchema = z.object({
   nominals: z.array(z.number()).nonempty(),
   validityMonths: z.number()
 });
+
+export const AdminMerchantDetailSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z
+    .object({
+      ru: z.string(),
+      kg: z.string(),
+      en: z.string()
+    })
+    .nullable(),
+  categories: z.array(z.number()),
+  nominals: z.array(z.number()).nonempty(),
+  validityMonths: z.number(),
+  merchantTelegramId: z.number(),
+  logo: z.string(),
+  slug: z.string(),
+  isActive: z.boolean(),
+  createdAt: z.string()
+});

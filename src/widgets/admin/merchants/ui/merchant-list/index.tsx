@@ -8,6 +8,9 @@ import {
   useAdminMerchantsQuery
 } from "@entities/merchant";
 
+import { getAdminMerchantDetailRoute } from "@shared/constants";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
+
 interface Props {
   search: string;
   category: number | null;
@@ -16,6 +19,10 @@ interface Props {
 
 export const AdminMerchantList = ({ search, category, isActive }: Props) => {
   const { t } = useTranslation();
+
+  const navigateTo = useNavigateTo();
+
+  const haptic = useHaptic();
 
   const { merchants, isLoading } = useAdminMerchantsQuery({ search, category, isActive });
 
@@ -45,7 +52,13 @@ export const AdminMerchantList = ({ search, category, isActive }: Props) => {
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {merchants.map((merchant) => (
             <li key={merchant.id}>
-              <AdminMerchantCard merchant={merchant} />
+              <AdminMerchantCard
+                merchant={merchant}
+                onClick={() => {
+                  haptic.light();
+                  navigateTo(getAdminMerchantDetailRoute(merchant.id));
+                }}
+              />
             </li>
           ))}
         </ul>

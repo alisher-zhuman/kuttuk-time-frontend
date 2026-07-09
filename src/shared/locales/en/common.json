@@ -49,7 +49,19 @@
     "merchants": {
       "active": "Active",
       "inactive": "Inactive",
-      "empty": "No venues found"
+      "empty": "No venues found",
+      "detail": {
+        "descriptionRu": "Description in Russian",
+        "descriptionKg": "Description in Kyrgyz",
+        "descriptionEn": "Description in English",
+        "categories": "CATEGORIES",
+        "nominals": "AMOUNTS",
+        "validity": "VALIDITY",
+        "validityValue": "{{months}} months",
+        "telegramId": "TELEGRAM ID",
+        "createdAt": "CREATED",
+        "notFound": "Venue not found"
+      }
     },
     "categories": {
       "manage": "Manage categories",

@@ -48,7 +48,19 @@
     "merchants": {
       "active": "Активдүү",
       "inactive": "Активдүү эмес",
-      "empty": "Мекемелер табылган жок"
+      "empty": "Мекемелер табылган жок",
+      "detail": {
+        "descriptionRu": "Орусча сүрөттөмө",
+        "descriptionKg": "Кыргызча сүрөттөмө",
+        "descriptionEn": "Англисче сүрөттөмө",
+        "categories": "КАТЕГОРИЯЛАР",
+        "nominals": "НОМИНАЛДАР",
+        "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",
+        "validityValue": "{{months}} ай",
+        "telegramId": "TELEGRAM ID",
+        "createdAt": "ТҮЗҮЛГӨН",
+        "notFound": "Мекеме табылган жок"
+      }
     },
     "categories": {
       "manage": "Категорияларды башкаруу",

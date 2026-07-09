@@ -48,7 +48,19 @@
     "merchants": {
       "active": "Активен",
       "inactive": "Неактивен",
-      "empty": "Заведения не найдены"
+      "empty": "Заведения не найдены",
+      "detail": {
+        "descriptionRu": "Описание на русском",
+        "descriptionKg": "Описание на кыргызском",
+        "descriptionEn": "Описание на английском",
+        "categories": "КАТЕГОРИИ",
+        "nominals": "НОМИНАЛЫ",
+        "validity": "СРОК ДЕЙСТВИЯ",
+        "validityValue": "{{months}} месяцев",
+        "telegramId": "TELEGRAM ID",
+        "createdAt": "СОЗДАН",
+        "notFound": "Заведение не найдено"
+      }
     },
     "categories": {
       "manage": "Управление категориями",

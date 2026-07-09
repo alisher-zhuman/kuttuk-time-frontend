@@ -2,6 +2,7 @@ import { api } from "@shared/api";
 import { API_PATHS } from "@shared/constants";
 
 import {
+  AdminMerchantDetailSchema,
   AdminMerchantsSchema,
   MerchantDetailSchema,
   MerchantsSchema
@@ -45,4 +46,10 @@ export const getMerchant = async (id: string | number) => {
   const response = await api.get(`${API_PATHS.MERCHANTS}/${id}`);
 
   return MerchantDetailSchema.parse(response.data);
+};
+
+export const getAdminMerchant = async (id: string | number) => {
+  const response = await api.get(`${API_PATHS.ADMIN_MERCHANTS}/${id}`);
+
+  return AdminMerchantDetailSchema.parse(response.data);
 };

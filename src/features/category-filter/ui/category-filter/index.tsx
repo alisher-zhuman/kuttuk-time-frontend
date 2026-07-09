@@ -64,10 +64,10 @@ export const CategoryFilter = ({ active, onChange, onManage }: Props) => {
           aria-pressed={active === item.id}
           onClick={(e) => handleSelect(item.id, e.currentTarget)}
           className={cn(
-            "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer transition-colors duration-150 first:ml-4 last:mr-4",
+            "px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer border transition-colors duration-150 first:ml-4 last:mr-4",
             active === item.id
-              ? "bg-(--color-primary) text-(--color-card) border-none"
-              : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)"
+              ? "bg-(--color-primary) text-(--color-card) border-transparent"
+              : "bg-(--color-chip) text-(--color-chip-ink) border-(--color-line)"
           )}
         >
           {item.label}

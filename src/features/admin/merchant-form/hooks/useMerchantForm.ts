@@ -55,7 +55,7 @@ export const useMerchantForm = () => {
       descriptionKg: "",
       descriptionEn: "",
       categories: [],
-      nominals: [],
+      nominals: [500],
       validityMonths: 12,
       merchantTelegramId: ""
     }

@@ -39,10 +39,10 @@ export const CategorySelect = ({ value, onChange, error }: Props) => {
               type="button"
               onClick={() => toggle(category.id)}
               className={cn(
-                "px-3 py-1.5 rounded-full text-sm font-bold cursor-pointer transition-colors duration-150",
+                "px-3 py-1.5 rounded-full text-sm font-bold cursor-pointer border transition-colors duration-150",
                 isSelected
-                  ? "bg-(--color-primary) text-(--color-card)"
-                  : "bg-(--color-chip) text-(--color-chip-ink) border border-(--color-line)"
+                  ? "bg-(--color-primary) text-(--color-card) border-transparent"
+                  : "bg-(--color-chip) text-(--color-chip-ink) border-(--color-line)"
               )}
             >
               {category.name}

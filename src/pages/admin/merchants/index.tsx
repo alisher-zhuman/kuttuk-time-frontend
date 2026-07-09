@@ -1,5 +1,9 @@
 import { useSearchParams } from "react-router";
 
+import { useTranslation } from "react-i18next";
+
+import { Plus } from "lucide-react";
+
 import {
   AdminMerchantList,
   AdminMerchantStatusFilter
@@ -9,9 +13,11 @@ import { CategoryFilter } from "@features/category-filter";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useDebounce, useNavigateTo } from "@shared/hooks";
-import { SearchBar } from "@shared/ui";
+import { Fab, SearchBar } from "@shared/ui";
 
 export const AdminMerchantsPage = () => {
+  const { t } = useTranslation();
+
   const navigateTo = useNavigateTo();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,6 +70,13 @@ export const AdminMerchantsPage = () => {
         category={activeCategory}
         isActive={activeStatus}
       />
+
+      <Fab
+        ariaLabel={t("admin.merchants.form.create")}
+        onClick={() => navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANT_CREATE)}
+      >
+        <Plus size={24} />
+      </Fab>
     </>
   );
 };

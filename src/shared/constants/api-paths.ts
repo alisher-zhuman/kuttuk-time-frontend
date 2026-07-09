@@ -3,5 +3,6 @@ export const API_PATHS = {
   MERCHANTS: "/merchants",
   ADMIN_MERCHANTS: "/admin/merchants",
   ADMIN_CATEGORIES: "/admin/categories",
-  CATEGORIES: "/categories"
+  CATEGORIES: "/categories",
+  UPLOAD: "/upload"
 } as const;

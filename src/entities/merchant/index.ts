@@ -1,5 +1,6 @@
 export { useAdminMerchantQuery } from "./hooks/useAdminMerchantQuery";
 export { useAdminMerchantsQuery } from "./hooks/useAdminMerchantsQuery";
+export { useCreateMerchantMutation } from "./hooks/useCreateMerchantMutation";
 export { useMerchantQuery } from "./hooks/useMerchantQuery";
 export { useMerchantsQuery } from "./hooks/useMerchantsQuery";
 export type {

@@ -53,3 +53,18 @@ export const getAdminMerchant = async (id: string | number) => {
 
   return AdminMerchantDetailSchema.parse(response.data);
 };
+
+export interface CreateMerchantPayload {
+  name: string;
+  description: { ru: string; kg: string; en: string };
+  categories: number[];
+  nominals: number[];
+  validityMonths: number;
+  logo: string;
+  merchantTelegramId: number;
+  slug: string;
+}
+
+export const createMerchant = async (payload: CreateMerchantPayload) => {
+  await api.post(API_PATHS.ADMIN_MERCHANTS, payload);
+};

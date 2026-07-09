@@ -22,22 +22,16 @@ export const MerchantFormSchema = z.object({
   descriptionKg: z.string().trim().min(1, "admin.merchants.form.required"),
   descriptionEn: z.string().trim().min(1, "admin.merchants.form.required"),
   categories: z.array(z.number()).min(1, "admin.merchants.form.categoriesRequired"),
-  // Refine the array, not its elements: an element-level issue lands on
-  // `nominals.0` and never reaches `errors.nominals.message`, so the form
-  // would silently refuse to submit with nothing shown to the user.
   nominals: z
-    .array(z.number())
-    .min(1, "admin.merchants.form.nominalsRequired")
-    .refine(
-      (values) =>
-        values.every((value) => (NOMINAL_PRESETS as readonly number[]).includes(value)),
-      { message: "admin.merchants.form.nominalsInvalid" }
-    ),
+    .array(
+      z
+        .number()
+        .refine((value) => (NOMINAL_PRESETS as readonly number[]).includes(value))
+    )
+    .min(1, "admin.merchants.form.nominalsRequired"),
   validityMonths: z
     .number()
-    .refine((value) => (VALIDITY_PRESETS as readonly number[]).includes(value), {
-      message: "admin.merchants.form.validityInvalid"
-    }),
+    .refine((value) => (VALIDITY_PRESETS as readonly number[]).includes(value)),
   isActive: z.boolean(),
   merchantTelegramId: z
     .string()

@@ -35,15 +35,6 @@ export const MerchantFormAttributes = ({
 
   const currency = t("certificate.currency");
 
-  // Legacy merchants may hold values outside the presets — render them too,
-  // otherwise there is no chip to deselect and the form can never become valid.
-  const nominalOptions = [...new Set([...NOMINAL_PRESETS, ...nominals])].sort(
-    (a, b) => a - b
-  );
-  const validityOptions = [...new Set([...VALIDITY_PRESETS, validityMonths])].sort(
-    (a, b) => a - b
-  );
-
   return (
     <>
       <ChipSelect
@@ -66,7 +57,7 @@ export const MerchantFormAttributes = ({
       <ChipSelect
         label={t("admin.merchants.form.nominals")}
         error={nominalsError}
-        items={nominalOptions.map((nominal) => ({
+        items={NOMINAL_PRESETS.map((nominal) => ({
           value: nominal,
           label: formatMoney(nominal, currency)
         }))}
@@ -83,7 +74,7 @@ export const MerchantFormAttributes = ({
       <ChipSelect
         label={t("admin.merchants.form.validity")}
         error={validityError}
-        items={validityOptions.map((months) => ({
+        items={VALIDITY_PRESETS.map((months) => ({
           value: months,
           label: t("admin.merchants.form.months", { months })
         }))}

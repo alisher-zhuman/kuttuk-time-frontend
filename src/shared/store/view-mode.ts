@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import { VIEW_MODE_STORAGE_KEY, type ViewMode } from "@shared/constants";
 import { getScopedStorageKey } from "@shared/helpers";
@@ -15,6 +15,9 @@ export const useViewModeStore = create<ViewModeState>()(
       viewMode: "user",
       setViewMode: (viewMode) => set({ viewMode })
     }),
-    { name: getScopedStorageKey(VIEW_MODE_STORAGE_KEY) }
+    {
+      name: getScopedStorageKey(VIEW_MODE_STORAGE_KEY),
+      storage: createJSONStorage(() => sessionStorage)
+    }
   )
 );

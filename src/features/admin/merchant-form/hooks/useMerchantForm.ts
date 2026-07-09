@@ -106,59 +106,49 @@ export const useMerchantForm = (merchantId?: number) => {
   };
   const setIsActive = (next: boolean) => setValue("isActive", next, options);
 
-  const submit = handleSubmit(
-    (values) => {
-      const payload = {
-        name: values.name.trim(),
-        description: {
-          ru: values.descriptionRu.trim(),
-          kg: values.descriptionKg.trim(),
-          en: values.descriptionEn.trim()
-        },
-        categories: values.categories,
-        nominals: values.nominals,
-        validityMonths: values.validityMonths,
-        logo: values.logo,
-        merchantTelegramId: Number(values.merchantTelegramId),
-        slug: values.slug.trim()
-      };
+  const submit = handleSubmit((values) => {
+    const payload = {
+      name: values.name.trim(),
+      description: {
+        ru: values.descriptionRu.trim(),
+        kg: values.descriptionKg.trim(),
+        en: values.descriptionEn.trim()
+      },
+      categories: values.categories,
+      nominals: values.nominals,
+      validityMonths: values.validityMonths,
+      logo: values.logo,
+      merchantTelegramId: Number(values.merchantTelegramId),
+      slug: values.slug.trim()
+    };
 
-      const callbacks = {
-        onSuccess: () => {
-          haptic.success();
-          navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
-        },
-        onError: (error: unknown) => {
-          // TEMP: remove once the merchant edit issue is diagnosed
-          console.error("[merchant-form] request failed", error);
+    const callbacks = {
+      onSuccess: () => {
+        haptic.success();
+        navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS);
+      },
+      onError: (error: unknown) => {
+        const field = getConflictField(error);
 
-          const field = getConflictField(error);
-
-          if (field) {
-            haptic.error();
-            setError(field, { message: "admin.merchants.form.alreadyInUse" });
-            return;
-          }
-
-          showGenericError();
+        if (field) {
+          haptic.error();
+          setError(field, { message: "admin.merchants.form.alreadyInUse" });
+          return;
         }
-      };
 
-      if (merchantId !== undefined) {
-        update(
-          { id: merchantId, payload: { ...payload, isActive: values.isActive } },
-          callbacks
-        );
-      } else {
-        create(payload, callbacks);
+        showGenericError();
       }
-    },
-    (formErrors) => {
-      // TEMP: remove once the merchant edit issue is diagnosed
-      console.error("[merchant-form] validation blocked submit", formErrors);
-      haptic.error();
+    };
+
+    if (merchantId !== undefined) {
+      update(
+        { id: merchantId, payload: { ...payload, isActive: values.isActive } },
+        callbacks
+      );
+    } else {
+      create(payload, callbacks);
     }
-  );
+  });
 
   return {
     register,

@@ -1,5 +1,6 @@
 export {
   useBackButton,
+  useCopyToClipboard,
   useHaptic,
   useMainButton,
   usePopup,

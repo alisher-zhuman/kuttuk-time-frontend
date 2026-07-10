@@ -1,7 +1,10 @@
+import { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
-import { User } from "lucide-react";
+import { Check, Copy, User } from "lucide-react";
 
+import { useCopyToClipboard, useHaptic } from "@shared/hooks";
 import type { TmaUserInfo } from "@shared/types";
 
 interface Props {
@@ -9,7 +12,24 @@ interface Props {
 }
 
 export const ProfileInfo = ({ user }: Props) => {
+  const [copied, setCopied] = useState(false);
+
   const { t } = useTranslation();
+
+  const haptic = useHaptic();
+
+  const copyToClipboard = useCopyToClipboard();
+
+  const handleCopyId = async () => {
+    if (!user) return;
+
+    haptic.light();
+
+    if (await copyToClipboard(String(user.id))) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
 
   return (
     <div className="flex items-center gap-4">
@@ -37,9 +57,14 @@ export const ProfileInfo = ({ user }: Props) => {
         )}
 
         {user && (
-          <span className="text-xs font-semibold text-(--color-hint)">
+          <button
+            type="button"
+            onClick={() => void handleCopyId()}
+            className="flex items-center gap-1 w-fit text-xs font-semibold text-(--color-hint) cursor-pointer"
+          >
             {t("profile.id")}: {user.id}
-          </span>
+            {copied ? <Check size={12} /> : <Copy size={12} />}
+          </button>
         )}
       </div>
     </div>

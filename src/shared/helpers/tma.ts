@@ -24,6 +24,7 @@ export const getTMAUserInfo = (): TmaUserInfo | null => {
   if (!user) return null;
 
   return {
+    id: user.id,
     fullName: [user.first_name, user.last_name].filter(Boolean).join(" "),
     username: user.username ?? null,
     photoUrl: user.photo_url ?? null

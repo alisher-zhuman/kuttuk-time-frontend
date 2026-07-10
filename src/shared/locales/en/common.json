@@ -21,6 +21,7 @@
     "profile": "Profile"
   },
   "profile": {
+    "id": "ID",
     "tabs": {
       "certificates": "Certificates",
       "settings": "Settings"

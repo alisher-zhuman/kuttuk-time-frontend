@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }: Props) => {
     logIn({ initData })
       .then(({ accessToken, role }) => {
         setAuth(accessToken, role);
-        setViewMode(role === "admin" ? "admin" : "user");
+        setViewMode(
+          role === "admin" ? "admin" : role === "merchant" ? "merchant" : "user"
+        );
       })
       .catch(console.error)
       .finally(() => {

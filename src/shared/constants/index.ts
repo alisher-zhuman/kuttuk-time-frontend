@@ -11,6 +11,7 @@ export { NOMINAL_PRESETS, VALIDITY_PRESETS } from "./merchant";
 export {
   getAdminMerchantDetailRoute,
   getCategoryEditRoute,
+  getHomeRoute,
   getMerchantEditRoute,
   getMerchantRoute,
   ROUTE_PATTERNS,

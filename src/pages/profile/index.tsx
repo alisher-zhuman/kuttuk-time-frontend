@@ -6,7 +6,7 @@ import {
   useProfileTab
 } from "@widgets/profile";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { getHomeRoute } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
@@ -23,8 +23,7 @@ export const ProfilePage = () => {
 
   const viewMode = useViewModeStore((s) => s.viewMode);
 
-  const homeRoute =
-    viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME;
+  const homeRoute = getHomeRoute(viewMode);
 
   return (
     <div className="flex-1 flex flex-col gap-4 py-4">

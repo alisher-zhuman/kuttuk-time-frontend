@@ -18,9 +18,15 @@ export const RootRedirect = () => {
   useLayoutEffect(() => {
     const { viewMode } = useViewModeStore.getState();
 
-    // Deep links are a buyer flow — admins always land on their dashboard.
+    // Deep links are a buyer flow — admins and merchants always land on their
+    // own dashboard.
     if (viewMode === "admin") {
       navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS, { replace: true });
+      return;
+    }
+
+    if (viewMode === "merchant") {
+      navigateTo(ROUTE_PATTERNS.MERCHANT_HOME, { replace: true });
       return;
     }
 

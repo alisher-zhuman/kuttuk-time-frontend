@@ -1,10 +1,12 @@
 import { create } from "zustand";
 
+import type { UserRole } from "@shared/types";
+
 export interface AuthState {
   accessToken: string | null;
-  role: string | null;
+  role: UserRole | null;
   isReady: boolean;
-  setAuth: (accessToken: string, role: string) => void;
+  setAuth: (accessToken: string, role: UserRole) => void;
   clearAuth: () => void;
   setReady: () => void;
 }

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { getHomeRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 
@@ -13,8 +13,7 @@ export const NotFoundPage = () => {
 
   const viewMode = useViewModeStore((s) => s.viewMode);
 
-  const homeRoute =
-    viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME;
+  const homeRoute = getHomeRoute(viewMode);
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-4 px-8 text-center">

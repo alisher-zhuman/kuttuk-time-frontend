@@ -13,7 +13,15 @@
     "empty": "Заведения не найдены"
   },
   "merchant": {
-    "from": "от"
+    "from": "от",
+    "badge": "Мерчант",
+    "label": "Режим отображения",
+    "viewAsUser": "Покупатель",
+    "viewAsMerchant": "Мерчант",
+    "home": {
+      "title": "Кабинет мерчанта",
+      "comingSoon": "Дашборд скоро появится"
+    }
   },
   "aria": {
     "changeLanguage": "Сменить язык",

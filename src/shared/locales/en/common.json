@@ -14,7 +14,15 @@
     "empty": "No venues found"
   },
   "merchant": {
-    "from": "from"
+    "from": "from",
+    "badge": "Merchant",
+    "label": "View mode",
+    "viewAsUser": "Buyer",
+    "viewAsMerchant": "Merchant",
+    "home": {
+      "title": "Merchant dashboard",
+      "comingSoon": "Dashboard coming soon"
+    }
   },
   "aria": {
     "changeLanguage": "Change language",

@@ -54,6 +54,14 @@ export const getAdminMerchant = async (id: string | number) => {
   return AdminMerchantDetailSchema.parse(response.data);
 };
 
+// Own merchant profile — same shape as the admin detail, tied to the caller's
+// Telegram account (merchant role only), so no id is passed.
+export const getMerchantMe = async () => {
+  const response = await api.get(`${API_PATHS.MERCHANTS}/me`);
+
+  return AdminMerchantDetailSchema.parse(response.data);
+};
+
 export interface CreateMerchantPayload {
   name: string;
   description: { ru: string; kg: string; en: string };

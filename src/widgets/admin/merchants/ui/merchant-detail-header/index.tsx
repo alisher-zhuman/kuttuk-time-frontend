@@ -10,7 +10,8 @@ interface Props {
   name: string;
   slug: string;
   isActive: boolean;
-  onEdit: () => void;
+  // Optional: the merchant's own read-only view omits it, so no pencil is shown.
+  onEdit?: (() => void) | undefined;
 }
 
 export const MerchantDetailHeader = ({ logo, name, slug, isActive, onEdit }: Props) => {
@@ -36,17 +37,19 @@ export const MerchantDetailHeader = ({ logo, name, slug, isActive, onEdit }: Pro
         label={t(isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
       />
 
-      <button
-        type="button"
-        aria-label={t("admin.merchants.form.edit")}
-        onClick={() => {
-          haptic.light();
-          onEdit();
-        }}
-        className="flex items-center justify-center size-9 rounded-full border border-(--color-line) bg-(--color-chip) text-(--color-hint) shrink-0 cursor-pointer"
-      >
-        <Pencil size={16} />
-      </button>
+      {onEdit && (
+        <button
+          type="button"
+          aria-label={t("admin.merchants.form.edit")}
+          onClick={() => {
+            haptic.light();
+            onEdit();
+          }}
+          className="flex items-center justify-center size-9 rounded-full border border-(--color-line) bg-(--color-chip) text-(--color-hint) shrink-0 cursor-pointer"
+        >
+          <Pencil size={16} />
+        </button>
+      )}
     </div>
   );
 };

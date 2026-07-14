@@ -20,8 +20,7 @@
     "viewAsUser": "Buyer",
     "viewAsMerchant": "Merchant",
     "home": {
-      "title": "Merchant dashboard",
-      "comingSoon": "Dashboard coming soon"
+      "loadError": "Failed to load profile"
     }
   },
   "aria": {

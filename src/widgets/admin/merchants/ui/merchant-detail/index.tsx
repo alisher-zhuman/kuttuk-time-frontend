@@ -13,7 +13,7 @@ import { MerchantDetailMeta } from "../merchant-detail-meta";
 interface Props {
   merchant: AdminMerchantDetail;
   categories: Category[];
-  onEdit: () => void;
+  onEdit?: () => void;
 }
 
 export const AdminMerchantDetailContent = ({ merchant, categories, onEdit }: Props) => {

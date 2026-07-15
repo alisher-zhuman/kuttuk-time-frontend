@@ -59,6 +59,11 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - Each component lives in its own folder with `index.tsx`
 - A layer's public API is exposed only through the root `index.ts`
 
+**Slice grouping:**
+- `admin/` is the only grouped bounded context (`pages/admin/*`, `features/admin/*`, `widgets/admin/*`) — justified by its size and an unambiguous name. Everything else is flat descriptive slices (`features/category-filter`, `features/merchant-profile-form`, `pages/merchant-home`, `pages/merchant-profile-edit`).
+- Don't add a `merchant/` group: "merchant" is overloaded — the **buyer-facing venue** (`pages/merchant` = `/app/merchants/:handle`, `widgets/merchant`), the **merchant-role cabinet** (`pages/merchant-home`, `features/merchant-profile-form`), and the **domain entity** (`entities/merchant`) all share the word. A `merchant/` folder would be ambiguous, unlike `admin/`.
+- **Future:** once the merchant cabinet grows (dashboard, stats, active codes, "mark as used" per the roadmap), revisit — introduce a real `merchant/` group *and* rename the buyer flow to `venue` (`pages/venue`, `widgets/venue`, `VenuePage`/`VenueContent`/…) at the same time, so the grouping stops being ambiguous. Not worth the churn on the core buy flow until there are enough merchant-cabinet slices to justify it.
+
 ## Code
 
 - **Arrow functions only** — no `function` declarations

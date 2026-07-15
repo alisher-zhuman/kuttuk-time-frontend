@@ -2,11 +2,10 @@ import { useTranslation } from "react-i18next";
 
 import { type FieldErrors, type UseFormRegister } from "react-hook-form";
 
-import { Input } from "@shared/ui";
+import { Input, LogoUpload } from "@shared/ui";
 
 import type { MerchantFormValues } from "../../model/types";
 import { ActiveToggle } from "../active-toggle";
-import { LogoUpload } from "../logo-upload";
 
 interface Props {
   register: UseFormRegister<MerchantFormValues>;

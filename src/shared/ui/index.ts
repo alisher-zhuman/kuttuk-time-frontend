@@ -5,6 +5,7 @@ export { FieldLabel } from './field-label';
 export { Input } from './input';
 export { LangSwitcher } from './lang-switcher';
 export { Logo } from './logo';
+export { LogoUpload } from './logo-upload';
 export { SearchBar } from './search-bar';
 export { SegmentedControl } from './segmented-control';
 export { StatusBadge } from './status-badge';

@@ -84,3 +84,18 @@ export interface UpdateMerchantPayload extends CreateMerchantPayload {
 export const updateMerchant = async (id: number, payload: UpdateMerchantPayload) => {
   await api.patch(`${API_PATHS.ADMIN_MERCHANTS}/${id}`, payload);
 };
+
+// Merchant editing its own profile — only the storefront fields, no slug /
+// telegramId / isActive (those stay admin-controlled), so no id is passed.
+export interface UpdateMerchantMePayload {
+  name: string;
+  description: { ru: string; kg: string; en: string };
+  categories: number[];
+  nominals: number[];
+  validityMonths: number;
+  logo: string;
+}
+
+export const updateMerchantMe = async (payload: UpdateMerchantMePayload) => {
+  await api.patch(`${API_PATHS.MERCHANTS}/me`, payload);
+};

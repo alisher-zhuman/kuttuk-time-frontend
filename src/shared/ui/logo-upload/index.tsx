@@ -38,12 +38,12 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      setUploadError(t("admin.merchants.form.fileType"));
+      setUploadError(t("logoUpload.fileType"));
       return;
     }
 
     if (file.size > MAX_UPLOAD_SIZE) {
-      setUploadError(t("admin.merchants.form.fileTooLarge"));
+      setUploadError(t("logoUpload.fileTooLarge"));
       return;
     }
 
@@ -56,7 +56,7 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
       haptic.success();
     } catch {
       haptic.error();
-      setUploadError(t("admin.merchants.form.uploadFailed"));
+      setUploadError(t("logoUpload.uploadFailed"));
       onChange("");
     } finally {
       setIsUploading(false);
@@ -104,7 +104,7 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
           message ? "text-(--color-accent)" : "text-(--color-hint)"
         )}
       >
-        {message ?? t("admin.merchants.form.logoHint")}
+        {message ?? t("logoUpload.hint")}
       </span>
     </div>
   );

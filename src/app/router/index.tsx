@@ -12,6 +12,7 @@ import { AdminPaymentsPage } from "@pages/admin/payments";
 import { HomePage } from "@pages/home";
 import { MerchantPage } from "@pages/merchant";
 import { MerchantHomePage } from "@pages/merchant-home";
+import { MerchantProfileEditPage } from "@pages/merchant-profile-edit";
 import { NotFoundPage } from "@pages/not-found";
 import { ProfilePage } from "@pages/profile";
 
@@ -89,6 +90,10 @@ export const ROUTER = createBrowserRouter([
           {
             path: ROUTE_PATTERNS.MERCHANT_HOME,
             element: <MerchantHomePage />
+          },
+          {
+            path: ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT,
+            element: <MerchantProfileEditPage />
           }
         ]
       },

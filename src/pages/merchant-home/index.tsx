@@ -10,10 +10,14 @@ import {
 import { useCategoriesQuery } from "@entities/category";
 import { useMerchantMeQuery } from "@entities/merchant";
 
+import { ROUTE_PATTERNS } from "@shared/constants";
+import { useNavigateTo } from "@shared/hooks";
 import { EmptyState } from "@shared/ui";
 
 export const MerchantHomePage = () => {
   const { t } = useTranslation();
+
+  const navigateTo = useNavigateTo();
 
   const { merchant, isLoading, isError } = useMerchantMeQuery();
 
@@ -32,6 +36,10 @@ export const MerchantHomePage = () => {
   }
 
   return (
-    <AdminMerchantDetailContent merchant={merchant} categories={categories} />
+    <AdminMerchantDetailContent
+      merchant={merchant}
+      categories={categories}
+      onEdit={() => navigateTo(ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT)}
+    />
   );
 };

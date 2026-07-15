@@ -1,12 +1,16 @@
 import { useTranslation } from "react-i18next";
 
-import { useCategoriesQuery } from "@entities/category";
-
 import { NOMINAL_PRESETS, VALIDITY_PRESETS } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { ChipSelect } from "@shared/ui";
 
+interface CategoryOption {
+  value: number;
+  label: string;
+}
+
 interface Props {
+  categoryOptions: CategoryOption[];
   categories: number[];
   nominals: number[];
   validityMonths: number;
@@ -18,7 +22,11 @@ interface Props {
   validityError?: string | undefined;
 }
 
-export const MerchantFormAttributes = ({
+// Category/nominal/validity picker for a merchant's sellable attributes.
+// Presentational — category options are passed in so it never reaches into
+// another entity, which lets both the admin and merchant forms reuse it.
+export const MerchantAttributesSelect = ({
+  categoryOptions,
   categories,
   nominals,
   validityMonths,
@@ -31,19 +39,14 @@ export const MerchantFormAttributes = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const { categories: categoryOptions } = useCategoriesQuery();
-
   const currency = t("certificate.currency");
 
   return (
     <>
       <ChipSelect
-        label={t("admin.merchants.form.categories")}
+        label={t("merchantAttributes.categories")}
         error={categoriesError}
-        items={categoryOptions.map((category) => ({
-          value: category.id,
-          label: category.name
-        }))}
+        items={categoryOptions}
         isSelected={(id) => categories.includes(id)}
         onSelect={(id) =>
           onCategoriesChange(
@@ -55,7 +58,7 @@ export const MerchantFormAttributes = ({
       />
 
       <ChipSelect
-        label={t("admin.merchants.form.nominals")}
+        label={t("merchantAttributes.nominals")}
         error={nominalsError}
         items={NOMINAL_PRESETS.map((nominal) => ({
           value: nominal,
@@ -72,11 +75,11 @@ export const MerchantFormAttributes = ({
       />
 
       <ChipSelect
-        label={t("admin.merchants.form.validity")}
+        label={t("merchantAttributes.validity")}
         error={validityError}
         items={VALIDITY_PRESETS.map((months) => ({
           value: months,
-          label: t("admin.merchants.form.months", { months })
+          label: t("merchantAttributes.months", { months })
         }))}
         isSelected={(months) => validityMonths === months}
         onSelect={onValidityMonthsChange}

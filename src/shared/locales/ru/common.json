@@ -14,13 +14,39 @@
   },
   "merchant": {
     "from": "от",
-    "badge": "Мерчант",
+    "badge": "Кабинет",
     "label": "Режим отображения",
     "viewAsUser": "Покупатель",
     "viewAsMerchant": "Мерчант",
     "home": {
       "loadError": "Не удалось загрузить профиль"
+    },
+    "form": {
+      "editTitle": "Редактирование профиля",
+      "save": "Сохранить",
+      "name": "Название",
+      "namePlaceholder": "Например: Sierra Coffee",
+      "descriptionRu": "Описание на русском",
+      "descriptionKg": "Описание на кыргызском",
+      "descriptionEn": "Описание на английском",
+      "descriptionPlaceholder": "Коротко о заведении",
+      "required": "Обязательное поле",
+      "logoRequired": "Загрузите логотип",
+      "categoriesRequired": "Выберите хотя бы одну категорию",
+      "nominalsRequired": "Добавьте хотя бы один номинал"
     }
+  },
+  "logoUpload": {
+    "hint": "Логотип, до 5 МБ",
+    "fileType": "Только изображения",
+    "fileTooLarge": "Файл больше 5 МБ",
+    "uploadFailed": "Не удалось загрузить"
+  },
+  "merchantAttributes": {
+    "categories": "Категории",
+    "nominals": "Номинал",
+    "validity": "Срок действия (мес.)",
+    "months": "{{months}} мес."
   },
   "aria": {
     "changeLanguage": "Сменить язык",
@@ -74,11 +100,7 @@
         "save": "Сохранить",
         "edit": "Редактировать",
         "status": "Статус",
-        "logoHint": "Логотип, до 5 МБ",
         "logoRequired": "Загрузите логотип",
-        "fileType": "Только изображения",
-        "fileTooLarge": "Файл больше 5 МБ",
-        "uploadFailed": "Не удалось загрузить",
         "name": "Название",
         "namePlaceholder": "Например: Sierra Coffee",
         "slug": "Ссылка",
@@ -89,12 +111,8 @@
         "descriptionKg": "Описание на кыргызском",
         "descriptionEn": "Описание на английском",
         "descriptionPlaceholder": "Коротко о заведении",
-        "categories": "Категории",
         "categoriesRequired": "Выберите хотя бы одну категорию",
-        "nominals": "Номинал",
         "nominalsRequired": "Добавьте хотя бы один номинал",
-        "validity": "Срок действия (мес.)",
-        "months": "{{months}} мес.",
         "telegramId": "Telegram ID",
         "telegramIdPlaceholder": "123456789",
         "telegramIdHint": "ID владельца заведения в Telegram",

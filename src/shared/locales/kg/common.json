@@ -14,13 +14,39 @@
   },
   "merchant": {
     "from": "баштапкы",
-    "badge": "Мерчант",
+    "badge": "Кабинет",
     "label": "Көрүнүш режими",
     "viewAsUser": "Сатып алуучу",
     "viewAsMerchant": "Мерчант",
     "home": {
       "loadError": "Профилди жүктөө мүмкүн болбоду"
+    },
+    "form": {
+      "editTitle": "Профилди түзөтүү",
+      "save": "Сактоо",
+      "name": "Аталышы",
+      "namePlaceholder": "Мисалы: Sierra Coffee",
+      "descriptionRu": "Орусча сүрөттөмө",
+      "descriptionKg": "Кыргызча сүрөттөмө",
+      "descriptionEn": "Англисче сүрөттөмө",
+      "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
+      "required": "Милдеттүү талаа",
+      "logoRequired": "Логотипти жүктөңүз",
+      "categoriesRequired": "Кеминде бир категория тандаңыз",
+      "nominalsRequired": "Кеминде бир номинал кошуңуз"
     }
+  },
+  "logoUpload": {
+    "hint": "Логотип, 5 МБ чейин",
+    "fileType": "Сүрөттөр гана",
+    "fileTooLarge": "Файл 5 МБ ашык",
+    "uploadFailed": "Жүктөө ишке ашкан жок"
+  },
+  "merchantAttributes": {
+    "categories": "Категориялар",
+    "nominals": "Номинал",
+    "validity": "Жарактуулук мөөнөтү (ай)",
+    "months": "{{months}} ай"
   },
   "aria": {
     "changeLanguage": "Тил алмаштыруу",
@@ -74,11 +100,7 @@
         "save": "Сактоо",
         "edit": "Түзөтүү",
         "status": "Статус",
-        "logoHint": "Логотип, 5 МБ чейин",
         "logoRequired": "Логотипти жүктөңүз",
-        "fileType": "Сүрөттөр гана",
-        "fileTooLarge": "Файл 5 МБ ашык",
-        "uploadFailed": "Жүктөө ишке ашкан жок",
         "name": "Аталышы",
         "namePlaceholder": "Мисалы: Sierra Coffee",
         "slug": "Шилтеме",
@@ -89,12 +111,8 @@
         "descriptionKg": "Кыргызча сүрөттөмө",
         "descriptionEn": "Англисче сүрөттөмө",
         "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
-        "categories": "Категориялар",
         "categoriesRequired": "Кеминде бир категория тандаңыз",
-        "nominals": "Номинал",
         "nominalsRequired": "Кеминде бир номинал кошуңуз",
-        "validity": "Жарактуулук мөөнөтү (ай)",
-        "months": "{{months}} ай",
         "telegramId": "Telegram ID",
         "telegramIdPlaceholder": "123456789",
         "telegramIdHint": "Мекеме ээсинин Telegram ID'си",

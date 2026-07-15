@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
 
+import { useCategoriesQuery } from "@entities/category";
+import { MerchantAttributesSelect } from "@entities/merchant";
+
 import { useMainButton } from "@shared/hooks";
 
 import { useMerchantForm } from "../../hooks/useMerchantForm";
-import { MerchantFormAttributes } from "../merchant-form-attributes";
 import { MerchantFormContact } from "../merchant-form-contact";
 import { MerchantFormDescription } from "../merchant-form-description";
 import { MerchantFormIdentity } from "../merchant-form-identity";
@@ -35,6 +37,8 @@ export const MerchantForm = ({ merchantId }: Props) => {
     submit
   } = useMerchantForm(merchantId);
 
+  const { categories: categoryOptions } = useCategoriesQuery();
+
   useMainButton({
     text: t(isEdit ? "admin.merchants.form.save" : "admin.merchants.form.create"),
     onClick: () => void submit(),
@@ -60,7 +64,11 @@ export const MerchantForm = ({ merchantId }: Props) => {
 
       <MerchantFormDescription register={register} errors={errors} />
 
-      <MerchantFormAttributes
+      <MerchantAttributesSelect
+        categoryOptions={categoryOptions.map((category) => ({
+          value: category.id,
+          label: category.name
+        }))}
         categories={categories}
         nominals={nominals}
         validityMonths={validityMonths}

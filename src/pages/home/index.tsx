@@ -11,8 +11,9 @@ export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
-  const categoryParam = searchParams.get("category");
-  const activeCategory = categoryParam ? Number(categoryParam) : null;
+  const categoryParam = Number(searchParams.get("category"));
+  const activeCategory =
+    Number.isInteger(categoryParam) && categoryParam > 0 ? categoryParam : null;
 
   const debouncedSearch = useDebounce(search);
 

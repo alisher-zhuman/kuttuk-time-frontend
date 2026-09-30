@@ -57,7 +57,9 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
     } catch {
       haptic.error();
       setUploadError(t("logoUpload.uploadFailed"));
-      onChange("");
+      // Keep the previous logo: dropping the preview falls back to `value`,
+      // so a failed re-upload in edit mode doesn't wipe the saved one.
+      setPreview(null);
     } finally {
       setIsUploading(false);
     }
@@ -71,12 +73,14 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
       <label
         className={cn(
           "relative size-24 rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer border-2 border-dashed bg-(--color-chip)",
+          isUploading && "cursor-wait",
           message ? "border-(--color-accent)" : "border-(--color-line)"
         )}
       >
         <input
           type="file"
           accept="image/*"
+          disabled={isUploading}
           className="hidden"
           onChange={(event) => void handleChange(event)}
         />

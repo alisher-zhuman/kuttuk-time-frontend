@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { cn } from "@shared/helpers";
+import { cn, formatMoney } from "@shared/helpers";
 import { StatusBadge } from "@shared/ui";
 
 type CertStatus = "active" | "used";
@@ -72,7 +72,7 @@ export const CertificatesTab = () => {
                   {cert.merchant}
                 </span>
                 <span className="text-base font-extrabold text-(--color-primary) shrink-0">
-                  {cert.amount.toLocaleString("ru-RU")} {t("certificate.currency")}
+                  {formatMoney(cert.amount, t("certificate.currency"))}
                 </span>
               </div>
 

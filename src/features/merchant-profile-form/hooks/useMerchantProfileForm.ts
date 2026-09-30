@@ -1,10 +1,8 @@
-import { useEffect } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
 import {
-  useMerchantMeQuery,
+  type AdminMerchantDetail,
   useUpdateMerchantMeMutation
 } from "@entities/merchant";
 
@@ -14,21 +12,20 @@ import { useGenericError, useHaptic, useNavigateTo } from "@shared/hooks";
 import { MerchantProfileFormSchema } from "../model/schemas";
 import type { MerchantProfileFormValues } from "../model/types";
 
-export const useMerchantProfileForm = () => {
+// Receives an already-loaded profile (the page gates on the query), so
+// defaultValues are final on the first render — no reset() racing user input.
+export const useMerchantProfileForm = (merchant: AdminMerchantDetail) => {
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
 
   const showGenericError = useGenericError();
 
-  const { merchant } = useMerchantMeQuery();
-
   const { mutate, isPending } = useUpdateMerchantMeMutation();
 
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
     control,
     formState: { errors, isDirty }
@@ -36,21 +33,6 @@ export const useMerchantProfileForm = () => {
     resolver: zodResolver(MerchantProfileFormSchema),
     mode: "onChange",
     defaultValues: {
-      logo: "",
-      name: "",
-      descriptionRu: "",
-      descriptionKg: "",
-      descriptionEn: "",
-      categories: [],
-      nominals: [500],
-      validityMonths: 12
-    }
-  });
-
-  useEffect(() => {
-    if (!merchant) return;
-
-    reset({
       logo: merchant.logo,
       name: merchant.name,
       descriptionRu: merchant.description?.ru ?? "",
@@ -59,8 +41,8 @@ export const useMerchantProfileForm = () => {
       categories: merchant.categories,
       nominals: merchant.nominals,
       validityMonths: merchant.validityMonths
-    });
-  }, [merchant, reset]);
+    }
+  });
 
   const logo = useWatch({ control, name: "logo" });
   const categories = useWatch({ control, name: "categories" });

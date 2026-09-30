@@ -1,12 +1,10 @@
-import { useEffect } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
 import { isAxiosError } from "axios";
 
 import {
-  useAdminMerchantQuery,
+  type AdminMerchantDetail,
   useCreateMerchantMutation,
   useUpdateMerchantMutation
 } from "@entities/merchant";
@@ -30,16 +28,15 @@ const getConflictField = (error: unknown) => {
   return CONFLICT_FIELDS.find((name) => name === field) ?? null;
 };
 
-export const useMerchantForm = (merchantId?: number) => {
+// Edit mode receives an already-loaded merchant (the page gates on the query),
+// so defaultValues are final on the first render — no reset() that could wipe
+// what the user typed while the request was in flight.
+export const useMerchantForm = (merchant?: AdminMerchantDetail) => {
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
 
   const showGenericError = useGenericError();
-
-  const { merchant } = useAdminMerchantQuery(
-    merchantId !== undefined ? String(merchantId) : undefined
-  );
 
   const { mutate: create, isPending: isCreating } = useCreateMerchantMutation();
   const { mutate: update, isPending: isUpdating } = useUpdateMerchantMutation();
@@ -47,7 +44,6 @@ export const useMerchantForm = (merchantId?: number) => {
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
     setError,
     control,
@@ -55,38 +51,34 @@ export const useMerchantForm = (merchantId?: number) => {
   } = useForm<MerchantFormValues>({
     resolver: zodResolver(MerchantFormSchema),
     mode: "onChange",
-    defaultValues: {
-      logo: "",
-      name: "",
-      slug: "",
-      descriptionRu: "",
-      descriptionKg: "",
-      descriptionEn: "",
-      categories: [],
-      nominals: [500],
-      validityMonths: 12,
-      isActive: true,
-      merchantTelegramId: ""
-    }
+    defaultValues: merchant
+      ? {
+          logo: merchant.logo,
+          name: merchant.name,
+          slug: merchant.slug,
+          descriptionRu: merchant.description?.ru ?? "",
+          descriptionKg: merchant.description?.kg ?? "",
+          descriptionEn: merchant.description?.en ?? "",
+          categories: merchant.categories,
+          nominals: merchant.nominals,
+          validityMonths: merchant.validityMonths,
+          isActive: merchant.isActive,
+          merchantTelegramId: String(merchant.merchantTelegramId)
+        }
+      : {
+          logo: "",
+          name: "",
+          slug: "",
+          descriptionRu: "",
+          descriptionKg: "",
+          descriptionEn: "",
+          categories: [],
+          nominals: [500],
+          validityMonths: 12,
+          isActive: true,
+          merchantTelegramId: ""
+        }
   });
-
-  useEffect(() => {
-    if (!merchant) return;
-
-    reset({
-      logo: merchant.logo,
-      name: merchant.name,
-      slug: merchant.slug,
-      descriptionRu: merchant.description?.ru ?? "",
-      descriptionKg: merchant.description?.kg ?? "",
-      descriptionEn: merchant.description?.en ?? "",
-      categories: merchant.categories,
-      nominals: merchant.nominals,
-      validityMonths: merchant.validityMonths,
-      isActive: merchant.isActive,
-      merchantTelegramId: String(merchant.merchantTelegramId)
-    });
-  }, [merchant, reset]);
 
   const logo = useWatch({ control, name: "logo" });
   const categories = useWatch({ control, name: "categories" });
@@ -140,9 +132,9 @@ export const useMerchantForm = (merchantId?: number) => {
       }
     };
 
-    if (merchantId !== undefined) {
+    if (merchant) {
       update(
-        { id: merchantId, payload: { ...payload, isActive: values.isActive } },
+        { id: merchant.id, payload: { ...payload, isActive: values.isActive } },
         callbacks
       );
     } else {
@@ -153,7 +145,7 @@ export const useMerchantForm = (merchantId?: number) => {
   return {
     register,
     errors,
-    isPending: merchantId !== undefined ? isUpdating : isCreating,
+    isPending: merchant ? isUpdating : isCreating,
     isDirty,
     logo,
     categories,

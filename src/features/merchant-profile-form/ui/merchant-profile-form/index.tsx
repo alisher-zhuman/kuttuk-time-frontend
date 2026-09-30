@@ -1,14 +1,21 @@
 import { useTranslation } from "react-i18next";
 
 import { useCategoriesQuery } from "@entities/category";
-import { MerchantAttributesSelect } from "@entities/merchant";
+import {
+  type AdminMerchantDetail,
+  MerchantAttributesSelect
+} from "@entities/merchant";
 
 import { useMainButton } from "@shared/hooks";
 import { Input, LogoUpload, Textarea } from "@shared/ui";
 
 import { useMerchantProfileForm } from "../../hooks/useMerchantProfileForm";
 
-export const MerchantProfileForm = () => {
+interface Props {
+  merchant: AdminMerchantDetail;
+}
+
+export const MerchantProfileForm = ({ merchant }: Props) => {
   const { t } = useTranslation();
 
   const { categories: categoryOptions } = useCategoriesQuery();
@@ -27,7 +34,7 @@ export const MerchantProfileForm = () => {
     setNominals,
     setValidityMonths,
     submit
-  } = useMerchantProfileForm();
+  } = useMerchantProfileForm(merchant);
 
   useMainButton({
     text: t("merchant.form.save"),

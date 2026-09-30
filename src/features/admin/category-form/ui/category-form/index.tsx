@@ -1,20 +1,22 @@
 import { useTranslation } from "react-i18next";
 
+import { type AdminCategory } from "@entities/category";
+
 import { useMainButton } from "@shared/hooks";
 import { Input } from "@shared/ui";
 
 import { useCategoryForm } from "../../hooks/useCategoryForm";
 
 interface Props {
-  categoryId?: number;
+  category?: AdminCategory;
 }
 
-export const CategoryForm = ({ categoryId }: Props) => {
+export const CategoryForm = ({ category }: Props) => {
   const { t } = useTranslation();
 
-  const isEdit = categoryId !== undefined;
+  const isEdit = category !== undefined;
 
-  const { register, errors, isPending, isDirty, submit } = useCategoryForm(categoryId);
+  const { register, errors, isPending, isDirty, submit } = useCategoryForm(category);
 
   useMainButton({
     text: t(isEdit ? "admin.categories.save" : "admin.categories.create"),

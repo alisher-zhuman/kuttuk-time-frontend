@@ -126,6 +126,7 @@
       "manage": "Manage categories",
       "listTitle": "CATEGORIES",
       "empty": "No categories found",
+      "notFound": "Category not found",
       "title": "New category",
       "editTitle": "Edit category",
       "edit": "Edit",

@@ -10,7 +10,11 @@ export const useNavigateTo = () => {
       if (typeof to === "number") {
         void navigate(to);
       } else {
-        void navigate(to, { replace: options?.replace ?? pathname === to });
+        // Compare without the query string: /profile → /profile?tab=settings
+        // is the same page and must not stack a history entry.
+        const [path] = to.split("?");
+
+        void navigate(to, { replace: options?.replace ?? pathname === path });
       }
     },
     [navigate, pathname]

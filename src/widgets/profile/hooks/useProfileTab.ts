@@ -4,15 +4,17 @@ import { useSearchParams } from "react-router";
 import { PROFILE_TABS } from "../constants";
 import type { Tab } from "../types";
 
+// The tab lives in the URL, not in state: the TMA settings button navigates to
+// ?tab=settings while the profile page may already be mounted, and a useState
+// initializer would never see that change.
 export const useProfileTab = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const requestedTab = searchParams.get("tab") as Tab | null;
-  const initialTab = PROFILE_TABS.includes(requestedTab as Tab)
+  const activeTab: Tab = PROFILE_TABS.includes(requestedTab as Tab)
     ? (requestedTab as Tab)
     : "certificates";
 
-  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [contentAnimation, setContentAnimation] = useState(
     "animate-tab-enter-right"
   );
@@ -25,7 +27,14 @@ export const useProfileTab = () => {
         ? "animate-tab-enter-right"
         : "animate-tab-enter-left"
     );
-    setActiveTab(tab);
+    setSearchParams(
+      (prev) => {
+        prev.set("tab", tab);
+
+        return prev;
+      },
+      { replace: true }
+    );
   };
 
   return { activeTab, contentAnimation, handleTabChange };

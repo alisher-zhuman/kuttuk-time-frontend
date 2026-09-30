@@ -13,10 +13,16 @@ interface Params {
 export const useMerchantsQuery = ({ search, category }: Params) => {
   const { i18n } = useTranslation();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: merchantKeys.list(search, category, i18n.language),
     queryFn: () => getMerchants({ search, category })
   });
 
-  return { merchants: data ?? [], isLoading, isError };
+  return {
+    merchants: data ?? [],
+    isLoading,
+    isError,
+    isFetching,
+    retry: () => void refetch()
+  };
 };

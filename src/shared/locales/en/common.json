@@ -175,6 +175,8 @@
   "errors": {
     "genericTitle": "Error",
     "generic": "Something went wrong. Please try again.",
-    "reload": "Reload page"
+    "reload": "Reload page",
+    "loadFailed": "Couldn't load data",
+    "retry": "Try again"
   }
 }

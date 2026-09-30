@@ -10,7 +10,7 @@ import {
 
 import { getAdminMerchantDetailRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { EmptyState } from "@shared/ui";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
   search: string;
@@ -25,7 +25,11 @@ export const AdminMerchantList = ({ search, category, isActive }: Props) => {
 
   const haptic = useHaptic();
 
-  const { merchants, isLoading } = useAdminMerchantsQuery({ search, category, isActive });
+  const { merchants, isLoading, isError, isFetching, retry } = useAdminMerchantsQuery({
+    search,
+    category,
+    isActive
+  });
 
   return (
     <section aria-label={t("home.merchantsSection")}>
@@ -41,6 +45,8 @@ export const AdminMerchantList = ({ search, category, isActive }: Props) => {
             </li>
           ))}
         </ul>
+      ) : isError ? (
+        <ErrorState onRetry={retry} isRetrying={isFetching} />
       ) : merchants.length === 0 ? (
         <EmptyState
           icon={<Store size={32} strokeWidth={1.5} />}

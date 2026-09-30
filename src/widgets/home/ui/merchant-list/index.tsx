@@ -8,7 +8,7 @@ import {
   useMerchantsQuery
 } from "@entities/merchant";
 
-import { EmptyState } from "@shared/ui";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
   category: number | null;
@@ -18,7 +18,10 @@ interface Props {
 export const MerchantList = ({ category, search }: Props) => {
   const { t } = useTranslation();
 
-  const { merchants, isLoading } = useMerchantsQuery({ search, category });
+  const { merchants, isLoading, isError, isFetching, retry } = useMerchantsQuery({
+    search,
+    category
+  });
 
   return (
     <section aria-label={t("home.merchantsSection")}>
@@ -34,6 +37,8 @@ export const MerchantList = ({ category, search }: Props) => {
             </li>
           ))}
         </ul>
+      ) : isError ? (
+        <ErrorState onRetry={retry} isRetrying={isFetching} />
       ) : merchants.length === 0 ? (
         <EmptyState
           icon={<Store size={32} strokeWidth={1.5} />}

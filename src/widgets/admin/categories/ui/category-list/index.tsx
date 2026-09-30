@@ -12,7 +12,7 @@ import {
 
 import { getCategoryEditRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { EmptyState } from "@shared/ui";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 import { useCategoryDelete } from "../../hooks/useCategoryDelete";
 import { useCategoryReorder } from "../../hooks/useCategoryReorder";
@@ -25,7 +25,8 @@ export const CategoryList = () => {
 
   const haptic = useHaptic();
 
-  const { categories, isLoading } = useAdminCategoriesQuery();
+  const { categories, isLoading, isError, isFetching, retry } =
+    useAdminCategoriesQuery();
 
   const { handleDragStart, handleDragEnd } = useCategoryReorder(categories);
 
@@ -47,6 +48,8 @@ export const CategoryList = () => {
             </li>
           ))}
         </ul>
+      ) : isError ? (
+        <ErrorState onRetry={retry} isRetrying={isFetching} />
       ) : categories.length === 0 ? (
         <EmptyState
           icon={<Tag size={32} strokeWidth={1.5} />}

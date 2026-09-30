@@ -1,5 +1,6 @@
 export { ChipSelect } from './chip-select';
 export { EmptyState } from './empty-state';
+export { ErrorState } from './error-state';
 export { Fab } from './fab';
 export { FieldLabel } from './field-label';
 export { Input } from './input';

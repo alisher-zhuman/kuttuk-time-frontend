@@ -77,7 +77,9 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **Edit forms**: the page gates on the query (spinner → not-found → form) and passes loaded data as a prop into `defaultValues` — no `useEffect` + `reset()` (it wipes input typed while loading)
 - **Lists**: `isLoading` → skeleton, `isError` → `<ErrorState onRetry isRetrying />`, empty → `EmptyState`, else list. Query hooks return `retry` + `isFetching` for this
 - **UI state that TMA buttons target** (e.g. profile `?tab=`) lives in search params, not `useState` — the page may already be mounted when the button navigates
-- `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and old data shows
+- `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and the previous key's data shows. Harmless today (pages remount on navigation), but wherever a key can change while mounted and stale data would be wrong (route params without remount, anything feeding a purchase), gate on `isPlaceholderData` or set `placeholderData: undefined` on that query
+- `QUERY_CLIENT` retries once, and only network errors / 5xx — 4xx and `ZodError` fail immediately
+- `useSwipeNavigation`: swipe from the left edge → back, from the right edge → forward — intentional, not a bug
 
 ## TMA SDK
 
@@ -117,6 +119,11 @@ Always check `isAvailable()` before calling SDK methods.
 No success toast/message pattern yet — mutations that redirect on success (e.g. `createCategory` → back to the categories list) rely on haptic + the result being visible on the destination page, which is enough on its own.
 
 **Worth adding (when there's time):** a minimal custom toast (own component + small store/hook, same "hand-roll it, don't pull a library" approach as `ErrorBoundary`) for mutations that *don't* navigate away on success (e.g. future "Mark as used", inline edits) — those need a visible confirmation since there's no destination-page context to imply success.
+
+## Payment flow — notes for when it's built
+
+- **Selected nominal can go stale**: `MerchantContent` keeps `selectedNominal` in `useState`, but `merchant.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the merchant editing nominals). Before buying, re-derive it: `merchant.nominals.includes(selectedNominal) ? selectedNominal : merchant.nominals[0]`, and send `merchantId` + nominal so the backend validates against the current list — never trust the client's amount
+- The merchant detail query feeds the purchase — mind `keepPreviousData` (see Code) there
 
 ## i18n
 

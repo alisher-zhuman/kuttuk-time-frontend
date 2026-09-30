@@ -1,7 +1,11 @@
 import i18n from "i18next";
 
 import { retrieveRawInitData } from "@tma.js/sdk-react";
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
+import axios, {
+  type AxiosError,
+  type InternalAxiosRequestConfig,
+  isAxiosError
+} from "axios";
 
 import { API_URL } from "@shared/constants";
 import { useAuthStore } from "@shared/store";
@@ -52,8 +56,13 @@ api.interceptors.response.use(
         useAuthStore.getState().setAuth(accessToken, role);
         original.headers.Authorization = `Bearer ${accessToken}`;
         return api.request(original);
-      } catch {
+      } catch (logInError) {
         useAuthStore.getState().clearAuth();
+
+        if (isAxiosError(logInError) && logInError.response?.status === 401) {
+          useAuthStore.getState().setSessionExpired();
+        }
+
         return Promise.reject(error);
       }
     }

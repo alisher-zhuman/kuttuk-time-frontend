@@ -1,7 +1,10 @@
 import { type ReactNode, useEffect } from "react";
 
 import { retrieveRawInitData } from "@tma.js/sdk-react";
+import { isAxiosError } from "axios";
 import { Loader2 } from "lucide-react";
+
+import { SessionExpiredPage } from "@pages/session-expired";
 
 import { logIn } from "@shared/api";
 import { useAuthStore, useViewModeStore } from "@shared/store";
@@ -12,9 +15,10 @@ interface Props {
 
 export const AuthProvider = ({ children }: Props) => {
   const isReady = useAuthStore((s) => s.isReady);
+  const isSessionExpired = useAuthStore((s) => s.isSessionExpired);
 
   useEffect(() => {
-    const { setAuth, setReady } = useAuthStore.getState();
+    const { setAuth, setReady, setSessionExpired } = useAuthStore.getState();
     const { setViewMode } = useViewModeStore.getState();
 
     const initData = retrieveRawInitData();
@@ -31,11 +35,22 @@ export const AuthProvider = ({ children }: Props) => {
           role === "admin" ? "admin" : role === "merchant" ? "merchant" : "user"
         );
       })
-      .catch(console.error)
+      .catch((error: unknown) => {
+        // A reload inside Telegram keeps the old initData, so the very first
+        // log-in can already be rejected as expired.
+        if (isAxiosError(error) && error.response?.status === 401) {
+          setSessionExpired();
+          return;
+        }
+
+        console.error(error);
+      })
       .finally(() => {
         setReady();
       });
   }, []);
+
+  if (isSessionExpired) return <SessionExpiredPage />;
 
   if (!isReady) {
     return (

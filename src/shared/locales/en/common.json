@@ -159,6 +159,11 @@
     "description": "This is a Telegram Mini App. Open it via the bot in Telegram.",
     "openInTelegram": "Open in Telegram"
   },
+  "sessionExpired": {
+    "title": "Session expired",
+    "description": "The app has been open for too long. Close it and open it again from the bot.",
+    "close": "Close app"
+  },
   "notFound": {
     "title": "404",
     "description": "Page not found",

@@ -159,6 +159,11 @@
     "description": "Это Telegram Mini App. Открой его через бота в Telegram.",
     "openInTelegram": "Открыть в Telegram"
   },
+  "sessionExpired": {
+    "title": "Сессия устарела",
+    "description": "Приложение открыто слишком долго. Закройте его и откройте заново через бота.",
+    "close": "Закрыть приложение"
+  },
   "notFound": {
     "title": "404",
     "description": "Страница не найдена",

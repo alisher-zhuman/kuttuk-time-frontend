@@ -159,6 +159,11 @@
     "description": "Бул Telegram Mini App. Аны Telegramдагы бот аркылуу ачыңыз.",
     "openInTelegram": "Telegramда ачуу"
   },
+  "sessionExpired": {
+    "title": "Сессиянын мөөнөтү бүттү",
+    "description": "Колдонмо өтө узак ачык турду. Аны жаап, бот аркылуу кайра ачыңыз.",
+    "close": "Колдонмону жабуу"
+  },
   "notFound": {
     "title": "404",
     "description": "Бет табылган жок",

@@ -1,9 +1,6 @@
 {
   "language": {
-    "label": "Language",
-    "kg": "KG",
-    "ru": "RU",
-    "en": "EN"
+    "label": "Language"
   },
   "search": {
     "placeholder": "Search venues",

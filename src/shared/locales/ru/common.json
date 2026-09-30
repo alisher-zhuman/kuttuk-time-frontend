@@ -1,8 +1,6 @@
 {
   "language": {
-    "label": "Язык",
-    "kg": "КР",
-    "ru": "RU"
+    "label": "Язык"
   },
   "search": {
     "placeholder": "Поиск заведений",

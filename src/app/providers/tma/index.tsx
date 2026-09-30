@@ -5,6 +5,7 @@ import {
   miniApp,
   swipeBehavior,
   themeParams,
+  useSignal,
   viewport
 } from "@tma.js/sdk-react";
 
@@ -32,6 +33,8 @@ interface Props {
 
 export const TMAProvider = ({ children }: Props) => {
   const theme = useThemeStore((s) => s.theme);
+
+  const isTelegramDark = useSignal(themeParams.isDark);
 
   useEffect(() => {
     if (themeParams.mount.isAvailable()) {
@@ -74,7 +77,7 @@ export const TMAProvider = ({ children }: Props) => {
     if (miniApp.setBottomBarColor.isAvailable()) {
       miniApp.setBottomBarColor(bg);
     }
-  }, [theme]);
+  }, [theme, isTelegramDark]);
 
   if (!isTMA) return <AppNotFoundPage />;
 

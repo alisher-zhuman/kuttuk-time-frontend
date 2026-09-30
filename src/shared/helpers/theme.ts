@@ -8,7 +8,9 @@ export const detectTheme = (): "light" | "dark" => {
   // Live Telegram theme, updated on theme_changed. Guarded by isMounted: before
   // mount bgColor is unset and isDark reports true regardless of the theme.
   // Not miniApp.isDark — that follows our own setBgColor, not Telegram's theme.
-  if (themeParams.isMounted()) return themeParams.isDark() ? "dark" : "light";
+  if (themeParams.isMounted()) {
+    return themeParams.isDark() ? "dark" : "light";
+  }
 
   // Launch-time snapshot — only until themeParams mounts.
   const scheme = getLaunchParams()?.["tgWebAppColorScheme"];

@@ -74,6 +74,10 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **Routes**: only through `ROUTE_PATTERNS` and `getMerchantRoute()` from `@shared/constants` — no hardcoded strings
 - **TMA launch params**: only through `getLaunchParams()` from `@shared/helpers` — never `retrieveLaunchParams()` from the SDK directly
 - **Configs** (`vercel.json`, BotFather, CI): don't change without explicit approval
+- **Edit forms**: the page gates on the query (spinner → not-found → form) and passes loaded data as a prop into `defaultValues` — no `useEffect` + `reset()` (it wipes input typed while loading)
+- **Lists**: `isLoading` → skeleton, `isError` → `<ErrorState onRetry isRetrying />`, empty → `EmptyState`, else list. Query hooks return `retry` + `isFetching` for this
+- **UI state that TMA buttons target** (e.g. profile `?tab=`) lives in search params, not `useState` — the page may already be mounted when the button navigates
+- `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and old data shows
 
 ## TMA SDK
 
@@ -91,6 +95,9 @@ Shared TMA hooks in `src/shared/hooks/tma/`:
 - `useSettingsButton` — settings button
 
 Always check `isAvailable()` before calling SDK methods.
+
+- `AuthProvider` resets `viewMode` from `role` on every login (intentional) — "view as buyer" lasts only until reload; the sessionStorage persist barely matters
+- System theme source: `themeParams.isDark` (Telegram's theme, guard with `isMounted()` — unmounted it reports `true`) — never `miniApp.isDark`, it reflects our own `setBgColor`
 
 **Worth adding (when there's time):**
 - `shareURL` (`links`) — share the certificate code in Telegram, this is literally part of the business flow ("the code can be shared in Telegram")
@@ -115,6 +122,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`
 When adding a new key — add it to all three files.
+Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit programmatically
 
 ## Testing
 
@@ -141,3 +149,5 @@ Pre-push hook (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`)
 ## Git
 
 Commits are signed by Alisher only. No `Co-Authored-By`.
+
+Workflow for fixes: one fix per commit → push to `dev` → Alisher verifies in Telegram → next fix

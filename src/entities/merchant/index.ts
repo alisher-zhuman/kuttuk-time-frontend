@@ -17,3 +17,4 @@ export { AdminMerchantCardSkeleton } from "./ui/admin/card-skeleton";
 export { MerchantAttributesSelect } from "./ui/attributes-select";
 export { MerchantCard } from "./ui/card";
 export { MerchantCardSkeleton } from "./ui/card-skeleton";
+export { MerchantDeactivatedNotice } from "./ui/deactivated-notice";

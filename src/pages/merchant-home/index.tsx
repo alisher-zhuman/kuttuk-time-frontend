@@ -8,7 +8,7 @@ import {
 } from "@widgets/admin/merchants";
 
 import { useCategoriesQuery } from "@entities/category";
-import { useMerchantMeQuery } from "@entities/merchant";
+import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useNavigateTo } from "@shared/hooks";
@@ -32,6 +32,18 @@ export const MerchantHomePage = () => {
         icon={<Store size={32} strokeWidth={1.5} />}
         message={t("merchant.home.loadError")}
       />
+    );
+  }
+
+  // Deactivated: the backend rejects PATCH /merchants/me with 403, so explain
+  // why instead of offering an edit that can only fail.
+  if (!merchant.isActive) {
+    return (
+      <div className="flex-1 flex flex-col pt-4">
+        <MerchantDeactivatedNotice />
+
+        <AdminMerchantDetailContent merchant={merchant} categories={categories} />
+      </div>
     );
   }
 

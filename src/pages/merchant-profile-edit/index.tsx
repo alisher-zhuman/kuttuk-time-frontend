@@ -4,7 +4,7 @@ import { Loader2, Store } from "lucide-react";
 
 import { MerchantProfileForm } from "@features/merchant-profile-form";
 
-import { useMerchantMeQuery } from "@entities/merchant";
+import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 
 import { EmptyState } from "@shared/ui";
 
@@ -28,6 +28,16 @@ export const MerchantProfileEditPage = () => {
         icon={<Store size={32} strokeWidth={1.5} />}
         message={t("merchant.home.loadError")}
       />
+    );
+  }
+
+  // Also reached when a save gets 403 mid-edit: the mutation refetches "me",
+  // and the fresh isActive: false swaps the form for this notice.
+  if (!merchant.isActive) {
+    return (
+      <div className="mt-3.5">
+        <MerchantDeactivatedNotice />
+      </div>
     );
   }
 

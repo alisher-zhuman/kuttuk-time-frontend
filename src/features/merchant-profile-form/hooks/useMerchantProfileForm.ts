@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
+import { isAxiosError } from "axios";
+
 import {
   type AdminMerchantDetail,
   useUpdateMerchantMeMutation
@@ -79,7 +81,16 @@ export const useMerchantProfileForm = (merchant: AdminMerchantDetail) => {
           haptic.success();
           navigateTo(ROUTE_PATTERNS.MERCHANT_HOME);
         },
-        onError: () => showGenericError()
+        onError: (error) => {
+          // Deactivated mid-edit: the page swaps to the deactivated notice once
+          // the mutation's refetch lands, so a generic popup would only confuse.
+          if (isAxiosError(error) && error.response?.status === 403) {
+            haptic.error();
+            return;
+          }
+
+          showGenericError();
+        }
       }
     );
   });

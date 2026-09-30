@@ -19,6 +19,10 @@
     "home": {
       "loadError": "Failed to load profile"
     },
+    "deactivated": {
+      "title": "Account deactivated",
+      "message": "Your venue is hidden from buyers and profile editing is unavailable. Message us to turn it back on."
+    },
     "form": {
       "editTitle": "Edit profile",
       "save": "Save",

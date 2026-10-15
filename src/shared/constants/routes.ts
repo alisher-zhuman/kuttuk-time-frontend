@@ -6,6 +6,7 @@ export const ROUTES = {
   ORDERS: "orders",
   PAYMENTS: "payments",
   CATEGORIES: "categories",
+  CERTIFICATES: "certificates",
   CATEGORY_CREATE: "category-create",
   CATEGORY_EDIT: "category-edit",
   MERCHANT_CREATE: "merchant-create",
@@ -19,6 +20,7 @@ export const ROUTE_PATTERNS = {
   PROFILE: `/${ROUTES.APP}/${ROUTES.PROFILE}`,
   MERCHANT: `/${ROUTES.APP}/${ROUTES.MERCHANTS}/:handle`,
   ORDER: `/${ROUTES.APP}/${ROUTES.ORDERS}/:orderId`,
+  CERTIFICATE: `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/:certificateId`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
   MERCHANT_PROFILE_EDIT: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.EDIT}`,
   ADMIN_MERCHANTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}`,
@@ -37,6 +39,9 @@ export const getMerchantRoute = (handle: string | number) =>
 
 export const getOrderRoute = (orderId: string) =>
   `/${ROUTES.APP}/${ROUTES.ORDERS}/${orderId}`;
+
+export const getCertificateRoute = (certificateId: string) =>
+  `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/${certificateId}`;
 
 export const getAdminMerchantDetailRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}/${id}`;

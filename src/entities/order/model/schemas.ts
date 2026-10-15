@@ -6,7 +6,7 @@ export const CreatedOrderSchema = z.object({
   expiresAt: z.string()
 });
 
-export const CertificateSchema = z.object({
+export const OrderCertificateSchema = z.object({
   code: z.string(),
   validUntil: z.string()
 });
@@ -34,7 +34,7 @@ export const OrderSchema = z.discriminatedUnion("status", [
     paidAt: z.string(),
     // Created by the Finik webhook in the same transaction that marks the
     // order paid (also when a needs_review order is honoured by hand).
-    certificate: CertificateSchema
+    certificate: OrderCertificateSchema
   }),
   OrderBaseSchema.extend({
     status: z.literal("needs_review"),

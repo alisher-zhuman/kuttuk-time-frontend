@@ -1,94 +1,81 @@
 import { useTranslation } from "react-i18next";
 
-import { cn, formatMoney } from "@shared/helpers";
-import { StatusBadge } from "@shared/ui";
+import { Gift } from "lucide-react";
 
-type CertStatus = "active" | "used";
+import {
+  CertificateCard,
+  CertificateCardSkeleton,
+  useMyCertificatesQuery
+} from "@entities/certificate";
 
-interface MockCert {
-  id: string;
-  merchant: string;
-  code: string;
-  amount: number;
-  status: CertStatus;
-  gradient: [string, string];
-}
-
-const MOCK_CERTS: MockCert[] = [
-  {
-    id: "1",
-    merchant: "Sierra Coffee",
-    code: "KUTT-7F3A-9B2C",
-    amount: 2000,
-    status: "active",
-    gradient: ["#5A4BE8", "#8B7DFB"]
-  },
-  {
-    id: "2",
-    merchant: "Navat",
-    code: "KUTT-1D8E-4A55",
-    amount: 1000,
-    status: "active",
-    gradient: ["#FF6B5E", "#FF9486"]
-  },
-  {
-    id: "3",
-    merchant: "Pinta Burgers",
-    code: "KUTT-3E6A-2B19",
-    amount: 500,
-    status: "used",
-    gradient: ["#8B5CF6", "#A78BFA"]
-  }
-];
+import { getCertificateRoute, ROUTE_PATTERNS } from "@shared/constants";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 export const CertificatesTab = () => {
   const { t } = useTranslation();
 
-  return (
-    <div className="flex flex-col gap-2.5">
-      {MOCK_CERTS.map((cert) => {
-        const isUsed = cert.status === "used";
+  const navigateTo = useNavigateTo();
 
-        return (
-          <div
-            key={cert.id}
-            className={cn(
-              "flex items-center gap-3 p-3 bg-(--color-card) rounded-2xl border border-(--color-line)",
-              isUsed && "opacity-55"
-            )}
+  const haptic = useHaptic();
+
+  const { certificates, isLoading, isError, isFetching, retry } = useMyCertificatesQuery();
+
+  if (isLoading) {
+    return (
+      <ul className="flex flex-col gap-2.5 list-none">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <li key={i}>
+            <CertificateCardSkeleton />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  if (isError) {
+    return <ErrorState onRetry={retry} isRetrying={isFetching} />;
+  }
+
+  if (certificates.length === 0) {
+    return (
+      <EmptyState
+        icon={<Gift size={32} strokeWidth={1.5} />}
+        message={t("certificates.empty")}
+        action={
+          <button
+            type="button"
+            onClick={() => {
+              haptic.light();
+              navigateTo(ROUTE_PATTERNS.HOME);
+            }}
+            className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
           >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0"
-              style={{
-                background: `linear-gradient(140deg, ${cert.gradient[0]}, ${cert.gradient[1]})`
-              }}
-            >
-              {cert.merchant[0]}
-            </div>
+            {t("certificates.toCatalog")}
+          </button>
+        }
+      />
+    );
+  }
 
-            <div className="flex flex-1 min-w-0 flex-col gap-1.5">
-              <div className="flex items-center justify-between gap-2.5">
-                <span className="text-base font-extrabold text-(--color-ink) truncate">
-                  {cert.merchant}
-                </span>
-                <span className="text-base font-extrabold text-(--color-primary) shrink-0">
-                  {formatMoney(cert.amount, t("certificate.currency"))}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between gap-2.5">
-                <span className="font-mono text-xs font-bold text-(--color-slate) tracking-wide whitespace-nowrap">
-                  {cert.code}
-                </span>
-                <StatusBadge
-                  active={!isUsed}
-                  label={t(`certificate.status.${cert.status}`)}
-                />
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+  // Order comes from the backend: active first, newest first within a status.
+  return (
+    <ul className="flex flex-col gap-2.5 list-none">
+      {certificates.map((certificate) => (
+        <li key={certificate.id}>
+          <CertificateCard
+            certificate={certificate}
+            onOpen={
+              certificate.status === "active"
+                ? () => {
+                    haptic.light();
+                    navigateTo(getCertificateRoute(certificate.id));
+                  }
+                : undefined
+            }
+          />
+        </li>
+      ))}
+    </ul>
   );
 };

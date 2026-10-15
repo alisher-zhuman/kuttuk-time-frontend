@@ -151,8 +151,23 @@
     "currency": "som",
     "status": {
       "active": "Active",
-      "used": "Used"
-    }
+      "used": "Used",
+      "expired": "Expired"
+    },
+    "code": "Certificate code",
+    "copy": "Copy code",
+    "copied": "Code copied",
+    "validUntil": "Valid until {{date}}",
+    "usedAt": "Used on {{date}}",
+    "expiredAt": "Expired on {{date}}",
+    "share": "Share",
+    "shareText": "🎁 Gift certificate for {{merchant}}, {{amount}}. Code: {{code}}"
+  },
+  "certificates": {
+    "empty": "No certificates yet",
+    "toCatalog": "Browse venues",
+    "notFound": "Certificate not found",
+    "toList": "To certificates"
   },
   "orders": {
     "pending": {
@@ -163,13 +178,7 @@
       "openPayment": "Open payment"
     },
     "paid": {
-      "title": "Your certificate is ready!",
-      "code": "Certificate code",
-      "copy": "Copy code",
-      "copied": "Code copied",
-      "validUntil": "Valid until {{date}}",
-      "share": "Share",
-      "shareText": "🎁 Gift certificate for {{merchant}}, {{amount}}. Code: {{code}}"
+      "title": "Your certificate is ready!"
     },
     "expired": {
       "title": "Payment time is over",

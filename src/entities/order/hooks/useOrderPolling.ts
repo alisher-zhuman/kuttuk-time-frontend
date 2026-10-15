@@ -1,4 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { miniApp, useSignal } from "@tma.js/sdk-react";
 import { isAxiosError } from "axios";
 
@@ -39,6 +41,8 @@ export const useOrderPolling = (orderId: string | undefined) => {
   // refetches at once — the user is back from paying.
   const isAppActive = useSignal(miniApp.isActive);
 
+  const queryClient = useQueryClient();
+
   const { data, dataUpdatedAt, error, isLoading, isError } = useQuery({
     queryKey: orderKeys.detail(orderId ?? ""),
     queryFn: ({ signal }) => getOrder(orderId!, signal),
@@ -66,6 +70,17 @@ export const useOrderPolling = (orderId: string | undefined) => {
       return POLL_INTERVAL_MS;
     }
   });
+
+  const status = data?.status;
+
+  // The webhook created the certificate in the same transaction that marked
+  // the order paid — refresh "My certificates". Literal key: entities can't
+  // import each other (FSD), and the certificate entity owns ["certificates"].
+  useEffect(() => {
+    if (status === "paid") {
+      void queryClient.invalidateQueries({ queryKey: ["certificates"] });
+    }
+  }, [status, queryClient]);
 
   return {
     order: data,

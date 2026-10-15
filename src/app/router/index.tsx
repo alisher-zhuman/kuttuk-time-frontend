@@ -9,6 +9,7 @@ import { AdminMerchantEditPage } from "@pages/admin/merchant-edit";
 import { AdminMerchantsPage } from "@pages/admin/merchants";
 import { AdminOrdersPage } from "@pages/admin/orders";
 import { AdminPaymentsPage } from "@pages/admin/payments";
+import { CertificatePage } from "@pages/certificate";
 import { HomePage } from "@pages/home";
 import { MerchantPage } from "@pages/merchant";
 import { MerchantHomePage } from "@pages/merchant-home";
@@ -47,6 +48,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTE_PATTERNS.ORDER,
         element: <OrderPage />
+      },
+      {
+        path: ROUTE_PATTERNS.CERTIFICATE,
+        element: <CertificatePage />
       },
       {
         element: <RequireRole role="admin" />,

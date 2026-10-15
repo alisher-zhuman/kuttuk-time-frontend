@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { shareURL } from "@tma.js/sdk-react";
-import { Check, Copy, Gift } from "lucide-react";
+import { Gift } from "lucide-react";
 
+import { CertificateCode, useCertificateShareButton } from "@entities/certificate";
 import { type Order } from "@entities/order";
 
-import { BOT_URL } from "@shared/constants";
-import { formatDate, formatMoney } from "@shared/helpers";
-import { useCopyToClipboard, useHaptic, useMainButton } from "@shared/hooks";
+import { formatDate } from "@shared/helpers";
+import { useHaptic } from "@shared/hooks";
 
 import { OrderResult } from "../order-result";
 
@@ -19,13 +18,9 @@ interface Props {
 }
 
 export const OrderPaid = ({ order, merchantName }: Props) => {
-  const [copied, setCopied] = useState(false);
-
   const { t } = useTranslation();
 
   const haptic = useHaptic();
-
-  const copyToClipboard = useCopyToClipboard();
 
   const { code, validUntil } = order.certificate;
 
@@ -34,35 +29,7 @@ export const OrderPaid = ({ order, merchantName }: Props) => {
     haptic.success();
   }, [haptic]);
 
-  const handleCopy = async () => {
-    haptic.light();
-
-    if (await copyToClipboard(code)) {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    }
-  };
-
-  // shareURL closes the Mini App after the chat is picked — fine here, it's
-  // the end of the flow, and the code is on screen to copy before that.
-  useMainButton({
-    text: t("orders.paid.share"),
-    onClick: () => {
-      haptic.light();
-
-      if (shareURL.isAvailable()) {
-        shareURL(
-          BOT_URL,
-          t("orders.paid.shareText", {
-            merchant: merchantName ?? "",
-            amount: formatMoney(order.amount, t("certificate.currency")),
-            code
-          })
-        );
-      }
-    },
-    hidden: !shareURL.isAvailable()
-  });
+  useCertificateShareButton({ code, amount: order.amount, merchantName });
 
   return (
     <OrderResult
@@ -74,31 +41,14 @@ export const OrderPaid = ({ order, merchantName }: Props) => {
     >
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs font-bold text-(--color-hint) uppercase tracking-wider">
-          {t("orders.paid.code")}
+          {t("certificate.code")}
         </span>
 
-        <button
-          type="button"
-          onClick={() => void handleCopy()}
-          aria-label={t("orders.paid.copy")}
-          className="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-(--color-chip) cursor-pointer"
-        >
-          <span className="font-mono text-xl font-bold tracking-wider text-(--color-ink)">
-            {code}
-          </span>
-
-          {copied ? (
-            <Check size={18} className="text-(--color-green)" />
-          ) : (
-            <Copy size={18} className="text-(--color-hint)" />
-          )}
-        </button>
-
-        <span className="text-xs font-semibold text-(--color-hint)">
-          {copied
-            ? t("orders.paid.copied")
-            : t("orders.paid.validUntil", { date: formatDate(validUntil) })}
-        </span>
+        <CertificateCode
+          code={code}
+          size="lg"
+          caption={t("certificate.validUntil", { date: formatDate(validUntil) })}
+        />
       </div>
     </OrderResult>
   );

@@ -4,10 +4,10 @@ export { useOrderPolling } from "./hooks/useOrderPolling";
 export { getOrderErrorKey } from "./model/errors";
 export { isOrderId } from "./model/schemas";
 export type {
-  Certificate,
   CreatedOrder,
   ExpiredOrder,
   Order,
+  OrderCertificate,
   OrderStatus,
   PendingOrder
 } from "./model/types";

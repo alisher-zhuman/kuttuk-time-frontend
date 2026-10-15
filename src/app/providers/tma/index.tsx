@@ -54,15 +54,33 @@ export const TMAProvider = ({ children }: Props) => {
       swipeBehavior.disableVertical();
     }
 
+    // StrictMode runs this effect twice in dev, and bindCssVars throws
+    // CSSVarsBoundError on a second bind. The cancelled run's async .then must
+    // do nothing, and cleanup unbinds what this run bound (viewport has no
+    // unmount in sdk 3.3, so the mount itself is left alone).
+    let isCancelled = false;
+    let unbindViewportCssVars: VoidFunction | undefined;
+
     if (viewport.mount.isAvailable()) {
       void viewport.mount().then(() => {
-        viewport.bindCssVars();
+        if (isCancelled) {
+          return;
+        }
+
+        if (!viewport.isCssVarsBound()) {
+          unbindViewportCssVars = viewport.bindCssVars();
+        }
 
         if (viewport.requestFullscreen.isAvailable()) {
           void viewport.requestFullscreen();
         }
       });
     }
+
+    return () => {
+      isCancelled = true;
+      unbindViewportCssVars?.();
+    };
   }, []);
 
   useEffect(() => {

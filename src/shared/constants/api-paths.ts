@@ -4,5 +4,6 @@ export const API_PATHS = {
   ADMIN_MERCHANTS: "/admin/merchants",
   ADMIN_CATEGORIES: "/admin/categories",
   CATEGORIES: "/categories",
+  ORDERS: "/orders",
   UPLOAD: "/upload"
 } as const;

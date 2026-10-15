@@ -154,6 +154,19 @@
       "used": "Used"
     }
   },
+  "orders": {
+    "status": {
+      "expired": "The payment time has run out. If you managed to pay, the certificate will appear under “Certificates”.",
+      "needsReview": "Payment received, we’re checking it. The certificate will appear once the check is done."
+    },
+    "errors": {
+      "unavailable": "This amount or venue is no longer available. Refresh the page and try again.",
+      "notFound": "Order not found.",
+      "tooManyRequests": "Too many requests, please try again in a minute.",
+      "paymentProvider": "The payment service is temporarily unavailable. You haven’t been charged — please try again a bit later.",
+      "network": "Can’t reach the server. Check your connection and try again."
+    }
+  },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "This is a Telegram Mini App. Open it via the bot in Telegram.",

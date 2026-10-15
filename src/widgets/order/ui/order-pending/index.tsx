@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Loader2 } from "lucide-react";
 
-import { type Order } from "@entities/order";
+import { type ExpiredOrder, type PendingOrder } from "@entities/order";
 
 import { formatMoney, openExternalLink } from "@shared/helpers";
 import { useMainButton } from "@shared/hooks";
@@ -10,7 +10,8 @@ import { useMainButton } from "@shared/hooks";
 import { useCountdown } from "../../hooks/useCountdown";
 
 interface Props {
-  order: Order;
+  // expired too: shown as "checking" during the late-webhook grace window.
+  order: PendingOrder | ExpiredOrder;
   merchantName: string | undefined;
 }
 
@@ -35,11 +36,11 @@ export const OrderPending = ({ order, merchantName }: Props) => {
   useMainButton({
     text: t("orders.pending.openPayment"),
     onClick: () => {
-      if (order.paymentUrl) {
+      if (order.status === "pending") {
         openExternalLink(order.paymentUrl);
       }
     },
-    hidden: isExpired || !order.paymentUrl
+    hidden: isExpired || order.status !== "pending"
   });
 
   return (

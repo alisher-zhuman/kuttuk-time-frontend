@@ -1,13 +1,10 @@
-import type {
-  CertificateSchema,
-  CreatedOrderSchema,
-  OrderSchema,
-  OrderStatusSchema
-} from "./schemas";
+import type { CertificateSchema, CreatedOrderSchema, OrderSchema } from "./schemas";
 
 import type { z } from "zod";
 
-export type OrderStatus = z.infer<typeof OrderStatusSchema>;
 export type CreatedOrder = z.infer<typeof CreatedOrderSchema>;
 export type Certificate = z.infer<typeof CertificateSchema>;
 export type Order = z.infer<typeof OrderSchema>;
+export type OrderStatus = Order["status"];
+export type PendingOrder = Extract<Order, { status: "pending" }>;
+export type ExpiredOrder = Extract<Order, { status: "expired" }>;

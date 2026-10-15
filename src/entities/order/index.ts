@@ -3,4 +3,11 @@ export { useCreateOrderMutation } from "./hooks/useCreateOrderMutation";
 export { useOrderPolling } from "./hooks/useOrderPolling";
 export { getOrderErrorKey } from "./model/errors";
 export { isOrderId } from "./model/schemas";
-export type { Certificate, CreatedOrder, Order, OrderStatus } from "./model/types";
+export type {
+  Certificate,
+  CreatedOrder,
+  ExpiredOrder,
+  Order,
+  OrderStatus,
+  PendingOrder
+} from "./model/types";

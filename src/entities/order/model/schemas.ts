@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-export const OrderStatusSchema = z.enum(["pending", "paid", "expired", "needs_review"]);
-
 export const CreatedOrderSchema = z.object({
   orderId: z.string(),
   paymentUrl: z.string(),
@@ -13,18 +11,41 @@ export const CertificateSchema = z.object({
   validUntil: z.string()
 });
 
-export const OrderSchema = z.object({
+const OrderBaseSchema = z.object({
   orderId: z.string(),
-  status: OrderStatusSchema,
   amount: z.number(),
   merchantId: z.number(),
-  // Only while pending — null once the order leaves that state.
-  paymentUrl: z.string().nullable(),
-  expiresAt: z.string(),
-  paidAt: z.string().nullable(),
-  // Only when paid; needs_review has money taken but no certificate yet.
-  certificate: CertificateSchema.nullable()
+  expiresAt: z.string()
 });
+
+// GET /orders/:id (../backend/src/orders/orders.service.ts `findOwn`) always
+// sends paymentUrl / paidAt / certificate, with null where the status has no
+// value. Each variant lists only the fields its status guarantees — z.object
+// strips the rest, so those nulls never reach the type or the components.
+export const OrderSchema = z.discriminatedUnion("status", [
+  OrderBaseSchema.extend({
+    status: z.literal("pending"),
+    // Set right after Finik returns it, before POST /orders responds — so any
+    // order a client knows about has it while pending.
+    paymentUrl: z.string()
+  }),
+  OrderBaseSchema.extend({
+    status: z.literal("paid"),
+    paidAt: z.string(),
+    // Created by the Finik webhook in the same transaction that marks the
+    // order paid (also when a needs_review order is honoured by hand).
+    certificate: CertificateSchema
+  }),
+  OrderBaseSchema.extend({
+    status: z.literal("needs_review"),
+    // Money was taken (webhook fills paidAt), but no certificate until a
+    // manual review.
+    paidAt: z.string()
+  }),
+  OrderBaseSchema.extend({
+    status: z.literal("expired")
+  })
+]);
 
 // The backend parses ids with ParseUUIDPipe; checking up front turns a mangled
 // URL into "not found" without a request.

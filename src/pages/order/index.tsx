@@ -2,7 +2,13 @@ import { useParams } from "react-router";
 
 import { Loader2 } from "lucide-react";
 
-import { OrderNotFound, OrderPending, OrderStatusMessage } from "@widgets/order";
+import {
+  OrderExpired,
+  OrderNotFound,
+  OrderPaid,
+  OrderPending,
+  OrderReview
+} from "@widgets/order";
 
 import { useMerchantQuery } from "@entities/merchant";
 import { isOrderId, useOrderPolling } from "@entities/order";
@@ -43,5 +49,17 @@ export const OrderPage = () => {
     return <OrderPending order={order} merchantName={merchant?.name} />;
   }
 
-  return <OrderStatusMessage status={order.status} />;
+  const merchantName = merchant?.name;
+
+  switch (order.status) {
+    case "paid":
+      return <OrderPaid order={order} merchantName={merchantName} />;
+    case "needs_review":
+      return <OrderReview order={order} merchantName={merchantName} />;
+    // pending here = polling gave up past the grace window before the cron
+    // flipped it; for the user that's the same as expired.
+    case "pending":
+    case "expired":
+      return <OrderExpired order={order} merchantName={merchantName} />;
+  }
 };

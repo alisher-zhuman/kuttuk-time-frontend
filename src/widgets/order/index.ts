@@ -1,3 +1,5 @@
+export { OrderExpired } from "./ui/order-expired";
 export { OrderNotFound } from "./ui/order-not-found";
+export { OrderPaid } from "./ui/order-paid";
 export { OrderPending } from "./ui/order-pending";
-export { OrderStatusMessage } from "./ui/order-status";
+export { OrderReview } from "./ui/order-review";

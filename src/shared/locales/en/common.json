@@ -162,10 +162,23 @@
       "timeLeft": "{{time}} left",
       "openPayment": "Open payment"
     },
-    "status": {
-      "paid": "Payment received. Your certificate is ready!",
-      "expired": "The payment time has run out. If you managed to pay, the certificate will appear under “Certificates”.",
-      "needsReview": "Payment received, we’re checking it. The certificate will appear once the check is done."
+    "paid": {
+      "title": "Your certificate is ready!",
+      "code": "Certificate code",
+      "copy": "Copy code",
+      "copied": "Code copied",
+      "validUntil": "Valid until {{date}}",
+      "share": "Share",
+      "shareText": "🎁 Gift certificate for {{merchant}}, {{amount}}. Code: {{code}}"
+    },
+    "expired": {
+      "title": "Payment time is over",
+      "hint": "If you managed to pay, the certificate will appear under “Certificates”.",
+      "retry": "Buy again"
+    },
+    "review": {
+      "title": "Payment received",
+      "hint": "We’re checking it. The certificate will appear once the check is done."
     },
     "errors": {
       "unavailable": "This amount or venue is no longer available. Refresh the page and try again.",

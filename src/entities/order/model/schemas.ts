@@ -25,3 +25,8 @@ export const OrderSchema = z.object({
   // Only when paid; needs_review has money taken but no certificate yet.
   certificate: CertificateSchema.nullable()
 });
+
+// The backend parses ids with ParseUUIDPipe; checking up front turns a mangled
+// URL into "not found" without a request.
+export const isOrderId = (value: unknown): value is string =>
+  z.uuid().safeParse(value).success;

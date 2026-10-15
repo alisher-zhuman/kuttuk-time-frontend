@@ -155,7 +155,15 @@
     }
   },
   "orders": {
+    "pending": {
+      "title": "Waiting for payment",
+      "hint": "Pay on the bank’s page — the status will update automatically.",
+      "checking": "The payment time is over. Checking whether the payment went through…",
+      "timeLeft": "{{time}} left",
+      "openPayment": "Open payment"
+    },
     "status": {
+      "paid": "Payment received. Your certificate is ready!",
       "expired": "The payment time has run out. If you managed to pay, the certificate will appear under “Certificates”.",
       "needsReview": "Payment received, we’re checking it. The certificate will appear once the check is done."
     },

@@ -14,6 +14,7 @@ export {
   getHomeRoute,
   getMerchantEditRoute,
   getMerchantRoute,
+  getOrderRoute,
   ROUTE_PATTERNS,
   ROUTES
 } from "./routes";

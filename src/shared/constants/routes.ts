@@ -18,6 +18,7 @@ export const ROUTE_PATTERNS = {
   HOME: `/${ROUTES.APP}`,
   PROFILE: `/${ROUTES.APP}/${ROUTES.PROFILE}`,
   MERCHANT: `/${ROUTES.APP}/${ROUTES.MERCHANTS}/:handle`,
+  ORDER: `/${ROUTES.APP}/${ROUTES.ORDERS}/:orderId`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
   MERCHANT_PROFILE_EDIT: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.EDIT}`,
   ADMIN_MERCHANTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}`,
@@ -33,6 +34,9 @@ export const ROUTE_PATTERNS = {
 
 export const getMerchantRoute = (handle: string | number) =>
   `/${ROUTES.APP}/${ROUTES.MERCHANTS}/${handle}`;
+
+export const getOrderRoute = (orderId: string) =>
+  `/${ROUTES.APP}/${ROUTES.ORDERS}/${orderId}`;
 
 export const getAdminMerchantDetailRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}/${id}`;

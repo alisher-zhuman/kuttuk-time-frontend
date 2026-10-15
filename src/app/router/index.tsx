@@ -14,6 +14,7 @@ import { MerchantPage } from "@pages/merchant";
 import { MerchantHomePage } from "@pages/merchant-home";
 import { MerchantProfileEditPage } from "@pages/merchant-profile-edit";
 import { NotFoundPage } from "@pages/not-found";
+import { OrderPage } from "@pages/order";
 import { ProfilePage } from "@pages/profile";
 
 import { AppLayout } from "@widgets/layout";
@@ -42,6 +43,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTE_PATTERNS.MERCHANT,
         element: <MerchantPage />
+      },
+      {
+        path: ROUTE_PATTERNS.ORDER,
+        element: <OrderPage />
       },
       {
         element: <RequireRole role="admin" />,

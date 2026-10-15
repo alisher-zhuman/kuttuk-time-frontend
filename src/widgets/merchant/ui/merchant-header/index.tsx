@@ -1,7 +1,7 @@
 interface Props {
   logo: string;
   name: string;
-  description: string;
+  description: string | null;
 }
 
 export const MerchantHeader = ({ logo, name, description }: Props) => (
@@ -16,9 +16,11 @@ export const MerchantHeader = ({ logo, name, description }: Props) => (
       <span className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
         {name}
       </span>
-      <span className="text-sm text-(--color-slate) font-semibold mt-1 truncate">
-        {description}
-      </span>
+      {description && (
+        <span className="text-sm text-(--color-slate) font-semibold mt-1 truncate">
+          {description}
+        </span>
+      )}
     </div>
   </div>
 );

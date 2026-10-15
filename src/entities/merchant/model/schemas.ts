@@ -14,7 +14,9 @@ export const MerchantSchema = z.object({
   logo: z.string(),
   name: z.string(),
   minNominal: z.number(),
-  description: z.string()
+  // null when the merchant has no description in the requested language —
+  // a non-nullable schema would reject the whole list over one merchant.
+  description: z.string().nullable()
 });
 
 export const MerchantsSchema = z.array(MerchantSchema);
@@ -22,7 +24,7 @@ export const MerchantsSchema = z.array(MerchantSchema);
 export const MerchantDetailSchema = z.object({
   id: z.number(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().nullable(),
   logo: z.string(),
   nominals: z.array(z.number()).nonempty(),
   validityMonths: z.number()

@@ -1,6 +1,11 @@
 import { useLayoutEffect } from "react";
 
-import { getMerchantRoute, ROUTE_PATTERNS } from "@shared/constants";
+import {
+  getMerchantRoute,
+  getOrderRoute,
+  ORDER_START_PARAM_PREFIX,
+  ROUTE_PATTERNS
+} from "@shared/constants";
 import { getLaunchParams } from "@shared/helpers";
 import { useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
@@ -18,8 +23,22 @@ export const RootRedirect = () => {
   useLayoutEffect(() => {
     const { viewMode } = useViewModeStore.getState();
 
-    // Deep links are a buyer flow — admins and merchants always land on their
-    // own dashboard.
+    const startParam = getLaunchParams()?.tgWebAppStartParam;
+
+    // Back from the Finik payment page. Checked before the role redirects:
+    // any role can buy, so an admin/merchant must land on their order too.
+    // The id is validated by the order page (bad one → "not found"), and with
+    // replace this is the only history entry, so Back falls through to the
+    // role's home (useBackButton) instead of closing the mini app.
+    if (startParam?.startsWith(ORDER_START_PARAM_PREFIX)) {
+      navigateTo(getOrderRoute(startParam.slice(ORDER_START_PARAM_PREFIX.length)), {
+        replace: true
+      });
+      return;
+    }
+
+    // Merchant deep links are a buyer flow — admins and merchants always land
+    // on their own dashboard.
     if (viewMode === "admin") {
       navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS, { replace: true });
       return;
@@ -29,8 +48,6 @@ export const RootRedirect = () => {
       navigateTo(ROUTE_PATTERNS.MERCHANT_HOME, { replace: true });
       return;
     }
-
-    const startParam = getLaunchParams()?.tgWebAppStartParam;
 
     navigateTo(startParam ? getMerchantRoute(startParam) : ROUTE_PATTERNS.HOME, {
       replace: true

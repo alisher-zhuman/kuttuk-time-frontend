@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 
 import { cn, formatDate, formatMoney } from "@shared/helpers";
-import { StatusBadge } from "@shared/ui";
 
 import { getCertificateDate } from "../../model/date";
 import type { Certificate } from "../../model/types";
@@ -39,11 +38,7 @@ export const CertificateCard = ({ certificate, onOpen }: Props) => {
         </span>
       </span>
 
-      {onOpen ? (
-        <ChevronRight size={18} className="text-(--color-hint) shrink-0" />
-      ) : (
-        <StatusBadge active={false} label={t(`certificate.status.${status}`)} />
-      )}
+      {onOpen && <ChevronRight size={18} className="text-(--color-hint) shrink-0" />}
     </>
   );
 

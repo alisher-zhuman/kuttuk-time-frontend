@@ -1,8 +1,10 @@
 import { useParams } from "react-router";
 
-import { Loader2 } from "lucide-react";
-
-import { CertificateDetail, CertificateNotFound } from "@widgets/certificate";
+import {
+  CertificateDetail,
+  CertificateDetailSkeleton,
+  CertificateNotFound
+} from "@widgets/certificate";
 
 import { useMyCertificatesQuery } from "@entities/certificate";
 
@@ -16,11 +18,7 @@ export const CertificatePage = () => {
   const { certificates, isLoading, isError, isFetching, retry } = useMyCertificatesQuery();
 
   if (isLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
-    );
+    return <CertificateDetailSkeleton />;
   }
 
   if (isError) {

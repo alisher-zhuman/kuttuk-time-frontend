@@ -19,6 +19,8 @@ import { useCategoryReorder } from "../../hooks/useCategoryReorder";
 import { SortableCategoryItem } from "../sortable-category-item";
 
 export const CategoryList = () => {
+  const [listElement, setListElement] = useState<HTMLUListElement | null>(null);
+
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -31,8 +33,6 @@ export const CategoryList = () => {
   const { handleDragStart, handleDragEnd } = useCategoryReorder(categories);
 
   const { handleDelete } = useCategoryDelete();
-
-  const [listElement, setListElement] = useState<HTMLUListElement | null>(null);
 
   return (
     <section aria-label={t("admin.categories.listTitle")}>

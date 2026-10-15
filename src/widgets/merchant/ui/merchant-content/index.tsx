@@ -18,6 +18,8 @@ interface Props {
 }
 
 export const MerchantContent = ({ merchant }: Props) => {
+  const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
+
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -25,8 +27,6 @@ export const MerchantContent = ({ merchant }: Props) => {
   const haptic = useHaptic();
 
   const showPopup = usePopup();
-
-  const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
 
   // The pending flag only lands on the next render, so two taps in the same
   // frame would both see it false and create two orders — guard with a ref.

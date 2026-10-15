@@ -67,6 +67,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 ## Code
 
 - **Arrow functions only** — no `function` declarations
+- **`useState` first**: in components and hooks, declare local state before other hooks (`useTranslation`, `useNavigateTo`, queries, …) where possible
 - **Tailwind spacing**: whole numbers or 0.5 steps only (1, 1.5, 2, 2.5…) — never 0.75 or arbitrary `[Npx]`
 - Comments only when the `WHY` isn't obvious
 - No unnecessary abstraction — three similar lines beat a premature helper

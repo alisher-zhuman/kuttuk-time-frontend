@@ -8,16 +8,16 @@ import type { Tab } from "../types";
 // ?tab=settings while the profile page may already be mounted, and a useState
 // initializer would never see that change.
 export const useProfileTab = () => {
+  const [contentAnimation, setContentAnimation] = useState(
+    "animate-tab-enter-right"
+  );
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const requestedTab = searchParams.get("tab") as Tab | null;
   const activeTab: Tab = PROFILE_TABS.includes(requestedTab as Tab)
     ? (requestedTab as Tab)
     : "certificates";
-
-  const [contentAnimation, setContentAnimation] = useState(
-    "animate-tab-enter-right"
-  );
 
   const handleTabChange = (tab: Tab) => {
     if (tab === activeTab) return;

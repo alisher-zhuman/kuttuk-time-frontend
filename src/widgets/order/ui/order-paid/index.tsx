@@ -19,13 +19,13 @@ interface Props {
 }
 
 export const OrderPaid = ({ order, merchantName }: Props) => {
+  const [copied, setCopied] = useState(false);
+
   const { t } = useTranslation();
 
   const haptic = useHaptic();
 
   const copyToClipboard = useCopyToClipboard();
-
-  const [copied, setCopied] = useState(false);
 
   const { code, validUntil } = order.certificate;
 

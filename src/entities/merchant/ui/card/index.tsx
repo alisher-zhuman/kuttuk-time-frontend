@@ -39,11 +39,9 @@ export const MerchantCard = ({ merchant }: Props) => {
         <span className="text-base font-extrabold tracking-tight text-(--color-ink)">
           {merchant.name}
         </span>
-        {merchant.description && (
-          <span className="text-sm text-(--color-slate) font-semibold mt-0.5 truncate">
-            {merchant.description}
-          </span>
-        )}
+        <span className="text-sm text-(--color-slate) font-semibold mt-0.5 truncate">
+          {merchant.description}
+        </span>
       </span>
 
       <span className="text-right shrink-0 flex flex-col">

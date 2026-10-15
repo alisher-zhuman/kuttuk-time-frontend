@@ -37,9 +37,9 @@ export const useMerchantProfileForm = (merchant: AdminMerchantDetail) => {
     defaultValues: {
       logo: merchant.logo,
       name: merchant.name,
-      descriptionRu: merchant.description?.ru ?? "",
-      descriptionKg: merchant.description?.kg ?? "",
-      descriptionEn: merchant.description?.en ?? "",
+      descriptionRu: merchant.description.ru,
+      descriptionKg: merchant.description.kg,
+      descriptionEn: merchant.description.en,
       categories: merchant.categories,
       nominals: merchant.nominals,
       validityMonths: merchant.validityMonths

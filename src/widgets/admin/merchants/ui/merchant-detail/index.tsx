@@ -35,9 +35,7 @@ export const AdminMerchantDetailContent = ({ merchant, categories, onEdit }: Pro
         onEdit={onEdit}
       />
 
-      {merchant.description && (
-        <MerchantDetailDescription description={merchant.description} />
-      )}
+      <MerchantDetailDescription description={merchant.description} />
 
       {merchantCategories.length > 0 && (
         <MerchantDetailChips

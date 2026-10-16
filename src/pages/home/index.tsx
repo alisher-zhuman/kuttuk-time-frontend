@@ -1,15 +1,19 @@
 import { useSearchParams } from "react-router";
 
-import { CategoryFilter, MerchantList, SearchBar } from "@widgets/home";
+import { MerchantList } from "@widgets/home";
+
+import { CategoryFilter } from "@features/category-filter";
 
 import { useDebounce } from "@shared/hooks";
+import { SearchBar } from "@shared/ui";
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
-  const categoryParam = searchParams.get("category");
-  const activeCategory = categoryParam ? Number(categoryParam) : null;
+  const categoryParam = Number(searchParams.get("category"));
+  const activeCategory =
+    Number.isInteger(categoryParam) && categoryParam > 0 ? categoryParam : null;
 
   const debouncedSearch = useDebounce(search);
 
@@ -24,7 +28,7 @@ export const HomePage = () => {
 
         return prev;
       },
-      { replace: true },
+      { replace: true }
     );
   };
 
@@ -39,7 +43,7 @@ export const HomePage = () => {
 
         return prev;
       },
-      { replace: true },
+      { replace: true }
     );
   };
 

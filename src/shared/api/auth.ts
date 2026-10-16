@@ -9,7 +9,7 @@ export const logIn = async (payload: LogInPayload): Promise<LogInResponse> => {
 
   const response = await axios.post(
     `${API_URL}${API_PATHS.LOG_IN}`,
-    validPayload,
+    validPayload
   );
 
   return LogInResponseSchema.parse(response.data);

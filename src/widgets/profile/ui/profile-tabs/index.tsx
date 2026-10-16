@@ -15,7 +15,7 @@ export const ProfileTabs = ({ activeTab, onTabChange }: Props) => {
 
   const items = PROFILE_TABS.map((tab) => ({
     value: tab,
-    label: t(`profile.tabs.${tab}`),
+    label: t(`profile.tabs.${tab}`)
   }));
 
   return <SegmentedControl items={items} value={activeTab} onChange={onTabChange} />;

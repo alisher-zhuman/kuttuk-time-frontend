@@ -1,18 +1,25 @@
 import { useTranslation } from "react-i18next";
 
-import { cn } from "@shared/helpers";
+import { ChevronRight } from "lucide-react";
 
-import type { AdminMerchant } from "../../../hooks/useAdminMerchantsQuery";
+import { StatusBadge } from "@shared/ui";
+
+import type { AdminMerchant } from "../../../model/types";
 
 interface Props {
   merchant: AdminMerchant;
+  onClick: () => void;
 }
 
-export const AdminMerchantCard = ({ merchant }: Props) => {
+export const AdminMerchantCard = ({ merchant, onClick }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5">
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
+    >
       <img
         src={merchant.logo}
         alt={merchant.name}
@@ -23,17 +30,12 @@ export const AdminMerchantCard = ({ merchant }: Props) => {
         {merchant.name}
       </span>
 
-      <span
-        className={cn(
-          "flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap shrink-0",
-          merchant.isActive
-            ? "bg-(--color-green-tint) text-(--color-green)"
-            : "bg-(--color-surface) text-(--color-hint)",
-        )}
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-current shrink-0" />
-        {t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
-      </span>
-    </div>
+      <StatusBadge
+        active={merchant.isActive}
+        label={t(merchant.isActive ? "admin.merchants.active" : "admin.merchants.inactive")}
+      />
+
+      <ChevronRight size={17} color="var(--color-hint)" />
+    </button>
   );
 };

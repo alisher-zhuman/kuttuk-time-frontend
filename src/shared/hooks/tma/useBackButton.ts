@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { NavigationType, useLocation, useNavigationType } from "react-router";
+import { useLocation } from "react-router";
 
 import { backButton } from "@tma.js/sdk-react";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { getHomeRoute, ROUTE_PATTERNS } from "@shared/constants";
+import { canGoBack } from "@shared/helpers";
 import { useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 
@@ -14,11 +15,12 @@ const ROOT_PATHS: string[] = [
   ROUTE_PATTERNS.ADMIN_MERCHANTS,
   ROUTE_PATTERNS.ADMIN_ORDERS,
   ROUTE_PATTERNS.ADMIN_PAYMENTS,
+  ROUTE_PATTERNS.MERCHANT_HOME
 ];
 
 export const useBackButton = () => {
-  const navigationType = useNavigationType();
   const { pathname } = useLocation();
+  
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
@@ -43,19 +45,18 @@ export const useBackButton = () => {
 
     backButton.show();
 
-    const homeRoute =
-      viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME;
+    const homeRoute = getHomeRoute(viewMode);
 
     const off = backButton.onClick(() => {
       haptic.light();
 
-      if (navigationType === NavigationType.Replace) {
-        navigateTo(homeRoute);
-      } else {
+      if (canGoBack()) {
         navigateTo(-1);
+      } else {
+        navigateTo(homeRoute);
       }
     });
 
     return () => off();
-  }, [pathname, navigateTo, haptic, navigationType, viewMode]);
+  }, [pathname, navigateTo, haptic, viewMode]);
 };

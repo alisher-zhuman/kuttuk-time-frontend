@@ -1,8 +1,6 @@
 {
   "language": {
-    "label": "Тил",
-    "kg": "КР",
-    "ru": "RU"
+    "label": "Тил"
   },
   "search": {
     "placeholder": "Мекемелерди издөө",
@@ -13,13 +11,51 @@
     "empty": "Мекемелер табылган жок"
   },
   "merchant": {
-    "from": "баштапкы"
+    "from": "баштапкы",
+    "badge": "Кабинет",
+    "label": "Көрүнүш режими",
+    "viewAsUser": "Сатып алуучу",
+    "viewAsMerchant": "Мерчант",
+    "home": {
+      "loadError": "Профилди жүктөө мүмкүн болбоду"
+    },
+    "deactivated": {
+      "title": "Аккаунт өчүрүлгөн",
+      "message": "Мекемеңиз сатып алуучуларга көрүнбөйт, профилди түзөтүү жеткиликсиз. Кайра күйгүзүү үчүн бизге жазыңыз."
+    },
+    "form": {
+      "editTitle": "Профилди түзөтүү",
+      "save": "Сактоо",
+      "name": "Аталышы",
+      "namePlaceholder": "Мисалы: Sierra Coffee",
+      "descriptionRu": "Орусча сүрөттөмө",
+      "descriptionKg": "Кыргызча сүрөттөмө",
+      "descriptionEn": "Англисче сүрөттөмө",
+      "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
+      "required": "Милдеттүү талаа",
+      "logoRequired": "Логотипти жүктөңүз",
+      "categoriesRequired": "Кеминде бир категория тандаңыз",
+      "nominalsRequired": "Кеминде бир номинал кошуңуз"
+    }
+  },
+  "logoUpload": {
+    "hint": "Логотип, 5 МБ чейин",
+    "fileType": "Сүрөттөр гана",
+    "fileTooLarge": "Файл 5 МБ ашык",
+    "uploadFailed": "Жүктөө ишке ашкан жок"
+  },
+  "merchantAttributes": {
+    "categories": "Категориялар",
+    "nominals": "Номинал",
+    "validity": "Жарактуулук мөөнөтү (ай)",
+    "months": "{{months}} ай"
   },
   "aria": {
     "changeLanguage": "Тил алмаштыруу",
     "profile": "Профиль"
   },
   "profile": {
+    "id": "ID",
     "tabs": {
       "certificates": "Сертификаттар",
       "settings": "Жөндөөлөр"
@@ -48,20 +84,128 @@
     "merchants": {
       "active": "Активдүү",
       "inactive": "Активдүү эмес",
-      "empty": "Мекемелер табылган жок"
+      "empty": "Мекемелер табылган жок",
+      "detail": {
+        "description": "Сүрөттөмө",
+        "categories": "КАТЕГОРИЯЛАР",
+        "nominals": "НОМИНАЛДАР",
+        "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",
+        "validityValue": "{{months}} ай",
+        "telegramId": "TELEGRAM ID",
+        "createdAt": "ТҮЗҮЛГӨН",
+        "notFound": "Мекеме табылган жок"
+      },
+      "form": {
+        "title": "Жаңы мекеме",
+        "editTitle": "Мекемени түзөтүү",
+        "create": "Түзүү",
+        "save": "Сактоо",
+        "edit": "Түзөтүү",
+        "status": "Статус",
+        "logoRequired": "Логотипти жүктөңүз",
+        "name": "Аталышы",
+        "namePlaceholder": "Мисалы: Sierra Coffee",
+        "slug": "Шилтеме",
+        "slugPlaceholder": "sierra-coffee",
+        "slugHint": "Латын тамгалары, сандар жана дефис. Чакыруу шилтемесине кирет.",
+        "slugInvalid": "Кичине латын тамгалары, сандар жана дефис гана",
+        "descriptionRu": "Орусча сүрөттөмө",
+        "descriptionKg": "Кыргызча сүрөттөмө",
+        "descriptionEn": "Англисче сүрөттөмө",
+        "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
+        "categoriesRequired": "Кеминде бир категория тандаңыз",
+        "nominalsRequired": "Кеминде бир номинал кошуңуз",
+        "telegramId": "Telegram ID",
+        "telegramIdPlaceholder": "123456789",
+        "telegramIdHint": "Мекеме ээсинин Telegram ID'си",
+        "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
+        "required": "Милдеттүү талаа",
+        "alreadyInUse": "Мурунтан колдонулууда"
+      }
+    },
+    "categories": {
+      "manage": "Категорияларды башкаруу",
+      "listTitle": "КАТЕГОРИЯЛАР",
+      "empty": "Категориялар табылган жок",
+      "notFound": "Категория табылган жок",
+      "title": "Жаңы категория",
+      "editTitle": "Категорияны түзөтүү",
+      "edit": "Түзөтүү",
+      "nameRu": "Орусча аталышы",
+      "nameKg": "Кыргызча аталышы",
+      "nameEn": "Англисче аталышы",
+      "namePlaceholder": "Аталышын киргизиңиз",
+      "order": "Тартип",
+      "orderPlaceholder": "Мисалы: 0",
+      "create": "Түзүү",
+      "save": "Сактоо",
+      "reorder": "Тартипти өзгөртүү",
+      "delete": "Өчүрүү",
+      "deleteConfirmTitle": "Категорияны өчүрөсүзбү?",
+      "deleteConfirmMessage": "Категория өчүрүлөт, ага байланган ишканалар бул байланышты жоготот. Аракетти артка кайтаруу мүмкүн эмес.",
+      "required": "Милдеттүү талаа",
+      "orderInvalid": "Санды киргизиңиз"
     }
   },
   "certificate": {
     "currency": "сом",
     "status": {
       "active": "Активдүү",
-      "used": "Колдонулду"
+      "used": "Колдонулду",
+      "expired": "Мөөнөтү бүттү"
+    },
+    "code": "Сертификаттын коду",
+    "copy": "Кодду көчүрүү",
+    "copied": "Код көчүрүлдү",
+    "validUntil": "{{date}} чейин жарактуу",
+    "usedAt": "{{date}} колдонулган",
+    "expiredAt": "Мөөнөтү {{date}} бүттү",
+    "share": "Бөлүшүү",
+    "shareText": "🎁 {{merchant}} мекемесинин {{amount}} суммасындагы белек сертификаты. Код: {{code}}"
+  },
+  "certificates": {
+    "empty": "Азырынча сертификаттар жок",
+    "toCatalog": "Каталогго",
+    "notFound": "Сертификат табылган жок",
+    "toList": "Сертификаттарга"
+  },
+  "orders": {
+    "pending": {
+      "title": "Төлөмдү күтүп жатабыз",
+      "hint": "Буйрутманы банктын барагында төлөңүз — статус өзү жаңырат.",
+      "checking": "Төлөө убактысы бүттү. Төлөм өттүбү, текшерип жатабыз…",
+      "timeLeft": "{{time}} калды",
+      "openPayment": "Төлөмдү ачуу"
+    },
+    "paid": {
+      "title": "Сертификат даяр!"
+    },
+    "expired": {
+      "title": "Төлөө убактысы бүттү",
+      "hint": "Эгер төлөп үлгүрсөңүз, сертификат «Сертификаттар» бөлүмүндө пайда болот.",
+      "retry": "Кайра сатып алуу"
+    },
+    "review": {
+      "title": "Төлөм алынды",
+      "hint": "Текшерип жатабыз. Сертификат текшерүүдөн кийин пайда болот."
+    },
+    "errors": {
+      "unavailable": "Бул номинал же мекеме азыр жеткиликсиз. Баракты жаңыртып, кайра аракет кылыңыз.",
+      "notFound": "Буйрутма табылган жок.",
+      "tooManyRequests": "Суроо-талаптар өтө көп, бир мүнөттөн кийин кайра аракет кылыңыз.",
+      "paymentProvider": "Төлөм системасы убактылуу жеткиликсиз. Акча алынган жок, бир аздан кийин кайра аракет кылыңыз.",
+      "network": "Сервер менен байланыш жок. Интернетти текшерип, кайра аракет кылыңыз."
     }
   },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "Бул Telegram Mini App. Аны Telegramдагы бот аркылуу ачыңыз.",
     "openInTelegram": "Telegramда ачуу"
+  },
+  "sessionExpired": {
+    "title": "Сессиянын мөөнөтү бүттү",
+    "description": "Колдонмо өтө узак ачык турду. Аны жаап, бот аркылуу кайра ачыңыз.",
+    "close": "Колдонмону жабуу"
   },
   "notFound": {
     "title": "404",
@@ -77,5 +221,12 @@
   },
   "categories": {
     "all": "Баары"
+  },
+  "errors": {
+    "genericTitle": "Ката",
+    "generic": "Бир нерсе туура эмес болду. Кайра аракет кылыңыз.",
+    "reload": "Бетти жаңыртуу",
+    "loadFailed": "Маалыматтарды жүктөө мүмкүн болгон жок",
+    "retry": "Кайталоо"
   }
 }

@@ -2,20 +2,24 @@ import { useSearchParams } from "react-router";
 
 import {
   AdminMerchantList,
-  AdminMerchantStatusFilter,
+  AdminMerchantStatusFilter
 } from "@widgets/admin/merchants";
-import { CategoryFilter, SearchBar } from "@widgets/home";
 
-import { useDebounce } from "@shared/hooks";
+import { CategoryFilter } from "@features/category-filter";
+
+import { ROUTE_PATTERNS } from "@shared/constants";
+import { useDebounce, useNavigateTo } from "@shared/hooks";
+import { SearchBar } from "@shared/ui";
 
 export const AdminMerchantsPage = () => {
+  const navigateTo = useNavigateTo();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
   const categoryParam = searchParams.get("category");
   const activeCategory = categoryParam ? Number(categoryParam) : null;
-  const isActiveParam = searchParams.get("isActive");
-  const activeStatus = isActiveParam === null ? null : isActiveParam === "true";
+  const activeStatus = searchParams.get("isActive") !== "false";
 
   const debouncedSearch = useDebounce(search);
 
@@ -30,7 +34,7 @@ export const AdminMerchantsPage = () => {
 
         return prev;
       },
-      { replace: true },
+      { replace: true }
     );
   };
 
@@ -47,13 +51,13 @@ export const AdminMerchantsPage = () => {
         onChange={(category) =>
           setParam("category", category !== null ? String(category) : null)
         }
+        onManage={() => navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES)}
       />
 
       <AdminMerchantStatusFilter
         active={activeStatus}
-        onChange={(isActive) =>
-          setParam("isActive", isActive !== null ? String(isActive) : null)
-        }
+        onChange={(isActive) => setParam("isActive", String(isActive))}
+        onCreate={() => navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANT_CREATE)}
       />
 
       <AdminMerchantList

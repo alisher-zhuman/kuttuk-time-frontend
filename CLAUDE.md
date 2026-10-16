@@ -59,9 +59,15 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - Each component lives in its own folder with `index.tsx`
 - A layer's public API is exposed only through the root `index.ts`
 
+**Slice grouping:**
+- `admin/` is the only grouped bounded context (`pages/admin/*`, `features/admin/*`, `widgets/admin/*`) — justified by its size and an unambiguous name. Everything else is flat descriptive slices (`features/category-filter`, `features/merchant-profile-form`, `pages/merchant-home`, `pages/merchant-profile-edit`).
+- Don't add a `merchant/` group: "merchant" is overloaded — the **buyer-facing venue** (`pages/merchant` = `/app/merchants/:handle`, `widgets/merchant`), the **merchant-role cabinet** (`pages/merchant-home`, `features/merchant-profile-form`), and the **domain entity** (`entities/merchant`) all share the word. A `merchant/` folder would be ambiguous, unlike `admin/`.
+- **Future:** once the merchant cabinet grows (dashboard, stats, active codes, "mark as used" per the roadmap), revisit — introduce a real `merchant/` group *and* rename the buyer flow to `venue` (`pages/venue`, `widgets/venue`, `VenuePage`/`VenueContent`/…) at the same time, so the grouping stops being ambiguous. Not worth the churn on the core buy flow until there are enough merchant-cabinet slices to justify it.
+
 ## Code
 
 - **Arrow functions only** — no `function` declarations
+- **`useState` first**: in components and hooks, declare local state before other hooks (`useTranslation`, `useNavigateTo`, queries, …) where possible
 - **Tailwind spacing**: whole numbers or 0.5 steps only (1, 1.5, 2, 2.5…) — never 0.75 or arbitrary `[Npx]`
 - Comments only when the `WHY` isn't obvious
 - No unnecessary abstraction — three similar lines beat a premature helper
@@ -69,6 +75,17 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **Routes**: only through `ROUTE_PATTERNS` and `getMerchantRoute()` from `@shared/constants` — no hardcoded strings
 - **TMA launch params**: only through `getLaunchParams()` from `@shared/helpers` — never `retrieveLaunchParams()` from the SDK directly
 - **Configs** (`vercel.json`, BotFather, CI): don't change without explicit approval
+- **Edit forms**: the page gates on the query (spinner → not-found → form) and passes loaded data as a prop into `defaultValues` — no `useEffect` + `reset()` (it wipes input typed while loading)
+- **Lists**: `isLoading` → skeleton, `isError` → `<ErrorState onRetry isRetrying />`, empty → `EmptyState`, else list. Query hooks return `retry` + `isFetching` for this
+- **UI state that TMA buttons target** (e.g. profile `?tab=`) lives in search params, not `useState` — the page may already be mounted when the button navigates
+- `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and the previous key's data shows. Harmless today (pages remount on navigation), but wherever a key can change while mounted and stale data would be wrong (route params without remount, anything feeding a purchase), gate on `isPlaceholderData` or set `placeholderData: () => undefined` on that query (a literal `undefined` fails `exactOptionalPropertyTypes`)
+- `QUERY_CLIENT` retries once, and only network errors / 5xx — 4xx and `ZodError` fail immediately
+- `useSwipeNavigation`: swipe from the left edge → back, from the right edge → forward — intentional, not a bug
+- **Nullable in Zod schemas**:
+  - `.nullable()` only for a real domain absence, with a comment next to it citing the source in `../backend` (entity column / DTO / service mapping)
+  - fields that depend on a status/type → `z.discriminatedUnion`, not nullable (e.g. `OrderSchema`: each variant lists only the fields its status guarantees; `z.object` strips the backend's nulls for the rest)
+  - a backend null the UI doesn't care about → normalize in the schema at the boundary (`.transform`), don't carry it into components
+  - also check the reverse: a backend column that's `nullable: true` but required in our schema fails Zod for the whole response (one bad row breaks a list)
 
 ## TMA SDK
 
@@ -87,6 +104,11 @@ Shared TMA hooks in `src/shared/hooks/tma/`:
 
 Always check `isAvailable()` before calling SDK methods.
 
+- `AuthProvider` resets `viewMode` from `role` on every login (intentional) — "view as buyer" lasts only until reload; the sessionStorage persist barely matters
+- System theme source: `themeParams.isDark` (Telegram's theme, guard with `isMounted()` — unmounted it reports `true`) — never `miniApp.isDark`, it reflects our own `setBgColor`
+- `POST /auth/log-in` → 401 (initData > 24h; Telegram doesn't refresh it while open or on reload) sets `isSessionExpired` → `AuthProvider` renders `SessionExpiredPage` ("reopen the app"). Set from both the initial log-in and the 401 re-login in `api.ts`
+- Deactivated merchant (`isActive: false`): `GET /merchants/me` still works, `PATCH` → 403. Cabinet shows `MerchantDeactivatedNotice` and hides edit; a 403 on save refetches "me" so the edit page swaps to the notice
+
 **Worth adding (when there's time):**
 - `shareURL` (`links`) — share the certificate code in Telegram, this is literally part of the business flow ("the code can be shared in Telegram")
 - `ClosingBehavior.enableConfirmation()` — guard against accidentally closing the app on the payment screen (swipe/back)
@@ -100,10 +122,22 @@ Always check `isAvailable()` before calling SDK methods.
 - `requestPhoneAccess`/`requestContact` — business model: "no phone number required"
 - `CloudStorage` — do NOT use it for the auth token/language/theme: `i18next-browser-languagedetector` is synchronous, `CloudStorage.getItem` is async → incompatible without a flash of the wrong language on render; there's no meaningful benefit for the token or theme either (see `AuthProvider` — re-authenticating via `initData` is already transparent). Only fits non-critical data that's fine to load in a bit later (once such a feature exists)
 
+## Mutation feedback
+
+No success toast/message pattern yet — mutations that redirect on success (e.g. `createCategory` → back to the categories list) rely on haptic + the result being visible on the destination page, which is enough on its own.
+
+**Worth adding (when there's time):** a minimal custom toast (own component + small store/hook, same "hand-roll it, don't pull a library" approach as `ErrorBoundary`) for mutations that *don't* navigate away on success (e.g. future "Mark as used", inline edits) — those need a visible confirmation since there's no destination-page context to imply success.
+
+## Payment flow — notes for when it's built
+
+- **Selected nominal can go stale**: `MerchantContent` keeps `selectedNominal` in `useState`, but `merchant.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the merchant editing nominals). Before buying, re-derive it: `merchant.nominals.includes(selectedNominal) ? selectedNominal : merchant.nominals[0]`, and send `merchantId` + nominal so the backend validates against the current list — never trust the client's amount
+- The merchant detail query feeds the purchase — mind `keepPreviousData` (see Code) there
+
 ## i18n
 
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`
 When adding a new key — add it to all three files.
+Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit programmatically
 
 ## Testing
 
@@ -130,3 +164,5 @@ Pre-push hook (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`)
 ## Git
 
 Commits are signed by Alisher only. No `Co-Authored-By`.
+
+Workflow for fixes: one fix per commit → push to `dev` → Alisher verifies in Telegram → next fix

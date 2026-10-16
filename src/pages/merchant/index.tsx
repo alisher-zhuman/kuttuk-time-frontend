@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import {
   MerchantContent,
   MerchantNotFound,
-  MerchantSkeleton,
+  MerchantSkeleton
 } from "@widgets/merchant";
 
 import { useMerchantQuery } from "@entities/merchant";

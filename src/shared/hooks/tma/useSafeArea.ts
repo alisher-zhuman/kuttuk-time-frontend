@@ -8,6 +8,6 @@ export const useSafeArea = () => {
     top: safe.top + content.top,
     right: safe.right + content.right,
     bottom: safe.bottom + content.bottom,
-    left: safe.left + content.left,
+    left: safe.left + content.left
   };
 };

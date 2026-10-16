@@ -5,8 +5,10 @@ import { Store } from "lucide-react";
 import {
   MerchantCard,
   MerchantCardSkeleton,
-  useMerchantsQuery,
+  useMerchantsQuery
 } from "@entities/merchant";
+
+import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
   category: number | null;
@@ -16,7 +18,10 @@ interface Props {
 export const MerchantList = ({ category, search }: Props) => {
   const { t } = useTranslation();
 
-  const { merchants, isLoading } = useMerchantsQuery({ search, category });
+  const { merchants, isLoading, isError, isFetching, retry } = useMerchantsQuery({
+    search,
+    category
+  });
 
   return (
     <section aria-label={t("home.merchantsSection")}>
@@ -26,20 +31,19 @@ export const MerchantList = ({ category, search }: Props) => {
 
       {isLoading ? (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <li key={i}>
               <MerchantCardSkeleton />
             </li>
           ))}
         </ul>
+      ) : isError ? (
+        <ErrorState onRetry={retry} isRetrying={isFetching} />
       ) : merchants.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-14 text-(--color-hint)">
-          <span className="size-16 rounded-2xl bg-(--color-chip) flex items-center justify-center">
-            <Store size={32} strokeWidth={1.5} />
-          </span>
-
-          <p className="text-sm font-semibold">{t("home.empty")}</p>
-        </div>
+        <EmptyState
+          icon={<Store size={32} strokeWidth={1.5} />}
+          message={t("home.empty")}
+        />
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {merchants.map((merchant) => (

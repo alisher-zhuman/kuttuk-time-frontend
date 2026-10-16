@@ -37,7 +37,7 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
             <span className="text-base leading-none">{b.flag}</span>
             <span>{b.code}</span>
           </span>
-        ),
+        )
       };
     });
 

@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import { Shield, User } from "lucide-react";
+import { Shield, Store, User } from "lucide-react";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { getHomeRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 import { LangSwitcher, Logo } from "@shared/ui";
@@ -22,7 +22,7 @@ export const Header = () => {
         type="button"
         onClick={() => {
           haptic.light();
-          navigateTo(viewMode === "admin" ? ROUTE_PATTERNS.ADMIN_MERCHANTS : ROUTE_PATTERNS.HOME);
+          navigateTo(getHomeRoute(viewMode));
         }}
         className="flex items-center gap-2 leading-none cursor-pointer min-w-0"
       >
@@ -32,6 +32,13 @@ export const Header = () => {
           <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-(--color-primary) text-(--color-card) text-xs font-bold shrink-0">
             <Shield size={12} />
             {t("admin.badge")}
+          </span>
+        )}
+
+        {viewMode === "merchant" && (
+          <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-(--color-primary) text-(--color-card) text-xs font-bold shrink-0">
+            <Store size={12} />
+            {t("merchant.badge")}
           </span>
         )}
       </button>

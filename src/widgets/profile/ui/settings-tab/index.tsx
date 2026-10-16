@@ -1,7 +1,7 @@
 import { useAuthStore, useViewModeStore } from "@shared/store";
 
-import { AdminModeSection } from "../admin-mode-section";
 import { LanguageSection } from "../language-section";
+import { RoleModeSection } from "../role-mode-section";
 import { SupportSection } from "../support-section";
 import { ThemeSection } from "../theme-section";
 
@@ -14,8 +14,10 @@ export const SettingsTab = () => {
       <LanguageSection />
       <ThemeSection />
 
-      {role === "admin" && <AdminModeSection />}
-      {viewMode !== "admin" && <SupportSection />}
+      {(role === "admin" || role === "merchant") && (
+        <RoleModeSection role={role} />
+      )}
+      {viewMode === "user" && <SupportSection />}
     </div>
   );
 };

@@ -1,9 +1,6 @@
 {
   "language": {
-    "label": "Language",
-    "kg": "KG",
-    "ru": "RU",
-    "en": "EN"
+    "label": "Language"
   },
   "search": {
     "placeholder": "Search venues",
@@ -14,13 +11,51 @@
     "empty": "No venues found"
   },
   "merchant": {
-    "from": "from"
+    "from": "from",
+    "badge": "Dashboard",
+    "label": "View mode",
+    "viewAsUser": "Buyer",
+    "viewAsMerchant": "Merchant",
+    "home": {
+      "loadError": "Failed to load profile"
+    },
+    "deactivated": {
+      "title": "Account deactivated",
+      "message": "Your venue is hidden from buyers and profile editing is unavailable. Message us to turn it back on."
+    },
+    "form": {
+      "editTitle": "Edit profile",
+      "save": "Save",
+      "name": "Name",
+      "namePlaceholder": "e.g. Sierra Coffee",
+      "descriptionRu": "Description in Russian",
+      "descriptionKg": "Description in Kyrgyz",
+      "descriptionEn": "Description in English",
+      "descriptionPlaceholder": "Briefly about the venue",
+      "required": "Required field",
+      "logoRequired": "Upload a logo",
+      "categoriesRequired": "Pick at least one category",
+      "nominalsRequired": "Add at least one amount"
+    }
+  },
+  "logoUpload": {
+    "hint": "Logo, up to 5 MB",
+    "fileType": "Images only",
+    "fileTooLarge": "File is larger than 5 MB",
+    "uploadFailed": "Upload failed"
+  },
+  "merchantAttributes": {
+    "categories": "Categories",
+    "nominals": "Amount",
+    "validity": "Validity (months)",
+    "months": "{{months}} mo"
   },
   "aria": {
     "changeLanguage": "Change language",
     "profile": "Profile"
   },
   "profile": {
+    "id": "ID",
     "tabs": {
       "certificates": "Certificates",
       "settings": "Settings"
@@ -49,20 +84,128 @@
     "merchants": {
       "active": "Active",
       "inactive": "Inactive",
-      "empty": "No venues found"
+      "empty": "No venues found",
+      "detail": {
+        "description": "Description",
+        "categories": "CATEGORIES",
+        "nominals": "AMOUNTS",
+        "validity": "VALIDITY",
+        "validityValue": "{{months}} months",
+        "telegramId": "TELEGRAM ID",
+        "createdAt": "CREATED",
+        "notFound": "Venue not found"
+      },
+      "form": {
+        "title": "New venue",
+        "editTitle": "Edit venue",
+        "create": "Create",
+        "save": "Save",
+        "edit": "Edit",
+        "status": "Status",
+        "logoRequired": "Upload a logo",
+        "name": "Name",
+        "namePlaceholder": "e.g. Sierra Coffee",
+        "slug": "Link",
+        "slugPlaceholder": "sierra-coffee",
+        "slugHint": "Latin letters, digits and hyphens. Used in the invite link.",
+        "slugInvalid": "Lowercase latin letters, digits and hyphens only",
+        "descriptionRu": "Description in Russian",
+        "descriptionKg": "Description in Kyrgyz",
+        "descriptionEn": "Description in English",
+        "descriptionPlaceholder": "Briefly about the venue",
+        "categoriesRequired": "Pick at least one category",
+        "nominalsRequired": "Add at least one amount",
+        "telegramId": "Telegram ID",
+        "telegramIdPlaceholder": "123456789",
+        "telegramIdHint": "Venue owner's Telegram ID",
+        "telegramIdInvalid": "Enter a positive whole number",
+        "required": "Required field",
+        "alreadyInUse": "Already in use"
+      }
+    },
+    "categories": {
+      "manage": "Manage categories",
+      "listTitle": "CATEGORIES",
+      "empty": "No categories found",
+      "notFound": "Category not found",
+      "title": "New category",
+      "editTitle": "Edit category",
+      "edit": "Edit",
+      "nameRu": "Name in Russian",
+      "nameKg": "Name in Kyrgyz",
+      "nameEn": "Name in English",
+      "namePlaceholder": "Enter a name",
+      "order": "Order",
+      "orderPlaceholder": "e.g. 0",
+      "create": "Create",
+      "save": "Save",
+      "reorder": "Reorder",
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete category?",
+      "deleteConfirmMessage": "The category will be deleted, and any venues assigned to it will lose that assignment. This action can't be undone.",
+      "required": "Required field",
+      "orderInvalid": "Enter a number"
     }
   },
   "certificate": {
     "currency": "som",
     "status": {
       "active": "Active",
-      "used": "Used"
+      "used": "Used",
+      "expired": "Expired"
+    },
+    "code": "Certificate code",
+    "copy": "Copy code",
+    "copied": "Code copied",
+    "validUntil": "Valid until {{date}}",
+    "usedAt": "Used on {{date}}",
+    "expiredAt": "Expired on {{date}}",
+    "share": "Share",
+    "shareText": "🎁 Gift certificate for {{merchant}}, {{amount}}. Code: {{code}}"
+  },
+  "certificates": {
+    "empty": "No certificates yet",
+    "toCatalog": "Browse venues",
+    "notFound": "Certificate not found",
+    "toList": "To certificates"
+  },
+  "orders": {
+    "pending": {
+      "title": "Waiting for payment",
+      "hint": "Pay on the bank’s page — the status will update automatically.",
+      "checking": "The payment time is over. Checking whether the payment went through…",
+      "timeLeft": "{{time}} left",
+      "openPayment": "Open payment"
+    },
+    "paid": {
+      "title": "Your certificate is ready!"
+    },
+    "expired": {
+      "title": "Payment time is over",
+      "hint": "If you managed to pay, the certificate will appear under “Certificates”.",
+      "retry": "Buy again"
+    },
+    "review": {
+      "title": "Payment received",
+      "hint": "We’re checking it. The certificate will appear once the check is done."
+    },
+    "errors": {
+      "unavailable": "This amount or venue is no longer available. Refresh the page and try again.",
+      "notFound": "Order not found.",
+      "tooManyRequests": "Too many requests, please try again in a minute.",
+      "paymentProvider": "The payment service is temporarily unavailable. You haven’t been charged — please try again a bit later.",
+      "network": "Can’t reach the server. Check your connection and try again."
     }
   },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "This is a Telegram Mini App. Open it via the bot in Telegram.",
     "openInTelegram": "Open in Telegram"
+  },
+  "sessionExpired": {
+    "title": "Session expired",
+    "description": "The app has been open for too long. Close it and open it again from the bot.",
+    "close": "Close app"
   },
   "notFound": {
     "title": "404",
@@ -78,5 +221,12 @@
   },
   "categories": {
     "all": "All"
+  },
+  "errors": {
+    "genericTitle": "Error",
+    "generic": "Something went wrong. Please try again.",
+    "reload": "Reload page",
+    "loadFailed": "Couldn't load data",
+    "retry": "Try again"
   }
 }

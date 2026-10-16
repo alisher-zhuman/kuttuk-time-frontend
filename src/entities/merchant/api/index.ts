@@ -2,10 +2,10 @@ import { api } from "@shared/api";
 import { API_PATHS } from "@shared/constants";
 
 import {
+  AdminMerchantDetailSchema,
   AdminMerchantsSchema,
-  CategoriesSchema,
   MerchantDetailSchema,
-  MerchantsSchema,
+  MerchantsSchema
 } from "../model/schemas";
 
 interface GetAdminMerchantsParams {
@@ -19,17 +19,11 @@ export const getAdminMerchants = async (params: GetAdminMerchantsParams = {}) =>
     params: {
       ...(params.search && { search: params.search }),
       ...(params.category != null && { category: params.category }),
-      ...(params.isActive != null && { isActive: params.isActive }),
-    },
+      ...(params.isActive != null && { isActive: params.isActive })
+    }
   });
 
   return AdminMerchantsSchema.parse(response.data);
-};
-
-export const getMerchantsCategories = async () => {
-  const response = await api.get(API_PATHS.CATEGORIES);
-
-  return CategoriesSchema.parse(response.data);
 };
 
 interface GetMerchantsParams {
@@ -41,8 +35,8 @@ export const getMerchants = async (params: GetMerchantsParams = {}) => {
   const response = await api.get(API_PATHS.MERCHANTS, {
     params: {
       ...(params.search && { search: params.search }),
-      ...(params.category != null && { category: params.category }),
-    },
+      ...(params.category != null && { category: params.category })
+    }
   });
 
   return MerchantsSchema.parse(response.data);
@@ -52,4 +46,56 @@ export const getMerchant = async (id: string | number) => {
   const response = await api.get(`${API_PATHS.MERCHANTS}/${id}`);
 
   return MerchantDetailSchema.parse(response.data);
+};
+
+export const getAdminMerchant = async (id: string | number) => {
+  const response = await api.get(`${API_PATHS.ADMIN_MERCHANTS}/${id}`);
+
+  return AdminMerchantDetailSchema.parse(response.data);
+};
+
+// Own merchant profile — same shape as the admin detail, tied to the caller's
+// Telegram account (merchant role only), so no id is passed.
+export const getMerchantMe = async () => {
+  const response = await api.get(`${API_PATHS.MERCHANTS}/me`);
+
+  return AdminMerchantDetailSchema.parse(response.data);
+};
+
+export interface CreateMerchantPayload {
+  name: string;
+  description: { ru: string; kg: string; en: string };
+  categories: number[];
+  nominals: number[];
+  validityMonths: number;
+  logo: string;
+  merchantTelegramId: number;
+  slug: string;
+}
+
+export const createMerchant = async (payload: CreateMerchantPayload) => {
+  await api.post(API_PATHS.ADMIN_MERCHANTS, payload);
+};
+
+export interface UpdateMerchantPayload extends CreateMerchantPayload {
+  isActive: boolean;
+}
+
+export const updateMerchant = async (id: number, payload: UpdateMerchantPayload) => {
+  await api.patch(`${API_PATHS.ADMIN_MERCHANTS}/${id}`, payload);
+};
+
+// Merchant editing its own profile — only the storefront fields, no slug /
+// telegramId / isActive (those stay admin-controlled), so no id is passed.
+export interface UpdateMerchantMePayload {
+  name: string;
+  description: { ru: string; kg: string; en: string };
+  categories: number[];
+  nominals: number[];
+  validityMonths: number;
+  logo: string;
+}
+
+export const updateMerchantMe = async (payload: UpdateMerchantMePayload) => {
+  await api.patch(`${API_PATHS.MERCHANTS}/me`, payload);
 };

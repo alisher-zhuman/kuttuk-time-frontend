@@ -1,18 +1,10 @@
 import { z } from "zod";
 
-export const CategorySchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  order: z.number(),
-});
-
-export const CategoriesSchema = z.array(CategorySchema);
-
 export const AdminMerchantSchema = z.object({
   id: z.number(),
   name: z.string(),
   logo: z.string(),
-  isActive: z.boolean(),
+  isActive: z.boolean()
 });
 
 export const AdminMerchantsSchema = z.array(AdminMerchantSchema);
@@ -22,7 +14,7 @@ export const MerchantSchema = z.object({
   logo: z.string(),
   name: z.string(),
   minNominal: z.number(),
-  description: z.string(),
+  description: z.string()
 });
 
 export const MerchantsSchema = z.array(MerchantSchema);
@@ -33,5 +25,23 @@ export const MerchantDetailSchema = z.object({
   description: z.string(),
   logo: z.string(),
   nominals: z.array(z.number()).nonempty(),
+  validityMonths: z.number()
+});
+
+export const AdminMerchantDetailSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.object({
+    ru: z.string(),
+    kg: z.string(),
+    en: z.string()
+  }),
+  categories: z.array(z.number()),
+  nominals: z.array(z.number()).nonempty(),
   validityMonths: z.number(),
+  merchantTelegramId: z.number(),
+  logo: z.string(),
+  slug: z.string(),
+  isActive: z.boolean(),
+  createdAt: z.string()
 });

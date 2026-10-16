@@ -5,7 +5,8 @@ import {
   miniApp,
   swipeBehavior,
   themeParams,
-  viewport,
+  useSignal,
+  viewport
 } from "@tma.js/sdk-react";
 
 import { AppNotFoundPage } from "@pages/app-not-found";
@@ -15,7 +16,7 @@ import { useThemeStore } from "@shared/store";
 
 const TMA_COLORS = {
   light: { header: "#FFFFFF", bg: "#F4F5F7" },
-  dark: { header: "#161D2E", bg: "#0F1422" },
+  dark: { header: "#161D2E", bg: "#0F1422" }
 } as const;
 
 let isTMA = true;
@@ -33,6 +34,8 @@ interface Props {
 export const TMAProvider = ({ children }: Props) => {
   const theme = useThemeStore((s) => s.theme);
 
+  const isTelegramDark = useSignal(themeParams.isDark);
+
   useEffect(() => {
     if (themeParams.mount.isAvailable()) {
       themeParams.mount();
@@ -42,20 +45,42 @@ export const TMAProvider = ({ children }: Props) => {
       miniApp.mount();
     }
 
+    if (miniApp.ready.isAvailable()) {
+      miniApp.ready();
+    }
+
     if (swipeBehavior.mount.isAvailable()) {
       swipeBehavior.mount();
       swipeBehavior.disableVertical();
     }
 
+    // StrictMode runs this effect twice in dev, and bindCssVars throws
+    // CSSVarsBoundError on a second bind. The cancelled run's async .then must
+    // do nothing, and cleanup unbinds what this run bound (viewport has no
+    // unmount in sdk 3.3, so the mount itself is left alone).
+    let isCancelled = false;
+    let unbindViewportCssVars: VoidFunction | undefined;
+
     if (viewport.mount.isAvailable()) {
       void viewport.mount().then(() => {
-        viewport.bindCssVars();
+        if (isCancelled) {
+          return;
+        }
+
+        if (!viewport.isCssVarsBound()) {
+          unbindViewportCssVars = viewport.bindCssVars();
+        }
 
         if (viewport.requestFullscreen.isAvailable()) {
           void viewport.requestFullscreen();
         }
       });
     }
+
+    return () => {
+      isCancelled = true;
+      unbindViewportCssVars?.();
+    };
   }, []);
 
   useEffect(() => {
@@ -70,7 +95,7 @@ export const TMAProvider = ({ children }: Props) => {
     if (miniApp.setBottomBarColor.isAvailable()) {
       miniApp.setBottomBarColor(bg);
     }
-  }, [theme]);
+  }, [theme, isTelegramDark]);
 
   if (!isTMA) return <AppNotFoundPage />;
 

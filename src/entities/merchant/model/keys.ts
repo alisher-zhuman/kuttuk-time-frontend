@@ -5,9 +5,10 @@ export const merchantKeys = {
     search: string,
     category: number | null,
     isActive: boolean | null,
-    lang: string,
+    lang: string
   ) => ["merchants", "admin-list", search, category, isActive, lang] as const,
-  categories: (lang: string) => ["merchants", "categories", lang] as const,
   detail: (id: string | number, lang: string) =>
     ["merchants", "detail", id, lang] as const,
+  adminDetail: (id: string | number) => ["merchants", "admin-detail", id] as const,
+  me: () => ["merchants", "me"] as const
 };

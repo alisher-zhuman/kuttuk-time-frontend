@@ -4,11 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getAdminMerchants } from "../api";
 import { merchantKeys } from "../model/keys";
-import type { AdminMerchantSchema } from "../model/schemas";
-
-import type { z } from "zod";
-
-export type AdminMerchant = z.infer<typeof AdminMerchantSchema>;
 
 interface Params {
   search: string;
@@ -19,10 +14,16 @@ interface Params {
 export const useAdminMerchantsQuery = ({ search, category, isActive }: Params) => {
   const { i18n } = useTranslation();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: merchantKeys.adminList(search, category, isActive, i18n.language),
-    queryFn: () => getAdminMerchants({ search, category, isActive }),
+    queryFn: () => getAdminMerchants({ search, category, isActive })
   });
 
-  return { merchants: data ?? [], isLoading, isError };
+  return {
+    merchants: data ?? [],
+    isLoading,
+    isError,
+    isFetching,
+    retry: () => void refetch()
+  };
 };

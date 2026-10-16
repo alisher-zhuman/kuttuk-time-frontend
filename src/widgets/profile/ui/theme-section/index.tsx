@@ -9,7 +9,7 @@ import { SegmentedControl } from "@shared/ui";
 const THEME_ICONS: Record<Theme, typeof Sun> = {
   light: Sun,
   dark: Moon,
-  system: SunMoon,
+  system: SunMoon
 };
 
 export const ThemeSection = () => {
@@ -27,7 +27,7 @@ export const ThemeSection = () => {
           <Icon size={14} />
           {t(`theme.${th}`)}
         </span>
-      ),
+      )
     };
   });
 

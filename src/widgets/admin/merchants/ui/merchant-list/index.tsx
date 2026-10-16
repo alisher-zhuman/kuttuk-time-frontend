@@ -5,8 +5,12 @@ import { Store } from "lucide-react";
 import {
   AdminMerchantCard,
   AdminMerchantCardSkeleton,
-  useAdminMerchantsQuery,
+  useAdminMerchantsQuery
 } from "@entities/merchant";
+
+import { getAdminMerchantDetailRoute } from "@shared/constants";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
   search: string;
@@ -17,7 +21,15 @@ interface Props {
 export const AdminMerchantList = ({ search, category, isActive }: Props) => {
   const { t } = useTranslation();
 
-  const { merchants, isLoading } = useAdminMerchantsQuery({ search, category, isActive });
+  const navigateTo = useNavigateTo();
+
+  const haptic = useHaptic();
+
+  const { merchants, isLoading, isError, isFetching, retry } = useAdminMerchantsQuery({
+    search,
+    category,
+    isActive
+  });
 
   return (
     <section aria-label={t("home.merchantsSection")}>
@@ -27,25 +39,30 @@ export const AdminMerchantList = ({ search, category, isActive }: Props) => {
 
       {isLoading ? (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: 4 }).map((_, i) => (
             <li key={i}>
               <AdminMerchantCardSkeleton />
             </li>
           ))}
         </ul>
+      ) : isError ? (
+        <ErrorState onRetry={retry} isRetrying={isFetching} />
       ) : merchants.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-14 text-(--color-hint)">
-          <span className="size-16 rounded-2xl bg-(--color-chip) flex items-center justify-center">
-            <Store size={32} strokeWidth={1.5} />
-          </span>
-
-          <p className="text-sm font-semibold">{t("admin.merchants.empty")}</p>
-        </div>
+        <EmptyState
+          icon={<Store size={32} strokeWidth={1.5} />}
+          message={t("admin.merchants.empty")}
+        />
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {merchants.map((merchant) => (
             <li key={merchant.id}>
-              <AdminMerchantCard merchant={merchant} />
+              <AdminMerchantCard
+                merchant={merchant}
+                onClick={() => {
+                  haptic.light();
+                  navigateTo(getAdminMerchantDetailRoute(merchant.id));
+                }}
+              />
             </li>
           ))}
         </ul>

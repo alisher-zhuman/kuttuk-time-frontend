@@ -1,8 +1,6 @@
 {
   "language": {
-    "label": "Язык",
-    "kg": "КР",
-    "ru": "RU"
+    "label": "Язык"
   },
   "search": {
     "placeholder": "Поиск заведений",
@@ -13,13 +11,51 @@
     "empty": "Заведения не найдены"
   },
   "merchant": {
-    "from": "от"
+    "from": "от",
+    "badge": "Кабинет",
+    "label": "Режим отображения",
+    "viewAsUser": "Покупатель",
+    "viewAsMerchant": "Мерчант",
+    "home": {
+      "loadError": "Не удалось загрузить профиль"
+    },
+    "deactivated": {
+      "title": "Аккаунт отключён",
+      "message": "Ваше заведение скрыто от покупателей, а редактирование профиля недоступно. Чтобы включить его снова, напишите нам."
+    },
+    "form": {
+      "editTitle": "Редактирование профиля",
+      "save": "Сохранить",
+      "name": "Название",
+      "namePlaceholder": "Например: Sierra Coffee",
+      "descriptionRu": "Описание на русском",
+      "descriptionKg": "Описание на кыргызском",
+      "descriptionEn": "Описание на английском",
+      "descriptionPlaceholder": "Коротко о заведении",
+      "required": "Обязательное поле",
+      "logoRequired": "Загрузите логотип",
+      "categoriesRequired": "Выберите хотя бы одну категорию",
+      "nominalsRequired": "Добавьте хотя бы один номинал"
+    }
+  },
+  "logoUpload": {
+    "hint": "Логотип, до 5 МБ",
+    "fileType": "Только изображения",
+    "fileTooLarge": "Файл больше 5 МБ",
+    "uploadFailed": "Не удалось загрузить"
+  },
+  "merchantAttributes": {
+    "categories": "Категории",
+    "nominals": "Номинал",
+    "validity": "Срок действия (мес.)",
+    "months": "{{months}} мес."
   },
   "aria": {
     "changeLanguage": "Сменить язык",
     "profile": "Профиль"
   },
   "profile": {
+    "id": "ID",
     "tabs": {
       "certificates": "Сертификаты",
       "settings": "Настройки"
@@ -48,20 +84,128 @@
     "merchants": {
       "active": "Активен",
       "inactive": "Неактивен",
-      "empty": "Заведения не найдены"
+      "empty": "Заведения не найдены",
+      "detail": {
+        "description": "Описание",
+        "categories": "КАТЕГОРИИ",
+        "nominals": "НОМИНАЛЫ",
+        "validity": "СРОК ДЕЙСТВИЯ",
+        "validityValue": "{{months}} месяцев",
+        "telegramId": "TELEGRAM ID",
+        "createdAt": "СОЗДАН",
+        "notFound": "Заведение не найдено"
+      },
+      "form": {
+        "title": "Новое заведение",
+        "editTitle": "Редактирование заведения",
+        "create": "Создать",
+        "save": "Сохранить",
+        "edit": "Редактировать",
+        "status": "Статус",
+        "logoRequired": "Загрузите логотип",
+        "name": "Название",
+        "namePlaceholder": "Например: Sierra Coffee",
+        "slug": "Ссылка",
+        "slugPlaceholder": "sierra-coffee",
+        "slugHint": "Латиница, цифры и дефис. Попадёт в ссылку-приглашение.",
+        "slugInvalid": "Только строчная латиница, цифры и дефис",
+        "descriptionRu": "Описание на русском",
+        "descriptionKg": "Описание на кыргызском",
+        "descriptionEn": "Описание на английском",
+        "descriptionPlaceholder": "Коротко о заведении",
+        "categoriesRequired": "Выберите хотя бы одну категорию",
+        "nominalsRequired": "Добавьте хотя бы один номинал",
+        "telegramId": "Telegram ID",
+        "telegramIdPlaceholder": "123456789",
+        "telegramIdHint": "ID владельца заведения в Telegram",
+        "telegramIdInvalid": "Введите целое положительное число",
+        "required": "Обязательное поле",
+        "alreadyInUse": "Уже используется"
+      }
+    },
+    "categories": {
+      "manage": "Управление категориями",
+      "listTitle": "КАТЕГОРИИ",
+      "empty": "Категории не найдены",
+      "notFound": "Категория не найдена",
+      "title": "Новая категория",
+      "editTitle": "Редактировать категорию",
+      "edit": "Редактировать",
+      "nameRu": "Название на русском",
+      "nameKg": "Название на кыргызском",
+      "nameEn": "Название на английском",
+      "namePlaceholder": "Введите название",
+      "order": "Порядок",
+      "orderPlaceholder": "Например: 0",
+      "create": "Создать",
+      "save": "Сохранить",
+      "reorder": "Изменить порядок",
+      "delete": "Удалить",
+      "deleteConfirmTitle": "Удалить категорию?",
+      "deleteConfirmMessage": "Категория будет удалена, а заведения, к которым она привязана, потеряют эту привязку. Действие необратимо.",
+      "required": "Обязательное поле",
+      "orderInvalid": "Введите число"
     }
   },
   "certificate": {
     "currency": "сом",
     "status": {
       "active": "Активный",
-      "used": "Использован"
+      "used": "Использован",
+      "expired": "Истёк"
+    },
+    "code": "Код сертификата",
+    "copy": "Скопировать код",
+    "copied": "Код скопирован",
+    "validUntil": "Действует до {{date}}",
+    "usedAt": "Использован {{date}}",
+    "expiredAt": "Истёк {{date}}",
+    "share": "Поделиться",
+    "shareText": "🎁 Подарочный сертификат {{merchant}} на {{amount}}. Код: {{code}}"
+  },
+  "certificates": {
+    "empty": "Пока нет сертификатов",
+    "toCatalog": "В каталог",
+    "notFound": "Сертификат не найден",
+    "toList": "К сертификатам"
+  },
+  "orders": {
+    "pending": {
+      "title": "Ожидаем оплату",
+      "hint": "Оплатите заказ на странице банка — статус обновится автоматически.",
+      "checking": "Время оплаты вышло. Проверяем, прошла ли оплата…",
+      "timeLeft": "Осталось {{time}}",
+      "openPayment": "Открыть оплату"
+    },
+    "paid": {
+      "title": "Сертификат готов!"
+    },
+    "expired": {
+      "title": "Время оплаты истекло",
+      "hint": "Если вы успели оплатить, сертификат появится в разделе «Сертификаты».",
+      "retry": "Купить снова"
+    },
+    "review": {
+      "title": "Оплата получена",
+      "hint": "Проверяем её. Сертификат появится после проверки."
+    },
+    "errors": {
+      "unavailable": "Этот номинал или заведение сейчас недоступны. Обновите страницу и попробуйте снова.",
+      "notFound": "Заказ не найден.",
+      "tooManyRequests": "Слишком много запросов, попробуйте через минуту.",
+      "paymentProvider": "Платёжная система временно недоступна. Деньги не списаны, попробуйте чуть позже.",
+      "network": "Нет соединения с сервером. Проверьте интернет и попробуйте снова."
     }
   },
   "appNotFound": {
     "subtitle": "Mini App",
     "description": "Это Telegram Mini App. Открой его через бота в Telegram.",
     "openInTelegram": "Открыть в Telegram"
+  },
+  "sessionExpired": {
+    "title": "Сессия устарела",
+    "description": "Приложение открыто слишком долго. Закройте его и откройте заново через бота.",
+    "close": "Закрыть приложение"
   },
   "notFound": {
     "title": "404",
@@ -77,5 +221,12 @@
   },
   "categories": {
     "all": "Все"
+  },
+  "errors": {
+    "genericTitle": "Ошибка",
+    "generic": "Что-то пошло не так. Попробуйте ещё раз.",
+    "reload": "Обновить страницу",
+    "loadFailed": "Не удалось загрузить данные",
+    "retry": "Повторить"
   }
 }

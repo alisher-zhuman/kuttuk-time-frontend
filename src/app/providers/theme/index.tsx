@@ -1,4 +1,6 @@
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useLayoutEffect } from "react";
+
+import { themeParams, useSignal } from "@tma.js/sdk-react";
 
 import { applyTheme } from "@shared/helpers";
 import { useThemeStore } from "@shared/store";
@@ -10,7 +12,12 @@ interface Props {
 export const ThemeProvider = ({ children }: Props) => {
   const theme = useThemeStore((s) => s.theme);
 
-  useEffect(() => {
+  // Subscribed only to re-run the effect when Telegram's theme changes.
+  const isTelegramDark = useSignal(themeParams.isDark);
+
+  // Layout effect: data-theme must be set before children's passive effects
+  // (useMainButton) read the resolved CSS color vars.
+  useLayoutEffect(() => {
     applyTheme({ theme });
 
     if (theme !== "system") return;
@@ -21,7 +28,7 @@ export const ThemeProvider = ({ children }: Props) => {
     mq.addEventListener("change", handleChange);
 
     return () => mq.removeEventListener("change", handleChange);
-  }, [theme]);
+  }, [theme, isTelegramDark]);
 
   return <>{children}</>;
 };

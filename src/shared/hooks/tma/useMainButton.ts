@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { mainButton, type RGB } from "@tma.js/sdk-react";
+import { mainButton, type RGB, themeParams, useSignal } from "@tma.js/sdk-react";
 
 import { useThemeStore } from "@shared/store";
 
@@ -9,6 +9,7 @@ interface Options {
   onClick: () => void;
   disabled?: boolean;
   loading?: boolean;
+  hidden?: boolean;
 }
 
 const cssVar = (name: string) =>
@@ -19,14 +20,16 @@ export const useMainButton = ({
   onClick,
   disabled = false,
   loading = false,
+  hidden = false
 }: Options) => {
   const theme = useThemeStore((s) => s.theme);
+
+  const isTelegramDark = useSignal(themeParams.isDark);
 
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;
 
     mainButton.mount();
-    mainButton.show();
 
     return () => {
       mainButton.hide();
@@ -37,11 +40,21 @@ export const useMainButton = ({
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;
 
+    if (hidden) {
+      mainButton.hide();
+    } else {
+      mainButton.show();
+    }
+  }, [hidden]);
+
+  useEffect(() => {
+    if (!mainButton.mount.isAvailable()) return;
+
     mainButton.setParams({
       bgColor: cssVar("--color-primary"),
-      textColor: cssVar("--color-card"),
+      textColor: cssVar("--color-card")
     });
-  }, [theme]);
+  }, [theme, isTelegramDark]);
 
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;

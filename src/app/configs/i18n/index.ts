@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 import {
   DEFAULT_LANGUAGE,
   I18N_STORAGE_KEY,
-  SUPPORTED_LANGUAGES,
+  SUPPORTED_LANGUAGES
 } from "@shared/constants";
 import { getLaunchParams, getScopedStorageKey } from "@shared/helpers";
 import { enCommon, kgCommon, ruCommon } from "@shared/locales";
@@ -21,7 +21,7 @@ const tmaLanguageDetector = {
     if (!code) return undefined;
 
     return TMA_LANG_MAP[code] ?? code;
-  },
+  }
 };
 
 const detector = new LanguageDetector();
@@ -35,7 +35,7 @@ void i18n
     resources: {
       en: { common: enCommon },
       kg: { common: kgCommon },
-      ru: { common: ruCommon },
+      ru: { common: ruCommon }
     },
     supportedLngs: [...SUPPORTED_LANGUAGES],
     fallbackLng: DEFAULT_LANGUAGE,
@@ -43,8 +43,8 @@ void i18n
     detection: {
       order: ["localStorage", "tmaLanguage", "navigator"],
       lookupLocalStorage: getScopedStorageKey(I18N_STORAGE_KEY),
-      caches: ["localStorage"],
+      caches: ["localStorage"]
     },
     interpolation: { escapeValue: false },
-    returnNull: false,
+    returnNull: false
   });

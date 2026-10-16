@@ -17,7 +17,7 @@ interface Props<T extends string> {
 export const SegmentedControl = <T extends string>({
   items,
   value,
-  onChange,
+  onChange
 }: Props<T>) => {
   const haptic = useHaptic();
   
@@ -31,7 +31,7 @@ export const SegmentedControl = <T extends string>({
         style={{
           boxShadow: "var(--shadow-card)",
           width: `calc((100% - ${8 + 4 * (n - 1)}px) / ${n})`,
-          transform: `translateX(calc(${activeIndex} * (100% + 4px)))`,
+          transform: `translateX(calc(${activeIndex} * (100% + 4px)))`
         }}
       />
 
@@ -42,7 +42,7 @@ export const SegmentedControl = <T extends string>({
           onClick={() => { haptic.selection(); onChange(item.value); }}
           className={cn(
             "relative z-10 flex flex-1 items-center justify-center py-2 rounded-lg text-sm font-bold transition-colors duration-200 cursor-pointer",
-            value === item.value ? "text-(--color-ink)" : "text-(--color-slate)",
+            value === item.value ? "text-(--color-ink)" : "text-(--color-slate)"
           )}
         >
           {item.label}

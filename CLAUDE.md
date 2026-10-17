@@ -80,6 +80,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **UI state that TMA buttons target** (e.g. profile `?tab=`) lives in search params, not `useState` — the page may already be mounted when the button navigates
 - `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and the previous key's data shows. Harmless today (pages remount on navigation), but wherever a key can change while mounted and stale data would be wrong (route params without remount, anything feeding a purchase), gate on `isPlaceholderData` or set `placeholderData: () => undefined` on that query (a literal `undefined` fails `exactOptionalPropertyTypes`)
 - `QUERY_CLIENT` retries once, and only network errors / 5xx — 4xx and `ZodError` fail immediately
+- **Allowed merchant values** (nominals, validity months) come only from `GET /merchants/options` (`useMerchantOptionsQuery`, staleTime ∞) — no frontend list. Forms build their Zod schema from it (`createMerchantFormSchema(options)`), pages gate on it like on the merchant query
 - `useSwipeNavigation`: swipe from the left edge → back, from the right edge → forward — intentional, not a bug
 - **Nullable in Zod schemas**:
   - `.nullable()` only for a real domain absence, with a comment next to it citing the source in `../backend` (entity column / DTO / service mapping)

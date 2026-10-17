@@ -45,3 +45,11 @@ export const AdminMerchantDetailSchema = z.object({
   isActive: z.boolean(),
   createdAt: z.string()
 });
+
+// GET /merchants/options (../backend merchants.controller `getOptions`):
+// VALID_NOMINALS / VALID_VALIDITY_MONTHS, sorted ascending — the only source of
+// allowed merchant values; the frontend keeps no list of its own.
+export const MerchantOptionsSchema = z.object({
+  nominals: z.array(z.number()).nonempty(),
+  validityMonths: z.array(z.number()).nonempty()
+});

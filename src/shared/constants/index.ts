@@ -7,7 +7,6 @@ export {
   LANGUAGE_BADGE,
   SUPPORTED_LANGUAGES
 } from "./i18n";
-export { NOMINAL_PRESETS, VALIDITY_PRESETS } from "./merchant";
 export {
   getAdminMerchantDetailRoute,
   getCategoryEditRoute,

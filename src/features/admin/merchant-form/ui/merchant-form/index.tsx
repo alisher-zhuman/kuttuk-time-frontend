@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useCategoriesQuery } from "@entities/category";
 import {
   type AdminMerchantDetail,
-  MerchantAttributesSelect
+  MerchantAttributesSelect,
+  type MerchantOptions
 } from "@entities/merchant";
 
 import { useMainButton } from "@shared/hooks";
@@ -14,10 +15,11 @@ import { MerchantFormDescription } from "../merchant-form-description";
 import { MerchantFormIdentity } from "../merchant-form-identity";
 
 interface Props {
+  options: MerchantOptions;
   merchant?: AdminMerchantDetail;
 }
 
-export const MerchantForm = ({ merchant }: Props) => {
+export const MerchantForm = ({ options, merchant }: Props) => {
   const { t } = useTranslation();
 
   const isEdit = merchant !== undefined;
@@ -38,7 +40,7 @@ export const MerchantForm = ({ merchant }: Props) => {
     setValidityMonths,
     setIsActive,
     submit
-  } = useMerchantForm(merchant);
+  } = useMerchantForm(options, merchant);
 
   const { categories: categoryOptions } = useCategoriesQuery();
 
@@ -68,6 +70,7 @@ export const MerchantForm = ({ merchant }: Props) => {
       <MerchantFormDescription register={register} errors={errors} />
 
       <MerchantAttributesSelect
+        options={options}
         categoryOptions={categoryOptions.map((category) => ({
           value: category.id,
           label: category.name

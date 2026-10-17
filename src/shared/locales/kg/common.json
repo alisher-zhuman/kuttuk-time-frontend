@@ -35,7 +35,9 @@
       "required": "Милдеттүү талаа",
       "logoRequired": "Логотипти жүктөңүз",
       "categoriesRequired": "Кеминде бир категория тандаңыз",
-      "nominalsRequired": "Кеминде бир номинал кошуңуз"
+      "nominalsRequired": "Кеминде бир номинал кошуңуз",
+      "nominalsUnavailable": "Айрым номиналдар мындан ары жеткиликсиз — аларды алып салыңыз",
+      "validityUnavailable": "Бул мөөнөт мындан ары жеткиликсиз — башкасын тандаңыз"
     }
   },
   "logoUpload": {
@@ -121,7 +123,9 @@
         "telegramIdHint": "Мекеме ээсинин Telegram ID'си",
         "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
         "required": "Милдеттүү талаа",
-        "alreadyInUse": "Мурунтан колдонулууда"
+        "alreadyInUse": "Мурунтан колдонулууда",
+        "nominalsUnavailable": "Айрым номиналдар мындан ары жеткиликсиз — аларды алып салыңыз",
+        "validityUnavailable": "Бул мөөнөт мындан ары жеткиликсиз — башкасын тандаңыз"
       }
     },
     "categories": {

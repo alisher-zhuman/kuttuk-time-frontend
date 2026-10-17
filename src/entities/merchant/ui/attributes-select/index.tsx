@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { NOMINAL_PRESETS, VALIDITY_PRESETS } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { ChipSelect } from "@shared/ui";
+
+import type { MerchantOptions } from "../../model/types";
 
 interface CategoryOption {
   value: number;
@@ -11,6 +12,8 @@ interface CategoryOption {
 
 interface Props {
   categoryOptions: CategoryOption[];
+  // Allowed values from GET /merchants/options.
+  options: MerchantOptions;
   categories: number[];
   nominals: number[];
   validityMonths: number;
@@ -25,8 +28,14 @@ interface Props {
 // Category/nominal/validity picker for a merchant's sellable attributes.
 // Presentational — category options are passed in so it never reaches into
 // another entity, which lets both the admin and merchant forms reuse it.
+// A saved value the backend no longer offers (e.g. a retired nominal) still
+// gets a chip, so it can be deselected — the form flags it as unavailable.
+const withSelected = (offered: readonly number[], selected: readonly number[]) =>
+  [...new Set([...offered, ...selected])].sort((a, b) => a - b);
+
 export const MerchantAttributesSelect = ({
   categoryOptions,
+  options,
   categories,
   nominals,
   validityMonths,
@@ -60,7 +69,7 @@ export const MerchantAttributesSelect = ({
       <ChipSelect
         label={t("merchantAttributes.nominals")}
         error={nominalsError}
-        items={NOMINAL_PRESETS.map((nominal) => ({
+        items={withSelected(options.nominals, nominals).map((nominal) => ({
           value: nominal,
           label: formatMoney(nominal, currency)
         }))}
@@ -77,7 +86,7 @@ export const MerchantAttributesSelect = ({
       <ChipSelect
         label={t("merchantAttributes.validity")}
         error={validityError}
-        items={VALIDITY_PRESETS.map((months) => ({
+        items={withSelected(options.validityMonths, [validityMonths]).map((months) => ({
           value: months,
           label: t("merchantAttributes.months", { months })
         }))}

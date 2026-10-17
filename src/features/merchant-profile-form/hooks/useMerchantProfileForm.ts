@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -5,18 +7,24 @@ import { isAxiosError } from "axios";
 
 import {
   type AdminMerchantDetail,
+  type MerchantOptions,
   useUpdateMerchantMeMutation
 } from "@entities/merchant";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useGenericError, useHaptic, useNavigateTo } from "@shared/hooks";
 
-import { MerchantProfileFormSchema } from "../model/schemas";
+import { createMerchantProfileFormSchema } from "../model/schemas";
 import type { MerchantProfileFormValues } from "../model/types";
 
 // Receives an already-loaded profile (the page gates on the query), so
 // defaultValues are final on the first render — no reset() racing user input.
-export const useMerchantProfileForm = (merchant: AdminMerchantDetail) => {
+export const useMerchantProfileForm = (
+  merchant: AdminMerchantDetail,
+  options: MerchantOptions
+) => {
+  const schema = useMemo(() => createMerchantProfileFormSchema(options), [options]);
+
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
@@ -32,7 +40,7 @@ export const useMerchantProfileForm = (merchant: AdminMerchantDetail) => {
     control,
     formState: { errors, isDirty }
   } = useForm<MerchantProfileFormValues>({
-    resolver: zodResolver(MerchantProfileFormSchema),
+    resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
       logo: merchant.logo,
@@ -51,15 +59,15 @@ export const useMerchantProfileForm = (merchant: AdminMerchantDetail) => {
   const nominals = useWatch({ control, name: "nominals" });
   const validityMonths = useWatch({ control, name: "validityMonths" });
 
-  const options = { shouldValidate: true, shouldDirty: true };
+  const setValueOptions = { shouldValidate: true, shouldDirty: true };
 
-  const setLogo = (url: string) => setValue("logo", url, options);
-  const setNominals = (next: number[]) => setValue("nominals", next, options);
+  const setLogo = (url: string) => setValue("logo", url, setValueOptions);
+  const setNominals = (next: number[]) => setValue("nominals", next, setValueOptions);
   const setCategories = (next: number[]) => {
-    setValue("categories", next, options);
+    setValue("categories", next, setValueOptions);
   };
   const setValidityMonths = (months: number) => {
-    setValue("validityMonths", months, options);
+    setValue("validityMonths", months, setValueOptions);
   };
 
   const submit = handleSubmit((values) => {

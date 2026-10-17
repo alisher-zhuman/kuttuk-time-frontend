@@ -10,5 +10,8 @@ export const merchantKeys = {
   detail: (id: string | number, lang: string) =>
     ["merchants", "detail", id, lang] as const,
   adminDetail: (id: string | number) => ["merchants", "admin-detail", id] as const,
-  me: () => ["merchants", "me"] as const
+  me: () => ["merchants", "me"] as const,
+  // Outside the "merchants" tree on purpose: merchant mutations invalidate
+  // ["merchants"], and the allowed values never change with a merchant edit.
+  options: () => ["merchant-options"] as const
 };

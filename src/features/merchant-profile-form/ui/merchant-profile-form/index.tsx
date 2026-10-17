@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useCategoriesQuery } from "@entities/category";
 import {
   type AdminMerchantDetail,
-  MerchantAttributesSelect
+  MerchantAttributesSelect,
+  type MerchantOptions
 } from "@entities/merchant";
 
 import { useMainButton } from "@shared/hooks";
@@ -13,9 +14,10 @@ import { useMerchantProfileForm } from "../../hooks/useMerchantProfileForm";
 
 interface Props {
   merchant: AdminMerchantDetail;
+  options: MerchantOptions;
 }
 
-export const MerchantProfileForm = ({ merchant }: Props) => {
+export const MerchantProfileForm = ({ merchant, options }: Props) => {
   const { t } = useTranslation();
 
   const { categories: categoryOptions } = useCategoriesQuery();
@@ -34,7 +36,7 @@ export const MerchantProfileForm = ({ merchant }: Props) => {
     setNominals,
     setValidityMonths,
     submit
-  } = useMerchantProfileForm(merchant);
+  } = useMerchantProfileForm(merchant, options);
 
   useMainButton({
     text: t("merchant.form.save"),
@@ -84,6 +86,7 @@ export const MerchantProfileForm = ({ merchant }: Props) => {
       />
 
       <MerchantAttributesSelect
+        options={options}
         categoryOptions={categoryOptions.map((category) => ({
           value: category.id,
           label: category.name

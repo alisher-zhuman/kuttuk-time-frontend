@@ -5,6 +5,7 @@ import {
   AdminMerchantDetailSchema,
   AdminMerchantsSchema,
   MerchantDetailSchema,
+  MerchantOptionsSchema,
   MerchantsSchema
 } from "../model/schemas";
 
@@ -98,4 +99,10 @@ export interface UpdateMerchantMePayload {
 
 export const updateMerchantMe = async (payload: UpdateMerchantMePayload) => {
   await api.patch(`${API_PATHS.MERCHANTS}/me`, payload);
+};
+
+export const getMerchantOptions = async () => {
+  const response = await api.get(`${API_PATHS.MERCHANTS}/options`);
+
+  return MerchantOptionsSchema.parse(response.data);
 };

@@ -4,16 +4,22 @@ import { Loader2, Store } from "lucide-react";
 
 import { MerchantProfileForm } from "@features/merchant-profile-form";
 
-import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
+import {
+  MerchantDeactivatedNotice,
+  useMerchantMeQuery,
+  useMerchantOptionsQuery
+} from "@entities/merchant";
 
-import { EmptyState } from "@shared/ui";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 export const MerchantProfileEditPage = () => {
   const { t } = useTranslation();
 
   const { merchant, isLoading, isError } = useMerchantMeQuery();
 
-  if (isLoading) {
+  const optionsQuery = useMerchantOptionsQuery();
+
+  if (isLoading || optionsQuery.isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
@@ -41,5 +47,9 @@ export const MerchantProfileEditPage = () => {
     );
   }
 
-  return <MerchantProfileForm merchant={merchant} />;
+  if (optionsQuery.isError || !optionsQuery.options) {
+    return <ErrorState onRetry={optionsQuery.retry} isRetrying={optionsQuery.isFetching} />;
+  }
+
+  return <MerchantProfileForm merchant={merchant} options={optionsQuery.options} />;
 };

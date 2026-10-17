@@ -35,7 +35,9 @@
       "required": "Обязательное поле",
       "logoRequired": "Загрузите логотип",
       "categoriesRequired": "Выберите хотя бы одну категорию",
-      "nominalsRequired": "Добавьте хотя бы один номинал"
+      "nominalsRequired": "Добавьте хотя бы один номинал",
+      "nominalsUnavailable": "Некоторые номиналы больше недоступны — снимите их",
+      "validityUnavailable": "Этот срок больше недоступен — выберите другой"
     }
   },
   "logoUpload": {
@@ -121,7 +123,9 @@
         "telegramIdHint": "ID владельца заведения в Telegram",
         "telegramIdInvalid": "Введите целое положительное число",
         "required": "Обязательное поле",
-        "alreadyInUse": "Уже используется"
+        "alreadyInUse": "Уже используется",
+        "nominalsUnavailable": "Некоторые номиналы больше недоступны — снимите их",
+        "validityUnavailable": "Этот срок больше недоступен — выберите другой"
       }
     },
     "categories": {

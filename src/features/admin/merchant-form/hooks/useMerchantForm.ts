@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -5,6 +7,7 @@ import { isAxiosError } from "axios";
 
 import {
   type AdminMerchantDetail,
+  type MerchantOptions,
   useCreateMerchantMutation,
   useUpdateMerchantMutation
 } from "@entities/merchant";
@@ -12,7 +15,7 @@ import {
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useGenericError, useHaptic, useNavigateTo } from "@shared/hooks";
 
-import { MerchantFormSchema } from "../model/schemas";
+import { createMerchantFormSchema } from "../model/schemas";
 import type { MerchantFormValues } from "../model/types";
 
 const CONFLICT_FIELDS = ["slug", "merchantTelegramId"] as const;
@@ -31,7 +34,14 @@ const getConflictField = (error: unknown) => {
 // Edit mode receives an already-loaded merchant (the page gates on the query),
 // so defaultValues are final on the first render — no reset() that could wipe
 // what the user typed while the request was in flight.
-export const useMerchantForm = (merchant?: AdminMerchantDetail) => {
+// Product defaults for a new merchant — not an allowed-values list; used only
+// while the backend still offers them.
+const DEFAULT_NOMINAL = 500;
+const DEFAULT_VALIDITY_MONTHS = 12;
+
+export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMerchantDetail) => {
+  const schema = useMemo(() => createMerchantFormSchema(options), [options]);
+
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
@@ -49,7 +59,7 @@ export const useMerchantForm = (merchant?: AdminMerchantDetail) => {
     control,
     formState: { errors, isDirty }
   } = useForm<MerchantFormValues>({
-    resolver: zodResolver(MerchantFormSchema),
+    resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: merchant
       ? {
@@ -73,8 +83,10 @@ export const useMerchantForm = (merchant?: AdminMerchantDetail) => {
           descriptionKg: "",
           descriptionEn: "",
           categories: [],
-          nominals: [500],
-          validityMonths: 12,
+          nominals: options.nominals.includes(DEFAULT_NOMINAL) ? [DEFAULT_NOMINAL] : [],
+          validityMonths: options.validityMonths.includes(DEFAULT_VALIDITY_MONTHS)
+            ? DEFAULT_VALIDITY_MONTHS
+            : options.validityMonths[0]!,
           isActive: true,
           merchantTelegramId: ""
         }
@@ -86,17 +98,17 @@ export const useMerchantForm = (merchant?: AdminMerchantDetail) => {
   const validityMonths = useWatch({ control, name: "validityMonths" });
   const isActive = useWatch({ control, name: "isActive" });
 
-  const options = { shouldValidate: true, shouldDirty: true };
+  const setValueOptions = { shouldValidate: true, shouldDirty: true };
 
-  const setLogo = (url: string) => setValue("logo", url, options);
-  const setNominals = (next: number[]) => setValue("nominals", next, options);
+  const setLogo = (url: string) => setValue("logo", url, setValueOptions);
+  const setNominals = (next: number[]) => setValue("nominals", next, setValueOptions);
   const setCategories = (next: number[]) => {
-    setValue("categories", next, options);
+    setValue("categories", next, setValueOptions);
   };
   const setValidityMonths = (months: number) => {
-    setValue("validityMonths", months, options);
+    setValue("validityMonths", months, setValueOptions);
   };
-  const setIsActive = (next: boolean) => setValue("isActive", next, options);
+  const setIsActive = (next: boolean) => setValue("isActive", next, setValueOptions);
 
   const submit = handleSubmit((values) => {
     const payload = {

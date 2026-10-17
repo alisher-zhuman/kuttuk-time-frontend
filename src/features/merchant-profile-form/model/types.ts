@@ -1,5 +1,5 @@
-import type { MerchantProfileFormSchema } from "./schemas";
+import type { createMerchantProfileFormSchema } from "./schemas";
 
 import type { z } from "zod";
 
-export type MerchantProfileFormValues = z.infer<typeof MerchantProfileFormSchema>;
+export type MerchantProfileFormValues = z.infer<ReturnType<typeof createMerchantProfileFormSchema>>;

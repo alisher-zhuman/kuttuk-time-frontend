@@ -31,6 +31,12 @@ Telegram Mini App for buying gift certificates.
 - Month 6+: 20–50 merchants, 500+ orders/week, personal merchant links
 - Year+: 100+ merchants, expansion to other cities in Kyrgyzstan
 
+## Product decisions
+
+Source of truth: `../backend/CLAUDE.md`, section **Product decisions** — don't duplicate it here. The ones that shape the frontend:
+- Roles are only `user` / `merchant` / `admin` — no staff/cashier role; the merchant (owner) redeems certificates
+- A certificate is redeemed in full — no partial redemption
+
 ## Stack
 
 - **React 19** + **TypeScript** + **Vite**
@@ -114,8 +120,8 @@ Always check `isAvailable()` before calling SDK methods.
 - `shareURL` (`links`) — share the certificate code in Telegram, this is literally part of the business flow ("the code can be shared in Telegram")
 - `ClosingBehavior.enableConfirmation()` — guard against accidentally closing the app on the payment screen (swipe/back)
 - `Popup.show` — native confirmation dialogs instead of custom modals (e.g. "Mark as used?")
-- `QrScanner.open` — merchant scans the code in the dashboard instead of typing it in manually
-- `requestWriteAccess` — do NOT request it on first launch (burns the one shot with no context, adds friction to the 30-second flow). Request it contextually — right after the first successful purchase, at the point of "also send you the code as a backup message." See `../backend/CLAUDE.md` — same place has the bot messaging logic
+- `QrScanner` — merchant scans the code instead of typing it (planned, see **TODO** → redemption)
+- `requestWriteAccess` — do NOT request it on first launch (burns the one shot with no context, adds friction to the 30-second flow). Request it at the moment of purchase, before `openLink` (see **TODO**). Bot messaging logic: `../backend/CLAUDE.md`, section "Bot"
 
 **Doesn't fit the product / don't add without a reason:**
 - `Invoice` (`openInvoice`/`openSlug`) — that's Telegram Stars, our payments go through Finik/Bakai/Freedom
@@ -133,6 +139,18 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 
 - **Selected nominal can go stale**: `MerchantContent` keeps `selectedNominal` in `useState`, but `merchant.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the merchant editing nominals). Before buying, re-derive it: `merchant.nominals.includes(selectedNominal) ? selectedNominal : merchant.nominals[0]`, and send `merchantId` + nominal so the backend validates against the current list — never trust the client's amount
 - The merchant detail query feeds the purchase — mind `keepPreviousData` (see Code) there
+
+## TODO
+
+- **Return after payment — waiting for diagnostics.** In production Finik's redirect landed the buyer in the bot chat with an error instead of the Mini App. Opening `startapp=order_<uuid>` by hand works (frontend routing is fine). The backend is diagnosing the `RedirectUrl` — see `../backend/CLAUDE.md` ("Payment RedirectUrl → back to the order")
+- **Redemption (frontend):**
+  - redemption screen in the merchant cabinet (the owner at the counter — no separate cashier role): `qrScanner.capture` with a predicate accepting only `KT-` codes, plus manual code entry
+  - confirm via native `popup` ("Mark as used?") before the request
+  - QR code rendered from the certificate code on the buyer's certificate screen, so the cashier can scan it
+- **`requestWriteAccess`** at the moment of purchase, before `openLink` — the backup bot message with the code needs it (see **TMA SDK** → Worth adding)
+
+**Verified on a real device:**
+- `openLink` called after `await createOrder` opens the Finik page by itself on a real iPhone (2026-10). The "Open payment" MainButton on the order screen stays as the fallback path (e.g. the user closed the bank page, or a client that ignores `openLink` outside a gesture)
 
 ## i18n
 

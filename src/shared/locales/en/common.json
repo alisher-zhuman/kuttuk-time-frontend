@@ -52,7 +52,8 @@
   },
   "aria": {
     "changeLanguage": "Change language",
-    "profile": "Profile"
+    "profile": "Profile",
+    "categories": "Categories"
   },
   "profile": {
     "id": "ID",
@@ -212,6 +213,9 @@
     "description": "Page not found",
     "goHome": "Go home",
     "goBack": "Go back"
+  },
+  "footer": {
+    "madeWithLove": "Made with love by KuttukTime ♥"
   },
   "merchantDetail": {
     "nominal": "AMOUNT",

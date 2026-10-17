@@ -52,7 +52,8 @@
   },
   "aria": {
     "changeLanguage": "Сменить язык",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "categories": "Категории"
   },
   "profile": {
     "id": "ID",
@@ -212,6 +213,9 @@
     "description": "Страница не найдена",
     "goHome": "На главную",
     "goBack": "Назад"
+  },
+  "footer": {
+    "madeWithLove": "С любовью KuttukTime ♥"
   },
   "merchantDetail": {
     "nominal": "НОМИНАЛ",

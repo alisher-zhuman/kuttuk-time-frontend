@@ -40,7 +40,7 @@ export const CategoryFilter = ({ active, onChange, onManage }: Props) => {
 
   return (
     <nav
-      aria-label="Категории"
+      aria-label={t("aria.categories")}
       className="-mx-4 flex gap-2 mt-3.5 overflow-x-auto"
     >
       {onManage && (

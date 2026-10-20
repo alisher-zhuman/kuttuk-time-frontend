@@ -1,21 +1,21 @@
 import { createBrowserRouter } from "react-router";
 
-import { AdminCategoriesPage } from "@pages/admin/categories";
-import { AdminCategoryCreatePage } from "@pages/admin/category-create";
-import { AdminCategoryEditPage } from "@pages/admin/category-edit";
-import { AdminMerchantCreatePage } from "@pages/admin/merchant-create";
-import { AdminMerchantDetailPage } from "@pages/admin/merchant-detail";
-import { AdminMerchantEditPage } from "@pages/admin/merchant-edit";
-import { AdminMerchantsPage } from "@pages/admin/merchants";
-import { AdminOrdersPage } from "@pages/admin/orders";
-import { AdminPaymentsPage } from "@pages/admin/payments";
+import { CategoryCreatePage } from "@pages/categories/create";
+import { CategoryEditPage } from "@pages/categories/edit";
+import { CategoryListPage } from "@pages/categories/list";
 import { CertificatePage } from "@pages/certificate";
 import { HomePage } from "@pages/home";
-import { MerchantHomePage } from "@pages/merchant-home";
-import { MerchantProfileEditPage } from "@pages/merchant-profile-edit";
-import { MerchantRedeemPage } from "@pages/merchant-redeem";
+import { MerchantCabinetPage } from "@pages/merchants/cabinet";
+import { MerchantCreatePage } from "@pages/merchants/create";
+import { MerchantDetailPage } from "@pages/merchants/detail";
+import { MerchantEditPage } from "@pages/merchants/edit";
+import { MerchantListPage } from "@pages/merchants/list";
+import { MerchantProfileEditPage } from "@pages/merchants/profile-edit";
+import { MerchantRedeemPage } from "@pages/merchants/redeem";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
+import { OrdersPage } from "@pages/orders";
+import { PaymentsPage } from "@pages/payments";
 import { ProfilePage } from "@pages/profile";
 import { VenuePage } from "@pages/venue";
 
@@ -59,39 +59,39 @@ export const ROUTER = createBrowserRouter([
         children: [
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANTS,
-            element: <AdminMerchantsPage />
+            element: <MerchantListPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANT_CREATE,
-            element: <AdminMerchantCreatePage />
+            element: <MerchantCreatePage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANT_DETAIL,
-            element: <AdminMerchantDetailPage />
+            element: <MerchantDetailPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANT_EDIT,
-            element: <AdminMerchantEditPage />
+            element: <MerchantEditPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_CATEGORIES,
-            element: <AdminCategoriesPage />
+            element: <CategoryListPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_CATEGORY_CREATE,
-            element: <AdminCategoryCreatePage />
+            element: <CategoryCreatePage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_CATEGORY_EDIT,
-            element: <AdminCategoryEditPage />
+            element: <CategoryEditPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_ORDERS,
-            element: <AdminOrdersPage />
+            element: <OrdersPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_PAYMENTS,
-            element: <AdminPaymentsPage />
+            element: <PaymentsPage />
           }
         ]
       },
@@ -100,7 +100,7 @@ export const ROUTER = createBrowserRouter([
         children: [
           {
             path: ROUTE_PATTERNS.MERCHANT_HOME,
-            element: <MerchantHomePage />
+            element: <MerchantCabinetPage />
           },
           {
             path: ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT,

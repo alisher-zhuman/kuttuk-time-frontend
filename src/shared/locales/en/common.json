@@ -11,7 +11,7 @@
     "empty": "No venues found"
   },
   "merchant": {
-    "from": "from",
+    "fromPrice": "from {{price}}",
     "badge": "Dashboard",
     "label": "View mode",
     "viewAsUser": "Buyer",

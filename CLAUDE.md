@@ -59,16 +59,22 @@ app → pages → widgets → features → entities → shared
 
 Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 
-**Rules:**
-- Entity UI (`entities/*/ui/`) — reusable components (cards, card skeletons)
-- Widget UI (`widgets/*/ui/`) — page-specific components (page skeleton, composite blocks)
-- Each component lives in its own folder with `index.tsx`
-- A layer's public API is exposed only through the root `index.ts`
+**Where code goes — ask in this order:**
+1. **No business word in it** (formatting, SDK wrappers, UI kit, routes, locales) → `shared`, split by segment, no modules
+2. **One entity's data or plain display of it** (schema, API, query hooks, card) → `entities/<entity>`, by domain, not by screen or role: `merchant`, `category`, `order`, `certificate`. The entity keeps the backend's name (`merchant`) even where the screen says "venue"
+3. **An action reused by two or more widgets** → `features/<action>`. With a single consumer the action lives in its widget — a create/edit form is one widget, not a feature. Today the only feature is `category-filter` (buyer home + admin merchant list)
+4. **A block of one page** → `widgets`, grouped by module
+5. **The rest** (route params, gating on queries, picking a widget) → `pages`. A page is the route and nothing else: `index.ts` + one component, no `hooks/` / `helpers/` / `model/`, queries inline
 
-**Slice grouping:**
-- `admin/` is the only grouped bounded context (`pages/admin/*`, `features/admin/*`, `widgets/admin/*`) — justified by its size and an unambiguous name. Everything else is flat descriptive slices (`features/category-filter`, `features/merchant-profile-form`, `pages/merchant-home`, `pages/merchant-profile-edit`).
-- Don't add a `merchant/` group: "merchant" is overloaded — the **buyer-facing venue** (now `pages/venue` = `/app/venues/:handle`, `widgets/venue`), the **merchant-role cabinet** (`pages/merchant-home`, `features/merchant-profile-form`), and the **domain entity** (`entities/merchant`) all share the word. A `merchant/` folder would be ambiguous, unlike `admin/`.
-- **Future:** once the merchant cabinet grows (dashboard, stats, active codes, "mark as used" per the roadmap), revisit — introduce a real `merchant/` group *and* rename the buyer flow to `venue` (`pages/venue`, `widgets/venue`, `VenuePage`/`VenueContent`/…) at the same time, so the grouping stops being ambiguous. Not worth the churn on the core buy flow until there are enough merchant-cabinet slices to justify it.
+**Modules — by what the person is doing, never by role** (same rule as in `kca-frontend-private`):
+- buyer flow, flat: `home`, `venue` (`/app/venues/:handle`), `order`, `certificate`, `profile`
+- `merchants/` — managing venues: list / create / detail / edit (admin, any venue), cabinet / profile-edit / redeem (owner, own venue). Widgets `merchant-list`, `merchant-detail`, `merchant-form`, `redemption`
+- `categories/` — list / create / edit; widgets `category-list`, `category-form`
+- `orders`, `payments` — admin placeholders, flat until they grow
+- **Roles change permissions, fields and endpoints — not folders.** One screen serves every role that uses it: `merchant-form` takes `variant: create | edit | own` (owner sees only storefront fields and saves via `PATCH /merchants/me`); the cabinet home shows the same `MerchantDetail` as the admin. Route paths may still read by role (`/app/admin/...`, `/app/merchant/...`) — the path is for the person, the folder is for the code. The only role-named UI is chrome that exists for one role (`AdminNav`)
+- **When to add a module group:** its third screen, or Steiger complaining — not in advance
+
+**Inside a slice:** segments `model/` (schemas, types, query keys), `api/`, `hooks/`, `ui/`; each component in its own folder with `index.tsx`; the slice's public API only through its root `index.ts`. Slices of one layer never import each other — e.g. `useOrderPolling` invalidates `["certificates"]` by a literal key instead of importing `certificateKeys`
 
 ## Code
 
@@ -86,7 +92,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **UI state that TMA buttons target** (e.g. profile `?tab=`) lives in search params, not `useState` — the page may already be mounted when the button navigates
 - `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and the previous key's data shows. Harmless today (pages remount on navigation), but wherever a key can change while mounted and stale data would be wrong (route params without remount, anything feeding a purchase), gate on `isPlaceholderData` or set `placeholderData: () => undefined` on that query (a literal `undefined` fails `exactOptionalPropertyTypes`)
 - `QUERY_CLIENT` retries once, and only network errors / 5xx — 4xx and `ZodError` fail immediately
-- **Allowed merchant values** (nominals, validity months) come only from `GET /merchants/options` (`useMerchantOptionsQuery`, staleTime ∞) — no frontend list. Forms build their Zod schema from it (`createMerchantFormSchema(options)`), pages gate on it like on the merchant query
+- **Allowed merchant values** (nominals, validity months) come only from `GET /merchants/options` (`useMerchantOptionsQuery`, staleTime ∞) — no frontend list. Forms build their Zod schema from it (`createMerchantFormSchema(options, withAdminFields)`), pages gate on it like on the merchant query
 - `useSwipeNavigation`: swipe from the left edge → back, from the right edge → forward — intentional, not a bug
 - **Nullable in Zod schemas**:
   - `.nullable()` only for a real domain absence, with a comment next to it citing the source in `../backend` (entity column / DTO / service mapping)
@@ -143,7 +149,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 ## TODO
 
 - **Return after payment — waiting for diagnostics.** In production Finik's redirect landed the buyer in the bot chat with an error instead of the Mini App. Opening `startapp=order_<uuid>` by hand works (frontend routing is fine). The backend is diagnosing the `RedirectUrl` — see `../backend/CLAUDE.md` ("Payment RedirectUrl → back to the order")
-- **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`features/certificate-redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: MainButton on the cabinet home (also when deactivated). Still to do:
+- **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`widgets/merchants/redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: MainButton on the cabinet home (also when deactivated). Still to do:
   - QR scanner: `qrScanner.capture` with a predicate accepting only `KT-` codes — it just fills the same code field
   - QR code rendered from the certificate code on the buyer's certificate screen, so the owner can scan it
 - **`requestWriteAccess`** at the moment of purchase, before `openLink` — the backup bot message with the code needs it (see **TMA SDK** → Worth adding)

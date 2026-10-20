@@ -29,8 +29,9 @@ const isSettled = (order: Order, fetchedAt: number) =>
   fetchedAt > new Date(order.expiresAt).getTime() + LATE_WEBHOOK_GRACE_MS;
 
 // 404 (not ours / missing) and 400 (bad id) won't change on retry. 429 will —
-// the throttler is keyed on the proxy IP, so other users can trip it — and so
-// will network errors and 5xx; keep polling through those.
+// the limit is per user (60/min on GET /orders/:id, keyed user:<id>), so the
+// counter resets within a minute — and so will network errors and 5xx; keep
+// polling through those.
 const isPermanentError = (error: unknown) =>
   isAxiosError(error) &&
   error.response !== undefined &&

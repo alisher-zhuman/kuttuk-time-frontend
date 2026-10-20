@@ -30,5 +30,5 @@ export const MerchantEditPage = () => {
     return <ErrorState onRetry={optionsQuery.retry} isRetrying={optionsQuery.isFetching} />;
   }
 
-  return <MerchantForm options={optionsQuery.options} merchant={merchant} />;
+  return <MerchantForm options={optionsQuery.options} variant={{ kind: "edit", merchant }} />;
 };

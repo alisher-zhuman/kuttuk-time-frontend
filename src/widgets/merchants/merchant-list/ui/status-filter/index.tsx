@@ -42,7 +42,7 @@ export const MerchantStatusFilter = ({ active, onChange, onCreate }: Props) => {
 
       <button
         type="button"
-        aria-label={t("admin.merchants.form.create")}
+        aria-label={t("merchantForm.create")}
         onClick={() => {
           haptic.light();
           onCreate();

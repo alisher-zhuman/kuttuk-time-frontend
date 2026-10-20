@@ -12,7 +12,9 @@ interface Props {
   errors: FieldErrors<MerchantFormValues>;
   logo: string;
   onLogoChange: (url: string) => void;
-  isEdit: boolean;
+  // Slug and active status are the admin's; the owner's form hides them.
+  showAdminFields: boolean;
+  showActiveToggle: boolean;
   isActive: boolean;
   onIsActiveChange: (isActive: boolean) => void;
 }
@@ -22,7 +24,8 @@ export const MerchantFormIdentity = ({
   errors,
   logo,
   onLogoChange,
-  isEdit,
+  showAdminFields,
+  showActiveToggle,
   isActive,
   onIsActiveChange
 }: Props) => {
@@ -37,26 +40,28 @@ export const MerchantFormIdentity = ({
       />
 
       <Input
-        label={t("admin.merchants.form.name")}
-        placeholder={t("admin.merchants.form.namePlaceholder")}
+        label={t("merchantForm.name")}
+        placeholder={t("merchantForm.namePlaceholder")}
         error={errors.name?.message && t(errors.name.message)}
         {...register("name")}
       />
 
-      <div className="flex flex-col gap-1">
+      {showAdminFields && (
+        <div className="flex flex-col gap-1">
         <Input
-          label={t("admin.merchants.form.slug")}
-          placeholder={t("admin.merchants.form.slugPlaceholder")}
+          label={t("merchantForm.slug")}
+          placeholder={t("merchantForm.slugPlaceholder")}
           error={errors.slug?.message && t(errors.slug.message)}
           {...register("slug")}
         />
 
         <span className="text-xs font-semibold text-(--color-hint) px-1">
-          {t("admin.merchants.form.slugHint")}
+          {t("merchantForm.slugHint")}
         </span>
-      </div>
+        </div>
+      )}
 
-      {isEdit && <ActiveToggle value={isActive} onChange={onIsActiveChange} />}
+      {showActiveToggle && <ActiveToggle value={isActive} onChange={onIsActiveChange} />}
     </>
   );
 };

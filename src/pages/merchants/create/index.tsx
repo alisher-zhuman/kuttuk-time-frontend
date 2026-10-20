@@ -21,5 +21,5 @@ export const MerchantCreatePage = () => {
     return <ErrorState onRetry={retry} isRetrying={isFetching} />;
   }
 
-  return <MerchantForm options={options} />;
+  return <MerchantForm options={options} variant={{ kind: "create" }} />;
 };

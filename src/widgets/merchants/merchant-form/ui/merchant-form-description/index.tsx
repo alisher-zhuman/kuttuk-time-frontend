@@ -17,22 +17,22 @@ export const MerchantFormDescription = ({ register, errors }: Props) => {
   return (
     <>
       <Textarea
-        label={t("admin.merchants.form.descriptionRu")}
-        placeholder={t("admin.merchants.form.descriptionPlaceholder")}
+        label={t("merchantForm.descriptionRu")}
+        placeholder={t("merchantForm.descriptionPlaceholder")}
         error={errors.descriptionRu?.message && t(errors.descriptionRu.message)}
         {...register("descriptionRu")}
       />
 
       <Textarea
-        label={t("admin.merchants.form.descriptionKg")}
-        placeholder={t("admin.merchants.form.descriptionPlaceholder")}
+        label={t("merchantForm.descriptionKg")}
+        placeholder={t("merchantForm.descriptionPlaceholder")}
         error={errors.descriptionKg?.message && t(errors.descriptionKg.message)}
         {...register("descriptionKg")}
       />
 
       <Textarea
-        label={t("admin.merchants.form.descriptionEn")}
-        placeholder={t("admin.merchants.form.descriptionPlaceholder")}
+        label={t("merchantForm.descriptionEn")}
+        placeholder={t("merchantForm.descriptionPlaceholder")}
         error={errors.descriptionEn?.message && t(errors.descriptionEn.message)}
         {...register("descriptionEn")}
       />

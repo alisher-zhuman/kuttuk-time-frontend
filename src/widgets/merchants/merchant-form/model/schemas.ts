@@ -11,38 +11,44 @@ const isIntegerInRange = (value: string, min: number, max: number) => {
 };
 
 // Allowed nominals / validity come from the backend, so the schema is built per
-// options response.
-export const createMerchantFormSchema = (options: MerchantOptions) =>
+// options response. withAdminFields: slug / Telegram ID are validated only when
+// the admin edits them — the owner's form doesn't show or send them, and its
+// values just carry the merchant's own through untouched.
+export const createMerchantFormSchema = (options: MerchantOptions, withAdminFields: boolean) =>
   z.object({
-    logo: z.string().min(1, "admin.merchants.form.logoRequired"),
-    name: z.string().trim().min(1, "admin.merchants.form.required"),
-    slug: z
-      .string()
-      .trim()
-      .min(1, "admin.merchants.form.required")
-      .regex(SLUG_PATTERN, "admin.merchants.form.slugInvalid"),
-    descriptionRu: z.string().trim().min(1, "admin.merchants.form.required"),
-    descriptionKg: z.string().trim().min(1, "admin.merchants.form.required"),
-    descriptionEn: z.string().trim().min(1, "admin.merchants.form.required"),
-    categories: z.array(z.number()).min(1, "admin.merchants.form.categoriesRequired"),
+    logo: z.string().min(1, "merchantForm.logoRequired"),
+    name: z.string().trim().min(1, "merchantForm.required"),
+    slug: withAdminFields
+      ? z
+          .string()
+          .trim()
+          .min(1, "merchantForm.required")
+          .regex(SLUG_PATTERN, "merchantForm.slugInvalid")
+      : z.string(),
+    descriptionRu: z.string().trim().min(1, "merchantForm.required"),
+    descriptionKg: z.string().trim().min(1, "merchantForm.required"),
+    descriptionEn: z.string().trim().min(1, "merchantForm.required"),
+    categories: z.array(z.number()).min(1, "merchantForm.categoriesRequired"),
     nominals: z
       .array(z.number())
-      .min(1, "admin.merchants.form.nominalsRequired")
+      .min(1, "merchantForm.nominalsRequired")
       // On the array, not each item: the form only renders errors.nominals, so a
       // per-item error would silently block submit.
       .refine((values) => values.every((value) => options.nominals.includes(value)), {
-        message: "admin.merchants.form.nominalsUnavailable"
+        message: "merchantForm.nominalsUnavailable"
       }),
     validityMonths: z
       .number()
       .refine((value) => options.validityMonths.includes(value), {
-        message: "admin.merchants.form.validityUnavailable"
+        message: "merchantForm.validityUnavailable"
       }),
     isActive: z.boolean(),
-    merchantTelegramId: z
-      .string()
-      .trim()
-      .refine((value) => isIntegerInRange(value, 1, Number.MAX_SAFE_INTEGER), {
-        message: "admin.merchants.form.telegramIdInvalid"
-      })
+    merchantTelegramId: withAdminFields
+      ? z
+          .string()
+          .trim()
+          .refine((value) => isIntegerInRange(value, 1, Number.MAX_SAFE_INTEGER), {
+            message: "merchantForm.telegramIdInvalid"
+          })
+      : z.string()
   });

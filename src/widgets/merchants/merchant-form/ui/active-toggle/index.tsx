@@ -27,7 +27,7 @@ export const ActiveToggle = ({ value, onChange }: Props) => {
   return (
     <div className="flex flex-col gap-1.5">
       <span className="text-sm font-semibold text-(--color-hint)">
-        {t("admin.merchants.form.status")}
+        {t("merchantForm.status")}
       </span>
 
       <SegmentedControl

@@ -19,8 +19,8 @@ export const MerchantFormContact = ({ register, errors }: Props) => {
       <Input
         type="number"
         inputMode="numeric"
-        label={t("admin.merchants.form.telegramId")}
-        placeholder={t("admin.merchants.form.telegramIdPlaceholder")}
+        label={t("merchantForm.telegramId")}
+        placeholder={t("merchantForm.telegramIdPlaceholder")}
         error={
           errors.merchantTelegramId?.message && t(errors.merchantTelegramId.message)
         }
@@ -28,7 +28,7 @@ export const MerchantFormContact = ({ register, errors }: Props) => {
       />
 
       <span className="text-xs font-semibold text-(--color-hint) px-1">
-        {t("admin.merchants.form.telegramIdHint")}
+        {t("merchantForm.telegramIdHint")}
       </span>
     </div>
   );

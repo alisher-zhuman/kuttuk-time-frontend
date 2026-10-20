@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Loader2, Store } from "lucide-react";
 
-import { MerchantProfileForm } from "@widgets/merchants/profile-form";
+import { MerchantForm } from "@widgets/merchants/merchant-form";
 
 import {
   MerchantDeactivatedNotice,
@@ -51,5 +51,5 @@ export const MerchantProfileEditPage = () => {
     return <ErrorState onRetry={optionsQuery.retry} isRetrying={optionsQuery.isFetching} />;
   }
 
-  return <MerchantProfileForm merchant={merchant} options={optionsQuery.options} />;
+  return <MerchantForm options={optionsQuery.options} variant={{ kind: "own", merchant }} />;
 };

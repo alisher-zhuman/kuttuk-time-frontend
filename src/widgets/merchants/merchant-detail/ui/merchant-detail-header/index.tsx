@@ -40,7 +40,7 @@ export const MerchantDetailHeader = ({ logo, name, slug, isActive, onEdit }: Pro
       {onEdit && (
         <button
           type="button"
-          aria-label={t("admin.merchants.form.edit")}
+          aria-label={t("merchantForm.edit")}
           onClick={() => {
             haptic.light();
             onEdit();

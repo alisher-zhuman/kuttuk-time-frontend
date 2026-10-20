@@ -1,28 +1,32 @@
 import { useTranslation } from "react-i18next";
 
 import { useCategoriesQuery } from "@entities/category";
-import {
-  type AdminMerchantDetail,
-  MerchantAttributesSelect,
-  type MerchantOptions
-} from "@entities/merchant";
+import { MerchantAttributesSelect, type MerchantOptions } from "@entities/merchant";
 
 import { useMainButton } from "@shared/hooks";
 
 import { useMerchantForm } from "../../hooks/useMerchantForm";
+import type { MerchantFormVariant } from "../../model/types";
 import { MerchantFormContact } from "../merchant-form-contact";
 import { MerchantFormDescription } from "../merchant-form-description";
 import { MerchantFormIdentity } from "../merchant-form-identity";
 
 interface Props {
   options: MerchantOptions;
-  merchant?: AdminMerchantDetail;
+  variant: MerchantFormVariant;
 }
 
-export const MerchantForm = ({ options, merchant }: Props) => {
+const TITLE_KEYS = {
+  create: "merchantForm.title",
+  edit: "merchantForm.editTitle",
+  own: "merchantForm.ownEditTitle"
+} as const;
+
+export const MerchantForm = ({ options, variant }: Props) => {
   const { t } = useTranslation();
 
-  const isEdit = merchant !== undefined;
+  const isCreate = variant.kind === "create";
+  const isAdmin = variant.kind !== "own";
 
   const {
     register,
@@ -40,21 +44,21 @@ export const MerchantForm = ({ options, merchant }: Props) => {
     setValidityMonths,
     setIsActive,
     submit
-  } = useMerchantForm(options, merchant);
+  } = useMerchantForm(options, variant);
 
   const { categories: categoryOptions } = useCategoriesQuery();
 
   useMainButton({
-    text: t(isEdit ? "admin.merchants.form.save" : "admin.merchants.form.create"),
+    text: t(isCreate ? "merchantForm.create" : "merchantForm.save"),
     onClick: () => void submit(),
     loading: isPending,
-    hidden: isEdit && !isDirty
+    hidden: !isCreate && !isDirty
   });
 
   return (
     <div className="flex flex-col gap-4 mt-3.5 pb-5">
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
-        {t(isEdit ? "admin.merchants.form.editTitle" : "admin.merchants.form.title")}
+        {t(TITLE_KEYS[variant.kind])}
       </h1>
 
       <MerchantFormIdentity
@@ -62,7 +66,8 @@ export const MerchantForm = ({ options, merchant }: Props) => {
         errors={errors}
         logo={logo}
         onLogoChange={setLogo}
-        isEdit={isEdit}
+        showAdminFields={isAdmin}
+        showActiveToggle={variant.kind === "edit"}
         isActive={isActive}
         onIsActiveChange={setIsActive}
       />
@@ -88,7 +93,7 @@ export const MerchantForm = ({ options, merchant }: Props) => {
         }
       />
 
-      <MerchantFormContact register={register} errors={errors} />
+      {isAdmin && <MerchantFormContact register={register} errors={errors} />}
     </div>
   );
 };

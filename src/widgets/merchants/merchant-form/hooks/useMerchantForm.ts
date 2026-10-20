@@ -6,9 +6,9 @@ import { useForm, useWatch } from "react-hook-form";
 import { isAxiosError } from "axios";
 
 import {
-  type AdminMerchantDetail,
   type MerchantOptions,
   useCreateMerchantMutation,
+  useUpdateMerchantMeMutation,
   useUpdateMerchantMutation
 } from "@entities/merchant";
 
@@ -16,7 +16,7 @@ import { ROUTE_PATTERNS } from "@shared/constants";
 import { useGenericError, useHaptic, useNavigateTo } from "@shared/hooks";
 
 import { createMerchantFormSchema } from "../model/schemas";
-import type { MerchantFormValues } from "../model/types";
+import type { MerchantFormValues, MerchantFormVariant } from "../model/types";
 
 const CONFLICT_FIELDS = ["slug", "merchantTelegramId"] as const;
 
@@ -31,16 +31,19 @@ const getConflictField = (error: unknown) => {
   return CONFLICT_FIELDS.find((name) => name === field) ?? null;
 };
 
-// Edit mode receives an already-loaded merchant (the page gates on the query),
-// so defaultValues are final on the first render — no reset() that could wipe
-// what the user typed while the request was in flight.
 // Product defaults for a new merchant — not an allowed-values list; used only
 // while the backend still offers them.
 const DEFAULT_NOMINAL = 500;
 const DEFAULT_VALIDITY_MONTHS = 12;
 
-export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMerchantDetail) => {
-  const schema = useMemo(() => createMerchantFormSchema(options), [options]);
+// Edit variants receive an already-loaded merchant (the page gates on the
+// query), so defaultValues are final on the first render — no reset() that
+// could wipe what the user typed while the request was in flight.
+export const useMerchantForm = (options: MerchantOptions, variant: MerchantFormVariant) => {
+  const isAdmin = variant.kind !== "own";
+  const merchant = variant.kind === "create" ? undefined : variant.merchant;
+
+  const schema = useMemo(() => createMerchantFormSchema(options, isAdmin), [options, isAdmin]);
 
   const navigateTo = useNavigateTo();
 
@@ -50,6 +53,7 @@ export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMercha
 
   const { mutate: create, isPending: isCreating } = useCreateMerchantMutation();
   const { mutate: update, isPending: isUpdating } = useUpdateMerchantMutation();
+  const { mutate: updateOwn, isPending: isUpdatingOwn } = useUpdateMerchantMeMutation();
 
   const {
     register,
@@ -111,7 +115,7 @@ export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMercha
   const setIsActive = (next: boolean) => setValue("isActive", next, setValueOptions);
 
   const submit = handleSubmit((values) => {
-    const payload = {
+    const storefront = {
       name: values.name.trim(),
       description: {
         ru: values.descriptionRu.trim(),
@@ -121,7 +125,31 @@ export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMercha
       categories: values.categories,
       nominals: values.nominals,
       validityMonths: values.validityMonths,
-      logo: values.logo,
+      logo: values.logo
+    };
+
+    if (variant.kind === "own") {
+      updateOwn(storefront, {
+        onSuccess: () => {
+          haptic.success();
+          navigateTo(ROUTE_PATTERNS.MERCHANT_HOME);
+        },
+        onError: (error) => {
+          // Deactivated mid-edit: the page swaps to the deactivated notice once
+          // the mutation's refetch lands, so a generic popup would only confuse.
+          if (isAxiosError(error) && error.response?.status === 403) {
+            haptic.error();
+            return;
+          }
+
+          showGenericError();
+        }
+      });
+      return;
+    }
+
+    const payload = {
+      ...storefront,
       merchantTelegramId: Number(values.merchantTelegramId),
       slug: values.slug.trim()
     };
@@ -136,7 +164,7 @@ export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMercha
 
         if (field) {
           haptic.error();
-          setError(field, { message: "admin.merchants.form.alreadyInUse" });
+          setError(field, { message: "merchantForm.alreadyInUse" });
           return;
         }
 
@@ -144,9 +172,9 @@ export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMercha
       }
     };
 
-    if (merchant) {
+    if (variant.kind === "edit") {
       update(
-        { id: merchant.id, payload: { ...payload, isActive: values.isActive } },
+        { id: variant.merchant.id, payload: { ...payload, isActive: values.isActive } },
         callbacks
       );
     } else {
@@ -154,10 +182,12 @@ export const useMerchantForm = (options: MerchantOptions, merchant?: AdminMercha
     }
   });
 
+  const isPending = { create: isCreating, edit: isUpdating, own: isUpdatingOwn }[variant.kind];
+
   return {
     register,
     errors,
-    isPending: merchant ? isUpdating : isCreating,
+    isPending,
     isDirty,
     logo,
     categories,

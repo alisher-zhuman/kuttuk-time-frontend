@@ -194,6 +194,10 @@
       "title": "Payment received",
       "hint": "We’re checking it. The certificate will appear once the check is done."
     },
+    "refunded": {
+      "title": "Money refunded",
+      "hint": "We couldn't confirm the payment and refunded it. If the money hasn't arrived yet, contact support."
+    },
     "errors": {
       "unavailable": "This amount or venue is no longer available. Refresh the page and try again.",
       "notFound": "Order not found.",

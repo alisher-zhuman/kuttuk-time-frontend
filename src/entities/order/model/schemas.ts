@@ -33,7 +33,8 @@ export const OrderSchema = z.discriminatedUnion("status", [
     status: z.literal("paid"),
     paidAt: z.string(),
     // Created by the Finik webhook in the same transaction that marks the
-    // order paid (also when a needs_review order is honoured by hand).
+    // order paid (also when a needs_review order is honoured by hand — the
+    // other manual outcome of needs_review is refunded).
     certificate: OrderCertificateSchema
   }),
   OrderBaseSchema.extend({
@@ -44,6 +45,12 @@ export const OrderSchema = z.discriminatedUnion("status", [
   }),
   OrderBaseSchema.extend({
     status: z.literal("expired")
+  }),
+  // A needs_review order whose money was returned by hand, outside the system.
+  // Terminal: neither the webhook nor the cron touch it. The backend still
+  // sends paidAt, but the screen doesn't use it; no certificate, no payment URL.
+  OrderBaseSchema.extend({
+    status: z.literal("refunded")
   })
 ]);
 

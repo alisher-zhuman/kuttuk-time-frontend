@@ -16,13 +16,16 @@ const POLL_INTERVAL_MS = 3_000;
 // our server was down, Finik's retries stretch over a day.
 const LATE_WEBHOOK_GRACE_MS = 3 * 60_000;
 
-// paid / needs_review are set only by the webhook and never change again.
-// expired is not final within the grace window. Comparing against the fetch
+// paid / needs_review come from the webhook; needs_review is later resolved by
+// hand into paid or refunded (terminal). Stopping on needs_review is still
+// right: the manual review takes hours, and reopening the screen fetches the
+// status again. expired is not final within the grace window. Comparing against the fetch
 // time (not "now") makes the first response received after the deadline the
 // final request.
 const isSettled = (order: Order, fetchedAt: number) =>
   order.status === "paid" ||
   order.status === "needs_review" ||
+  order.status === "refunded" ||
   fetchedAt > new Date(order.expiresAt).getTime() + LATE_WEBHOOK_GRACE_MS;
 
 // 404 (not ours / missing) and 400 (bad id) won't change on retry. 429 will —

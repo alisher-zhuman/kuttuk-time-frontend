@@ -7,6 +7,7 @@ import {
   OrderNotFound,
   OrderPaid,
   OrderPending,
+  OrderRefunded,
   OrderReview
 } from "@widgets/order";
 
@@ -56,6 +57,8 @@ export const OrderPage = () => {
       return <OrderPaid order={order} merchantName={merchantName} />;
     case "needs_review":
       return <OrderReview order={order} merchantName={merchantName} />;
+    case "refunded":
+      return <OrderRefunded order={order} merchantName={merchantName} />;
     // pending here = polling gave up past the grace window before the cron
     // flipped it; for the user that's the same as expired.
     case "pending":

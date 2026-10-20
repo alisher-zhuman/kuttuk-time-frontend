@@ -1,12 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { Store } from "lucide-react";
+import { UsersRound } from "lucide-react";
 
-import {
-  AdminMerchantCard,
-  AdminMerchantCardSkeleton,
-  useAdminMerchantsQuery
-} from "@entities/merchant";
+import { AdminMerchantCard, useAdminMerchantsQuery } from "@entities/merchant";
+import { AdminVenueCardSkeleton } from "@entities/venue";
 
 import { getAdminMerchantDetailRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
@@ -14,11 +11,10 @@ import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
   search: string;
-  category: number | null;
   isActive: boolean | null;
 }
 
-export const MerchantList = ({ search, category, isActive }: Props) => {
+export const MerchantList = ({ search, isActive }: Props) => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -27,7 +23,6 @@ export const MerchantList = ({ search, category, isActive }: Props) => {
 
   const { merchants, isLoading, isError, isFetching, retry } = useAdminMerchantsQuery({
     search,
-    category,
     isActive
   });
 
@@ -41,7 +36,8 @@ export const MerchantList = ({ search, category, isActive }: Props) => {
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {Array.from({ length: 4 }).map((_, i) => (
             <li key={i}>
-              <AdminMerchantCardSkeleton />
+              {/* Same card frame as the merchant card. */}
+              <AdminVenueCardSkeleton />
             </li>
           ))}
         </ul>
@@ -49,7 +45,7 @@ export const MerchantList = ({ search, category, isActive }: Props) => {
         <ErrorState onRetry={retry} isRetrying={isFetching} />
       ) : merchants.length === 0 ? (
         <EmptyState
-          icon={<Store size={32} strokeWidth={1.5} />}
+          icon={<UsersRound size={32} strokeWidth={1.5} />}
           message={t("admin.merchants.empty")}
         />
       ) : (

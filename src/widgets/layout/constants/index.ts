@@ -1,9 +1,10 @@
-import { ClipboardList, Store, Wallet } from "lucide-react";
+import { ClipboardList, Store, UsersRound, Wallet } from "lucide-react";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 
 export const ADMIN_NAV_TABS = [
-  { path: ROUTE_PATTERNS.ADMIN_MERCHANTS, labelKey: "admin.nav.merchants", icon: Store },
+  { path: ROUTE_PATTERNS.ADMIN_VENUES, labelKey: "admin.nav.venues", icon: Store },
+  { path: ROUTE_PATTERNS.ADMIN_MERCHANTS, labelKey: "admin.nav.merchants", icon: UsersRound },
   { path: ROUTE_PATTERNS.ADMIN_ORDERS, labelKey: "admin.nav.orders", icon: ClipboardList },
   { path: ROUTE_PATTERNS.ADMIN_PAYMENTS, labelKey: "admin.nav.payments", icon: Wallet }
 ] as const;

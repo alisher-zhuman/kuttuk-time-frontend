@@ -20,7 +20,7 @@
     },
     "deactivated": {
       "title": "Аккаунт өчүрүлгөн",
-      "message": "Мекемеңиз сатып алуучуларга көрүнбөйт, профилди түзөтүү жеткиликсиз. Кайра күйгүзүү үчүн бизге жазыңыз."
+      "message": "Мекемелериңиз сатып алуучуларга көрүнбөйт, аларды түзөтүү жеткиликсиз. Сертификаттарды белгилей бересиз. Кайра күйгүзүү үчүн бизге жазыңыз."
     },
     "redeem": {
       "entry": "Сертификатты белгилөө",
@@ -54,6 +54,11 @@
         "used": "Колдонулган",
         "expired": "Мөөнөтү бүткөн"
       }
+    },
+    "cabinet": {
+      "allVenues": "Бардык мекемелер",
+      "noVenues": "Азырынча мекемелер жок — аларды администратор кошот",
+      "venuesTitle": "МЕКЕМЕЛЕР"
     }
   },
   "venue": {
@@ -63,7 +68,7 @@
     "validity": "{{months}} ай жарактуу",
     "notFound": "Мекеме табылган жок"
   },
-  "merchantForm": {
+  "venueForm": {
     "title": "Жаңы мекеме",
     "editTitle": "Мекемени түзөтүү",
     "create": "Түзүү",
@@ -83,15 +88,29 @@
     "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
     "categoriesRequired": "Кеминде бир категория тандаңыз",
     "nominalsRequired": "Кеминде бир номинал кошуңуз",
-    "telegramId": "Telegram ID",
-    "telegramIdPlaceholder": "123456789",
-    "telegramIdHint": "Мекеме ээсинин Telegram ID'си",
-    "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
     "required": "Милдеттүү талаа",
     "alreadyInUse": "Мурунтан колдонулууда",
     "nominalsUnavailable": "Айрым номиналдар мындан ары жеткиликсиз — аларды алып салыңыз",
     "validityUnavailable": "Бул мөөнөт мындан ары жеткиликсиз — башкасын тандаңыз",
-    "ownEditTitle": "Профилди түзөтүү"
+    "owner": "Ээси",
+    "ownerRequired": "Ээсин тандаңыз",
+    "slugReserved": "Бул сөз корголгон, башкасын тандаңыз"
+  },
+  "merchantForm": {
+    "title": "Жаңы ээси",
+    "editTitle": "Ээсин түзөтүү",
+    "create": "Түзүү",
+    "save": "Сактоо",
+    "edit": "Түзөтүү",
+    "status": "Статус",
+    "name": "Аты же бизнестин аталышы",
+    "namePlaceholder": "Мисалы: ЖИ Асанов",
+    "telegramId": "Telegram ID",
+    "telegramIdPlaceholder": "123456789",
+    "telegramIdHint": "Ээси кабинетке ушул Telegram ID аркылуу кирет",
+    "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
+    "required": "Милдеттүү талаа",
+    "alreadyInUse": "Мурунтан колдонулууда"
   },
   "logoUpload": {
     "hint": "Логотип, 5 МБ чейин",
@@ -133,25 +152,23 @@
     "viewAsUser": "Сатып алуучу",
     "viewAsAdmin": "Админ",
     "nav": {
-      "merchants": "Мекемелер",
+      "venues": "Мекемелер",
+      "merchants": "Ээлер",
       "orders": "Буйрутмалар",
       "payments": "Төлөмдөр"
     },
     "merchants": {
-      "listTitle": "МЕКЕМЕЛЕР",
-      "active": "Активдүү",
-      "inactive": "Активдүү эмес",
-      "empty": "Мекемелер табылган жок",
+      "listTitle": "ЭЭЛЕР",
+      "empty": "Ээлер табылган жок",
+      "addVenue": "Мекеме кошуу",
       "detail": {
-        "description": "Сүрөттөмө",
-        "categories": "КАТЕГОРИЯЛАР",
-        "nominals": "НОМИНАЛДАР",
-        "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",
-        "validityValue": "{{months}} ай",
         "telegramId": "TELEGRAM ID",
         "createdAt": "ТҮЗҮЛГӨН",
-        "notFound": "Мекеме табылган жок"
-      }
+        "venues": "МЕКЕМЕЛЕР",
+        "noVenues": "Ээсинин азырынча мекемелери жок",
+        "notFound": "Ээси табылган жок"
+      },
+      "searchPlaceholder": "Ээлерди издөө"
     },
     "categories": {
       "manage": "Категорияларды башкаруу",
@@ -175,6 +192,22 @@
       "deleteConfirmMessage": "Категория өчүрүлөт, ага байланган мекемелер бул байланышты жоготот. Аракетти артка кайтаруу мүмкүн эмес.",
       "required": "Милдеттүү талаа",
       "orderInvalid": "Санды киргизиңиз"
+    },
+    "venues": {
+      "listTitle": "МЕКЕМЕЛЕР",
+      "active": "Активдүү",
+      "inactive": "Активдүү эмес",
+      "empty": "Мекемелер табылган жок",
+      "detail": {
+        "description": "Сүрөттөмө",
+        "categories": "КАТЕГОРИЯЛАР",
+        "nominals": "НОМИНАЛДАР",
+        "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",
+        "validityValue": "{{months}} ай",
+        "createdAt": "ТҮЗҮЛГӨН",
+        "notFound": "Мекеме табылган жок",
+        "owner": "ЭЭСИ"
+      }
     }
   },
   "certificate": {
@@ -191,7 +224,7 @@
     "usedAt": "{{date}} колдонулган",
     "expiredAt": "Мөөнөтү {{date}} бүттү",
     "share": "Бөлүшүү",
-    "shareText": "🎁 {{merchant}} мекемесинин {{amount}} суммасындагы белек сертификаты. Код: {{code}}"
+    "shareText": "🎁 {{venue}} мекемесинин {{amount}} суммасындагы белек сертификаты. Код: {{code}}"
   },
   "certificates": {
     "empty": "Азырынча сертификаттар жок",

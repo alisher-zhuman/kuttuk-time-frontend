@@ -7,7 +7,7 @@ Telegram Mini App for buying gift certificates.
 **KuttukTime** — a gift certificate platform for local businesses (coffee shops, restaurants, spas, fitness studios) in Kyrgyzstan.
 
 **Purchase flow (buyer):**
-1. Opened the TMA → picked a merchant → picked an amount → paid → got a code
+1. Opened the TMA → picked a venue → picked an amount → paid → got a code
 2. Time: 30 seconds. No registration, no phone number required.
 3. The code can be shared in Telegram.
 
@@ -35,6 +35,7 @@ Telegram Mini App for buying gift certificates.
 
 Source of truth: `../backend/CLAUDE.md`, section **Product decisions** — don't duplicate it here. The ones that shape the frontend:
 - Roles are only `user` / `merchant` / `admin` — no staff/cashier role; the merchant (owner) redeems certificates
+- **merchant ≠ venue.** `merchant` = the owner's business account (role, cabinet, payouts, `isActive`, `telegramId`); `venue` = a storefront the buyer sees and buys from. One merchant owns one or more venues. `venue` is data, not a role
 - A certificate is redeemed in full — no partial redemption
 
 ## Stack
@@ -61,17 +62,18 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 
 **Where code goes — ask in this order:**
 1. **No business word in it** (formatting, SDK wrappers, UI kit, routes, locales) → `shared`, split by segment, no modules
-2. **One entity's data or plain display of it** (schema, API, query hooks, card) → `entities/<entity>`, by domain, not by screen or role: `merchant`, `category`, `order`, `certificate`. The entity keeps the backend's name (`merchant`) even where the screen says "venue"
-3. **An action reused by two or more widgets** → `features/<action>`. With a single consumer the action lives in its widget — a create/edit form is one widget, not a feature. Today the only feature is `category-filter` (buyer home + admin merchant list)
+2. **One entity's data or plain display of it** (schema, API, query hooks, card) → `entities/<entity>`, by domain, not by screen or role: `venue` (storefront), `merchant` (owner account), `category`, `order`, `certificate` — same names as the backend API. Cross-entity imports only via `@x` (`entities/venue/@x/merchant.ts` → `MerchantMe.venues`)
+3. **An action reused by two or more widgets** → `features/<action>`. With a single consumer the action lives in its widget — a create/edit form is one widget, not a feature. Today: `category-filter` (buyer home + admin venue list), `venue-filter` (owner's summary + certificate list; hidden for a single venue)
 4. **A block of one page** → `widgets`, grouped by module
 5. **The rest** (route params, gating on queries, picking a widget) → `pages`. A page is the route and nothing else: `index.ts` + one component, no `hooks/` / `helpers/` / `model/`, queries inline
 
 **Modules — by what the person is doing, never by role** (same rule as in `kca-frontend-private`):
 - buyer flow, flat: `home`, `venue` (`/app/venues/:handle`), `order`, `certificate`, `profile`
-- `merchants/` — managing venues: list / create / detail / edit (admin, any venue), cabinet / profile-edit / redeem (owner, own venue). Widgets `merchant-list`, `merchant-detail`, `merchant-form`, `redemption`
+- `venues/` — managing venues: list / create / detail / edit (admin, any venue), own-edit (owner, own venue). Widgets `venue-list`, `venue-detail`, `venue-form`
+- `merchants/` — merchant accounts: list / create / detail / edit (admin), cabinet / summary / certificates / redeem (owner). Widgets `merchant-list`, `merchant-detail`, `merchant-form`, `cabinet-menu`, `week-summary`, `certificate-list`, `redemption`
 - `categories/` — list / create / edit; widgets `category-list`, `category-form`
 - `orders`, `payments` — admin placeholders, flat until they grow
-- **Roles change permissions, fields and endpoints — not folders.** One screen serves every role that uses it: `merchant-form` takes `variant: create | edit | own` (owner sees only storefront fields and saves via `PATCH /merchants/me`); the cabinet home shows the same `MerchantDetail` as the admin. Route paths may still read by role (`/app/admin/...`, `/app/merchant/...`) — the path is for the person, the folder is for the code. The only role-named UI is chrome that exists for one role (`AdminNav`)
+- **Roles change permissions, fields and endpoints — not folders.** One screen serves every role that uses it: `venue-form` takes `variant: create | edit | own` (admin: slug, owner, status, `/admin/venues`; owner: storefront fields only, `PATCH /merchants/me/venues/:venueId`); the cabinet home shows the same `VenueDetail` per venue as the admin. Route paths may still read by role (`/app/admin/...`, `/app/merchant/...`) — the path is for the person, the folder is for the code. The only role-named UI is chrome that exists for one role (`AdminNav`)
 - **When to add a module group:** its third screen, or Steiger complaining — not in advance
 
 **Inside a slice:** segments `model/` (schemas, types, query keys), `api/`, `hooks/`, `ui/`; each component in its own folder with `index.tsx`; the slice's public API only through its root `index.ts`. Slices of one layer never import each other — e.g. `useOrderPolling` invalidates `["certificates"]` by a literal key instead of importing `certificateKeys`
@@ -84,7 +86,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - Comments only when the `WHY` isn't obvious
 - No unnecessary abstraction — three similar lines beat a premature helper
 - **Navigation**: always `useNavigateTo` from `@shared/hooks` — never `useNavigate` directly
-- **Routes**: only through `ROUTE_PATTERNS` and `getVenueRoute()` from `@shared/constants` — no hardcoded strings
+- **Routes**: only through `ROUTE_PATTERNS` and the `get…Route()` helpers from `@shared/constants` — no hardcoded strings
 - **TMA launch params**: only through `getLaunchParams()` from `@shared/helpers` — never `retrieveLaunchParams()` from the SDK directly
 - **Configs** (`vercel.json`, BotFather, CI): don't change without explicit approval
 - **Edit forms**: the page gates on the query (spinner → not-found → form) and passes loaded data as a prop into `defaultValues` — no `useEffect` + `reset()` (it wipes input typed while loading)
@@ -92,7 +94,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - **UI state that TMA buttons target** (e.g. profile `?tab=`) lives in search params, not `useState` — the page may already be mounted when the button navigates
 - `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and the previous key's data shows. Harmless today (pages remount on navigation), but wherever a key can change while mounted and stale data would be wrong (route params without remount, anything feeding a purchase), gate on `isPlaceholderData` or set `placeholderData: () => undefined` on that query (a literal `undefined` fails `exactOptionalPropertyTypes`)
 - `QUERY_CLIENT` retries once, and only network errors / 5xx — 4xx and `ZodError` fail immediately
-- **Allowed merchant values** (nominals, validity months) come only from `GET /merchants/options` (`useMerchantOptionsQuery`, staleTime ∞) — no frontend list. Forms build their Zod schema from it (`createMerchantFormSchema(options, withAdminFields)`), pages gate on it like on the merchant query
+- **Allowed venue values** (nominals, validity months) come only from `GET /venues/options` (`useVenueOptionsQuery`, staleTime ∞) — no frontend list. Forms build their Zod schema from it (`createVenueFormSchema(options, withAdminFields)`), pages gate on it like on the venue query
 - **Dates are shown in Bishkek time** (`formatDate` / `formatDateTime`, `Asia/Bishkek`), not the device zone — payout weeks, validity and redemption are business time. Calendar dates the backend sends as `YYYY-MM-DD` (payout weeks) are handled as strings: `formatIsoDate`, `shiftIsoDate` — never through `new Date()` in the local zone
 - `useSwipeNavigation`: swipe from the left edge → back, from the right edge → forward — intentional, not a bug
 - **Nullable in Zod schemas**:
@@ -121,7 +123,7 @@ Always check `isAvailable()` before calling SDK methods.
 - `AuthProvider` resets `viewMode` from `role` on every login (intentional) — "view as buyer" lasts only until reload; the sessionStorage persist barely matters
 - System theme source: `themeParams.isDark` (Telegram's theme, guard with `isMounted()` — unmounted it reports `true`) — never `miniApp.isDark`, it reflects our own `setBgColor`
 - `POST /auth/log-in` → 401 (initData > 24h; Telegram doesn't refresh it while open or on reload) sets `isSessionExpired` → `AuthProvider` renders `SessionExpiredPage` ("reopen the app"). Set from both the initial log-in and the 401 re-login in `api.ts`
-- Deactivated merchant (`isActive: false`): `GET /merchants/me` still works, `PATCH` → 403. Cabinet shows `MerchantDeactivatedNotice` and hides edit; a 403 on save refetches "me" so the edit page swaps to the notice
+- Deactivated merchant (`isActive: false`, hides all its venues from buyers): `GET /merchants/me` still works, `PATCH /merchants/me/venues/:id` → 403. Cabinet shows `MerchantDeactivatedNotice` and hides edit; a 403 on save refetches "me" so the edit page swaps to the notice
 
 **Worth adding (when there's time):**
 - `shareURL` (`links`) — share the certificate code in Telegram, this is literally part of the business flow ("the code can be shared in Telegram")
@@ -144,8 +146,8 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 
 ## Payment flow — notes for when it's built
 
-- **Selected nominal can go stale**: `VenueContent` keeps `selectedNominal` in `useState`, but `merchant.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the merchant editing nominals). Before buying, re-derive it: `merchant.nominals.includes(selectedNominal) ? selectedNominal : merchant.nominals[0]`, and send `merchantId` + nominal so the backend validates against the current list — never trust the client's amount
-- The merchant detail query feeds the purchase — mind `keepPreviousData` (see Code) there
+- **Selected nominal can go stale**: `VenueContent` keeps `selectedNominal` in `useState`, but `venue.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the owner editing nominals). Before buying, re-derive it: `venue.nominals.includes(selectedNominal) ? selectedNominal : venue.nominals[0]`, and send `venueId` + nominal so the backend validates against the current list — never trust the client's amount
+- The venue detail query feeds the purchase — mind `keepPreviousData` (see Code) there
 
 ## TODO
 
@@ -163,7 +165,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`
 When adding a new key — add it to all three files.
 Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit programmatically
-**Terminology:** the word «мерчант» (any case/form) is allowed only in the `en` locale ("merchant"). In `ru`/`kg` user-facing text use a normal word: «заведение» / «мекеме» for the venue, «Кабинет» for the merchant's own mode. In code, **`venue`** = the buyer-facing screens about a venue (`pages/venue`, `widgets/venue`, `getVenueRoute`, i18n `venue.*`); **`merchant`** = the domain entity (`entities/merchant`, same name as the backend API) and the owner's cabinet
+**Terminology:** the word «мерчант» (any case/form) is allowed only in the `en` locale ("merchant"). In `ru`/`kg` user-facing text use a normal word: «заведение» / «мекеме» for the venue, «Владелец» / «Ээси» for the merchant account, «Кабинет» for the merchant's own mode. In code, **`venue`** = the storefront everywhere (`entities/venue`, `pages/venue`, `venues/` module, i18n `venue.*`, `venueForm.*`, `admin.venues.*`); **`merchant`** = the owner account (`entities/merchant`, `merchants/` module, `merchantForm.*`, `admin.merchants.*`, the cabinet)
 
 ## Testing
 
@@ -172,7 +174,7 @@ No test setup exists yet (no Vitest/Jest, no test files, nothing in `package.jso
 Worth adding once the codebase grows past the 2-merchant MVP stage:
 - **Vitest** — unit tests for pure logic in `@shared/helpers` (e.g. `getScopedStorageKey`, `formatMoney`) and Zod schemas in `entities/*/model`
 - **React Testing Library** — component tests for anything with real branching logic (e.g. `VenueContent`/`VenueNotFound` state switching in `pages/venue`)
-- **Playwright** (or similar) — e2e for the critical path only: deep link → merchant page → pick amount → buy, since that's the entire business
+- **Playwright** (or similar) — e2e for the critical path only: deep link → venue page → pick amount → buy, since that's the entire business
 
 Not a priority before the payment flow ships — don't add test infra just to have it.
 

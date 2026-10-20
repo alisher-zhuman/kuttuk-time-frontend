@@ -14,7 +14,7 @@ export const OrderCertificateSchema = z.object({
 const OrderBaseSchema = z.object({
   orderId: z.string(),
   amount: z.number(),
-  merchantId: z.number(),
+  venueId: z.number(),
   expiresAt: z.string()
 });
 

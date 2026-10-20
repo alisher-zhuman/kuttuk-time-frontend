@@ -29,9 +29,16 @@ export const RedemptionCard = ({ certificate }: Props) => {
         {isActive && <StatusBadge active label={t("certificate.status.active")} />}
       </div>
 
-      <span className="font-mono text-sm font-bold tracking-wider text-(--color-slate)">
-        {certificate.code}
-      </span>
+      <div className="flex flex-col gap-0.5">
+        {/* Which of the owner's venues sold it — a code from any of them is
+            redeemable at the counter. */}
+        <span className="text-base font-bold text-(--color-ink) break-words">
+          {certificate.venue.name}
+        </span>
+        <span className="font-mono text-sm font-bold tracking-wider text-(--color-slate)">
+          {certificate.code}
+        </span>
+      </div>
 
       {certificate.status === "used" && (
         <span className="text-sm font-bold text-(--color-accent)">

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // GET /certificates/my — contract agreed ahead of the backend endpoint; the
 // backend implements exactly this shape.
-const CertificateMerchantSchema = z.object({
+const CertificateVenueSchema = z.object({
   id: z.number(),
   name: z.string(),
   slug: z.string(),
@@ -15,7 +15,7 @@ const CertificateBaseSchema = z.object({
   amount: z.number(),
   validUntil: z.string(),
   createdAt: z.string(),
-  merchant: CertificateMerchantSchema
+  venue: CertificateVenueSchema
 });
 
 // expired is computed by the backend — the client never compares dates.
@@ -32,11 +32,13 @@ export const CertificatesSchema = z.array(CertificateSchema);
 // src/certificates/redemption.service.ts): the merchant's view of its own
 // certificate. Effective status (active past validUntil → expired), usedAt only
 // on used — same rules as the buyer's list.
+// Which of the merchant's venues sold it — one merchant can own several.
 const MerchantCertificateBaseSchema = z.object({
   code: z.string(),
   amount: z.number(),
   validUntil: z.string(),
-  createdAt: z.string()
+  createdAt: z.string(),
+  venue: z.object({ id: z.number(), name: z.string() })
 });
 
 export const MerchantCertificateSchema = z.discriminatedUnion("status", [

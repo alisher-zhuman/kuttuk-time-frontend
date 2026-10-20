@@ -9,11 +9,15 @@ export {
 } from "./i18n";
 export {
   getAdminMerchantDetailRoute,
+  getAdminMerchantEditRoute,
+  getAdminVenueCreateRoute,
+  getAdminVenueDetailRoute,
+  getAdminVenueEditRoute,
   getCategoryEditRoute,
   getCertificateRoute,
   getHomeRoute,
-  getMerchantEditRoute,
   getOrderRoute,
+  getOwnVenueEditRoute,
   getVenueRoute,
   ROUTE_PATTERNS,
   ROUTES

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { Store } from "lucide-react";
+import { UserRound } from "lucide-react";
 
 import { EmptyState } from "@shared/ui";
 
@@ -10,7 +10,7 @@ export const MerchantNotFound = () => {
   return (
     <EmptyState
       variant="page"
-      icon={<Store size={32} strokeWidth={1.5} />}
+      icon={<UserRound size={32} strokeWidth={1.5} />}
       message={t("admin.merchants.detail.notFound")}
     />
   );

@@ -6,9 +6,10 @@ import { cn, formatDate, formatDateTime, formatMoney } from "@shared/helpers";
 
 interface Props {
   certificate: MerchantCertificate;
+  showVenue: boolean;
 }
 
-export const CertificateRow = ({ certificate }: Props) => {
+export const CertificateRow = ({ certificate, showVenue }: Props) => {
   const { t } = useTranslation();
 
   const statusLine = {
@@ -31,6 +32,11 @@ export const CertificateRow = ({ certificate }: Props) => {
         <span className="font-mono text-sm font-bold tracking-wider text-(--color-ink)">
           {certificate.code}
         </span>
+        {showVenue && (
+          <span className="text-xs font-bold text-(--color-ink) truncate">
+            {certificate.venue.name}
+          </span>
+        )}
         <span className="text-xs font-semibold text-(--color-slate)">{statusLine}</span>
         <span className="text-xs text-(--color-hint)">
           {t("merchant.redeem.soldAt", { date: formatDate(certificate.createdAt) })}

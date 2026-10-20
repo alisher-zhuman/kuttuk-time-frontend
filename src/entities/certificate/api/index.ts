@@ -35,11 +35,16 @@ export const redeemMerchantCertificate = async (code: string) => {
 // the previous page's nextCursor.
 export const getMerchantCertificates = async (
   status: CertificateStatus | null,
+  venueId: number | null,
   cursor: string | null,
   signal: AbortSignal
 ) => {
   const response = await api.get(`${API_PATHS.MERCHANTS}/me/certificates`, {
-    params: { ...(status && { status }), ...(cursor && { cursor }) },
+    params: {
+      ...(status && { status }),
+      ...(venueId != null && { venueId }),
+      ...(cursor && { cursor })
+    },
     signal
   });
 

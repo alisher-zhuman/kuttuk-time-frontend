@@ -5,13 +5,13 @@ import { Gift } from "lucide-react";
 import { formatMoney } from "@shared/helpers";
 
 interface Props {
-  merchantName: string;
+  venueName: string;
   amount: number;
   validityMonths: number;
 }
 
 export const CertPreviewCard = ({
-  merchantName,
+  venueName,
   amount,
   validityMonths
 }: Props) => {
@@ -37,7 +37,7 @@ export const CertPreviewCard = ({
         </div>
 
         <span className="text-sm font-bold opacity-95 mt-4">
-          {merchantName}
+          {venueName}
         </span>
         <span className="text-3xl font-extrabold tracking-tight mt-0.5">
           {formatMoney(amount, t("certificate.currency"))}

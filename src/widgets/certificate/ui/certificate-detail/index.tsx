@@ -17,7 +17,7 @@ interface Props {
 export const CertificateDetail = ({ certificate }: Props) => {
   const { t } = useTranslation();
 
-  const { merchant, amount, code, status } = certificate;
+  const { venue, amount, code, status } = certificate;
 
   const { key, date } = getCertificateDate(certificate);
 
@@ -27,16 +27,16 @@ export const CertificateDetail = ({ certificate }: Props) => {
   useCertificateShareButton({
     code,
     amount,
-    merchantName: merchant.name,
+    venueName: venue.name,
     hidden: !isActive
   });
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-5 py-8 text-center">
-      <img src={merchant.logo} alt="" className="size-16 rounded-2xl object-cover" />
+      <img src={venue.logo} alt="" className="size-16 rounded-2xl object-cover" />
 
       <div className="flex flex-col items-center gap-1">
-        <span className="text-base font-semibold text-(--color-slate)">{merchant.name}</span>
+        <span className="text-base font-semibold text-(--color-slate)">{venue.name}</span>
         <span className="text-3xl font-extrabold text-(--color-ink)">
           {formatMoney(amount, t("certificate.currency"))}
         </span>

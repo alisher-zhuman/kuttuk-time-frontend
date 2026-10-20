@@ -4,7 +4,10 @@ import { useTranslation } from "react-i18next";
 
 import { Gift, Loader2 } from "lucide-react";
 
+import { VenueFilter } from "@features/venue-filter";
+
 import { type CertificateStatus, useMerchantCertificatesQuery } from "@entities/certificate";
+import { useMerchantMeQuery } from "@entities/merchant";
 
 import { ChipSelect, EmptyState, ErrorState } from "@shared/ui";
 
@@ -17,6 +20,8 @@ const TABS: Tab[] = ["all", "active", "used", "expired"];
 
 export const CertificateList = () => {
   const [tab, setTab] = useState<Tab>("all");
+  // null = all the owner's venues.
+  const [venueId, setVenueId] = useState<number | null>(null);
 
   const { t } = useTranslation();
 
@@ -29,7 +34,13 @@ export const CertificateList = () => {
     hasNextPage,
     fetchNextPage,
     retry
-  } = useMerchantCertificatesQuery(tab === "all" ? null : tab);
+  } = useMerchantCertificatesQuery(tab === "all" ? null : tab, venueId);
+
+  const { merchant } = useMerchantMeQuery();
+
+  // Which venue sold a code matters only when the owner has several and the
+  // list isn't already narrowed to one.
+  const showVenue = venueId === null && (merchant?.venues.length ?? 0) > 1;
 
   const setSentinel = useLoadMoreOnScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
 
@@ -38,6 +49,8 @@ export const CertificateList = () => {
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
         {t("merchant.certificates.title")}
       </h1>
+
+      <VenueFilter active={venueId} onChange={setVenueId} />
 
       <ChipSelect
         items={TABS.map((value) => ({ value, label: t(`merchant.certificates.tabs.${value}`) }))}
@@ -59,7 +72,7 @@ export const CertificateList = () => {
         <ul className="flex flex-col gap-2.5 list-none">
           {certificates.map((certificate) => (
             <li key={certificate.code}>
-              <CertificateRow certificate={certificate} />
+              <CertificateRow certificate={certificate} showVenue={showVenue} />
             </li>
           ))}
 

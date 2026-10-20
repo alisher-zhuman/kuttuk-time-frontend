@@ -1,1 +1,1 @@
-export { MerchantForm } from "./ui/merchant-form";
+export { MerchantForm } from "./ui/form";

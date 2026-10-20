@@ -1,21 +1,21 @@
 import { useSearchParams } from "react-router";
 
-import { MerchantList, MerchantStatusFilter } from "@widgets/merchants/merchant-list";
+import { useTranslation } from "react-i18next";
 
-import { CategoryFilter } from "@features/category-filter";
+import { MerchantList } from "@widgets/merchants/merchant-list";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useDebounce, useNavigateTo } from "@shared/hooks";
-import { SearchBar } from "@shared/ui";
+import { ActiveFilter, SearchBar } from "@shared/ui";
 
 export const MerchantListPage = () => {
+  const { t } = useTranslation();
+
   const navigateTo = useNavigateTo();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
-  const categoryParam = searchParams.get("category");
-  const activeCategory = categoryParam ? Number(categoryParam) : null;
   const activeStatus = searchParams.get("isActive") !== "false";
 
   const debouncedSearch = useDebounce(search);
@@ -41,27 +41,21 @@ export const MerchantListPage = () => {
         value={search}
         onChange={(value) => setParam("search", value || null)}
         isLoading={search !== debouncedSearch}
+        placeholder={t("admin.merchants.searchPlaceholder")}
       />
 
-      <CategoryFilter
-        active={activeCategory}
-        onChange={(category) =>
-          setParam("category", category !== null ? String(category) : null)
-        }
-        onManage={() => navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES)}
-      />
-
-      <MerchantStatusFilter
+      <ActiveFilter
         active={activeStatus}
         onChange={(isActive) => setParam("isActive", String(isActive))}
         onCreate={() => navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANT_CREATE)}
+        labels={{
+          active: t("admin.venues.active"),
+          inactive: t("admin.venues.inactive"),
+          create: t("merchantForm.title")
+        }}
       />
 
-      <MerchantList
-        search={debouncedSearch}
-        category={activeCategory}
-        isActive={activeStatus}
-      />
+      <MerchantList search={debouncedSearch} isActive={activeStatus} />
     </>
   );
 };

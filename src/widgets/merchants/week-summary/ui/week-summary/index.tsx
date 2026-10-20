@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { VenueFilter } from "@features/venue-filter";
+
 import { useMerchantSummaryQuery } from "@entities/merchant";
 
 import { formatIsoDate, formatMoney, shiftIsoDate } from "@shared/helpers";
@@ -13,16 +15,18 @@ import { ErrorState } from "@shared/ui";
 export const WeekSummary = () => {
   // null = the current week; otherwise any date inside the shown week.
   const [week, setWeek] = useState<string | null>(null);
+  // null = all the owner's venues.
+  const [venueId, setVenueId] = useState<number | null>(null);
 
   const { t } = useTranslation();
 
   const haptic = useHaptic();
 
-  const { summary, isLoading, isError, isFetching, retry } = useMerchantSummaryQuery(week);
+  const { summary, isLoading, isError, isFetching, retry } = useMerchantSummaryQuery(week, venueId);
 
   // Which week is "current" is the backend's call (Bishkek time) — read it from
   // the default request (cached after the first load) instead of the device clock.
-  const { summary: current } = useMerchantSummaryQuery(null);
+  const { summary: current } = useMerchantSummaryQuery(null, venueId);
 
   const currency = t("certificate.currency");
 
@@ -33,10 +37,6 @@ export const WeekSummary = () => {
 
     setWeek(target === current?.from ? null : target);
   };
-
-  if (isError) {
-    return <ErrorState onRetry={retry} isRetrying={isFetching} />;
-  }
 
   const isCurrentWeek = summary !== undefined && summary.from === current?.from;
 
@@ -52,6 +52,8 @@ export const WeekSummary = () => {
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
         {t("merchant.summary.title")}
       </h1>
+
+      <VenueFilter active={venueId} onChange={setVenueId} />
 
       <div className="flex items-center justify-between gap-2">
         <button
@@ -84,7 +86,9 @@ export const WeekSummary = () => {
         )}
       </div>
 
-      {isLoading || !rows ? (
+      {isError ? (
+        <ErrorState onRetry={retry} isRetrying={isFetching} />
+      ) : isLoading || !rows ? (
         <div className="h-48 rounded-2xl bg-(--color-chip) animate-pulse" />
       ) : (
         <div className="flex flex-col gap-3 p-4 rounded-2xl bg-(--color-card) border border-(--color-line)">

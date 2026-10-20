@@ -12,12 +12,12 @@ import { OrderResult } from "../order-result";
 
 interface Props {
   order: Extract<Order, { status: "needs_review" }>;
-  merchantName: string | undefined;
+  venueName: string | undefined;
 }
 
 // Money was taken but the amount didn't match — resolved by hand on the
 // backend. No technical details for the user, just reassurance and support.
-export const OrderReview = ({ order, merchantName }: Props) => {
+export const OrderReview = ({ order, venueName }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -28,7 +28,7 @@ export const OrderReview = ({ order, merchantName }: Props) => {
       tone="warning"
       title={t("orders.review.title")}
       description={t("orders.review.hint")}
-      merchantName={merchantName}
+      venueName={venueName}
       amount={order.amount}
     >
       {openTelegramLink.isAvailable() && (

@@ -11,7 +11,6 @@ import { MerchantCreatePage } from "@pages/merchants/create";
 import { MerchantDetailPage } from "@pages/merchants/detail";
 import { MerchantEditPage } from "@pages/merchants/edit";
 import { MerchantListPage } from "@pages/merchants/list";
-import { MerchantProfileEditPage } from "@pages/merchants/profile-edit";
 import { MerchantRedeemPage } from "@pages/merchants/redeem";
 import { MerchantSummaryPage } from "@pages/merchants/summary";
 import { NotFoundPage } from "@pages/not-found";
@@ -20,6 +19,11 @@ import { OrdersPage } from "@pages/orders";
 import { PaymentsPage } from "@pages/payments";
 import { ProfilePage } from "@pages/profile";
 import { VenuePage } from "@pages/venue";
+import { VenueCreatePage } from "@pages/venues/create";
+import { VenueDetailPage } from "@pages/venues/detail";
+import { VenueEditPage } from "@pages/venues/edit";
+import { VenueListPage } from "@pages/venues/list";
+import { OwnVenueEditPage } from "@pages/venues/own-edit";
 
 import { AppLayout } from "@widgets/layout";
 
@@ -59,6 +63,22 @@ export const ROUTER = createBrowserRouter([
       {
         element: <RequireRole role="admin" />,
         children: [
+          {
+            path: ROUTE_PATTERNS.ADMIN_VENUES,
+            element: <VenueListPage />
+          },
+          {
+            path: ROUTE_PATTERNS.ADMIN_VENUE_CREATE,
+            element: <VenueCreatePage />
+          },
+          {
+            path: ROUTE_PATTERNS.ADMIN_VENUE_DETAIL,
+            element: <VenueDetailPage />
+          },
+          {
+            path: ROUTE_PATTERNS.ADMIN_VENUE_EDIT,
+            element: <VenueEditPage />
+          },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANTS,
             element: <MerchantListPage />
@@ -105,8 +125,8 @@ export const ROUTER = createBrowserRouter([
             element: <MerchantCabinetPage />
           },
           {
-            path: ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT,
-            element: <MerchantProfileEditPage />
+            path: ROUTE_PATTERNS.MERCHANT_VENUE_EDIT,
+            element: <OwnVenueEditPage />
           },
           {
             path: ROUTE_PATTERNS.MERCHANT_REDEEM,

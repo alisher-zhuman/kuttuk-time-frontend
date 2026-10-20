@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { type MerchantDetail } from "@entities/merchant";
 import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
+import { type VenueDetail } from "@entities/venue";
 
 import { getOrderRoute } from "@shared/constants";
 import { openExternalLink } from "@shared/helpers";
@@ -14,10 +14,10 @@ import { NominalList } from "../nominal-list";
 import { VenueHeader } from "../venue-header";
 
 interface Props {
-  merchant: MerchantDetail;
+  venue: VenueDetail;
 }
 
-export const VenueContent = ({ merchant }: Props) => {
+export const VenueContent = ({ venue }: Props) => {
   const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
 
   const { t } = useTranslation();
@@ -35,11 +35,11 @@ export const VenueContent = ({ merchant }: Props) => {
   const { mutate: createOrder, isPending } = useCreateOrderMutation();
 
   // nominals can change under the selection (refetch after a language switch,
-  // the merchant editing them) — never buy an amount that's no longer offered.
+  // the owner editing them) — never buy an amount that's no longer offered.
   const activeNominal =
-    selectedNominal !== null && merchant.nominals.includes(selectedNominal)
+    selectedNominal !== null && venue.nominals.includes(selectedNominal)
       ? selectedNominal
-      : merchant.nominals[0]!;
+      : venue.nominals[0]!;
 
   const handleBuy = () => {
     if (isSubmittingRef.current) {
@@ -50,7 +50,7 @@ export const VenueContent = ({ merchant }: Props) => {
     haptic.medium();
 
     createOrder(
-      { merchantId: merchant.id, nominal: activeNominal },
+      { venueId: venue.id, nominal: activeNominal },
       {
         onSuccess: ({ orderId, paymentUrl }) => {
           openExternalLink(paymentUrl);
@@ -82,19 +82,19 @@ export const VenueContent = ({ merchant }: Props) => {
   return (
     <div className="flex-1 flex flex-col py-4 gap-5">
       <VenueHeader
-        logo={merchant.logo}
-        name={merchant.name}
-        description={merchant.description}
+        logo={venue.logo}
+        name={venue.name}
+        description={venue.description}
       />
 
       <CertPreviewCard
-        merchantName={merchant.name}
+        venueName={venue.name}
         amount={activeNominal}
-        validityMonths={merchant.validityMonths}
+        validityMonths={venue.validityMonths}
       />
 
       <NominalList
-        nominals={merchant.nominals}
+        nominals={venue.nominals}
         selected={activeNominal}
         onSelect={setSelectedNominal}
       />

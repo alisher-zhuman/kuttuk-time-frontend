@@ -1,29 +1,19 @@
-import { useTranslation } from "react-i18next";
-
 import { useQuery } from "@tanstack/react-query";
 
 import { getAdminMerchants } from "../api";
 import { merchantKeys } from "../model/keys";
 
-interface Params {
+export const useAdminMerchantsQuery = ({
+  search,
+  isActive
+}: {
   search: string;
-  category: number | null;
   isActive: boolean | null;
-}
-
-export const useAdminMerchantsQuery = ({ search, category, isActive }: Params) => {
-  const { i18n } = useTranslation();
-
+}) => {
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
-    queryKey: merchantKeys.adminList(search, category, isActive, i18n.language),
-    queryFn: () => getAdminMerchants({ search, category, isActive })
+    queryKey: merchantKeys.adminList(search, isActive),
+    queryFn: () => getAdminMerchants({ search, isActive })
   });
 
-  return {
-    merchants: data ?? [],
-    isLoading,
-    isError,
-    isFetching,
-    retry: () => void refetch()
-  };
+  return { merchants: data ?? [], isLoading, isError, isFetching, retry: () => void refetch() };
 };

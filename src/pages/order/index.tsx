@@ -11,8 +11,8 @@ import {
   OrderReview
 } from "@widgets/order";
 
-import { useMerchantQuery } from "@entities/merchant";
 import { isOrderId, useOrderPolling } from "@entities/order";
+import { useVenueQuery } from "@entities/venue";
 
 export const OrderPage = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -21,7 +21,7 @@ export const OrderPage = () => {
 
   const { order, isSettled } = useOrderPolling(validOrderId);
 
-  const { merchant } = useMerchantQuery(order ? String(order.merchantId) : undefined);
+  const { venue } = useVenueQuery(order ? String(order.venueId) : undefined);
 
   if (!validOrderId) {
     return <OrderNotFound />;
@@ -47,22 +47,22 @@ export const OrderPage = () => {
   // polling settles — showing "expired" first and "paid" a minute later
   // would be confusing.
   if (!isSettled && (order.status === "pending" || order.status === "expired")) {
-    return <OrderPending order={order} merchantName={merchant?.name} />;
+    return <OrderPending order={order} venueName={venue?.name} />;
   }
 
-  const merchantName = merchant?.name;
+  const venueName = venue?.name;
 
   switch (order.status) {
     case "paid":
-      return <OrderPaid order={order} merchantName={merchantName} />;
+      return <OrderPaid order={order} venueName={venueName} />;
     case "needs_review":
-      return <OrderReview order={order} merchantName={merchantName} />;
+      return <OrderReview order={order} venueName={venueName} />;
     case "refunded":
-      return <OrderRefunded order={order} merchantName={merchantName} />;
+      return <OrderRefunded order={order} venueName={venueName} />;
     // pending here = polling gave up past the grace window before the cron
     // flipped it; for the user that's the same as expired.
     case "pending":
     case "expired":
-      return <OrderExpired order={order} merchantName={merchantName} />;
+      return <OrderExpired order={order} venueName={venueName} />;
   }
 };

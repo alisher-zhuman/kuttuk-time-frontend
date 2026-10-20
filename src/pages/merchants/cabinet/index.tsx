@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 import { Store } from "lucide-react";
 
 import { CabinetMenu } from "@widgets/merchants/cabinet-menu";
-import { MerchantDetail, MerchantDetailSkeleton } from "@widgets/merchants/merchant-detail";
+import { VenueDetail, VenueDetailSkeleton } from "@widgets/venues/venue-detail";
 
 import { useCategoriesQuery } from "@entities/category";
 import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { getOwnVenueEditRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { useMainButton, useNavigateTo } from "@shared/hooks";
 import { EmptyState } from "@shared/ui";
 
@@ -22,14 +22,14 @@ export const MerchantCabinetPage = () => {
   const { categories } = useCategoriesQuery();
 
   // The cabinet's main action. Shown when deactivated too: a deactivated
-  // venue can still redeem what it sold.
+  // merchant can still redeem what it sold.
   useMainButton({
     text: t("merchant.redeem.entry"),
     onClick: () => navigateTo(ROUTE_PATTERNS.MERCHANT_REDEEM),
     hidden: !merchant
   });
 
-  if (isLoading) return <MerchantDetailSkeleton />;
+  if (isLoading) return <VenueDetailSkeleton />;
 
   if (isError || !merchant) {
     return (
@@ -41,29 +41,39 @@ export const MerchantCabinetPage = () => {
     );
   }
 
-  // Deactivated: the backend rejects PATCH /merchants/me with 403, so explain
-  // why instead of offering an edit that can only fail.
-  if (!merchant.isActive) {
-    return (
-      <div className="flex-1 flex flex-col gap-4 pt-4">
-        <MerchantDeactivatedNotice />
-
-        <CabinetMenu />
-
-        <MerchantDetail merchant={merchant} categories={categories} />
-      </div>
-    );
-  }
-
   return (
     <div className="flex-1 flex flex-col gap-4 pt-4">
+      {/* Deactivated: the backend rejects edits with 403, so explain why
+          instead of offering an edit that can only fail. */}
+      {!merchant.isActive && <MerchantDeactivatedNotice />}
+
       <CabinetMenu />
 
-      <MerchantDetail
-        merchant={merchant}
-        categories={categories}
-        onEdit={() => navigateTo(ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT)}
-      />
+      {merchant.venues.length === 0 ? (
+        <EmptyState
+          icon={<Store size={32} strokeWidth={1.5} />}
+          message={t("merchant.cabinet.noVenues")}
+        />
+      ) : (
+        <section aria-label={t("merchant.cabinet.venuesTitle")}>
+          <h2 className="text-xs font-bold text-(--color-hint) tracking-wider pt-2 px-1">
+            {t("merchant.cabinet.venuesTitle")}
+          </h2>
+
+          <div className="flex flex-col divide-y divide-(--color-line)">
+            {merchant.venues.map((venue) => (
+              <VenueDetail
+                key={venue.id}
+                venue={venue}
+                categories={categories}
+                onEdit={
+                  merchant.isActive ? () => navigateTo(getOwnVenueEditRoute(venue.id)) : undefined
+                }
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

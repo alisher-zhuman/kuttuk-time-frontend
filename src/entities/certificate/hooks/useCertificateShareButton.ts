@@ -9,7 +9,7 @@ import { useHaptic, useMainButton } from "@shared/hooks";
 interface Options {
   code: string;
   amount: number;
-  merchantName: string | undefined;
+  venueName: string | undefined;
   hidden?: boolean;
 }
 
@@ -19,7 +19,7 @@ interface Options {
 export const useCertificateShareButton = ({
   code,
   amount,
-  merchantName,
+  venueName,
   hidden = false
 }: Options) => {
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ export const useCertificateShareButton = ({
         shareURL(
           BOT_URL,
           t("certificate.shareText", {
-            merchant: merchantName ?? "",
+            venue: venueName ?? "",
             amount: formatMoney(amount, t("certificate.currency")),
             code
           })

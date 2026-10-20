@@ -20,7 +20,7 @@
     },
     "deactivated": {
       "title": "Аккаунт отключён",
-      "message": "Ваше заведение скрыто от покупателей, а редактирование профиля недоступно. Чтобы включить его снова, напишите нам."
+      "message": "Ваши заведения скрыты от покупателей, а их редактирование недоступно. Погашать сертификаты можно. Чтобы включить заведения снова, напишите нам."
     },
     "redeem": {
       "entry": "Погасить сертификат",
@@ -54,6 +54,11 @@
         "used": "Погашенные",
         "expired": "Истёкшие"
       }
+    },
+    "cabinet": {
+      "allVenues": "Все заведения",
+      "noVenues": "Заведений пока нет — их добавит администратор",
+      "venuesTitle": "ЗАВЕДЕНИЯ"
     }
   },
   "venue": {
@@ -63,7 +68,7 @@
     "validity": "Действует {{months}} месяцев",
     "notFound": "Заведение не найдено"
   },
-  "merchantForm": {
+  "venueForm": {
     "title": "Новое заведение",
     "editTitle": "Редактирование заведения",
     "create": "Создать",
@@ -83,15 +88,29 @@
     "descriptionPlaceholder": "Коротко о заведении",
     "categoriesRequired": "Выберите хотя бы одну категорию",
     "nominalsRequired": "Добавьте хотя бы один номинал",
-    "telegramId": "Telegram ID",
-    "telegramIdPlaceholder": "123456789",
-    "telegramIdHint": "ID владельца заведения в Telegram",
-    "telegramIdInvalid": "Введите целое положительное число",
     "required": "Обязательное поле",
     "alreadyInUse": "Уже используется",
     "nominalsUnavailable": "Некоторые номиналы больше недоступны — снимите их",
     "validityUnavailable": "Этот срок больше недоступен — выберите другой",
-    "ownEditTitle": "Редактирование профиля"
+    "owner": "Владелец",
+    "ownerRequired": "Выберите владельца",
+    "slugReserved": "Это слово зарезервировано, выберите другое"
+  },
+  "merchantForm": {
+    "title": "Новый владелец",
+    "editTitle": "Редактирование владельца",
+    "create": "Создать",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "status": "Статус",
+    "name": "Имя или название бизнеса",
+    "namePlaceholder": "Например: ИП Асанов",
+    "telegramId": "Telegram ID",
+    "telegramIdPlaceholder": "123456789",
+    "telegramIdHint": "По этому Telegram ID владелец войдёт в кабинет",
+    "telegramIdInvalid": "Введите целое положительное число",
+    "required": "Обязательное поле",
+    "alreadyInUse": "Уже используется"
   },
   "logoUpload": {
     "hint": "Логотип, до 5 МБ",
@@ -133,25 +152,23 @@
     "viewAsUser": "Покупатель",
     "viewAsAdmin": "Админ",
     "nav": {
-      "merchants": "Заведения",
+      "venues": "Заведения",
+      "merchants": "Владельцы",
       "orders": "Заказы",
       "payments": "Платежи"
     },
     "merchants": {
-      "listTitle": "ЗАВЕДЕНИЯ",
-      "active": "Активен",
-      "inactive": "Неактивен",
-      "empty": "Заведения не найдены",
+      "listTitle": "ВЛАДЕЛЬЦЫ",
+      "empty": "Владельцы не найдены",
+      "addVenue": "Добавить заведение",
       "detail": {
-        "description": "Описание",
-        "categories": "КАТЕГОРИИ",
-        "nominals": "НОМИНАЛЫ",
-        "validity": "СРОК ДЕЙСТВИЯ",
-        "validityValue": "{{months}} месяцев",
         "telegramId": "TELEGRAM ID",
         "createdAt": "СОЗДАН",
-        "notFound": "Заведение не найдено"
-      }
+        "venues": "ЗАВЕДЕНИЯ",
+        "noVenues": "У владельца пока нет заведений",
+        "notFound": "Владелец не найден"
+      },
+      "searchPlaceholder": "Поиск владельцев"
     },
     "categories": {
       "manage": "Управление категориями",
@@ -175,6 +192,22 @@
       "deleteConfirmMessage": "Категория будет удалена, а заведения, к которым она привязана, потеряют эту привязку. Действие необратимо.",
       "required": "Обязательное поле",
       "orderInvalid": "Введите число"
+    },
+    "venues": {
+      "listTitle": "ЗАВЕДЕНИЯ",
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "empty": "Заведения не найдены",
+      "detail": {
+        "description": "Описание",
+        "categories": "КАТЕГОРИИ",
+        "nominals": "НОМИНАЛЫ",
+        "validity": "СРОК ДЕЙСТВИЯ",
+        "validityValue": "{{months}} месяцев",
+        "createdAt": "СОЗДАН",
+        "notFound": "Заведение не найдено",
+        "owner": "ВЛАДЕЛЕЦ"
+      }
     }
   },
   "certificate": {
@@ -191,7 +224,7 @@
     "usedAt": "Использован {{date}}",
     "expiredAt": "Истёк {{date}}",
     "share": "Поделиться",
-    "shareText": "🎁 Подарочный сертификат {{merchant}} на {{amount}}. Код: {{code}}"
+    "shareText": "🎁 Подарочный сертификат {{venue}} на {{amount}}. Код: {{code}}"
   },
   "certificates": {
     "empty": "Пока нет сертификатов",

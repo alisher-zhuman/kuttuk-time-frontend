@@ -4,7 +4,7 @@ import { API_PATHS } from "@shared/constants";
 import { CreatedOrderSchema, OrderSchema } from "../model/schemas";
 
 export interface CreateOrderPayload {
-  merchantId: number;
+  venueId: number;
   nominal: number;
 }
 

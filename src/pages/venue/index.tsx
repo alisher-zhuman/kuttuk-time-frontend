@@ -6,15 +6,15 @@ import {
   VenueSkeleton
 } from "@widgets/venue";
 
-import { useMerchantQuery } from "@entities/merchant";
+import { useVenueQuery } from "@entities/venue";
 
 export const VenuePage = () => {
   const { handle } = useParams<{ handle: string }>();
 
-  const { merchant, isLoading, isError } = useMerchantQuery(handle);
+  const { venue, isLoading, isError } = useVenueQuery(handle);
 
   if (isLoading) return <VenueSkeleton />;
-  if (isError || !merchant) return <VenueNotFound />;
+  if (isError || !venue) return <VenueNotFound />;
 
-  return <VenueContent merchant={merchant} />;
+  return <VenueContent venue={venue} />;
 };

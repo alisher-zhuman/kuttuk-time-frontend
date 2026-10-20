@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Store } from "lucide-react";
 
 import {
-  MerchantCard,
-  MerchantCardSkeleton,
-  useMerchantsQuery
-} from "@entities/merchant";
+  useVenuesQuery,
+  VenueCard,
+  VenueCardSkeleton
+} from "@entities/venue";
 
 import { EmptyState, ErrorState } from "@shared/ui";
 
@@ -18,7 +18,7 @@ interface Props {
 export const VenueList = ({ category, search }: Props) => {
   const { t } = useTranslation();
 
-  const { merchants, isLoading, isError, isFetching, retry } = useMerchantsQuery({
+  const { venues, isLoading, isError, isFetching, retry } = useVenuesQuery({
     search,
     category
   });
@@ -33,22 +33,22 @@ export const VenueList = ({ category, search }: Props) => {
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
           {Array.from({ length: 6 }).map((_, i) => (
             <li key={i}>
-              <MerchantCardSkeleton />
+              <VenueCardSkeleton />
             </li>
           ))}
         </ul>
       ) : isError ? (
         <ErrorState onRetry={retry} isRetrying={isFetching} />
-      ) : merchants.length === 0 ? (
+      ) : venues.length === 0 ? (
         <EmptyState
           icon={<Store size={32} strokeWidth={1.5} />}
           message={t("home.empty")}
         />
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
-          {merchants.map((merchant) => (
-            <li key={merchant.id}>
-              <MerchantCard merchant={merchant} />
+          {venues.map((venue) => (
+            <li key={venue.id}>
+              <VenueCard venue={venue} />
             </li>
           ))}
         </ul>

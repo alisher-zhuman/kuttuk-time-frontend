@@ -1,62 +1,37 @@
 import { z } from "zod";
 
+import { ManagedVenueSchema } from "@entities/venue/@x/merchant";
+
+// merchant = the owner's business account (role, cabinet, payouts). Its
+// storefronts are venues — one account can own several.
+
+// GET /merchants/me — the account and all its venues (inactive ones too).
+export const MerchantMeSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  isActive: z.boolean(),
+  venues: z.array(ManagedVenueSchema)
+});
+
+// Admin — GET /admin/merchants (list) and /admin/merchants/:id (+ venues).
 export const AdminMerchantSchema = z.object({
   id: z.number(),
   name: z.string(),
-  logo: z.string(),
-  isActive: z.boolean()
-});
-
-export const AdminMerchantsSchema = z.array(AdminMerchantSchema);
-
-export const MerchantSchema = z.object({
-  id: z.number(),
-  logo: z.string(),
-  name: z.string(),
-  minNominal: z.number(),
-  description: z.string()
-});
-
-export const MerchantsSchema = z.array(MerchantSchema);
-
-export const MerchantDetailSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  description: z.string(),
-  logo: z.string(),
-  nominals: z.array(z.number()).nonempty(),
-  validityMonths: z.number()
-});
-
-export const AdminMerchantDetailSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  description: z.object({
-    ru: z.string(),
-    kg: z.string(),
-    en: z.string()
-  }),
-  categories: z.array(z.number()),
-  nominals: z.array(z.number()).nonempty(),
-  validityMonths: z.number(),
-  merchantTelegramId: z.number(),
-  logo: z.string(),
-  slug: z.string(),
+  telegramId: z.number(),
   isActive: z.boolean(),
   createdAt: z.string()
 });
 
-// GET /merchants/options (../backend merchants.controller `getOptions`):
-// VALID_NOMINALS / VALID_VALIDITY_MONTHS, sorted ascending — the only source of
-// allowed merchant values; the frontend keeps no list of its own.
-export const MerchantOptionsSchema = z.object({
-  nominals: z.array(z.number()).nonempty(),
-  validityMonths: z.array(z.number()).nonempty()
+export const AdminMerchantsSchema = z.array(AdminMerchantSchema);
+
+export const AdminMerchantDetailSchema = AdminMerchantSchema.extend({
+  venues: z.array(ManagedVenueSchema)
 });
 
 // GET /merchants/me/summary (../backend src/certificates/merchant-cabinet.service.ts
-// MerchantWeekSummary). from/to are Bishkek calendar dates "YYYY-MM-DD". All
-// amounts are whole KGS and match the payout report — never recompute them.
+// MerchantWeekSummary) — across all the merchant's venues, or one with
+// ?venueId=. from/to are Bishkek calendar dates "YYYY-MM-DD". All amounts are
+// whole KGS and match the payout report — never recompute them.
 export const MerchantWeekSummarySchema = z.object({
   from: z.string(),
   to: z.string(),

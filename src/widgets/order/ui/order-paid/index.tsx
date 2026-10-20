@@ -14,10 +14,10 @@ import { OrderResult } from "../order-result";
 
 interface Props {
   order: Extract<Order, { status: "paid" }>;
-  merchantName: string | undefined;
+  venueName: string | undefined;
 }
 
-export const OrderPaid = ({ order, merchantName }: Props) => {
+export const OrderPaid = ({ order, venueName }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -29,14 +29,14 @@ export const OrderPaid = ({ order, merchantName }: Props) => {
     haptic.success();
   }, [haptic]);
 
-  useCertificateShareButton({ code, amount: order.amount, merchantName });
+  useCertificateShareButton({ code, amount: order.amount, venueName });
 
   return (
     <OrderResult
       icon={<Gift size={32} strokeWidth={1.5} />}
       tone="success"
       title={t("orders.paid.title")}
-      merchantName={merchantName}
+      venueName={venueName}
       amount={order.amount}
     >
       <div className="flex flex-col items-center gap-2">

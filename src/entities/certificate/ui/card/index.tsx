@@ -17,21 +17,21 @@ interface Props {
 export const CertificateCard = ({ certificate, onOpen }: Props) => {
   const { t } = useTranslation();
 
-  const { merchant, amount, code, status } = certificate;
+  const { venue, amount, code, status } = certificate;
 
   const { key, date } = getCertificateDate(certificate);
 
   const header = (
     <>
       <img
-        src={merchant.logo}
+        src={venue.logo}
         alt=""
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 
       <span className="flex-1 min-w-0 flex flex-col gap-0.5 text-left">
         <span className="text-base font-extrabold tracking-tight text-(--color-ink) truncate">
-          {merchant.name}
+          {venue.name}
         </span>
         <span className="text-base font-extrabold text-(--color-primary)">
           {formatMoney(amount, t("certificate.currency"))}

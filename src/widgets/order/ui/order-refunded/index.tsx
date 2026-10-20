@@ -12,12 +12,12 @@ import { OrderResult } from "../order-result";
 
 interface Props {
   order: Extract<Order, { status: "refunded" }>;
-  merchantName: string | undefined;
+  venueName: string | undefined;
 }
 
 // A needs_review order resolved by returning the money by hand. Nothing to act
 // on in the app — just say so and point to support in case it hasn't arrived.
-export const OrderRefunded = ({ order, merchantName }: Props) => {
+export const OrderRefunded = ({ order, venueName }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -28,7 +28,7 @@ export const OrderRefunded = ({ order, merchantName }: Props) => {
       tone="neutral"
       title={t("orders.refunded.title")}
       description={t("orders.refunded.hint")}
-      merchantName={merchantName}
+      venueName={venueName}
       amount={order.amount}
     >
       {openTelegramLink.isAvailable() && (

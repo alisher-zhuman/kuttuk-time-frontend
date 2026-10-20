@@ -37,10 +37,10 @@ export const RootRedirect = () => {
       return;
     }
 
-    // Merchant deep links are a buyer flow — admins and merchants always land
+    // Venue deep links are a buyer flow — admins and merchants always land
     // on their own dashboard.
     if (viewMode === "admin") {
-      navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANTS, { replace: true });
+      navigateTo(ROUTE_PATTERNS.ADMIN_VENUES, { replace: true });
       return;
     }
 

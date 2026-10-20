@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Store } from "lucide-react";
 
+import { CabinetMenu } from "@widgets/merchants/cabinet-menu";
 import { MerchantDetail, MerchantDetailSkeleton } from "@widgets/merchants/merchant-detail";
 
 import { useCategoriesQuery } from "@entities/category";
@@ -44,8 +45,10 @@ export const MerchantCabinetPage = () => {
   // why instead of offering an edit that can only fail.
   if (!merchant.isActive) {
     return (
-      <div className="flex-1 flex flex-col pt-4">
+      <div className="flex-1 flex flex-col gap-4 pt-4">
         <MerchantDeactivatedNotice />
+
+        <CabinetMenu />
 
         <MerchantDetail merchant={merchant} categories={categories} />
       </div>
@@ -53,10 +56,14 @@ export const MerchantCabinetPage = () => {
   }
 
   return (
-    <MerchantDetail
-      merchant={merchant}
-      categories={categories}
-      onEdit={() => navigateTo(ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT)}
-    />
+    <div className="flex-1 flex flex-col gap-4 pt-4">
+      <CabinetMenu />
+
+      <MerchantDetail
+        merchant={merchant}
+        categories={categories}
+        onEdit={() => navigateTo(ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT)}
+      />
+    </div>
   );
 };

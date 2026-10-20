@@ -53,3 +53,15 @@ export const MerchantOptionsSchema = z.object({
   nominals: z.array(z.number()).nonempty(),
   validityMonths: z.array(z.number()).nonempty()
 });
+
+// GET /merchants/me/summary (../backend src/certificates/merchant-cabinet.service.ts
+// MerchantWeekSummary). from/to are Bishkek calendar dates "YYYY-MM-DD". All
+// amounts are whole KGS and match the payout report — never recompute them.
+export const MerchantWeekSummarySchema = z.object({
+  from: z.string(),
+  to: z.string(),
+  sold: z.object({ count: z.number(), amount: z.number() }),
+  commission: z.number(),
+  payout: z.number(),
+  redeemed: z.object({ count: z.number(), amount: z.number() })
+});

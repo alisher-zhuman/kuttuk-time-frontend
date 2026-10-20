@@ -6,7 +6,8 @@ import {
   AdminMerchantsSchema,
   MerchantDetailSchema,
   MerchantOptionsSchema,
-  MerchantsSchema
+  MerchantsSchema,
+  MerchantWeekSummarySchema
 } from "../model/schemas";
 
 interface GetAdminMerchantsParams {
@@ -105,4 +106,13 @@ export const getMerchantOptions = async () => {
   const response = await api.get(`${API_PATHS.MERCHANTS}/options`);
 
   return MerchantOptionsSchema.parse(response.data);
+};
+
+// week: any "YYYY-MM-DD" inside the week; null → the current week.
+export const getMerchantSummary = async (week: string | null) => {
+  const response = await api.get(`${API_PATHS.MERCHANTS}/me/summary`, {
+    params: week ? { week } : {}
+  });
+
+  return MerchantWeekSummarySchema.parse(response.data);
 };

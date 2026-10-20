@@ -6,12 +6,14 @@ import { CategoryListPage } from "@pages/categories/list";
 import { CertificatePage } from "@pages/certificate";
 import { HomePage } from "@pages/home";
 import { MerchantCabinetPage } from "@pages/merchants/cabinet";
+import { MerchantCertificatesPage } from "@pages/merchants/certificates";
 import { MerchantCreatePage } from "@pages/merchants/create";
 import { MerchantDetailPage } from "@pages/merchants/detail";
 import { MerchantEditPage } from "@pages/merchants/edit";
 import { MerchantListPage } from "@pages/merchants/list";
 import { MerchantProfileEditPage } from "@pages/merchants/profile-edit";
 import { MerchantRedeemPage } from "@pages/merchants/redeem";
+import { MerchantSummaryPage } from "@pages/merchants/summary";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
 import { OrdersPage } from "@pages/orders";
@@ -109,6 +111,14 @@ export const ROUTER = createBrowserRouter([
           {
             path: ROUTE_PATTERNS.MERCHANT_REDEEM,
             element: <MerchantRedeemPage />
+          },
+          {
+            path: ROUTE_PATTERNS.MERCHANT_SUMMARY,
+            element: <MerchantSummaryPage />
+          },
+          {
+            path: ROUTE_PATTERNS.MERCHANT_CERTIFICATES,
+            element: <MerchantCertificatesPage />
           }
         ]
       },

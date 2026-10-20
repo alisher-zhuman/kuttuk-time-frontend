@@ -34,6 +34,26 @@
       "success": "Certificate redeemed",
       "redeemedAt": "Redeemed {{date}}",
       "next": "Check another"
+    },
+    "summary": {
+      "title": "Weekly summary",
+      "week": "{{from}} – {{to}}",
+      "prev": "Prev",
+      "next": "Next",
+      "sold": "Sold: {{count}} pcs · {{amount}}",
+      "commission": "Commission 10%: {{amount}}",
+      "payout": "Payout: {{amount}} (on Monday)",
+      "redeemed": "Redeemed: {{count}} pcs · {{amount}}",
+      "redeemedHint": "\"Redeemed\" counts certificates redeemed this week, even if they were sold earlier."
+    },
+    "certificates": {
+      "title": "Certificates",
+      "tabs": {
+        "all": "All",
+        "active": "Active",
+        "used": "Redeemed",
+        "expired": "Expired"
+      }
     }
   },
   "venue": {

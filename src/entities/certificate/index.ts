@@ -1,5 +1,6 @@
 export { useCertificateShareButton } from "./hooks/useCertificateShareButton";
 export { useMerchantCertificateQuery } from "./hooks/useMerchantCertificateQuery";
+export { useMerchantCertificatesQuery } from "./hooks/useMerchantCertificatesQuery";
 export { useMyCertificatesQuery } from "./hooks/useMyCertificatesQuery";
 export { useRedeemCertificateMutation } from "./hooks/useRedeemCertificateMutation";
 export { getCertificateDate } from "./model/date";

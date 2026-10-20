@@ -49,3 +49,11 @@ export const MerchantCertificateSchema = z.discriminatedUnion("status", [
 export const RedeemConflictSchema = z.object({
   error: z.enum(["already_used", "expired"])
 });
+
+// GET /merchants/me/certificates — newest first, keyset pages. nextCursor is
+// opaque (pass it back as cursor); null is the backend's "last page"
+// (MerchantCertificatePage.nextCursor: string | null).
+export const MerchantCertificatePageSchema = z.object({
+  items: z.array(MerchantCertificateSchema),
+  nextCursor: z.string().nullable()
+});

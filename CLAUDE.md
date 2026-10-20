@@ -93,6 +93,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - `QUERY_CLIENT` sets `placeholderData: keepPreviousData` globally — on a key change within a mounted component `isLoading` stays false and the previous key's data shows. Harmless today (pages remount on navigation), but wherever a key can change while mounted and stale data would be wrong (route params without remount, anything feeding a purchase), gate on `isPlaceholderData` or set `placeholderData: () => undefined` on that query (a literal `undefined` fails `exactOptionalPropertyTypes`)
 - `QUERY_CLIENT` retries once, and only network errors / 5xx — 4xx and `ZodError` fail immediately
 - **Allowed merchant values** (nominals, validity months) come only from `GET /merchants/options` (`useMerchantOptionsQuery`, staleTime ∞) — no frontend list. Forms build their Zod schema from it (`createMerchantFormSchema(options, withAdminFields)`), pages gate on it like on the merchant query
+- **Dates are shown in Bishkek time** (`formatDate` / `formatDateTime`, `Asia/Bishkek`), not the device zone — payout weeks, validity and redemption are business time. Calendar dates the backend sends as `YYYY-MM-DD` (payout weeks) are handled as strings: `formatIsoDate`, `shiftIsoDate` — never through `new Date()` in the local zone
 - `useSwipeNavigation`: swipe from the left edge → back, from the right edge → forward — intentional, not a bug
 - **Nullable in Zod schemas**:
   - `.nullable()` only for a real domain absence, with a comment next to it citing the source in `../backend` (entity column / DTO / service mapping)
@@ -149,7 +150,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 ## TODO
 
 - **Return after payment — waiting for diagnostics.** In production Finik's redirect landed the buyer in the bot chat with an error instead of the Mini App. Opening `startapp=order_<uuid>` by hand works (frontend routing is fine). The backend is diagnosing the `RedirectUrl` — see `../backend/CLAUDE.md` ("Payment RedirectUrl → back to the order")
-- **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`widgets/merchants/redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: MainButton on the cabinet home (also when deactivated). Still to do:
+- **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`widgets/merchants/redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: MainButton on the cabinet home (also when deactivated). ✅ Cabinet screens: weekly summary (`/app/merchant/summary`, `GET /merchants/me/summary`) and certificate list (`/app/merchant/certificates`, cursor pages) — both refreshed after a redemption, never polled. Still to do:
   - QR scanner: `qrScanner.capture` with a predicate accepting only `KT-` codes — it just fills the same code field
   - QR code rendered from the certificate code on the buyer's certificate screen, so the owner can scan it
 - **`requestWriteAccess`** at the moment of purchase, before `openLink` — the backup bot message with the code needs it (see **TMA SDK** → Worth adding)

@@ -143,10 +143,9 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 ## TODO
 
 - **Return after payment — waiting for diagnostics.** In production Finik's redirect landed the buyer in the bot chat with an error instead of the Mini App. Opening `startapp=order_<uuid>` by hand works (frontend routing is fine). The backend is diagnosing the `RedirectUrl` — see `../backend/CLAUDE.md` ("Payment RedirectUrl → back to the order")
-- **Redemption (frontend):**
-  - redemption screen in the merchant cabinet (the owner at the counter — no separate cashier role): `qrScanner.capture` with a predicate accepting only `KT-` codes, plus manual code entry
-  - confirm via native `popup` ("Mark as used?") before the request
-  - QR code rendered from the certificate code on the buyer's certificate screen, so the cashier can scan it
+- **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`features/certificate-redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: MainButton on the cabinet home (also when deactivated). Still to do:
+  - QR scanner: `qrScanner.capture` with a predicate accepting only `KT-` codes — it just fills the same code field
+  - QR code rendered from the certificate code on the buyer's certificate screen, so the owner can scan it
 - **`requestWriteAccess`** at the moment of purchase, before `openLink` — the backup bot message with the code needs it (see **TMA SDK** → Worth adding)
 
 **Verified on a real device:**

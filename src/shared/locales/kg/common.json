@@ -15,7 +15,7 @@
     "badge": "Кабинет",
     "label": "Көрүнүш режими",
     "viewAsUser": "Сатып алуучу",
-    "viewAsMerchant": "Мерчант",
+    "viewAsMerchant": "Кабинет",
     "home": {
       "loadError": "Профилди жүктөө мүмкүн болбоду"
     },
@@ -77,7 +77,7 @@
   "admin": {
     "badge": "Админ",
     "label": "Көрүнүш режими",
-    "viewAsUser": "Колдонуучу",
+    "viewAsUser": "Сатып алуучу",
     "viewAsAdmin": "Админ",
     "nav": {
       "merchants": "Мекемелер",

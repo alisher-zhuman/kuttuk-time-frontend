@@ -157,6 +157,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`
 When adding a new key — add it to all three files.
 Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit programmatically
+**Terminology:** the word «мерчант» (any case/form) is allowed only in the `en` locale ("merchant"). In `ru`/`kg` user-facing text use a normal word: «заведение» / «мекеме» for the venue, «Кабинет» for the merchant's own mode. Keys and code keep `merchant` — this is about texts only
 
 ## Testing
 

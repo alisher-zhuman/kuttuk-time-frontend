@@ -77,7 +77,7 @@
   "admin": {
     "badge": "Admin",
     "label": "View mode",
-    "viewAsUser": "User",
+    "viewAsUser": "Buyer",
     "viewAsAdmin": "Admin",
     "nav": {
       "merchants": "Venues",

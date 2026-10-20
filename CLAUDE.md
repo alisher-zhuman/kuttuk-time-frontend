@@ -155,6 +155,9 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 - **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`widgets/merchants/redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: MainButton on the cabinet home (also when deactivated). ✅ Cabinet screens: weekly summary (`/app/merchant/summary`, `GET /merchants/me/summary`) and certificate list (`/app/merchant/certificates`, cursor pages) — both refreshed after a redemption, never polled. Still to do:
   - QR scanner: `qrScanner.capture` with a predicate accepting only `KT-` codes — it just fills the same code field
   - QR code rendered from the certificate code on the buyer's certificate screen, so the owner can scan it
+- **Owner role before the first login — ask the backend.** The admin creates a merchant by Telegram ID (`POST /admin/merchants`), possibly before that person ever opened the bot. Check how the `merchant` role reaches them: assigned on their first `POST /auth/log-in` by matching `telegramId`, or does the user row have to exist first? If the latter, the owner lands in the buyer view instead of the cabinet
+- **Bottom nav for the merchant cabinet**, like `AdminNav`: e.g. Cabinet (venues) / Summary / Certificates / Redeem instead of the `CabinetMenu` list. Then generalize `AdminNav` + `ADMIN_NAV_TABS` (`widgets/layout`) into one nav with tabs per mode, and add the new roots to `useBackButton` `ROOT_PATHS`
+- **Bottom nav sits too high** — consider lowering it: now `mx-4 mb-4` above the safe area. Check on a real iPhone (home indicator) before changing; untouched by the merchant/venue split except the tab list
 - **`requestWriteAccess`** at the moment of purchase, before `openLink` — the backup bot message with the code needs it (see **TMA SDK** → Worth adding)
 
 **Verified on a real device:**

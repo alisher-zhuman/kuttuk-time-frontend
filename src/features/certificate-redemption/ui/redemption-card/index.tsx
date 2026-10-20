@@ -1,0 +1,54 @@
+import { useTranslation } from "react-i18next";
+
+import { type MerchantCertificate } from "@entities/certificate";
+
+import { cn, formatDate, formatDateTime, formatMoney } from "@shared/helpers";
+import { StatusBadge } from "@shared/ui";
+
+interface Props {
+  certificate: MerchantCertificate;
+}
+
+export const RedemptionCard = ({ certificate }: Props) => {
+  const { t } = useTranslation();
+
+  const isActive = certificate.status === "active";
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-3 p-4 rounded-2xl bg-(--color-card) border border-(--color-line)",
+        !isActive && "opacity-80"
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span className="text-2xl font-extrabold text-(--color-ink)">
+          {formatMoney(certificate.amount, t("certificate.currency"))}
+        </span>
+
+        {isActive && <StatusBadge active label={t("certificate.status.active")} />}
+      </div>
+
+      <span className="font-mono text-sm font-bold tracking-wider text-(--color-slate)">
+        {certificate.code}
+      </span>
+
+      {certificate.status === "used" && (
+        <span className="text-sm font-bold text-(--color-accent)">
+          {t("merchant.redeem.alreadyUsed", { date: formatDateTime(certificate.usedAt) })}
+        </span>
+      )}
+
+      {certificate.status === "expired" && (
+        <span className="text-sm font-bold text-(--color-accent)">
+          {t("merchant.redeem.expired")}
+        </span>
+      )}
+
+      <div className="flex flex-col gap-1 text-sm text-(--color-slate)">
+        <span>{t("certificate.validUntil", { date: formatDate(certificate.validUntil) })}</span>
+        <span>{t("merchant.redeem.soldAt", { date: formatDate(certificate.createdAt) })}</span>
+      </div>
+    </div>
+  );
+};

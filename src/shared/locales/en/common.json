@@ -23,6 +23,19 @@
       "title": "Account deactivated",
       "message": "Your venue is hidden from buyers and profile editing is unavailable. Message us to turn it back on."
     },
+    "redeem": {
+      "entry": "Redeem a certificate",
+      "title": "Redeem a certificate",
+      "check": "Check",
+      "submit": "Redeem",
+      "invalidCode": "Invalid code format",
+      "alreadyUsed": "Already redeemed {{date}}",
+      "expired": "Expired",
+      "soldAt": "Sold {{date}}",
+      "success": "Certificate redeemed",
+      "redeemedAt": "Redeemed {{date}}",
+      "next": "Check another"
+    },
     "form": {
       "editTitle": "Edit profile",
       "save": "Save",

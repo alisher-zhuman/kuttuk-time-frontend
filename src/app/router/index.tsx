@@ -14,6 +14,7 @@ import { HomePage } from "@pages/home";
 import { MerchantPage } from "@pages/merchant";
 import { MerchantHomePage } from "@pages/merchant-home";
 import { MerchantProfileEditPage } from "@pages/merchant-profile-edit";
+import { MerchantRedeemPage } from "@pages/merchant-redeem";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
 import { ProfilePage } from "@pages/profile";
@@ -104,6 +105,10 @@ export const ROUTER = createBrowserRouter([
           {
             path: ROUTE_PATTERNS.MERCHANT_PROFILE_EDIT,
             element: <MerchantProfileEditPage />
+          },
+          {
+            path: ROUTE_PATTERNS.MERCHANT_REDEEM,
+            element: <MerchantRedeemPage />
           }
         ]
       },

@@ -13,3 +13,11 @@ export const formatDate = (iso: string): string => {
 
   return `${day}.${month}.${date.getFullYear()}`;
 };
+
+export const formatDateTime = (iso: string): string => {
+  const date = new Date(iso);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${formatDate(iso)}, ${hours}:${minutes}`;
+};

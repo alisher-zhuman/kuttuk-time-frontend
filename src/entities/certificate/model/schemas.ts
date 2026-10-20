@@ -27,3 +27,25 @@ export const CertificateSchema = z.discriminatedUnion("status", [
 ]);
 
 export const CertificatesSchema = z.array(CertificateSchema);
+
+// GET /merchants/me/certificates/:code and POST …/redeem (../backend
+// src/certificates/redemption.service.ts): the merchant's view of its own
+// certificate. Effective status (active past validUntil → expired), usedAt only
+// on used — same rules as the buyer's list.
+const MerchantCertificateBaseSchema = z.object({
+  code: z.string(),
+  amount: z.number(),
+  validUntil: z.string(),
+  createdAt: z.string()
+});
+
+export const MerchantCertificateSchema = z.discriminatedUnion("status", [
+  MerchantCertificateBaseSchema.extend({ status: z.literal("active") }),
+  MerchantCertificateBaseSchema.extend({ status: z.literal("used"), usedAt: z.string() }),
+  MerchantCertificateBaseSchema.extend({ status: z.literal("expired") })
+]);
+
+// 409 body from POST …/redeem; `error` says why nothing was redeemed.
+export const RedeemConflictSchema = z.object({
+  error: z.enum(["already_used", "expired"])
+});

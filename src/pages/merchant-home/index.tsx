@@ -11,7 +11,7 @@ import { useCategoriesQuery } from "@entities/category";
 import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { useNavigateTo } from "@shared/hooks";
+import { useMainButton, useNavigateTo } from "@shared/hooks";
 import { EmptyState } from "@shared/ui";
 
 export const MerchantHomePage = () => {
@@ -22,6 +22,14 @@ export const MerchantHomePage = () => {
   const { merchant, isLoading, isError } = useMerchantMeQuery();
 
   const { categories } = useCategoriesQuery();
+
+  // The cabinet's main action. Shown when deactivated too: a deactivated
+  // venue can still redeem what it sold.
+  useMainButton({
+    text: t("merchant.redeem.entry"),
+    onClick: () => navigateTo(ROUTE_PATTERNS.MERCHANT_REDEEM),
+    hidden: !merchant
+  });
 
   if (isLoading) return <AdminMerchantDetailSkeleton />;
 

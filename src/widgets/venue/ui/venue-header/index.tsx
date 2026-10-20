@@ -4,7 +4,7 @@ interface Props {
   description: string;
 }
 
-export const MerchantHeader = ({ logo, name, description }: Props) => (
+export const VenueHeader = ({ logo, name, description }: Props) => (
   <div className="flex items-center gap-3.5">
     <img
       src={logo}

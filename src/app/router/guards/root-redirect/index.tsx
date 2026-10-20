@@ -1,8 +1,8 @@
 import { useLayoutEffect } from "react";
 
 import {
-  getMerchantRoute,
   getOrderRoute,
+  getVenueRoute,
   ORDER_START_PARAM_PREFIX,
   ROUTE_PATTERNS
 } from "@shared/constants";
@@ -49,7 +49,7 @@ export const RootRedirect = () => {
       return;
     }
 
-    navigateTo(startParam ? getMerchantRoute(startParam) : ROUTE_PATTERNS.HOME, {
+    navigateTo(startParam ? getVenueRoute(startParam) : ROUTE_PATTERNS.HOME, {
       replace: true
     });
   }, [navigateTo]);

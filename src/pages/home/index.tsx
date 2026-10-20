@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router";
 
-import { MerchantList } from "@widgets/home";
+import { VenueList } from "@widgets/home";
 
 import { CategoryFilter } from "@features/category-filter";
 
@@ -57,7 +57,7 @@ export const HomePage = () => {
 
       <CategoryFilter active={activeCategory} onChange={handleCategoryChange} />
 
-      <MerchantList category={activeCategory} search={debouncedSearch} />
+      <VenueList category={activeCategory} search={debouncedSearch} />
     </>
   );
 };

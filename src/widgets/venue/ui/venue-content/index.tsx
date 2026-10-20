@@ -10,14 +10,14 @@ import { openExternalLink } from "@shared/helpers";
 import { useHaptic, useMainButton, useNavigateTo, usePopup } from "@shared/hooks";
 
 import { CertPreviewCard } from "../cert-preview-card";
-import { MerchantHeader } from "../merchant-header";
 import { NominalList } from "../nominal-list";
+import { VenueHeader } from "../venue-header";
 
 interface Props {
   merchant: MerchantDetail;
 }
 
-export const MerchantContent = ({ merchant }: Props) => {
+export const VenueContent = ({ merchant }: Props) => {
   const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
 
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ export const MerchantContent = ({ merchant }: Props) => {
   };
 
   useMainButton({
-    text: t("merchantDetail.buy"),
+    text: t("venue.buy"),
     onClick: handleBuy,
     disabled: isPending,
     loading: isPending
@@ -81,7 +81,7 @@ export const MerchantContent = ({ merchant }: Props) => {
 
   return (
     <div className="flex-1 flex flex-col py-4 gap-5">
-      <MerchantHeader
+      <VenueHeader
         logo={merchant.logo}
         name={merchant.name}
         description={merchant.description}

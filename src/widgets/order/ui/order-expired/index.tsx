@@ -4,7 +4,7 @@ import { Clock } from "lucide-react";
 
 import { type ExpiredOrder, type PendingOrder } from "@entities/order";
 
-import { getMerchantRoute } from "@shared/constants";
+import { getVenueRoute } from "@shared/constants";
 import { useMainButton, useNavigateTo } from "@shared/hooks";
 
 import { OrderResult } from "../order-result";
@@ -24,7 +24,7 @@ export const OrderExpired = ({ order, merchantName }: Props) => {
   // again (the merchant page accepts the numeric id as its handle).
   useMainButton({
     text: t("orders.expired.retry"),
-    onClick: () => navigateTo(getMerchantRoute(order.merchantId), { replace: true })
+    onClick: () => navigateTo(getVenueRoute(order.merchantId), { replace: true })
   });
 
   return (

@@ -16,7 +16,7 @@ export const NominalList = ({ nominals, selected, onSelect }: Props) => {
 
   return (
     <div className="flex flex-col gap-2.5">
-      <FieldLabel>{t("merchantDetail.nominal")}</FieldLabel>
+      <FieldLabel>{t("venue.nominal")}</FieldLabel>
 
       <ChipSelect
         size="md"

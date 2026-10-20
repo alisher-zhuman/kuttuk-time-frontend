@@ -15,7 +15,7 @@ interface Props {
   search: string;
 }
 
-export const MerchantList = ({ category, search }: Props) => {
+export const VenueList = ({ category, search }: Props) => {
   const { t } = useTranslation();
 
   const { merchants, isLoading, isError, isFetching, retry } = useMerchantsQuery({
@@ -24,9 +24,9 @@ export const MerchantList = ({ category, search }: Props) => {
   });
 
   return (
-    <section aria-label={t("home.merchantsSection")}>
+    <section aria-label={t("home.venuesSection")}>
       <h2 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-1">
-        {t("home.merchantsSection")}
+        {t("home.venuesSection")}
       </h2>
 
       {isLoading ? (

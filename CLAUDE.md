@@ -67,7 +67,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 
 **Slice grouping:**
 - `admin/` is the only grouped bounded context (`pages/admin/*`, `features/admin/*`, `widgets/admin/*`) — justified by its size and an unambiguous name. Everything else is flat descriptive slices (`features/category-filter`, `features/merchant-profile-form`, `pages/merchant-home`, `pages/merchant-profile-edit`).
-- Don't add a `merchant/` group: "merchant" is overloaded — the **buyer-facing venue** (`pages/merchant` = `/app/merchants/:handle`, `widgets/merchant`), the **merchant-role cabinet** (`pages/merchant-home`, `features/merchant-profile-form`), and the **domain entity** (`entities/merchant`) all share the word. A `merchant/` folder would be ambiguous, unlike `admin/`.
+- Don't add a `merchant/` group: "merchant" is overloaded — the **buyer-facing venue** (now `pages/venue` = `/app/venues/:handle`, `widgets/venue`), the **merchant-role cabinet** (`pages/merchant-home`, `features/merchant-profile-form`), and the **domain entity** (`entities/merchant`) all share the word. A `merchant/` folder would be ambiguous, unlike `admin/`.
 - **Future:** once the merchant cabinet grows (dashboard, stats, active codes, "mark as used" per the roadmap), revisit — introduce a real `merchant/` group *and* rename the buyer flow to `venue` (`pages/venue`, `widgets/venue`, `VenuePage`/`VenueContent`/…) at the same time, so the grouping stops being ambiguous. Not worth the churn on the core buy flow until there are enough merchant-cabinet slices to justify it.
 
 ## Code
@@ -78,7 +78,7 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
 - Comments only when the `WHY` isn't obvious
 - No unnecessary abstraction — three similar lines beat a premature helper
 - **Navigation**: always `useNavigateTo` from `@shared/hooks` — never `useNavigate` directly
-- **Routes**: only through `ROUTE_PATTERNS` and `getMerchantRoute()` from `@shared/constants` — no hardcoded strings
+- **Routes**: only through `ROUTE_PATTERNS` and `getVenueRoute()` from `@shared/constants` — no hardcoded strings
 - **TMA launch params**: only through `getLaunchParams()` from `@shared/helpers` — never `retrieveLaunchParams()` from the SDK directly
 - **Configs** (`vercel.json`, BotFather, CI): don't change without explicit approval
 - **Edit forms**: the page gates on the query (spinner → not-found → form) and passes loaded data as a prop into `defaultValues` — no `useEffect` + `reset()` (it wipes input typed while loading)
@@ -137,7 +137,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 
 ## Payment flow — notes for when it's built
 
-- **Selected nominal can go stale**: `MerchantContent` keeps `selectedNominal` in `useState`, but `merchant.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the merchant editing nominals). Before buying, re-derive it: `merchant.nominals.includes(selectedNominal) ? selectedNominal : merchant.nominals[0]`, and send `merchantId` + nominal so the backend validates against the current list — never trust the client's amount
+- **Selected nominal can go stale**: `VenueContent` keeps `selectedNominal` in `useState`, but `merchant.nominals` can change under it (refetch after a language switch — the detail key includes `lang` — or the merchant editing nominals). Before buying, re-derive it: `merchant.nominals.includes(selectedNominal) ? selectedNominal : merchant.nominals[0]`, and send `merchantId` + nominal so the backend validates against the current list — never trust the client's amount
 - The merchant detail query feeds the purchase — mind `keepPreviousData` (see Code) there
 
 ## TODO
@@ -156,7 +156,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`
 When adding a new key — add it to all three files.
 Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit programmatically
-**Terminology:** the word «мерчант» (any case/form) is allowed only in the `en` locale ("merchant"). In `ru`/`kg` user-facing text use a normal word: «заведение» / «мекеме» for the venue, «Кабинет» for the merchant's own mode. Keys and code keep `merchant` — this is about texts only
+**Terminology:** the word «мерчант» (any case/form) is allowed only in the `en` locale ("merchant"). In `ru`/`kg` user-facing text use a normal word: «заведение» / «мекеме» for the venue, «Кабинет» for the merchant's own mode. In code, **`venue`** = the buyer-facing screens about a venue (`pages/venue`, `widgets/venue`, `getVenueRoute`, i18n `venue.*`); **`merchant`** = the domain entity (`entities/merchant`, same name as the backend API) and the owner's cabinet
 
 ## Testing
 
@@ -164,7 +164,7 @@ No test setup exists yet (no Vitest/Jest, no test files, nothing in `package.jso
 
 Worth adding once the codebase grows past the 2-merchant MVP stage:
 - **Vitest** — unit tests for pure logic in `@shared/helpers` (e.g. `getScopedStorageKey`, `formatMoney`) and Zod schemas in `entities/*/model`
-- **React Testing Library** — component tests for anything with real branching logic (e.g. `MerchantContent`/`MerchantNotFound` state switching in `pages/merchant`)
+- **React Testing Library** — component tests for anything with real branching logic (e.g. `VenueContent`/`VenueNotFound` state switching in `pages/venue`)
 - **Playwright** (or similar) — e2e for the critical path only: deep link → merchant page → pick amount → buy, since that's the entire business
 
 Not a priority before the payment flow ships — don't add test infra just to have it.

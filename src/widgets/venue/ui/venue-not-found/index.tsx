@@ -7,7 +7,7 @@ import { canGoBack } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { EmptyState } from "@shared/ui";
 
-export const MerchantNotFound = () => {
+export const VenueNotFound = () => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -18,7 +18,7 @@ export const MerchantNotFound = () => {
     <EmptyState
       variant="page"
       icon={<Store size={32} strokeWidth={1.5} />}
-      message={t("merchantDetail.notFound")}
+      message={t("venue.notFound")}
       action={
         <button
           type="button"

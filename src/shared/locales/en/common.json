@@ -7,11 +7,10 @@
     "clear": "Clear"
   },
   "home": {
-    "merchantsSection": "VENUES",
+    "venuesSection": "VENUES",
     "empty": "No venues found"
   },
   "merchant": {
-    "fromPrice": "from {{price}}",
     "badge": "Dashboard",
     "label": "View mode",
     "viewAsUser": "Buyer",
@@ -52,6 +51,13 @@
       "nominalsUnavailable": "Some amounts are no longer available — deselect them",
       "validityUnavailable": "This validity period is no longer available — pick another"
     }
+  },
+  "venue": {
+    "fromPrice": "from {{price}}",
+    "nominal": "AMOUNT",
+    "buy": "Buy",
+    "validity": "Valid for {{months}} months",
+    "notFound": "Venue not found"
   },
   "logoUpload": {
     "hint": "Logo, up to 5 MB",
@@ -98,6 +104,7 @@
       "payments": "Payments"
     },
     "merchants": {
+      "listTitle": "VENUES",
       "active": "Active",
       "inactive": "Inactive",
       "empty": "No venues found",
@@ -237,12 +244,6 @@
   },
   "footer": {
     "madeWithLove": "Made with love by KuttukTime ♥"
-  },
-  "merchantDetail": {
-    "nominal": "AMOUNT",
-    "buy": "Buy",
-    "validity": "Valid for {{months}} months",
-    "notFound": "Venue not found"
   },
   "categories": {
     "all": "All"

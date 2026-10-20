@@ -7,11 +7,10 @@
     "clear": "Тазалоо"
   },
   "home": {
-    "merchantsSection": "МЕКЕМЕЛЕР",
+    "venuesSection": "МЕКЕМЕЛЕР",
     "empty": "Мекемелер табылган жок"
   },
   "merchant": {
-    "fromPrice": "{{price}}дон баштап",
     "badge": "Кабинет",
     "label": "Көрүнүш режими",
     "viewAsUser": "Сатып алуучу",
@@ -52,6 +51,13 @@
       "nominalsUnavailable": "Айрым номиналдар мындан ары жеткиликсиз — аларды алып салыңыз",
       "validityUnavailable": "Бул мөөнөт мындан ары жеткиликсиз — башкасын тандаңыз"
     }
+  },
+  "venue": {
+    "fromPrice": "{{price}}дон баштап",
+    "nominal": "НОМИНАЛ",
+    "buy": "Сатып алуу",
+    "validity": "{{months}} ай жарактуу",
+    "notFound": "Мекеме табылган жок"
   },
   "logoUpload": {
     "hint": "Логотип, 5 МБ чейин",
@@ -98,6 +104,7 @@
       "payments": "Төлөмдөр"
     },
     "merchants": {
+      "listTitle": "МЕКЕМЕЛЕР",
       "active": "Активдүү",
       "inactive": "Активдүү эмес",
       "empty": "Мекемелер табылган жок",
@@ -237,12 +244,6 @@
   },
   "footer": {
     "madeWithLove": "Сүйүү менен KuttukTime ♥"
-  },
-  "merchantDetail": {
-    "nominal": "НОМИНАЛ",
-    "buy": "Сатып алуу",
-    "validity": "{{months}} ай жарактуу",
-    "notFound": "Мекеме табылган жок"
   },
   "categories": {
     "all": "Баары"

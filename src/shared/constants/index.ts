@@ -13,8 +13,8 @@ export {
   getCertificateRoute,
   getHomeRoute,
   getMerchantEditRoute,
-  getMerchantRoute,
   getOrderRoute,
+  getVenueRoute,
   ROUTE_PATTERNS,
   ROUTES
 } from "./routes";

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
-import { getMerchantRoute } from "@shared/constants";
+import { getVenueRoute } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
@@ -20,13 +20,13 @@ export const MerchantCard = ({ merchant }: Props) => {
   // One interpolated string, not "from" + price: kg puts the price first and
   // attaches a suffix to it («500 сомдон баштап»). Non-breaking spaces keep
   // "10 000 сом" whole when the label wraps.
-  const fromPrice = t("merchant.fromPrice", {
+  const fromPrice = t("venue.fromPrice", {
     price: formatMoney(merchant.minNominal, t("certificate.currency")).replace(/ /g, "\u00A0")
   });
 
   const handleClick = () => {
     haptic.light();
-    navigateTo(getMerchantRoute(merchant.id));
+    navigateTo(getVenueRoute(merchant.id));
   };
 
   return (

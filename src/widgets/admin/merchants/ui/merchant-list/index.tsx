@@ -32,9 +32,9 @@ export const AdminMerchantList = ({ search, category, isActive }: Props) => {
   });
 
   return (
-    <section aria-label={t("home.merchantsSection")}>
+    <section aria-label={t("admin.merchants.listTitle")}>
       <h2 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-1">
-        {t("home.merchantsSection")}
+        {t("admin.merchants.listTitle")}
       </h2>
 
       {isLoading ? (

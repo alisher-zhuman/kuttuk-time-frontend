@@ -11,13 +11,13 @@ import { AdminOrdersPage } from "@pages/admin/orders";
 import { AdminPaymentsPage } from "@pages/admin/payments";
 import { CertificatePage } from "@pages/certificate";
 import { HomePage } from "@pages/home";
-import { MerchantPage } from "@pages/merchant";
 import { MerchantHomePage } from "@pages/merchant-home";
 import { MerchantProfileEditPage } from "@pages/merchant-profile-edit";
 import { MerchantRedeemPage } from "@pages/merchant-redeem";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
 import { ProfilePage } from "@pages/profile";
+import { VenuePage } from "@pages/venue";
 
 import { AppLayout } from "@widgets/layout";
 
@@ -43,8 +43,8 @@ export const ROUTER = createBrowserRouter([
         element: <ProfilePage />
       },
       {
-        path: ROUTE_PATTERNS.MERCHANT,
-        element: <MerchantPage />
+        path: ROUTE_PATTERNS.VENUE,
+        element: <VenuePage />
       },
       {
         path: ROUTE_PATTERNS.ORDER,

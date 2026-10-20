@@ -7,11 +7,10 @@
     "clear": "Очистить"
   },
   "home": {
-    "merchantsSection": "ЗАВЕДЕНИЯ",
+    "venuesSection": "ЗАВЕДЕНИЯ",
     "empty": "Заведения не найдены"
   },
   "merchant": {
-    "fromPrice": "от {{price}}",
     "badge": "Кабинет",
     "label": "Режим отображения",
     "viewAsUser": "Покупатель",
@@ -52,6 +51,13 @@
       "nominalsUnavailable": "Некоторые номиналы больше недоступны — снимите их",
       "validityUnavailable": "Этот срок больше недоступен — выберите другой"
     }
+  },
+  "venue": {
+    "fromPrice": "от {{price}}",
+    "nominal": "НОМИНАЛ",
+    "buy": "Купить",
+    "validity": "Действует {{months}} месяцев",
+    "notFound": "Заведение не найдено"
   },
   "logoUpload": {
     "hint": "Логотип, до 5 МБ",
@@ -98,6 +104,7 @@
       "payments": "Платежи"
     },
     "merchants": {
+      "listTitle": "ЗАВЕДЕНИЯ",
       "active": "Активен",
       "inactive": "Неактивен",
       "empty": "Заведения не найдены",
@@ -237,12 +244,6 @@
   },
   "footer": {
     "madeWithLove": "С любовью KuttukTime ♥"
-  },
-  "merchantDetail": {
-    "nominal": "НОМИНАЛ",
-    "buy": "Купить",
-    "validity": "Действует {{months}} месяцев",
-    "notFound": "Заведение не найдено"
   },
   "categories": {
     "all": "Все"

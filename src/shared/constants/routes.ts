@@ -2,6 +2,7 @@ export const ROUTES = {
   APP: "app",
   PROFILE: "profile",
   MERCHANTS: "merchants",
+  VENUES: "venues",
   ADMIN: "admin",
   ORDERS: "orders",
   PAYMENTS: "payments",
@@ -19,7 +20,7 @@ export const ROUTES = {
 export const ROUTE_PATTERNS = {
   HOME: `/${ROUTES.APP}`,
   PROFILE: `/${ROUTES.APP}/${ROUTES.PROFILE}`,
-  MERCHANT: `/${ROUTES.APP}/${ROUTES.MERCHANTS}/:handle`,
+  VENUE: `/${ROUTES.APP}/${ROUTES.VENUES}/:handle`,
   ORDER: `/${ROUTES.APP}/${ROUTES.ORDERS}/:orderId`,
   CERTIFICATE: `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/:certificateId`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
@@ -36,8 +37,8 @@ export const ROUTE_PATTERNS = {
   ADMIN_CATEGORY_EDIT: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_EDIT}/:id`
 } as const;
 
-export const getMerchantRoute = (handle: string | number) =>
-  `/${ROUTES.APP}/${ROUTES.MERCHANTS}/${handle}`;
+export const getVenueRoute = (handle: string | number) =>
+  `/${ROUTES.APP}/${ROUTES.VENUES}/${handle}`;
 
 export const getOrderRoute = (orderId: string) =>
   `/${ROUTES.APP}/${ROUTES.ORDERS}/${orderId}`;

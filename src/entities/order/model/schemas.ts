@@ -7,6 +7,8 @@ export const CreatedOrderSchema = z.object({
 });
 
 export const OrderCertificateSchema = z.object({
+  // For «Подарить» (POST /certificates/:id/share) right from the order screen.
+  id: z.string(),
   code: z.string(),
   validUntil: z.string()
 });

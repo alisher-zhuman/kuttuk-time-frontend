@@ -4,11 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { Gift } from "lucide-react";
 
-import {
-  CertificateCode,
-  useCertificateShareButton,
-  useMyCertificatesQuery
-} from "@entities/certificate";
+import { CertificateCode, useCertificateShareButton } from "@entities/certificate";
 import { type Order } from "@entities/order";
 
 import { formatDate } from "@shared/helpers";
@@ -26,27 +22,16 @@ export const OrderPaid = ({ order, venueName }: Props) => {
 
   const haptic = useHaptic();
 
-  const { code, validUntil } = order.certificate;
+  const { id, code, validUntil } = order.certificate;
 
   // Mounts when polling sees "paid" — the moment the payment lands.
   useEffect(() => {
     haptic.success();
   }, [haptic]);
 
-  // The order only carries the code; "Подарить" needs the certificate's id —
-  // take it from "My certificates" (refreshed when the order turned paid).
-  const { certificates, isLoading } = useMyCertificatesQuery();
-  const certificate = certificates.find((item) => item.code === code);
-
-  useCertificateShareButton({
-    id: certificate?.id,
-    code,
-    amount: order.amount,
-    venueName,
-    // Wait for the list, so the label doesn't flip from "Share" to "Gift";
-    // a certificate already used / expired isn't offered.
-    hidden: isLoading || (certificate !== undefined && certificate.status !== "active")
-  });
+  // Just paid — the certificate is active; if it was used since (an old order
+  // reopened), the share request answers 409 and says so.
+  useCertificateShareButton({ id, code, amount: order.amount, venueName });
 
   return (
     <OrderResult

@@ -1,5 +1,6 @@
 export { ActiveFilter } from './active-filter';
 export { ActiveToggle } from './active-toggle';
+export { BottomSheet } from './bottom-sheet';
 export { ChipSelect } from './chip-select';
 export { EmptyState } from './empty-state';
 export { ErrorState } from './error-state';

@@ -10,10 +10,9 @@ import { type CertificateStatus, useMerchantCertificatesQuery } from "@entities/
 import { useMerchantMeQuery } from "@entities/merchant";
 
 import { getRedeemRoute } from "@shared/constants";
-import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { useHaptic, useLoadMoreOnScroll, useNavigateTo } from "@shared/hooks";
 import { ChipSelect, EmptyState, ErrorState } from "@shared/ui";
 
-import { useLoadMoreOnScroll } from "../../hooks/useLoadMoreOnScroll";
 import { CertificateRow } from "../certificate-row";
 
 type Tab = "all" | CertificateStatus;

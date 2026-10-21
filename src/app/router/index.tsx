@@ -15,7 +15,8 @@ import { MerchantRedeemPage } from "@pages/merchants/redeem";
 import { MerchantSummaryPage } from "@pages/merchants/summary";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
-import { OrdersPage } from "@pages/orders";
+import { OrderDetailPage } from "@pages/orders/detail";
+import { OrderListPage } from "@pages/orders/list";
 import { PayoutsPage } from "@pages/payouts";
 import { ProfilePage } from "@pages/profile";
 import { VenuePage } from "@pages/venue";
@@ -109,7 +110,11 @@ export const ROUTER = createBrowserRouter([
           },
           {
             path: ROUTE_PATTERNS.ADMIN_ORDERS,
-            element: <OrdersPage />
+            element: <OrderListPage />
+          },
+          {
+            path: ROUTE_PATTERNS.ADMIN_ORDER_DETAIL,
+            element: <OrderDetailPage />
           },
           {
             path: ROUTE_PATTERNS.ADMIN_PAYOUTS,

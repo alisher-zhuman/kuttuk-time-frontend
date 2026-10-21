@@ -231,6 +231,43 @@
       "empty": "Бул аптада сатуу болгон жок",
       "needsReview": "Текшерүүдө: {{count}} — бул буйрутмалар төлөп берүүгө кирген жок",
       "openOrders": "Буйрутмаларды ачуу"
+    },
+    "orders": {
+      "title": "Буйрутмалар",
+      "all": "Баары",
+      "searchPlaceholder": "Сертификаттын коду же буйрутманын номери",
+      "searchInvalid": "Сертификаттын кодун же буйрутманын номерин жазыңыз",
+      "empty": "Буйрутмалар жок",
+      "notFound": "Буйрутма табылган жок",
+      "status": {
+        "pending": "Төлөм күтүлүүдө",
+        "paid": "Төлөндү",
+        "expired": "Мөөнөтү бүттү",
+        "needs_review": "Текшерүүдө",
+        "refunded": "Кайтарылды"
+      },
+      "detail": {
+        "id": "БУЙРУТМАНЫН НОМЕРИ",
+        "venue": "МЕКЕМЕ",
+        "merchant": "ЭЭСИ (ТӨЛӨП БЕРҮҮ)",
+        "createdAt": "ТҮЗҮЛДҮ",
+        "paidAt": "ТӨЛӨНДҮ",
+        "expiresAt": "ТӨЛӨӨ МӨӨНӨТҮ",
+        "transaction": "FINIK ТРАНЗАКЦИЯСЫ",
+        "buyer": "САТЫП АЛУУЧУ",
+        "certificate": "СЕРТИФИКАТ",
+        "validUntil": "{{date}} чейин жарактуу",
+        "usedAt": "{{date}} белгиленди",
+        "webhooks": "FINIK ВЕБХУКТАРЫ",
+        "noWebhooks": "Finik азырынча эч нерсе жөнөтө элек",
+        "webhookAmount": "Finik жөнөткөн сумма: {{amount}}",
+        "noAmount": "Finik жөнөткөн сумма: жок",
+        "amountMismatch": "Буйрутманын суммасына дал келбейт ({{amount}})",
+        "resolutions": "КОЛ МЕНЕН ЧЕЧИМДЕР",
+        "issue": "Сертификат берилди",
+        "refunded": "Кайтарылды",
+        "resolvedBy": "{{by}} · {{date}}"
+      }
     }
   },
   "certificate": {

@@ -7,6 +7,7 @@ export const API_PATHS = {
   ADMIN_CATEGORIES: "/admin/categories",
   CATEGORIES: "/categories",
   ORDERS: "/orders",
+  ADMIN_ORDERS: "/admin/orders",
   ADMIN_PAYOUTS: "/admin/payouts",
   MY_CERTIFICATES: "/certificates/my",
   UPLOAD: "/upload"

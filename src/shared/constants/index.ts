@@ -10,6 +10,8 @@ export {
 export {
   getAdminMerchantDetailRoute,
   getAdminMerchantEditRoute,
+  getAdminOrderDetailRoute,
+  getAdminOrdersRoute,
   getAdminVenueCreateRoute,
   getAdminVenueDetailRoute,
   getAdminVenueEditRoute,

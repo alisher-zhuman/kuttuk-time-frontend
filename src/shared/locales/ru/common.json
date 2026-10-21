@@ -231,6 +231,43 @@
       "empty": "За эту неделю продаж нет",
       "needsReview": "На проверке: {{count}} — эти заказы не вошли в выплату",
       "openOrders": "Открыть заказы"
+    },
+    "orders": {
+      "title": "Заказы",
+      "all": "Все",
+      "searchPlaceholder": "Код сертификата или номер заказа",
+      "searchInvalid": "Введите код сертификата или номер заказа",
+      "empty": "Заказов нет",
+      "notFound": "Заказ не найден",
+      "status": {
+        "pending": "Ожидает оплаты",
+        "paid": "Оплачен",
+        "expired": "Истёк",
+        "needs_review": "На проверке",
+        "refunded": "Возвращён"
+      },
+      "detail": {
+        "id": "НОМЕР ЗАКАЗА",
+        "venue": "ЗАВЕДЕНИЕ",
+        "merchant": "ВЛАДЕЛЕЦ (ВЫПЛАТА)",
+        "createdAt": "СОЗДАН",
+        "paidAt": "ОПЛАЧЕН",
+        "expiresAt": "ОПЛАТИТЬ ДО",
+        "transaction": "ТРАНЗАКЦИЯ FINIK",
+        "buyer": "ПОКУПАТЕЛЬ",
+        "certificate": "СЕРТИФИКАТ",
+        "validUntil": "Действует до {{date}}",
+        "usedAt": "Погашен {{date}}",
+        "webhooks": "ВЕБХУКИ FINIK",
+        "noWebhooks": "Finik ещё ничего не присылал",
+        "webhookAmount": "Сумма от Finik: {{amount}}",
+        "noAmount": "Сумма от Finik: нет",
+        "amountMismatch": "Не совпадает с суммой заказа ({{amount}})",
+        "resolutions": "РУЧНЫЕ РЕШЕНИЯ",
+        "issue": "Выдан сертификат",
+        "refunded": "Возврат",
+        "resolvedBy": "{{by}} · {{date}}"
+      }
     }
   },
   "certificate": {

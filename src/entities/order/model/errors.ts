@@ -28,3 +28,7 @@ export const getOrderErrorKey = (error: unknown): string => {
       return "errors.generic";
   }
 };
+
+// GET /admin/orders?search= that is neither a certificate code nor an order id.
+export const isAdminOrderSearchError = (error: unknown) =>
+  isAxiosError(error) && error.response?.status === 400;

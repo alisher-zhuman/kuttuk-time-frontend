@@ -231,6 +231,43 @@
       "empty": "No sales this week",
       "needsReview": "On review: {{count}} — these orders are not in the payout",
       "openOrders": "Open orders"
+    },
+    "orders": {
+      "title": "Orders",
+      "all": "All",
+      "searchPlaceholder": "Certificate code or order number",
+      "searchInvalid": "Enter a certificate code or an order number",
+      "empty": "No orders",
+      "notFound": "Order not found",
+      "status": {
+        "pending": "Awaiting payment",
+        "paid": "Paid",
+        "expired": "Expired",
+        "needs_review": "On review",
+        "refunded": "Refunded"
+      },
+      "detail": {
+        "id": "ORDER NUMBER",
+        "venue": "VENUE",
+        "merchant": "MERCHANT (PAYOUT)",
+        "createdAt": "CREATED",
+        "paidAt": "PAID",
+        "expiresAt": "PAY BY",
+        "transaction": "FINIK TRANSACTION",
+        "buyer": "BUYER",
+        "certificate": "CERTIFICATE",
+        "validUntil": "Valid until {{date}}",
+        "usedAt": "Redeemed {{date}}",
+        "webhooks": "FINIK WEBHOOKS",
+        "noWebhooks": "Nothing from Finik yet",
+        "webhookAmount": "Amount from Finik: {{amount}}",
+        "noAmount": "Amount from Finik: none",
+        "amountMismatch": "Doesn't match the order amount ({{amount}})",
+        "resolutions": "MANUAL DECISIONS",
+        "issue": "Certificate issued",
+        "refunded": "Refund",
+        "resolvedBy": "{{by}} · {{date}}"
+      }
     }
   },
   "certificate": {

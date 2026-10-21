@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, TriangleAlert, Wallet } from "lucide-react";
 
 import { usePayoutWeekQuery } from "@entities/payout";
 
-import { getAdminMerchantDetailRoute, ROUTE_PATTERNS } from "@shared/constants";
+import { getAdminMerchantDetailRoute, getAdminOrdersRoute } from "@shared/constants";
 import { formatIsoDate, formatMoney, shiftIsoDate } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { EmptyState, ErrorState } from "@shared/ui";
@@ -94,7 +94,7 @@ export const PayoutReport = () => {
               type="button"
               onClick={() => {
                 haptic.light();
-                navigateTo(ROUTE_PATTERNS.ADMIN_ORDERS, { replace: true });
+                navigateTo(getAdminOrdersRoute("needs_review"), { replace: true });
               }}
               className="flex items-start gap-3 p-3 rounded-2xl bg-(--color-amber-tint) text-left cursor-pointer"
             >

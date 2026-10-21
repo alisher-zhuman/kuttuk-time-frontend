@@ -40,6 +40,7 @@ export const ROUTE_PATTERNS = {
   ADMIN_MERCHANT_DETAIL: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}/:id`,
   ADMIN_MERCHANT_EDIT: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANT_EDIT}/:id`,
   ADMIN_ORDERS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}`,
+  ADMIN_ORDER_DETAIL: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}/:id`,
   ADMIN_PAYOUTS: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.PAYOUTS}`,
   ADMIN_CATEGORIES: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORIES}`,
   ADMIN_CATEGORY_CREATE: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_CREATE}`,
@@ -76,6 +77,13 @@ export const getAdminMerchantDetailRoute = (id: string | number) =>
 export const getRedeemRoute = (code?: string) =>
   `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.REDEEM}` +
   (code ? `?code=${encodeURIComponent(code)}` : "");
+
+export const getAdminOrderDetailRoute = (id: string) =>
+  `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}/${id}`;
+
+// status preselects the filter (e.g. «На проверке» from the payouts warning).
+export const getAdminOrdersRoute = (status?: string) =>
+  `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}` + (status ? `?status=${status}` : "");
 
 export const getCategoryEditRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_EDIT}/${id}`;

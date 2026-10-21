@@ -9,4 +9,10 @@ export {
 export { canGoBack } from "./navigation";
 export { getScopedStorageKey } from "./storage";
 export { applyTheme, detectTheme } from "./theme";
-export { getLaunchParams, getTMAUserInfo, openExternalLink } from "./tma";
+export {
+  getLaunchParams,
+  getTMAUserInfo,
+  hasWriteAccess,
+  openExternalLink,
+  requestBotMessages
+} from "./tma";

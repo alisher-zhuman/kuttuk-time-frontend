@@ -64,6 +64,12 @@
       "summary": "Сводка",
       "certificates": "Коды",
       "redeem": "Погасить"
+    },
+    "notifications": {
+      "title": "Уведомления о продажах",
+      "hint": "Бот напишет в Telegram о каждой продаже",
+      "enable": "Включить",
+      "enabled": "Включены"
     }
   },
   "venue": {

@@ -64,6 +64,12 @@
       "summary": "Summary",
       "certificates": "Codes",
       "redeem": "Redeem"
+    },
+    "notifications": {
+      "title": "Sale notifications",
+      "hint": "The bot will message you in Telegram about every sale",
+      "enable": "Turn on",
+      "enabled": "On"
     }
   },
   "venue": {

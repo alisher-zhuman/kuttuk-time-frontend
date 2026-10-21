@@ -123,6 +123,8 @@ Always check `isAvailable()` before calling SDK methods.
 - `AuthProvider` resets `viewMode` from `role` on every login (intentional) — "view as buyer" lasts only until reload; the sessionStorage persist barely matters
 - System theme source: `themeParams.isDark` (Telegram's theme, guard with `isMounted()` — unmounted it reports `true`) — never `miniApp.isDark`, it reflects our own `setBgColor`
 - `POST /auth/log-in` → 401 (initData > 24h; Telegram doesn't refresh it while open or on reload) sets `isSessionExpired` → `AuthProvider` renders `SessionExpiredPage` ("reopen the app"). Set from both the initial log-in and the 401 re-login in `api.ts`
+- **Bot messages (`requestWriteAccess`)** — the bot can message a person only after they started it or allowed it. Via `requestBotMessages()` / `hasWriteAccess()` (`@shared/helpers`): skipped when initData has `user.allows_write_to_pm`, never throws, a refusal blocks nothing. Buyer: asked at purchase, before `createOrder` → `openLink`, at most once per session (`oncePerSession`) — never on first launch. Owner: «Уведомления о продажах» row in the cabinet (`widgets/merchants/sale-notifications`), asks on every tap until allowed. Bot language = `Accept-Language`, sent on every request incl. `log-in` (plain axios in `shared/api/auth.ts`, set by hand). Message logic: `../backend/CLAUDE.md`, section "Bot"
+- An owner gets the `merchant` role on `POST /auth/log-in` by matching the merchant's `telegramId` — so the admin can create a merchant before that person ever opened the bot
 - Deactivated merchant (`isActive: false`, hides all its venues from buyers): `GET /merchants/me` still works, `PATCH /merchants/me/venues/:id` → 403. Cabinet shows `MerchantDeactivatedNotice` and hides edit; a 403 on save refetches "me" so the edit page swaps to the notice
 
 **Worth adding (when there's time):**
@@ -130,7 +132,6 @@ Always check `isAvailable()` before calling SDK methods.
 - `ClosingBehavior.enableConfirmation()` — guard against accidentally closing the app on the payment screen (swipe/back)
 - `Popup.show` — native confirmation dialogs instead of custom modals (e.g. "Mark as used?")
 - `QrScanner` — merchant scans the code instead of typing it (planned, see **TODO** → redemption)
-- `requestWriteAccess` — do NOT request it on first launch (burns the one shot with no context, adds friction to the 30-second flow). Request it at the moment of purchase, before `openLink` (see **TODO**). Bot messaging logic: `../backend/CLAUDE.md`, section "Bot"
 
 **Doesn't fit the product / don't add without a reason:**
 - `Invoice` (`openInvoice`/`openSlug`) — that's Telegram Stars, our payments go through Finik/Bakai/Freedom
@@ -155,9 +156,7 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 - **Redemption (frontend):** ✅ screen `/app/merchant/redeem` (`widgets/merchants/redemption`): manual code entry → `GET /merchants/me/certificates/:code` → card → MainButton "Redeem" → `POST …/redeem`; a 409 re-fetches the GET. Entry: the «Погасить» bottom-nav tab (also when deactivated). ✅ Cabinet screens: weekly summary (`/app/merchant/summary`, `GET /merchants/me/summary`) and certificate list (`/app/merchant/certificates`, cursor pages) — both refreshed after a redemption, never polled. Still to do:
   - QR scanner: `qrScanner.capture` with a predicate accepting only `KT-` codes — it just fills the same code field
   - QR code rendered from the certificate code on the buyer's certificate screen, so the owner can scan it
-- **Owner role before the first login — ask the backend.** The admin creates a merchant by Telegram ID (`POST /admin/merchants`), possibly before that person ever opened the bot. Check how the `merchant` role reaches them: assigned on their first `POST /auth/log-in` by matching `telegramId`, or does the user row have to exist first? If the latter, the owner lands in the buyer view instead of the cabinet
 - **Bottom nav sits too high** — consider lowering it: now `mx-4 mb-4` above the safe area. Check on a real iPhone (home indicator) before changing. Also: admin kg «Буйрутмалар» is truncated below 375px, and at 320px kg labels truncate in both navs
-- **`requestWriteAccess`** at the moment of purchase, before `openLink` — the backup bot message with the code needs it (see **TMA SDK** → Worth adding)
 
 **Verified on a real device:**
 - `openLink` called after `await createOrder` opens the Finik page by itself on a real iPhone (2026-10). The "Open payment" MainButton on the order screen stays as the fallback path (e.g. the user closed the bank page, or a client that ignores `openLink` outside a gesture)

@@ -6,7 +6,7 @@ import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
 import { type VenueDetail } from "@entities/venue";
 
 import { getOrderRoute } from "@shared/constants";
-import { openExternalLink } from "@shared/helpers";
+import { openExternalLink, requestBotMessages } from "@shared/helpers";
 import { useHaptic, useMainButton, useNavigateTo, usePopup } from "@shared/hooks";
 
 import { CertPreviewCard } from "../cert-preview-card";
@@ -41,13 +41,18 @@ export const VenueContent = ({ venue }: Props) => {
       ? selectedNominal
       : venue.nominals[0]!;
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
     if (isSubmittingRef.current) {
       return;
     }
 
     isSubmittingRef.current = true;
     haptic.medium();
+
+    // The bot sends the code after payment — a backup if the buyer closes the
+    // app. Asked here, not on first launch: the purchase is the context that
+    // makes "allow messages" make sense. The answer doesn't matter for buying.
+    await requestBotMessages({ oncePerSession: true });
 
     createOrder(
       { venueId: venue.id, nominal: activeNominal },
@@ -74,7 +79,7 @@ export const VenueContent = ({ venue }: Props) => {
 
   useMainButton({
     text: t("venue.buy"),
-    onClick: handleBuy,
+    onClick: () => void handleBuy(),
     disabled: isPending,
     loading: isPending
   });

@@ -2,8 +2,11 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { type MerchantCertificate } from "@entities/certificate";
+
 import { Input } from "@shared/ui";
 
+import { CertificateCard } from "../certificate-card";
 import { CertificateLookup } from "../certificate-lookup";
 
 // Codes are KT-XXXX-XXXX; spaces / dashes / "KT" are optional, so leave room.
@@ -18,6 +21,9 @@ const isFullCode = (value: string) =>
 // The QR scanner, when it comes, goes at the right of this field and fills it.
 export const CodeLookup = () => {
   const [code, setCode] = useState("");
+  // The last redeemed certificate — shown after the field clears for the next
+  // customer, until they start typing.
+  const [redeemed, setRedeemed] = useState<MerchantCertificate | null>(null);
 
   const { t } = useTranslation();
 
@@ -29,15 +35,27 @@ export const CodeLookup = () => {
         placeholder={t("merchant.certificates.codePlaceholder")}
         value={code}
         maxLength={MAX_LENGTH}
-        onChange={(event) => setCode(event.target.value)}
+        onChange={(event) => {
+          setCode(event.target.value);
+          setRedeemed(null);
+        }}
         autoCapitalize="characters"
         autoCorrect="off"
         autoComplete="off"
         spellCheck={false}
       />
 
-      {/* key: a new code starts clean (no "redeemed" from the previous one). */}
-      {lookupCode && <CertificateLookup key={lookupCode} code={lookupCode} />}
+      {redeemed && <CertificateCard certificate={redeemed} justRedeemed />}
+
+      {lookupCode && (
+        <CertificateLookup
+          code={lookupCode}
+          onRedeemed={(result) => {
+            setRedeemed(result);
+            setCode("");
+          }}
+        />
+      )}
     </div>
   );
 };

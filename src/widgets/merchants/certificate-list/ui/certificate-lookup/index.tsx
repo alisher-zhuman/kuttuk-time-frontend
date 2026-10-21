@@ -19,11 +19,14 @@ interface Props {
   code: string;
   // A list row — shown until the fresh lookup lands.
   fallback?: MerchantCertificate;
+  // Instead of the in-place "redeemed" card — the code field clears itself
+  // for the next customer and shows the result on its own.
+  onRedeemed?: (certificate: Extract<MerchantCertificate, { status: "used" }>) => void;
 }
 
 // One certificate by its code: looked up fresh (the status changes at the
 // counter), with "Redeem" while active. Used by the code field and the sheet.
-export const CertificateLookup = ({ code, fallback }: Props) => {
+export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
   const [justRedeemed, setJustRedeemed] = useState(false);
 
   const { t } = useTranslation();
@@ -68,9 +71,14 @@ export const CertificateLookup = ({ code, fallback }: Props) => {
     redeem(
       { code },
       {
-        onSuccess: () => {
+        onSuccess: (result) => {
           haptic.success();
-          setJustRedeemed(true);
+
+          if (onRedeemed && result.status === "used") {
+            onRedeemed(result);
+          } else {
+            setJustRedeemed(true);
+          }
         },
         onError: (redeemError) => {
           // Used / expired a moment ago: re-fetch so the card shows why.

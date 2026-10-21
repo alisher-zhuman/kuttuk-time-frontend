@@ -25,6 +25,7 @@ export const CertificateDetail = ({ certificate }: Props) => {
 
   // Sharing a used/expired code would only mislead the recipient.
   useCertificateShareButton({
+    id: certificate.id,
     code,
     amount,
     venueName: venue.name,

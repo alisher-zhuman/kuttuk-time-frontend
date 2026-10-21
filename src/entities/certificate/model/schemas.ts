@@ -59,3 +59,10 @@ export const MerchantCertificatePageSchema = z.object({
   items: z.array(MerchantCertificateSchema),
   nextCursor: z.string().nullable()
 });
+
+// POST /certificates/:id/share — a card stored with Telegram for shareMessage.
+// Short-lived: ask for a new one on every tap.
+export const PreparedGiftSchema = z.object({ preparedMessageId: z.string() });
+
+// 409 from …/share: the certificate can't be gifted any more.
+export const GiftConflictSchema = z.object({ error: z.enum(["used", "expired"]) });

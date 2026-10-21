@@ -4,7 +4,11 @@ import { useTranslation } from "react-i18next";
 
 import { Gift } from "lucide-react";
 
-import { CertificateCode, useCertificateShareButton } from "@entities/certificate";
+import {
+  CertificateCode,
+  useCertificateShareButton,
+  useMyCertificatesQuery
+} from "@entities/certificate";
 import { type Order } from "@entities/order";
 
 import { formatDate } from "@shared/helpers";
@@ -29,7 +33,20 @@ export const OrderPaid = ({ order, venueName }: Props) => {
     haptic.success();
   }, [haptic]);
 
-  useCertificateShareButton({ code, amount: order.amount, venueName });
+  // The order only carries the code; "Подарить" needs the certificate's id —
+  // take it from "My certificates" (refreshed when the order turned paid).
+  const { certificates, isLoading } = useMyCertificatesQuery();
+  const certificate = certificates.find((item) => item.code === code);
+
+  useCertificateShareButton({
+    id: certificate?.id,
+    code,
+    amount: order.amount,
+    venueName,
+    // Wait for the list, so the label doesn't flip from "Share" to "Gift";
+    // a certificate already used / expired isn't offered.
+    hidden: isLoading || (certificate !== undefined && certificate.status !== "active")
+  });
 
   return (
     <OrderResult

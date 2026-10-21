@@ -9,6 +9,7 @@ export const API_PATHS = {
   ORDERS: "/orders",
   ADMIN_ORDERS: "/admin/orders",
   ADMIN_PAYOUTS: "/admin/payouts",
+  CERTIFICATES: "/certificates",
   MY_CERTIFICATES: "/certificates/my",
   UPLOAD: "/upload"
 } as const;

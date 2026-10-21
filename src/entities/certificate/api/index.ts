@@ -4,7 +4,8 @@ import { API_PATHS } from "@shared/constants";
 import {
   CertificatesSchema,
   MerchantCertificatePageSchema,
-  MerchantCertificateSchema
+  MerchantCertificateSchema,
+  PreparedGiftSchema
 } from "../model/schemas";
 import type { CertificateStatus } from "../model/types";
 
@@ -48,4 +49,11 @@ export const getMerchantCertificates = async (
   });
 
   return MerchantCertificatePageSchema.parse(response.data);
+};
+
+// The card's language is Accept-Language (sent by the api instance).
+export const prepareGift = async (id: string) => {
+  const response = await api.post(`${API_PATHS.CERTIFICATES}/${id}/share`);
+
+  return PreparedGiftSchema.parse(response.data);
 };

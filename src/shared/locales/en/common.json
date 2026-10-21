@@ -305,7 +305,10 @@
     "usedAt": "Used on {{date}}",
     "expiredAt": "Expired on {{date}}",
     "share": "Share",
-    "shareText": "🎁 Gift certificate for {{venue}}, {{amount}}. Code: {{code}}"
+    "shareText": "🎁 Gift certificate for {{venue}}, {{amount}}. Code: {{code}}",
+    "gift": "Gift",
+    "giftUnavailable": "The certificate is already used or expired",
+    "giftFailed": "That didn't work, please try again"
   },
   "certificates": {
     "empty": "No certificates yet",

@@ -305,7 +305,10 @@
     "usedAt": "Использован {{date}}",
     "expiredAt": "Истёк {{date}}",
     "share": "Поделиться",
-    "shareText": "🎁 Подарочный сертификат {{venue}} на {{amount}}. Код: {{code}}"
+    "shareText": "🎁 Подарочный сертификат {{venue}} на {{amount}}. Код: {{code}}",
+    "gift": "Подарить",
+    "giftUnavailable": "Сертификат уже погашен или истёк",
+    "giftFailed": "Не получилось, попробуйте ещё раз"
   },
   "certificates": {
     "empty": "Пока нет сертификатов",

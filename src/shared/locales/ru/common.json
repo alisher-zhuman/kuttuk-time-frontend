@@ -219,6 +219,18 @@
         "notFound": "Заведение не найдено",
         "owner": "ВЛАДЕЛЕЦ"
       }
+    },
+    "payouts": {
+      "title": "Выплаты",
+      "total": "Итого за неделю",
+      "orders": "Заказов: {{count}}",
+      "gross": "Оборот: {{amount}}",
+      "commission": "Комиссия 10%: {{amount}}",
+      "payout": "К выплате: {{amount}}",
+      "merchants": "ВЛАДЕЛЬЦЫ",
+      "empty": "За эту неделю продаж нет",
+      "needsReview": "На проверке: {{count}} — эти заказы не вошли в выплату",
+      "openOrders": "Открыть заказы"
     }
   },
   "certificate": {

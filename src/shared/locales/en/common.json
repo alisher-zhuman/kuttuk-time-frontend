@@ -219,6 +219,18 @@
         "notFound": "Venue not found",
         "owner": "MERCHANT"
       }
+    },
+    "payouts": {
+      "title": "Payouts",
+      "total": "Week total",
+      "orders": "Orders: {{count}}",
+      "gross": "Gross: {{amount}}",
+      "commission": "Commission 10%: {{amount}}",
+      "payout": "Payout: {{amount}}",
+      "merchants": "MERCHANTS",
+      "empty": "No sales this week",
+      "needsReview": "On review: {{count}} — these orders are not in the payout",
+      "openOrders": "Open orders"
     }
   },
   "certificate": {

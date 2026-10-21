@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 
-export const PaymentsPage = () => {
+export const PayoutsPage = () => {
   const { t } = useTranslation();
 
   return (
     <div className="flex-1 flex items-center justify-center">
       <span className="text-(--color-hint) text-sm font-semibold">
-        {t("admin.nav.payments")}
+        {t("admin.nav.payouts")}
       </span>
     </div>
   );

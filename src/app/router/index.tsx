@@ -16,7 +16,7 @@ import { MerchantSummaryPage } from "@pages/merchants/summary";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
 import { OrdersPage } from "@pages/orders";
-import { PaymentsPage } from "@pages/payments";
+import { PayoutsPage } from "@pages/payouts";
 import { ProfilePage } from "@pages/profile";
 import { VenuePage } from "@pages/venue";
 import { VenueCreatePage } from "@pages/venues/create";
@@ -112,8 +112,8 @@ export const ROUTER = createBrowserRouter([
             element: <OrdersPage />
           },
           {
-            path: ROUTE_PATTERNS.ADMIN_PAYMENTS,
-            element: <PaymentsPage />
+            path: ROUTE_PATTERNS.ADMIN_PAYOUTS,
+            element: <PayoutsPage />
           }
         ]
       },

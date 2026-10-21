@@ -166,7 +166,7 @@
       "venues": "Заведения",
       "merchants": "Владельцы",
       "orders": "Заказы",
-      "payments": "Платежи"
+      "payouts": "Выплаты"
     },
     "merchants": {
       "listTitle": "ВЛАДЕЛЬЦЫ",

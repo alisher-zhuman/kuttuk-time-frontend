@@ -166,7 +166,7 @@
       "venues": "Мекемелер",
       "merchants": "Ээлер",
       "orders": "Буйрутмалар",
-      "payments": "Төлөмдөр"
+      "payouts": "Төлөп берүү"
     },
     "merchants": {
       "listTitle": "ЭЭЛЕР",

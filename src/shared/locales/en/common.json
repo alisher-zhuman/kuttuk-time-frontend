@@ -166,7 +166,7 @@
       "venues": "Venues",
       "merchants": "Merchants",
       "orders": "Orders",
-      "payments": "Payments"
+      "payouts": "Payouts"
     },
     "merchants": {
       "listTitle": "MERCHANTS",

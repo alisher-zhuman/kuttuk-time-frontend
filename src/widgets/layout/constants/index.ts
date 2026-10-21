@@ -21,7 +21,7 @@ export const NAV_TABS: Partial<Record<string, readonly NavTab[]>> = {
     { path: ROUTE_PATTERNS.ADMIN_VENUES, labelKey: "admin.nav.venues", icon: Store },
     { path: ROUTE_PATTERNS.ADMIN_MERCHANTS, labelKey: "admin.nav.merchants", icon: UsersRound },
     { path: ROUTE_PATTERNS.ADMIN_ORDERS, labelKey: "admin.nav.orders", icon: ClipboardList },
-    { path: ROUTE_PATTERNS.ADMIN_PAYMENTS, labelKey: "admin.nav.payments", icon: Wallet }
+    { path: ROUTE_PATTERNS.ADMIN_PAYOUTS, labelKey: "admin.nav.payouts", icon: Wallet }
   ],
   merchant: [
     { path: ROUTE_PATTERNS.MERCHANT_HOME, labelKey: "merchant.nav.venues", icon: Store },

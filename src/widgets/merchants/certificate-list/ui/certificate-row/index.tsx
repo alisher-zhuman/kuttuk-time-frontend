@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { type MerchantCertificate } from "@entities/certificate";
+import { formatCertificateCode, type MerchantCertificate } from "@entities/certificate";
 
 import { cn, formatDate, formatDateTime, formatMoney } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -42,7 +42,7 @@ export const CertificateRow = ({ certificate, showVenue, onOpen }: Props) => {
     >
       <div className="flex flex-col gap-1 min-w-0">
         <span className="font-mono text-sm font-bold tracking-wider text-(--color-ink)">
-          {certificate.code}
+          {formatCertificateCode(certificate.code)}
         </span>
         {showVenue && (
           <span className="text-xs font-bold text-(--color-ink) truncate">

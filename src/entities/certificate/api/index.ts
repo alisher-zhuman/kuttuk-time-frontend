@@ -14,8 +14,7 @@ export const getMyCertificates = async () => {
   return CertificatesSchema.parse(response.data);
 };
 
-// The code goes as typed (trimmed by the caller): the backend normalizes case,
-// spaces, dashes, an optional KT and Cyrillic look-alikes.
+// 8 digits; the backend also ignores spaces and dashes.
 const merchantCertificatePath = (code: string) =>
   `${API_PATHS.MERCHANTS}/me/certificates/${encodeURIComponent(code)}`;
 

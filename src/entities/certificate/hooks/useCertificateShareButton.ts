@@ -6,6 +6,8 @@ import { BOT_URL } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
 import { useHaptic, useMainButton } from "@shared/hooks";
 
+import { formatCertificateCode } from "../model/code";
+
 interface Options {
   code: string;
   amount: number;
@@ -37,7 +39,7 @@ export const useCertificateShareButton = ({
           t("certificate.shareText", {
             venue: venueName ?? "",
             amount: formatMoney(amount, t("certificate.currency")),
-            code
+            code: formatCertificateCode(code)
           })
         );
       }

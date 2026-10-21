@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
+  formatCertificateCode,
   getRedemptionErrorKey,
   isRedeemConflict,
   type MerchantCertificate,
@@ -55,7 +56,7 @@ export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
       message: t("merchant.redeem.confirmMessage", {
         amount: formatMoney(active.amount, t("certificate.currency")),
         venue: active.venue.name,
-        code: active.code
+        code: formatCertificateCode(active.code)
       }),
       buttons: [
         { id: "cancel", type: "cancel" },

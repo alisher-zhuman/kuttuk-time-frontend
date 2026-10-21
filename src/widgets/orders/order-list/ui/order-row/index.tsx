@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
+import { formatCertificateCode } from "@entities/certificate";
 import { type AdminOrder, OrderStatusBadge } from "@entities/order";
 
 import { formatDateTime, formatMoney } from "@shared/helpers";
@@ -33,7 +34,7 @@ export const OrderRow = ({ order, onOpen }: Props) => {
           {order.status === "paid" && (
             <span className="font-mono font-bold tracking-wider text-(--color-slate)">
               {" · "}
-              {order.certificateCode}
+              {formatCertificateCode(order.certificateCode)}
             </span>
           )}
           {order.status === "paid" && order.payoutId && (

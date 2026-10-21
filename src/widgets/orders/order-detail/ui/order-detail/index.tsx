@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
+import { formatCertificateCode } from "@entities/certificate";
 import { type AdminOrderDetail, OrderStatusBadge } from "@entities/order";
 
 import { formatDate, formatDateTime, formatMoney } from "@shared/helpers";
@@ -90,7 +91,7 @@ export const OrderDetail = ({ order, onOpenVenue, onOpenMerchant }: Props) => {
           <div className="flex flex-col gap-1 p-3 rounded-2xl bg-(--color-card) border border-(--color-line)">
             <div className="flex items-center justify-between gap-2">
               <span className="font-mono text-sm font-bold tracking-wider text-(--color-ink)">
-                {order.certificate.code}
+                {formatCertificateCode(order.certificate.code)}
               </span>
               <span className="text-xs font-bold text-(--color-slate)">
                 {t(`certificate.status.${order.certificate.status}`)}

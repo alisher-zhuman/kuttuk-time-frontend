@@ -7,6 +7,8 @@ import { Check, Copy } from "lucide-react";
 import { cn } from "@shared/helpers";
 import { useCopyToClipboard, useHaptic } from "@shared/hooks";
 
+import { formatCertificateCode } from "../../model/code";
+
 interface Props {
   code: string;
   // Shown under the code; swapped for "copied" for a moment after a copy.
@@ -28,6 +30,7 @@ export const CertificateCode = ({ code, caption, size = "md" }: Props) => {
     event.stopPropagation();
     haptic.light();
 
+    // Plain digits: they paste anywhere, and the cashier's field takes them as is.
     if (await copyToClipboard(code)) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
@@ -53,7 +56,7 @@ export const CertificateCode = ({ code, caption, size = "md" }: Props) => {
             isLarge ? "text-xl" : "text-sm"
           )}
         >
-          {code}
+          {formatCertificateCode(code)}
         </span>
 
         {copied ? (

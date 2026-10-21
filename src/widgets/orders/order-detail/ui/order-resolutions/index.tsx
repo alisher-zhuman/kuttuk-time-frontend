@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { formatCertificateCode } from "@entities/certificate";
 import { type AdminOrderDetail } from "@entities/order";
 
 import { formatDateTime } from "@shared/helpers";
@@ -29,7 +30,7 @@ export const OrderResolutions = ({ resolutions }: Props) => {
               {resolution.certificateCode && (
                 <span className="font-mono tracking-wider text-(--color-slate)">
                   {" · "}
-                  {resolution.certificateCode}
+                  {formatCertificateCode(resolution.certificateCode)}
                 </span>
               )}
             </span>

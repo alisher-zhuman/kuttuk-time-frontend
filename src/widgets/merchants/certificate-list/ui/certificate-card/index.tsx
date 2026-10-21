@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { CircleCheck } from "lucide-react";
 
-import { type MerchantCertificate } from "@entities/certificate";
+import { formatCertificateCode, type MerchantCertificate } from "@entities/certificate";
 
 import { cn, formatDate, formatDateTime, formatMoney } from "@shared/helpers";
 import { StatusBadge } from "@shared/ui";
@@ -50,7 +50,7 @@ export const CertificateCard = ({ certificate, onRedeem, isRedeeming = false, ju
           {certificate.venue.name}
         </span>
         <span className="font-mono text-sm font-bold tracking-wider text-(--color-slate)">
-          {certificate.code}
+          {formatCertificateCode(certificate.code)}
         </span>
       </div>
 

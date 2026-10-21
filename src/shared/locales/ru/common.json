@@ -52,7 +52,8 @@
         "active": "Активные",
         "used": "Погашенные",
         "expired": "Истёкшие"
-      }
+      },
+      "redeem": "Погасить код"
     },
     "cabinet": {
       "allVenues": "Все заведения",
@@ -62,8 +63,7 @@
     "nav": {
       "venues": "Заведения",
       "summary": "Сводка",
-      "certificates": "Коды",
-      "redeem": "Погасить"
+      "certificates": "Коды"
     },
     "notifications": {
       "title": "Уведомления о продажах",

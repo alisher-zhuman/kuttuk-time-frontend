@@ -52,7 +52,8 @@
         "active": "Активдүү",
         "used": "Колдонулган",
         "expired": "Мөөнөтү бүткөн"
-      }
+      },
+      "redeem": "Кодду белгилөө"
     },
     "cabinet": {
       "allVenues": "Бардык мекемелер",
@@ -62,8 +63,7 @@
     "nav": {
       "venues": "Мекемелер",
       "summary": "Жыйынтык",
-      "certificates": "Коддор",
-      "redeem": "Белгилөө"
+      "certificates": "Коддор"
     },
     "notifications": {
       "title": "Сатуулар тууралуу билдирүүлөр",

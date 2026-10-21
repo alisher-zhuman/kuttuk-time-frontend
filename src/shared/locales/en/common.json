@@ -52,7 +52,8 @@
         "active": "Active",
         "used": "Redeemed",
         "expired": "Expired"
-      }
+      },
+      "redeem": "Redeem a code"
     },
     "cabinet": {
       "allVenues": "All venues",
@@ -62,8 +63,7 @@
     "nav": {
       "venues": "Venues",
       "summary": "Summary",
-      "certificates": "Codes",
-      "redeem": "Redeem"
+      "certificates": "Codes"
     },
     "notifications": {
       "title": "Sale notifications",

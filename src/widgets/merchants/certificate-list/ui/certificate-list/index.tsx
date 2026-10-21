@@ -9,6 +9,8 @@ import { VenueFilter } from "@features/venue-filter";
 import { type CertificateStatus, useMerchantCertificatesQuery } from "@entities/certificate";
 import { useMerchantMeQuery } from "@entities/merchant";
 
+import { getRedeemRoute } from "@shared/constants";
+import { useMainButton, useNavigateTo } from "@shared/hooks";
 import { ChipSelect, EmptyState, ErrorState } from "@shared/ui";
 
 import { useLoadMoreOnScroll } from "../../hooks/useLoadMoreOnScroll";
@@ -24,6 +26,8 @@ export const CertificateList = () => {
   const [venueId, setVenueId] = useState<number | null>(null);
 
   const { t } = useTranslation();
+
+  const navigateTo = useNavigateTo();
 
   const {
     certificates,
@@ -41,6 +45,13 @@ export const CertificateList = () => {
   // Which venue sold a code matters only when the owner has several and the
   // list isn't already narrowed to one.
   const showVenue = venueId === null && (merchant?.venues.length ?? 0) > 1;
+
+  // Redeeming lives on this tab: the list refetches after it, so the owner
+  // comes back and sees the code marked used.
+  useMainButton({
+    text: t("merchant.certificates.redeem"),
+    onClick: () => navigateTo(getRedeemRoute())
+  });
 
   const setSentinel = useLoadMoreOnScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
 
@@ -72,7 +83,11 @@ export const CertificateList = () => {
         <ul className="flex flex-col gap-2.5 list-none">
           {certificates.map((certificate) => (
             <li key={certificate.code}>
-              <CertificateRow certificate={certificate} showVenue={showVenue} />
+              <CertificateRow
+                certificate={certificate}
+                showVenue={showVenue}
+                onRedeem={() => navigateTo(getRedeemRoute(certificate.code))}
+              />
             </li>
           ))}
 

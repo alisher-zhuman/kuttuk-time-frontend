@@ -19,9 +19,14 @@ import { RedemptionSuccess } from "../redemption-success";
 // Step 1: type the code and check it (GET). Step 2: the card, and for an
 // active certificate the MainButton "Redeem" (POST). The QR scanner, when it
 // comes, will just fill the same code field.
-export const CertificateRedemption = () => {
-  const [code, setCode] = useState("");
-  const [submittedCode, setSubmittedCode] = useState<string | null>(null);
+interface Props {
+  // From a row of the certificate list: prefilled and checked right away.
+  initialCode: string | null;
+}
+
+export const CertificateRedemption = ({ initialCode }: Props) => {
+  const [code, setCode] = useState(initialCode ?? "");
+  const [submittedCode, setSubmittedCode] = useState<string | null>(initialCode);
   const [redeemed, setRedeemed] = useState<Extract<
     MerchantCertificate,
     { status: "used" }

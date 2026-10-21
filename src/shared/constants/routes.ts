@@ -72,6 +72,11 @@ export const getAdminVenueCreateRoute = (merchantId?: number) =>
 export const getAdminMerchantDetailRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}/${id}`;
 
+// code: opened from an active row of the certificate list — prefilled and checked.
+export const getRedeemRoute = (code?: string) =>
+  `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.REDEEM}` +
+  (code ? `?code=${encodeURIComponent(code)}` : "");
+
 export const getCategoryEditRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_EDIT}/${id}`;
 

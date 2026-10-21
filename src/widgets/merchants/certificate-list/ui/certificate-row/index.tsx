@@ -3,14 +3,20 @@ import { useTranslation } from "react-i18next";
 import { type MerchantCertificate } from "@entities/certificate";
 
 import { cn, formatDate, formatDateTime, formatMoney } from "@shared/helpers";
+import { useHaptic } from "@shared/hooks";
 
 interface Props {
   certificate: MerchantCertificate;
   showVenue: boolean;
+  onRedeem: () => void;
 }
 
-export const CertificateRow = ({ certificate, showVenue }: Props) => {
+export const CertificateRow = ({ certificate, showVenue, onRedeem }: Props) => {
   const { t } = useTranslation();
+
+  const haptic = useHaptic();
+
+  const isActive = certificate.status === "active";
 
   const statusLine = {
     active: () => t("certificate.validUntil", { date: formatDate(certificate.validUntil) }),
@@ -22,10 +28,17 @@ export const CertificateRow = ({ certificate, showVenue }: Props) => {
   }[certificate.status]();
 
   return (
-    <div
+    // Only an active code can be redeemed — the others are plain rows.
+    <button
+      type="button"
+      disabled={!isActive}
+      onClick={() => {
+        haptic.light();
+        onRedeem();
+      }}
       className={cn(
-        "flex items-start justify-between gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line)",
-        certificate.status !== "active" && "opacity-60"
+        "w-full flex items-start justify-between gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line) text-left",
+        isActive ? "cursor-pointer" : "opacity-60"
       )}
     >
       <div className="flex flex-col gap-1 min-w-0">
@@ -46,6 +59,6 @@ export const CertificateRow = ({ certificate, showVenue }: Props) => {
       <span className="shrink-0 text-base font-extrabold text-(--color-primary)">
         {formatMoney(certificate.amount, t("certificate.currency"))}
       </span>
-    </div>
+    </button>
   );
 };

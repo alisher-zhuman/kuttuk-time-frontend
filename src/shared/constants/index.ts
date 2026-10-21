@@ -18,6 +18,7 @@ export {
   getHomeRoute,
   getOrderRoute,
   getOwnVenueEditRoute,
+  getRedeemRoute,
   getVenueRoute,
   ROUTE_PATTERNS,
   ROUTES

@@ -4,7 +4,11 @@ const PayoutTotalsSchema = z.object({
   ordersCount: z.number(),
   gross: z.number(),
   commission: z.number(),
-  payout: z.number()
+  payout: z.number(),
+  // Already marked paid out for this week / still to pay. due can be a top-up:
+  // an order may land in the week after it was marked.
+  paidOut: z.number(),
+  due: z.number()
 });
 
 // GET /admin/payouts (../backend src/payouts/admin-payouts.service.ts) — the
@@ -18,3 +22,15 @@ export const PayoutWeekSchema = z.object({
   // The week's needs_review orders — not paid out until resolved by hand.
   needsReviewCount: z.number()
 });
+
+// POST /admin/payouts → the recorded payout; the amount is computed on the
+// server, so this is what to show, not the number on screen.
+export const MarkedPayoutSchema = z.object({
+  merchantId: z.number(),
+  from: z.string(),
+  to: z.string(),
+  payout: z.number()
+});
+
+// 409 body: nothing left to pay (already marked — a double tap, another tab).
+export const NothingToPayOutSchema = z.object({ error: z.literal("nothing_to_pay_out") });

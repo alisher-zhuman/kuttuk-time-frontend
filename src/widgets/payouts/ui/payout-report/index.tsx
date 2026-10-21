@@ -4,13 +4,19 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronLeft, ChevronRight, TriangleAlert, Wallet } from "lucide-react";
 
-import { usePayoutWeekQuery } from "@entities/payout";
+import {
+  isNothingToPayOut,
+  type PayoutWeek,
+  useMarkPaidOutMutation,
+  usePayoutWeekQuery
+} from "@entities/payout";
 
 import { getAdminMerchantDetailRoute, getAdminOrdersRoute } from "@shared/constants";
 import { formatIsoDate, formatMoney, shiftIsoDate } from "@shared/helpers";
-import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { useGenericError, useHaptic, useNavigateTo, usePopup } from "@shared/hooks";
 import { EmptyState, ErrorState } from "@shared/ui";
 
+import { MarkPaidSheet } from "../mark-paid-sheet";
 import { PayoutRow } from "../payout-row";
 
 // The weekly payout to merchants — the same report as the backend's
@@ -18,12 +24,20 @@ import { PayoutRow } from "../payout-row";
 export const PayoutReport = () => {
   // null = the current week; otherwise any date inside the shown week.
   const [week, setWeek] = useState<string | null>(null);
+  // The merchant row whose payout is being confirmed.
+  const [marking, setMarking] = useState<PayoutWeek["merchants"][number] | null>(null);
 
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
 
   const haptic = useHaptic();
+
+  const showPopup = usePopup();
+
+  const showGenericError = useGenericError();
+
+  const { mutate: markPaid, isPending: isMarking } = useMarkPaidOutMutation();
 
   const { report, isLoading, isError, isFetching, retry } = usePayoutWeekQuery(week);
 
@@ -39,6 +53,44 @@ export const PayoutReport = () => {
     const target = shiftIsoDate(from, days);
 
     setWeek(target === current?.from ? null : target);
+  };
+
+  const handleConfirm = (note: string) => {
+    if (!report || !marking) return;
+
+    const merchantName = marking.merchantName;
+
+    markPaid(
+      { merchantId: marking.merchantId, week: report.from, ...(note && { note }) },
+      {
+        onSuccess: (payout) => {
+          haptic.success();
+          setMarking(null);
+          // The server's amount — it may differ from the screen if an order
+          // landed in the week meanwhile.
+          void showPopup({
+            title: t("admin.payouts.doneTitle"),
+            message: t("admin.payouts.done", {
+              amount: formatMoney(payout.payout, currency),
+              merchant: merchantName
+            })
+          });
+        },
+        onError: (error) => {
+          setMarking(null);
+
+          // Already marked (double tap, another tab): the week refetches.
+          if (isNothingToPayOut(error)) {
+            haptic.warning();
+            void showPopup({ message: t("admin.payouts.nothingToPay") });
+            return;
+          }
+
+          haptic.error();
+          showGenericError();
+        }
+      }
+    );
   };
 
   const isCurrentWeek = report !== undefined && report.from === current?.from;
@@ -124,6 +176,15 @@ export const PayoutReport = () => {
             <span className="text-base font-extrabold text-(--color-primary)">
               {t("admin.payouts.payout", { amount: formatMoney(report.total.payout, currency) })}
             </span>
+            {(report.total.paidOut > 0 || report.total.due > 0) && (
+              <span className="text-sm font-semibold text-(--color-slate)">
+                {t("admin.payouts.totalPaidOut", {
+                  amount: formatMoney(report.total.paidOut, currency)
+                })}
+                {" · "}
+                {t("admin.payouts.totalDue", { amount: formatMoney(report.total.due, currency) })}
+              </span>
+            )}
           </div>
 
           {report.merchants.length === 0 ? (
@@ -146,6 +207,7 @@ export const PayoutReport = () => {
                         haptic.light();
                         navigateTo(getAdminMerchantDetailRoute(row.merchantId));
                       }}
+                      onMarkPaid={() => setMarking(row)}
                     />
                   </li>
                 ))}
@@ -153,6 +215,18 @@ export const PayoutReport = () => {
             </section>
           )}
         </>
+      )}
+
+      {report && marking && (
+        <MarkPaidSheet
+          merchantName={marking.merchantName}
+          amount={marking.due}
+          from={report.from}
+          to={report.to}
+          isPending={isMarking}
+          onConfirm={handleConfirm}
+          onCancel={() => setMarking(null)}
+        />
       )}
     </div>
   );

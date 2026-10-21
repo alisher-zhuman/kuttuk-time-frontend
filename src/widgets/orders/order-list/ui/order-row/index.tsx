@@ -36,6 +36,12 @@ export const OrderRow = ({ order, onOpen }: Props) => {
               {order.certificateCode}
             </span>
           )}
+          {order.status === "paid" && order.payoutId && (
+            <span className="font-bold text-(--color-green)">
+              {" · "}
+              {t("admin.orders.paidOut")}
+            </span>
+          )}
         </span>
       </div>
 

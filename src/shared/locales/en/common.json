@@ -43,7 +43,12 @@
       "commission": "Commission 10%: {{amount}}",
       "payout": "Payout: {{amount}} (on Monday)",
       "redeemed": "Redeemed: {{count}} pcs · {{amount}}",
-      "redeemedHint": "\"Redeemed\" counts certificates redeemed this week, even if they were sold earlier."
+      "redeemedHint": "\"Redeemed\" counts certificates redeemed this week, even if they were sold earlier.",
+      "payoutStatus": {
+        "paidOut": "Paid out ✓",
+        "pending": "Awaiting payout",
+        "partial": "Paid {{paid}}, {{due}} more to come"
+      }
     },
     "certificates": {
       "title": "Certificates",
@@ -230,7 +235,22 @@
       "merchants": "MERCHANTS",
       "empty": "No sales this week",
       "needsReview": "On review: {{count}} — these orders are not in the payout",
-      "openOrders": "Open orders"
+      "openOrders": "Open orders",
+      "paidOut": "Paid out ✓",
+      "due": "Due: {{amount}}",
+      "partial": "Paid {{paid}}, top up {{due}}",
+      "totalPaidOut": "Paid out: {{amount}}",
+      "totalDue": "Still due: {{amount}}",
+      "markPaid": "Mark as paid out",
+      "confirmTitle": "Mark payout",
+      "confirmMessage": "Mark a payout of {{amount}} to {{merchant}} for {{from}} – {{to}}? This can't be undone.",
+      "note": "Note (optional)",
+      "notePlaceholder": "E.g. Mbank transfer 27.10",
+      "confirm": "Mark",
+      "cancel": "Cancel",
+      "doneTitle": "Payout marked",
+      "done": "{{amount}} to {{merchant}}. The owner will get a bot message.",
+      "nothingToPay": "This week is already marked — refreshed."
     },
     "orders": {
       "title": "Orders",
@@ -267,7 +287,8 @@
         "issue": "Certificate issued",
         "refunded": "Refund",
         "resolvedBy": "{{by}} · {{date}}"
-      }
+      },
+      "paidOut": "Paid out"
     }
   },
   "certificate": {

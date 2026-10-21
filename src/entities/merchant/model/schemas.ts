@@ -38,5 +38,9 @@ export const MerchantWeekSummarySchema = z.object({
   sold: z.object({ count: z.number(), amount: z.number() }),
   commission: z.number(),
   payout: z.number(),
-  redeemed: z.object({ count: z.number(), amount: z.number() })
+  redeemed: z.object({ count: z.number(), amount: z.number() }),
+  // Only without ?venueId= — payouts are recorded per merchant, not per venue
+  // (../backend src/certificates/merchant-cabinet.service.ts).
+  paidOut: z.number().optional(),
+  due: z.number().optional()
 });

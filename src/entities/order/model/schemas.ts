@@ -77,7 +77,9 @@ export const AdminOrderSchema = z.discriminatedUnion("status", [
   AdminOrderBaseSchema.extend({
     status: z.literal("paid"),
     paidAt: z.string(),
-    certificateCode: z.string()
+    certificateCode: z.string(),
+    // Set once the order is covered by a recorded payout.
+    payoutId: z.string().optional()
   }),
   AdminOrderBaseSchema.extend({ status: z.literal("needs_review"), paidAt: z.string() }),
   // Refunded comes out of needs_review by hand — paidAt is expected but not

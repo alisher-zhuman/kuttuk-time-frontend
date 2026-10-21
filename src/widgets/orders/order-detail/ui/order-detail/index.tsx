@@ -44,7 +44,12 @@ export const OrderDetail = ({ order, onOpenVenue, onOpenMerchant }: Props) => {
         <span className="text-2xl font-extrabold text-(--color-ink)">
           {formatMoney(order.amount, t("certificate.currency"))}
         </span>
-        <OrderStatusBadge status={order.status} />
+        <div className="flex items-center gap-2">
+          {order.status === "paid" && order.payoutId && (
+            <span className="text-xs font-bold text-(--color-green)">{t("admin.orders.paidOut")}</span>
+          )}
+          <OrderStatusBadge status={order.status} />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-x-3 gap-y-4">

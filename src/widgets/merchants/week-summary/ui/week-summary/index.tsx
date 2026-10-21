@@ -40,10 +40,27 @@ export const WeekSummary = () => {
 
   const isCurrentWeek = summary !== undefined && summary.from === current?.from;
 
+  // Only for the whole merchant (no venue filter) — payouts are per merchant.
+  const payoutStatus = (() => {
+    if (summary?.paidOut === undefined || summary.due === undefined) return null;
+    if (summary.paidOut === 0 && summary.due === 0) return null;
+    if (summary.due === 0) return { text: t("merchant.summary.payoutStatus.paidOut"), tone: "text-(--color-green)" };
+    if (summary.paidOut === 0) return { text: t("merchant.summary.payoutStatus.pending"), tone: "text-(--color-hint)" };
+
+    return {
+      text: t("merchant.summary.payoutStatus.partial", {
+        paid: formatMoney(summary.paidOut, currency),
+        due: formatMoney(summary.due, currency)
+      }),
+      tone: "text-(--color-amber)"
+    };
+  })();
+
   const rows = summary && [
     { key: "sold", text: t("merchant.summary.sold", { count: summary.sold.count, amount: formatMoney(summary.sold.amount, currency) }) },
     { key: "commission", text: t("merchant.summary.commission", { amount: formatMoney(summary.commission, currency) }) },
     { key: "payout", text: t("merchant.summary.payout", { amount: formatMoney(summary.payout, currency) }), accent: true },
+    ...(payoutStatus ? [{ key: "payoutStatus", text: payoutStatus.text, tone: payoutStatus.tone }] : []),
     { key: "redeemed", text: t("merchant.summary.redeemed", { count: summary.redeemed.count, amount: formatMoney(summary.redeemed.amount, currency) }) }
   ];
 
@@ -96,9 +113,11 @@ export const WeekSummary = () => {
             <span
               key={row.key}
               className={
-                row.accent
-                  ? "text-base font-extrabold text-(--color-primary)"
-                  : "text-sm font-semibold text-(--color-ink)"
+                "tone" in row
+                  ? `-mt-2 text-sm font-bold ${row.tone}`
+                  : "accent" in row && row.accent
+                    ? "text-base font-extrabold text-(--color-primary)"
+                    : "text-sm font-semibold text-(--color-ink)"
               }
             >
               {row.text}

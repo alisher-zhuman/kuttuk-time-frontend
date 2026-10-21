@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 
-import { ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 
 import { type PayoutWeek } from "@entities/payout";
 
-import { formatMoney } from "@shared/helpers";
+import { formatDateTime, formatMoney } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
 import { PayoutStatus } from "../payout-status";
@@ -50,6 +50,24 @@ export const PayoutRow = ({ row, onOpen, onMarkPaid }: Props) => {
       </button>
 
       <PayoutStatus paidOut={row.paidOut} due={row.due} />
+
+      {row.payouts.length > 0 && (
+        <ul className="flex flex-col gap-1 list-none">
+          {row.payouts.map((payout) => (
+            <li key={payout.id} className="flex items-start gap-1.5 text-xs text-(--color-slate)">
+              <Check size={14} className="shrink-0 mt-px text-(--color-green)" />
+              <span className="min-w-0 break-words">
+                <span className="font-bold text-(--color-ink)">
+                  {formatMoney(payout.payout, currency)}
+                </span>
+                {" · "}
+                {formatDateTime(payout.createdAt)}
+                {payout.note && ` · ${payout.note}`}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {row.due > 0 && (
         <button

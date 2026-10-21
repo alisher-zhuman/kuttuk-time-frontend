@@ -17,7 +17,23 @@ const PayoutTotalsSchema = z.object({
 export const PayoutWeekSchema = z.object({
   from: z.string(),
   to: z.string(),
-  merchants: z.array(PayoutTotalsSchema.extend({ merchantId: z.number(), merchantName: z.string() })),
+  merchants: z.array(
+    PayoutTotalsSchema.extend({
+      merchantId: z.number(),
+      merchantName: z.string(),
+      // Recorded marks for the week, oldest first; a top-up is a second one.
+      // Admin-only (the owner never sees the note).
+      payouts: z.array(
+        z.object({
+          id: z.string(),
+          payout: z.number(),
+          ordersCount: z.number(),
+          note: z.string().optional(),
+          createdAt: z.string()
+        })
+      )
+    })
+  ),
   total: PayoutTotalsSchema,
   // The week's needs_review orders — not paid out until resolved by hand.
   needsReviewCount: z.number()

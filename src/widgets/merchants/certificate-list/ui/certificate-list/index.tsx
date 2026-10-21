@@ -2,18 +2,23 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Gift, Loader2, ScanLine } from "lucide-react";
+import { Gift, Loader2 } from "lucide-react";
 
 import { VenueFilter } from "@features/venue-filter";
 
-import { type CertificateStatus, useMerchantCertificatesQuery } from "@entities/certificate";
+import {
+  type CertificateStatus,
+  type MerchantCertificate,
+  useMerchantCertificatesQuery
+} from "@entities/certificate";
 import { useMerchantMeQuery } from "@entities/merchant";
 
-import { getRedeemRoute } from "@shared/constants";
-import { useHaptic, useLoadMoreOnScroll, useNavigateTo } from "@shared/hooks";
+import { useLoadMoreOnScroll } from "@shared/hooks";
 import { ChipSelect, EmptyState, ErrorState } from "@shared/ui";
 
 import { CertificateRow } from "../certificate-row";
+import { CertificateSheet } from "../certificate-sheet";
+import { CodeLookup } from "../code-lookup";
 
 type Tab = "all" | CertificateStatus;
 
@@ -23,12 +28,10 @@ export const CertificateList = () => {
   const [tab, setTab] = useState<Tab>("all");
   // null = all the owner's venues.
   const [venueId, setVenueId] = useState<number | null>(null);
+  // The row whose card is open in the sheet.
+  const [opened, setOpened] = useState<MerchantCertificate | null>(null);
 
   const { t } = useTranslation();
-
-  const navigateTo = useNavigateTo();
-
-  const haptic = useHaptic();
 
   const {
     certificates,
@@ -55,20 +58,9 @@ export const CertificateList = () => {
         {t("merchant.certificates.title")}
       </h1>
 
-      {/* Redeeming lives on this tab: the list refetches after it, so the owner
-          comes back and sees the code marked used. A plain button, not the
-          MainButton — that one is the redeem screen's own "Redeem". */}
-      <button
-        type="button"
-        onClick={() => {
-          haptic.light();
-          navigateTo(getRedeemRoute());
-        }}
-        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer"
-      >
-        <ScanLine size={18} />
-        {t("merchant.certificates.redeem")}
-      </button>
+      {/* Redeeming lives here: type the code → its card → "Redeem". The list
+          below refetches after it. */}
+      <CodeLookup />
 
       <VenueFilter active={venueId} onChange={setVenueId} />
 
@@ -95,7 +87,7 @@ export const CertificateList = () => {
               <CertificateRow
                 certificate={certificate}
                 showVenue={showVenue}
-                onRedeem={() => navigateTo(getRedeemRoute(certificate.code))}
+                onOpen={() => setOpened(certificate)}
               />
             </li>
           ))}
@@ -107,6 +99,8 @@ export const CertificateList = () => {
           </li>
         </ul>
       )}
+
+      {opened && <CertificateSheet certificate={opened} onClose={() => setOpened(null)} />}
     </div>
   );
 };

@@ -16,7 +16,6 @@ export const ROUTES = {
   VENUE_EDIT: "venue-edit",
   MERCHANT_HOME: "merchant",
   EDIT: "edit",
-  REDEEM: "redeem",
   SUMMARY: "summary"
 } as const;
 
@@ -28,7 +27,6 @@ export const ROUTE_PATTERNS = {
   CERTIFICATE: `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/:certificateId`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
   MERCHANT_VENUE_EDIT: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.VENUES}/:venueId/${ROUTES.EDIT}`,
-  MERCHANT_REDEEM: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.REDEEM}`,
   MERCHANT_SUMMARY: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.SUMMARY}`,
   MERCHANT_CERTIFICATES: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.CERTIFICATES}`,
   ADMIN_VENUES: `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.VENUES}`,
@@ -72,11 +70,6 @@ export const getAdminVenueCreateRoute = (merchantId?: number) =>
 
 export const getAdminMerchantDetailRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANTS}/${id}`;
-
-// code: opened from an active row of the certificate list — prefilled and checked.
-export const getRedeemRoute = (code?: string) =>
-  `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.REDEEM}` +
-  (code ? `?code=${encodeURIComponent(code)}` : "");
 
 export const getAdminOrderDetailRoute = (id: string) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}/${id}`;

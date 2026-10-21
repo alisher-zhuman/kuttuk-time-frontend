@@ -11,7 +11,6 @@ import { MerchantCreatePage } from "@pages/merchants/create";
 import { MerchantDetailPage } from "@pages/merchants/detail";
 import { MerchantEditPage } from "@pages/merchants/edit";
 import { MerchantListPage } from "@pages/merchants/list";
-import { MerchantRedeemPage } from "@pages/merchants/redeem";
 import { MerchantSummaryPage } from "@pages/merchants/summary";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
@@ -132,10 +131,6 @@ export const ROUTER = createBrowserRouter([
           {
             path: ROUTE_PATTERNS.MERCHANT_VENUE_EDIT,
             element: <OwnVenueEditPage />
-          },
-          {
-            path: ROUTE_PATTERNS.MERCHANT_REDEEM,
-            element: <MerchantRedeemPage />
           },
           {
             path: ROUTE_PATTERNS.MERCHANT_SUMMARY,

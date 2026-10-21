@@ -8,10 +8,10 @@ import { useHaptic } from "@shared/hooks";
 interface Props {
   certificate: MerchantCertificate;
   showVenue: boolean;
-  onRedeem: () => void;
+  onOpen: () => void;
 }
 
-export const CertificateRow = ({ certificate, showVenue, onRedeem }: Props) => {
+export const CertificateRow = ({ certificate, showVenue, onOpen }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -28,17 +28,16 @@ export const CertificateRow = ({ certificate, showVenue, onRedeem }: Props) => {
   }[certificate.status]();
 
   return (
-    // Only an active code can be redeemed — the others are plain rows.
+    // Every row opens its card; only an active one gets "Redeem" there.
     <button
       type="button"
-      disabled={!isActive}
       onClick={() => {
         haptic.light();
-        onRedeem();
+        onOpen();
       }}
       className={cn(
-        "w-full flex items-start justify-between gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line) text-left",
-        isActive ? "cursor-pointer" : "opacity-60"
+        "w-full flex items-start justify-between gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line) text-left cursor-pointer",
+        !isActive && "opacity-60"
       )}
     >
       <div className="flex flex-col gap-1 min-w-0">

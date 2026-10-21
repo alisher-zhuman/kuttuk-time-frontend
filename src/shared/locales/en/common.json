@@ -23,8 +23,6 @@
       "message": "Your venues are hidden from buyers and can't be edited. You can still redeem certificates. Message us to turn them back on."
     },
     "redeem": {
-      "title": "Redeem a certificate",
-      "check": "Check",
       "submit": "Redeem",
       "invalidCode": "Invalid code format",
       "alreadyUsed": "Already redeemed {{date}}",
@@ -32,7 +30,8 @@
       "soldAt": "Sold {{date}}",
       "success": "Certificate redeemed",
       "redeemedAt": "Redeemed {{date}}",
-      "next": "Check another"
+      "confirmTitle": "Redeem the certificate?",
+      "confirmMessage": "{{amount}} at {{venue}}, code {{code}}. This can't be undone."
     },
     "summary": {
       "title": "Weekly summary",
@@ -58,7 +57,8 @@
         "used": "Redeemed",
         "expired": "Expired"
       },
-      "redeem": "Redeem a code"
+      "codePlaceholder": "Enter a certificate code",
+      "sheetTitle": "Certificate"
     },
     "cabinet": {
       "allVenues": "All venues",
@@ -68,7 +68,7 @@
     "nav": {
       "venues": "Venues",
       "summary": "Summary",
-      "certificates": "Codes"
+      "certificates": "Certificates"
     },
     "notifications": {
       "title": "Sale notifications",

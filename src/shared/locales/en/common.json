@@ -23,7 +23,6 @@
       "message": "Your venues are hidden from buyers and can't be edited. You can still redeem certificates. Message us to turn them back on."
     },
     "redeem": {
-      "entry": "Redeem a certificate",
       "title": "Redeem a certificate",
       "check": "Check",
       "submit": "Redeem",
@@ -59,6 +58,12 @@
       "allVenues": "All venues",
       "noVenues": "No venues yet — the admin will add them",
       "venuesTitle": "VENUES"
+    },
+    "nav": {
+      "venues": "Venues",
+      "summary": "Summary",
+      "certificates": "Codes",
+      "redeem": "Redeem"
     }
   },
   "venue": {

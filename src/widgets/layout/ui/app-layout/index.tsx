@@ -9,8 +9,8 @@ import {
 } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 
-import { ADMIN_NAV_PATHS } from "../../constants";
-import { AdminNav } from "../admin-nav";
+import { NAV_TABS } from "../../constants";
+import { BottomNav } from "../bottom-nav";
 import { Footer } from "../footer";
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";
@@ -31,8 +31,10 @@ export const AppLayout = () => {
 
   const viewMode = useViewModeStore((s) => s.viewMode);
 
-  const showAdminNav =
-    viewMode === "admin" && ADMIN_NAV_PATHS.includes(pathname) && !isNotFound;
+  // Only on the mode's root screens; nested ones (forms, details) get the
+  // native Back button instead.
+  const navTabs = NAV_TABS[viewMode];
+  const showNav = navTabs?.some((tab) => tab.path === pathname) && !isNotFound;
 
   return (
     <>
@@ -59,9 +61,9 @@ export const AppLayout = () => {
         </main>
 
         {!isNotFound &&
-          (showAdminNav ? (
+          (showNav && navTabs ? (
             <div className="sticky z-10" style={{ bottom: insets.bottom }}>
-              <AdminNav />
+              <BottomNav tabs={navTabs} />
             </div>
           ) : (
             <Footer />

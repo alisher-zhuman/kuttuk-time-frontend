@@ -2,14 +2,13 @@ import { useTranslation } from "react-i18next";
 
 import { Store } from "lucide-react";
 
-import { CabinetMenu } from "@widgets/merchants/cabinet-menu";
 import { VenueDetail, VenueDetailSkeleton } from "@widgets/venues/venue-detail";
 
 import { useCategoriesQuery } from "@entities/category";
 import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 
-import { getOwnVenueEditRoute, ROUTE_PATTERNS } from "@shared/constants";
-import { useMainButton, useNavigateTo } from "@shared/hooks";
+import { getOwnVenueEditRoute } from "@shared/constants";
+import { useNavigateTo } from "@shared/hooks";
 import { EmptyState } from "@shared/ui";
 
 export const MerchantCabinetPage = () => {
@@ -20,14 +19,6 @@ export const MerchantCabinetPage = () => {
   const { merchant, isLoading, isError } = useMerchantMeQuery();
 
   const { categories } = useCategoriesQuery();
-
-  // The cabinet's main action. Shown when deactivated too: a deactivated
-  // merchant can still redeem what it sold.
-  useMainButton({
-    text: t("merchant.redeem.entry"),
-    onClick: () => navigateTo(ROUTE_PATTERNS.MERCHANT_REDEEM),
-    hidden: !merchant
-  });
 
   if (isLoading) return <VenueDetailSkeleton />;
 
@@ -46,8 +37,6 @@ export const MerchantCabinetPage = () => {
       {/* Deactivated: the backend rejects edits with 403, so explain why
           instead of offering an edit that can only fail. */}
       {!merchant.isActive && <MerchantDeactivatedNotice />}
-
-      <CabinetMenu />
 
       {merchant.venues.length === 0 ? (
         <EmptyState

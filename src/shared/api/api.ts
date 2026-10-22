@@ -8,7 +8,7 @@ import axios, {
 } from "axios";
 
 import { API_URL } from "@shared/constants";
-import { useAuthStore } from "@shared/store";
+import { useAuthStore, useViewModeStore } from "@shared/store";
 
 import { logIn } from "./auth";
 
@@ -53,13 +53,21 @@ api.interceptors.response.use(
 
         const { accessToken, role } = await pendingLogIn;
 
+        // The role can change while the app is open (a merchant deactivated
+        // or created meanwhile) — the screens follow it, like on a fresh start.
+        if (role !== useAuthStore.getState().role) {
+          useViewModeStore.getState().setViewMode(role);
+        }
+
         useAuthStore.getState().setAuth(accessToken, role);
         original.headers.Authorization = `Bearer ${accessToken}`;
         return api.request(original);
       } catch (logInError) {
-        useAuthStore.getState().clearAuth();
-
+        // Only a rejected initData ends the session. A network error, 5xx,
+        // 429 or a cold-starting backend keeps the token and role: dropping
+        // them would kick an owner out of the cabinet mid-redemption.
         if (isAxiosError(logInError) && logInError.response?.status === 401) {
+          useAuthStore.getState().clearAuth();
           useAuthStore.getState().setSessionExpired();
         }
 

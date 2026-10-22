@@ -19,7 +19,11 @@ export const createVenueFormSchema = (
 ) =>
   z.object({
     logo: z.string().min(1, "venueForm.logoRequired"),
-    name: z.string().trim().min(1, "venueForm.required"),
+    name: z
+      .string()
+      .trim()
+      .min(1, "venueForm.required")
+      .max(options.nameMaxLength, "venueForm.nameTooLong"),
     slug: withAdminFields
       ? z
           .string()

@@ -13,6 +13,7 @@ interface Props {
   onLogoChange: (url: string) => void;
   onLogoUploadingChange: (isUploading: boolean) => void;
   // Slug and active status are the admin's; the owner's form hides them.
+  nameMaxLength: number;
   showSlug: boolean;
   showActiveToggle: boolean;
   isActive: boolean;
@@ -25,6 +26,7 @@ export const VenueFormIdentity = ({
   logo,
   onLogoChange,
   onLogoUploadingChange,
+  nameMaxLength,
   showSlug,
   showActiveToggle,
   isActive,
@@ -44,7 +46,8 @@ export const VenueFormIdentity = ({
       <Input
         label={t("venueForm.name")}
         placeholder={t("venueForm.namePlaceholder")}
-        error={errors.name?.message && t(errors.name.message)}
+        maxLength={nameMaxLength}
+        error={errors.name?.message && t(errors.name.message, { max: nameMaxLength })}
         {...register("name")}
       />
 

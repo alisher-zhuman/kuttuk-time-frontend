@@ -108,7 +108,8 @@
     "owner": "Merchant",
     "ownerRequired": "Choose a merchant",
     "slugReserved": "This word is reserved, choose another",
-    "categoryRemoved": "This category was deleted — deselect it"
+    "categoryRemoved": "This category was deleted — deselect it",
+    "nameTooLong": "No longer than {{max}} characters"
   },
   "merchantForm": {
     "title": "New merchant",
@@ -249,7 +250,8 @@
       "cancel": "Cancel",
       "doneTitle": "Payout marked",
       "done": "{{amount}} to {{merchant}}. The owner will get a bot message.",
-      "nothingToPay": "This week is already marked — refreshed."
+      "nothingToPay": "This week is already marked — refreshed.",
+      "amountChanged": "The amount changed — check it and confirm again."
     },
     "orders": {
       "all": "All",

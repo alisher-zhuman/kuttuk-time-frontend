@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { TriangleAlert, Wallet } from "lucide-react";
 
 import {
+  isAmountChanged,
   isNothingToPayOut,
-  type PayoutWeek,
   useMarkPaidOutMutation,
   usePayoutWeekQuery
 } from "@entities/payout";
@@ -22,8 +22,9 @@ import { PayoutRow } from "../payout-row";
 // The weekly payout to merchants — the same report as the backend's
 // `npm run report:payouts`. Week switching works like the owner's summary.
 export const PayoutReport = () => {
-  // The merchant row whose payout is being confirmed.
-  const [marking, setMarking] = useState<PayoutWeek["merchants"][number] | null>(null);
+  // The merchant whose payout is being confirmed — an id, not a row snapshot,
+  // so the open confirmation shows the amount from the latest report.
+  const [markingId, setMarkingId] = useState<number | null>(null);
 
   const { t } = useTranslation();
 
@@ -46,17 +47,24 @@ export const PayoutReport = () => {
 
   const currency = t("certificate.currency");
 
+  const marking = report?.merchants.find((row) => row.merchantId === markingId);
+
   const handleConfirm = (note: string) => {
     if (!report || !marking) return;
 
     const merchantName = marking.merchantName;
 
     markPaid(
-      { merchantId: marking.merchantId, week: report.from, ...(note && { note }) },
+      {
+        merchantId: marking.merchantId,
+        week: report.from,
+        expectedPayout: marking.due,
+        ...(note && { note })
+      },
       {
         onSuccess: (payout) => {
           haptic.success();
-          setMarking(null);
+          setMarkingId(null);
           // The server's amount — it may differ from the screen if an order
           // landed in the week meanwhile.
           void showPopup({
@@ -68,7 +76,16 @@ export const PayoutReport = () => {
           });
         },
         onError: (error) => {
-          setMarking(null);
+          // A sale landed while the confirmation was open: nothing recorded.
+          // Keep it open — the report refetches and it shows the new amount
+          // to check against what was transferred.
+          if (isAmountChanged(error)) {
+            haptic.warning();
+            void showPopup({ message: t("admin.payouts.amountChanged") });
+            return;
+          }
+
+          setMarkingId(null);
 
           // Already marked (double tap, another tab): the week refetches.
           if (isNothingToPayOut(error)) {
@@ -169,7 +186,7 @@ export const PayoutReport = () => {
                         haptic.light();
                         navigateTo(getAdminMerchantDetailRoute(row.merchantId));
                       }}
-                      onMarkPaid={() => setMarking(row)}
+                      onMarkPaid={() => setMarkingId(row.merchantId)}
                     />
                   </li>
                 ))}
@@ -179,7 +196,8 @@ export const PayoutReport = () => {
         </>
       )}
 
-      {report && marking && (
+      {/* Closes by itself if the refetched row has nothing left to pay. */}
+      {report && marking && marking.due > 0 && (
         <MarkPaidSheet
           merchantName={marking.merchantName}
           amount={marking.due}
@@ -187,7 +205,7 @@ export const PayoutReport = () => {
           to={report.to}
           isPending={isMarking}
           onConfirm={handleConfirm}
-          onCancel={() => setMarking(null)}
+          onCancel={() => setMarkingId(null)}
         />
       )}
     </div>

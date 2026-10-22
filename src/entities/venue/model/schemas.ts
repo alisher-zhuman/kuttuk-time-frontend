@@ -27,7 +27,9 @@ export const VenueDetailSchema = z.object({
 // ascending — the only source of allowed venue values; no frontend list.
 export const VenueOptionsSchema = z.object({
   nominals: z.array(z.number()).nonempty(),
-  validityMonths: z.array(z.number()).nonempty()
+  validityMonths: z.array(z.number()).nonempty(),
+  // The backend rejects a longer name (400).
+  nameMaxLength: z.number()
 });
 
 // The full, editable venue: items of GET /merchants/me `venues[]` and the

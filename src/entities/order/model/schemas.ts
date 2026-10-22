@@ -6,12 +6,20 @@ export const CreatedOrderSchema = z.object({
   expiresAt: z.string()
 });
 
-export const OrderCertificateSchema = z.object({
+const OrderCertificateBaseSchema = z.object({
   // For «Подарить» (POST /certificates/:id/share) right from the order screen.
   id: z.string(),
   code: z.string(),
   validUntil: z.string()
 });
+
+// The effective status (../backend src/orders/orders.service.ts): an order
+// reopened later may show a certificate already used or expired.
+export const OrderCertificateSchema = z.discriminatedUnion("status", [
+  OrderCertificateBaseSchema.extend({ status: z.literal("active") }),
+  OrderCertificateBaseSchema.extend({ status: z.literal("used"), usedAt: z.string() }),
+  OrderCertificateBaseSchema.extend({ status: z.literal("expired") })
+]);
 
 const OrderBaseSchema = z.object({
   orderId: z.string(),

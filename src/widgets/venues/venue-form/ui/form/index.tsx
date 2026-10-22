@@ -71,6 +71,7 @@ export const VenueForm = ({ options, variant }: Props) => {
       </h1>
 
       <VenueFormIdentity
+        nameMaxLength={options.nameMaxLength}
         register={register}
         errors={errors}
         logo={logo}

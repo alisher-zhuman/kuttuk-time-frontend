@@ -4,11 +4,17 @@ import { useTranslation } from "react-i18next";
 
 import { Gift } from "lucide-react";
 
-import { CertificateCode, CertificateQr, useCertificateShareButton } from "@entities/certificate";
+import {
+  CertificateCode,
+  CertificateQr,
+  getCertificateDate,
+  useCertificateShareButton
+} from "@entities/certificate";
 import { type Order } from "@entities/order";
 
 import { formatDate } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
+import { StatusBadge } from "@shared/ui";
 
 import { OrderResult } from "../order-result";
 
@@ -22,16 +28,20 @@ export const OrderPaid = ({ order, venueName }: Props) => {
 
   const haptic = useHaptic();
 
-  const { id, code, validUntil } = order.certificate;
+  const { id, code, status } = order.certificate;
+
+  // An order reopened later may hold a certificate already used or expired —
+  // then no QR and no «Подарить», like on the certificate screen.
+  const isActive = status === "active";
+
+  const { key, date } = getCertificateDate(order.certificate);
 
   // Mounts when polling sees "paid" — the moment the payment lands.
   useEffect(() => {
     haptic.success();
   }, [haptic]);
 
-  // Just paid — the certificate is active; if it was used since (an old order
-  // reopened), the share request answers 409 and says so.
-  useCertificateShareButton({ id, code, amount: order.amount, venueName });
+  useCertificateShareButton({ id, code, amount: order.amount, venueName, hidden: !isActive });
 
   return (
     <OrderResult
@@ -41,6 +51,8 @@ export const OrderPaid = ({ order, venueName }: Props) => {
       venueName={venueName}
       amount={order.amount}
     >
+      {!isActive && <StatusBadge active={false} label={t(`certificate.status.${status}`)} />}
+
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs font-bold text-(--color-hint) uppercase tracking-wider">
           {t("certificate.code")}
@@ -49,12 +61,11 @@ export const OrderPaid = ({ order, venueName }: Props) => {
         <CertificateCode
           code={code}
           size="lg"
-          caption={t("certificate.validUntil", { date: formatDate(validUntil) })}
+          caption={t(key, { date: formatDate(date) })}
         />
       </div>
 
-      {/* Just paid — the certificate is active. */}
-      <CertificateQr code={code} />
+      {isActive && <CertificateQr code={code} />}
     </OrderResult>
   );
 };

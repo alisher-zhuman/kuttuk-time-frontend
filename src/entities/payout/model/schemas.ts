@@ -48,5 +48,9 @@ export const MarkedPayoutSchema = z.object({
   payout: z.number()
 });
 
-// 409 body: nothing left to pay (already marked — a double tap, another tab).
+// 409 bodies of POST /admin/payouts — nothing recorded in both cases:
+// nothing_to_pay_out — already marked (a double tap, another tab);
+// amount_changed — a sale landed while the confirmation was open, so the
+// server's amount differs from expectedPayout.
 export const NothingToPayOutSchema = z.object({ error: z.literal("nothing_to_pay_out") });
+export const AmountChangedSchema = z.object({ error: z.literal("amount_changed") });

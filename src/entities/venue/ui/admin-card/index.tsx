@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
+import { logoUrl } from "@shared/helpers";
 import { StatusBadge } from "@shared/ui";
 
 import type { AdminVenue } from "../../model/types";
@@ -22,8 +23,10 @@ export const AdminVenueCard = ({ venue, onClick }: Props) => {
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
       <img
-        src={venue.logo}
+        src={logoUrl(venue.logo, 48)}
         alt={venue.name}
+        loading="lazy"
+        decoding="async"
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 

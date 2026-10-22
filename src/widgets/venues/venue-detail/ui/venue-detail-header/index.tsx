@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Pencil } from "lucide-react";
 
+import { logoUrl } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 import { StatusBadge } from "@shared/ui";
 
@@ -21,7 +22,7 @@ export const VenueDetailHeader = ({ logo, name, slug, isActive, onEdit }: Props)
 
   return (
     <div className="flex items-center gap-3.5">
-      <img src={logo} alt={name} className="size-16 rounded-xl shrink-0 object-cover" />
+      <img src={logoUrl(logo, 64)} alt={name} className="size-16 rounded-xl shrink-0 object-cover" />
 
       <div className="flex-1 flex flex-col min-w-0 gap-1">
         <span className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight truncate">

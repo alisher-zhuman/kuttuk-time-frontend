@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ImagePlus, Loader2 } from "lucide-react";
 
 import { MAX_UPLOAD_SIZE, uploadImage } from "@shared/api";
-import { cn } from "@shared/helpers";
+import { cn, logoUrl } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
 interface Props {
@@ -70,7 +70,8 @@ export const LogoUpload = ({ value, onChange, error, onUploadingChange }: Props)
     }
   };
 
-  const src = preview ?? value;
+  // The local preview is a blob URL; a saved logo comes from Cloudinary.
+  const src = preview ?? (value ? logoUrl(value, 96) : value);
   const message = uploadError ?? error;
 
   return (

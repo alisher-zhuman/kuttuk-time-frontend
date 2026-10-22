@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
-import { cn, formatDate, formatMoney } from "@shared/helpers";
+import { cn, formatDate, formatMoney, logoUrl } from "@shared/helpers";
 
 import { getCertificateDate } from "../../model/date";
 import type { Certificate } from "../../model/types";
@@ -24,8 +24,10 @@ export const CertificateCard = ({ certificate, onOpen }: Props) => {
   const header = (
     <>
       <img
-        src={venue.logo}
+        src={logoUrl(venue.logo, 48)}
         alt=""
+        loading="lazy"
+        decoding="async"
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 

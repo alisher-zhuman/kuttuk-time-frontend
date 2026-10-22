@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 
 import { getVenueRoute } from "@shared/constants";
-import { formatMoney } from "@shared/helpers";
+import { formatMoney, logoUrl } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 
 import type { Venue } from "../../model/types";
@@ -37,8 +37,10 @@ export const VenueCard = ({ venue }: Props) => {
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
       <img
-        src={venue.logo}
+        src={logoUrl(venue.logo, 48)}
         alt={venue.name}
+        loading="lazy"
+        decoding="async"
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 

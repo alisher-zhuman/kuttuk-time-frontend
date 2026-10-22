@@ -8,7 +8,7 @@ import {
   useCertificateShareButton
 } from "@entities/certificate";
 
-import { formatDate, formatMoney } from "@shared/helpers";
+import { formatDate, formatMoney, logoUrl } from "@shared/helpers";
 import { StatusBadge } from "@shared/ui";
 
 interface Props {
@@ -35,7 +35,7 @@ export const CertificateDetail = ({ certificate }: Props) => {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-5 py-8 text-center">
-      <img src={venue.logo} alt="" className="size-16 rounded-2xl object-cover" />
+      <img src={logoUrl(venue.logo, 64)} alt="" className="size-16 rounded-2xl object-cover" />
 
       <div className="flex flex-col items-center gap-1">
         <span className="text-base font-semibold text-(--color-slate)">{venue.name}</span>

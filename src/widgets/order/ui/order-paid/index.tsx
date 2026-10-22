@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { Gift } from "lucide-react";
 
-import { CertificateCode, useCertificateShareButton } from "@entities/certificate";
+import { CertificateCode, CertificateQr, useCertificateShareButton } from "@entities/certificate";
 import { type Order } from "@entities/order";
 
 import { formatDate } from "@shared/helpers";
@@ -52,6 +52,9 @@ export const OrderPaid = ({ order, venueName }: Props) => {
           caption={t("certificate.validUntil", { date: formatDate(validUntil) })}
         />
       </div>
+
+      {/* Just paid — the certificate is active. */}
+      <CertificateQr code={code} />
     </OrderResult>
   );
 };

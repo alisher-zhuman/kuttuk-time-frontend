@@ -4,6 +4,7 @@ export {
   useHaptic,
   useMainButton,
   usePopup,
+  useQrScanner,
   useSafeArea,
   useSettingsButton
 } from "./tma";

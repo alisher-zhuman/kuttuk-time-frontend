@@ -15,3 +15,4 @@ export type { Certificate, CertificateStatus, MerchantCertificate } from "./mode
 export { CertificateCard } from "./ui/card";
 export { CertificateCardSkeleton } from "./ui/card-skeleton";
 export { CertificateCode } from "./ui/code";
+export { CertificateQr } from "./ui/qr";

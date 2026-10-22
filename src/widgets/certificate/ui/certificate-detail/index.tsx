@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
   type Certificate,
   CertificateCode,
+  CertificateQr,
   getCertificateDate,
   useCertificateShareButton
 } from "@entities/certificate";
@@ -52,6 +53,10 @@ export const CertificateDetail = ({ certificate }: Props) => {
 
         <CertificateCode code={code} size="lg" caption={t(key, { date: formatDate(date) })} />
       </div>
+
+      {/* Only an active one can be redeemed — a QR of a used code would invite a
+          pointless scan. */}
+      {isActive && <CertificateQr code={code} />}
     </div>
   );
 };

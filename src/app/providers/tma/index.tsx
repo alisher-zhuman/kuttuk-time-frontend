@@ -89,8 +89,15 @@ export const TMAProvider = ({ children }: Props) => {
     const resolved = theme === "system" ? detectTheme() : theme;
     const { header, bg } = TMA_COLORS[resolved];
 
-    miniApp.setHeaderColor(header);
-    miniApp.setBgColor(bg);
+    // An RGB header color needs Mini Apps 6.10+; before that the call throws
+    // and took the whole app down on old clients — skip it there.
+    if (miniApp.setHeaderColor.isAvailable() && miniApp.setHeaderColor.supports("rgb")) {
+      miniApp.setHeaderColor(header);
+    }
+
+    if (miniApp.setBgColor.isAvailable()) {
+      miniApp.setBgColor(bg);
+    }
 
     if (miniApp.setBottomBarColor.isAvailable()) {
       miniApp.setBottomBarColor(bg);

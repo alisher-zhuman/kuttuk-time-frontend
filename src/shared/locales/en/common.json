@@ -58,7 +58,10 @@
         "expired": "Expired"
       },
       "codePlaceholder": "Enter a certificate code",
-      "sheetTitle": "Certificate"
+      "sheetTitle": "Certificate",
+      "scan": "Scan QR",
+      "scanHint": "Point the camera at the certificate's QR code",
+      "notACode": "Doesn't look like a certificate code"
     },
     "cabinet": {
       "allVenues": "All venues",
@@ -308,7 +311,8 @@
     "shareText": "🎁 Gift certificate for {{venue}}, {{amount}}. Code: {{code}}",
     "gift": "Gift",
     "giftUnavailable": "The certificate is already used or expired",
-    "giftFailed": "That didn't work, please try again"
+    "giftFailed": "That didn't work, please try again",
+    "qrHint": "Show the QR at the counter"
   },
   "certificates": {
     "empty": "No certificates yet",

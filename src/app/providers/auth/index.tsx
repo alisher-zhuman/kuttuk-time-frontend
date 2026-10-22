@@ -2,13 +2,13 @@ import { type ReactNode, useEffect, useState } from "react";
 
 import { retrieveRawInitData } from "@tma.js/sdk-react";
 import { isAxiosError } from "axios";
-import { Loader2 } from "lucide-react";
 
 import { ConnectionFailedPage } from "@pages/connection-failed";
 import { SessionExpiredPage } from "@pages/session-expired";
 
 import { logIn } from "@shared/api";
 import { useAuthStore, useViewModeStore } from "@shared/store";
+import { PageLoader } from "@shared/ui";
 
 interface Props {
   children: ReactNode;
@@ -69,11 +69,7 @@ export const AuthProvider = ({ children }: Props) => {
   }
 
   if (!isReady) {
-    return (
-      <div className="min-h-dvh flex items-center justify-center bg-(--color-bg)">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
-    );
+    return <PageLoader fullScreen />;
   }
 
   return <>{children}</>;

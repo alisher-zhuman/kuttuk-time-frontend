@@ -1,11 +1,11 @@
 // Any certificate shape with an effective status — the buyer's list item or
 // the one inside an order.
-type Dated =
+export type DatedCertificate =
   | { status: "active" | "expired"; validUntil: string }
   | { status: "used"; validUntil: string; usedAt: string };
 
 // The one date worth showing per status, with its i18n key.
-export const getCertificateDate = (certificate: Dated) => {
+export const getCertificateDate = (certificate: DatedCertificate) => {
   switch (certificate.status) {
     case "used":
       return { key: "certificate.usedAt", date: certificate.usedAt };

@@ -1,23 +1,13 @@
 import { useTranslation } from "react-i18next";
 
-import { openTelegramLink } from "@tma.js/sdk-react";
 import { CircleOff } from "lucide-react";
 
-import { SUPPORT_URL } from "@shared/constants";
-import { useHaptic } from "@shared/hooks";
+import { useOpenSupport } from "@shared/hooks";
 
 export const MerchantDeactivatedNotice = () => {
   const { t } = useTranslation();
 
-  const haptic = useHaptic();
-
-  const handleContact = () => {
-    haptic.light();
-
-    if (openTelegramLink.isAvailable()) {
-      openTelegramLink(SUPPORT_URL);
-    }
-  };
+  const { open: openSupport } = useOpenSupport();
 
   return (
     <div className="flex flex-col gap-3 p-4 rounded-2xl bg-(--color-accent-tint)">
@@ -33,7 +23,7 @@ export const MerchantDeactivatedNotice = () => {
 
       <button
         type="button"
-        onClick={handleContact}
+        onClick={openSupport}
         className="self-start px-4 py-2.5 rounded-full bg-(--color-accent) text-(--color-card) text-sm font-semibold cursor-pointer"
       >
         {t("support.contact")}

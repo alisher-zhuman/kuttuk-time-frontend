@@ -1,7 +1,5 @@
 import { useParams } from "react-router";
 
-import { Loader2 } from "lucide-react";
-
 import {
   OrderExpired,
   OrderNotFound,
@@ -14,7 +12,7 @@ import {
 import { isOrderId, useOrderPolling } from "@entities/order";
 import { useVenueQuery } from "@entities/venue";
 
-import { ErrorState } from "@shared/ui";
+import { ErrorState, PageLoader } from "@shared/ui";
 
 export const OrderPage = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -37,11 +35,7 @@ export const OrderPage = () => {
 
   if (!order) {
     // Still loading, or polling through a network error / 5xx.
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   // Still polling: pending, or expired within the late-webhook grace window

@@ -2,14 +2,11 @@ import { useTranslation } from "react-i18next";
 
 import {
   type Certificate,
-  CertificateCode,
-  CertificateQr,
-  getCertificateDate,
+  CertificateCodeBlock,
   useCertificateShareButton
 } from "@entities/certificate";
 
-import { formatDate, formatMoney, logoUrl } from "@shared/helpers";
-import { StatusBadge } from "@shared/ui";
+import { formatMoney, logoUrl } from "@shared/helpers";
 
 interface Props {
   certificate: Certificate;
@@ -19,8 +16,6 @@ export const CertificateDetail = ({ certificate }: Props) => {
   const { t } = useTranslation();
 
   const { venue, amount, code, status } = certificate;
-
-  const { key, date } = getCertificateDate(certificate);
 
   const isActive = status === "active";
 
@@ -44,19 +39,7 @@ export const CertificateDetail = ({ certificate }: Props) => {
         </span>
       </div>
 
-      {!isActive && <StatusBadge active={false} label={t(`certificate.status.${status}`)} />}
-
-      <div className="flex flex-col items-center gap-2">
-        <span className="text-xs font-bold text-(--color-hint) uppercase tracking-wider">
-          {t("certificate.code")}
-        </span>
-
-        <CertificateCode code={code} size="lg" caption={t(key, { date: formatDate(date) })} />
-      </div>
-
-      {/* Only an active one can be redeemed — a QR of a used code would invite a
-          pointless scan. */}
-      {isActive && <CertificateQr code={code} />}
+      <CertificateCodeBlock certificate={certificate} />
     </div>
   );
 };

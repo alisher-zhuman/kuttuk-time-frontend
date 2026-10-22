@@ -1,14 +1,12 @@
 import { useParams } from "react-router";
 
-import { Loader2 } from "lucide-react";
-
 import { VenueNotFound } from "@widgets/venues/venue-detail";
 import { VenueForm } from "@widgets/venues/venue-form";
 
 import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 import { useVenueOptionsQuery } from "@entities/venue";
 
-import { ErrorState } from "@shared/ui";
+import { ErrorState, PageLoader } from "@shared/ui";
 
 // The owner edits the storefront of one of its venues; the venue comes from
 // GET /merchants/me, which already lists them all with full fields.
@@ -20,11 +18,7 @@ export const OwnVenueEditPage = () => {
   const optionsQuery = useVenueOptionsQuery();
 
   if (isLoading || optionsQuery.isLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (isError || !merchant) {

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getHomeRoute } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
+import { PillButton } from "@shared/ui";
 
 export const NotFoundPage = () => {
   const { t } = useTranslation();
@@ -25,16 +26,14 @@ export const NotFoundPage = () => {
         {t("notFound.description")}
       </p>
 
-      <button
-        type="button"
+      <PillButton
         onClick={() => {
           haptic.light();
           navigateTo(homeRoute);
         }}
-        className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
       >
         {t("notFound.goHome")}
-      </button>
+      </PillButton>
     </div>
   );
 };

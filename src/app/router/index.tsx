@@ -1,8 +1,6 @@
 import { type ComponentType } from "react";
 import { createBrowserRouter } from "react-router";
 
-import { Loader2 } from "lucide-react";
-
 import { CertificatePage } from "@pages/certificate";
 import { HomePage } from "@pages/home";
 import { NotFoundPage } from "@pages/not-found";
@@ -13,6 +11,7 @@ import { VenuePage } from "@pages/venue";
 import { AppLayout } from "@widgets/layout";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
+import { PageLoader } from "@shared/ui";
 
 import { RequireRole } from "./guards/require-role";
 import { RootRedirect } from "./guards/root-redirect";
@@ -26,11 +25,7 @@ const page =
 
 // Shown while a lazy route's chunk loads on the very first render (e.g. the
 // app opened straight into the cabinet).
-const loader = (
-  <div className="min-h-dvh flex items-center justify-center bg-(--color-bg)">
-    <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-  </div>
-);
+const loader = <PageLoader fullScreen />;
 
 export const ROUTER = createBrowserRouter([
   {

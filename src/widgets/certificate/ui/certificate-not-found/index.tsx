@@ -4,7 +4,7 @@ import { Gift } from "lucide-react";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { EmptyState } from "@shared/ui";
+import { EmptyState, PillButton } from "@shared/ui";
 
 export const CertificateNotFound = () => {
   const { t } = useTranslation();
@@ -19,16 +19,14 @@ export const CertificateNotFound = () => {
       icon={<Gift size={32} strokeWidth={1.5} />}
       message={t("certificates.notFound")}
       action={
-        <button
-          type="button"
+        <PillButton
           onClick={() => {
             haptic.light();
             navigateTo(ROUTE_PATTERNS.PROFILE, { replace: true });
           }}
-          className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
         >
           {t("certificates.toList")}
-        </button>
+        </PillButton>
       }
     />
   );

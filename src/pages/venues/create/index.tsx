@@ -1,12 +1,10 @@
 import { useSearchParams } from "react-router";
 
-import { Loader2 } from "lucide-react";
-
 import { VenueForm } from "@widgets/venues/venue-form";
 
 import { useVenueOptionsQuery } from "@entities/venue";
 
-import { ErrorState } from "@shared/ui";
+import { ErrorState, PageLoader } from "@shared/ui";
 
 export const VenueCreatePage = () => {
   const [searchParams] = useSearchParams();
@@ -18,11 +16,7 @@ export const VenueCreatePage = () => {
   const merchantId = Number.isInteger(merchantParam) && merchantParam > 0 ? merchantParam : null;
 
   if (isLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (isError || !options) {

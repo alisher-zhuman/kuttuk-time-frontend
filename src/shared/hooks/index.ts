@@ -3,6 +3,7 @@ export {
   useCopyToClipboard,
   useHaptic,
   useMainButton,
+  useOpenSupport,
   usePopup,
   useQrScanner,
   useSafeArea,

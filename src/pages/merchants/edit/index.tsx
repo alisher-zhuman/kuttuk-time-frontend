@@ -1,11 +1,11 @@
 import { useParams } from "react-router";
 
-import { Loader2 } from "lucide-react";
-
 import { MerchantNotFound } from "@widgets/merchants/merchant-detail";
 import { MerchantForm } from "@widgets/merchants/merchant-form";
 
 import { useAdminMerchantQuery } from "@entities/merchant";
+
+import { PageLoader } from "@shared/ui";
 
 export const MerchantEditPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,11 +13,7 @@ export const MerchantEditPage = () => {
   const { merchant, isLoading, isError } = useAdminMerchantQuery(id);
 
   if (isLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (isError || !merchant) return <MerchantNotFound />;

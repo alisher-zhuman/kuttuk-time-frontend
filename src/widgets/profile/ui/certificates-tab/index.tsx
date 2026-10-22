@@ -10,7 +10,7 @@ import {
 
 import { getCertificateRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { EmptyState, ErrorState } from "@shared/ui";
+import { EmptyState, ErrorState, PillButton } from "@shared/ui";
 
 export const CertificatesTab = () => {
   const { t } = useTranslation();
@@ -43,16 +43,14 @@ export const CertificatesTab = () => {
         icon={<Gift size={32} strokeWidth={1.5} />}
         message={t("certificates.empty")}
         action={
-          <button
-            type="button"
+          <PillButton
             onClick={() => {
               haptic.light();
               navigateTo(ROUTE_PATTERNS.HOME);
             }}
-            className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
           >
             {t("certificates.toCatalog")}
-          </button>
+          </PillButton>
         }
       />
     );

@@ -5,7 +5,7 @@ import { Store } from "lucide-react";
 import { ROUTE_PATTERNS } from "@shared/constants";
 import { canGoBack } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { EmptyState } from "@shared/ui";
+import { EmptyState, PillButton } from "@shared/ui";
 
 export const VenueNotFound = () => {
   const { t } = useTranslation();
@@ -20,8 +20,7 @@ export const VenueNotFound = () => {
       icon={<Store size={32} strokeWidth={1.5} />}
       message={t("venue.notFound")}
       action={
-        <button
-          type="button"
+        <PillButton
           onClick={() => {
             haptic.light();
 
@@ -31,10 +30,9 @@ export const VenueNotFound = () => {
               navigateTo(ROUTE_PATTERNS.HOME);
             }
           }}
-          className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
         >
           {t("notFound.goBack")}
-        </button>
+        </PillButton>
       }
     />
   );

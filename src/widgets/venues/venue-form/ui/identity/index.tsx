@@ -11,6 +11,7 @@ interface Props {
   errors: FieldErrors<VenueFormValues>;
   logo: string;
   onLogoChange: (url: string) => void;
+  onLogoUploadingChange: (isUploading: boolean) => void;
   // Slug and active status are the admin's; the owner's form hides them.
   showSlug: boolean;
   showActiveToggle: boolean;
@@ -23,6 +24,7 @@ export const VenueFormIdentity = ({
   errors,
   logo,
   onLogoChange,
+  onLogoUploadingChange,
   showSlug,
   showActiveToggle,
   isActive,
@@ -35,6 +37,7 @@ export const VenueFormIdentity = ({
       <LogoUpload
         value={logo}
         onChange={onLogoChange}
+        onUploadingChange={onLogoUploadingChange}
         error={errors.logo?.message && t(errors.logo.message)}
       />
 

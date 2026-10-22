@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -19,6 +19,8 @@ interface Props {
 }
 
 export const VenueForm = ({ options, variant }: Props) => {
+  const [isLogoUploading, setIsLogoUploading] = useState(false);
+
   const { t } = useTranslation();
 
   const isCreate = variant.kind === "create";
@@ -54,8 +56,11 @@ export const VenueForm = ({ options, variant }: Props) => {
 
   useMainButton({
     text: t(isCreate ? "venueForm.create" : "venueForm.save"),
-    onClick: () => void submit(),
+    onClick: () => {
+      if (!isLogoUploading) void submit();
+    },
     loading: isPending,
+    disabled: isLogoUploading,
     hidden: !isCreate && !isDirty
   });
 
@@ -70,6 +75,7 @@ export const VenueForm = ({ options, variant }: Props) => {
         errors={errors}
         logo={logo}
         onLogoChange={setLogo}
+        onLogoUploadingChange={setIsLogoUploading}
         showSlug={isAdmin}
         showActiveToggle={variant.kind === "edit"}
         isActive={isActive}

@@ -12,9 +12,12 @@ interface Props {
   value: string;
   onChange: (url: string) => void;
   error?: string | undefined;
+  // So the form can hold "Save" until the new URL arrives — otherwise it would
+  // save the old logo and drop the new one.
+  onUploadingChange?: (isUploading: boolean) => void;
 }
 
-export const LogoUpload = ({ value, onChange, error }: Props) => {
+export const LogoUpload = ({ value, onChange, error, onUploadingChange }: Props) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -50,6 +53,7 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
     setUploadError(null);
     setPreview(URL.createObjectURL(file));
     setIsUploading(true);
+    onUploadingChange?.(true);
 
     try {
       onChange(await uploadImage(file));
@@ -62,6 +66,7 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
       setPreview(null);
     } finally {
       setIsUploading(false);
+      onUploadingChange?.(false);
     }
   };
 

@@ -15,9 +15,6 @@
     "label": "View mode",
     "viewAsUser": "Buyer",
     "viewAsMerchant": "Merchant",
-    "home": {
-      "loadError": "Failed to load profile"
-    },
     "deactivated": {
       "title": "Account deactivated",
       "message": "Your venues are hidden from buyers and can't be edited. You can still redeem certificates. Message us to turn them back on."

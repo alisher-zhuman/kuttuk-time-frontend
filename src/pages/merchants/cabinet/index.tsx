@@ -9,27 +9,21 @@ import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchan
 
 import { getOwnVenueEditRoute } from "@shared/constants";
 import { useNavigateTo } from "@shared/hooks";
-import { EmptyState } from "@shared/ui";
+import { EmptyState, ErrorState } from "@shared/ui";
 
 export const MerchantCabinetPage = () => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
 
-  const { merchant, isLoading, isError } = useMerchantMeQuery();
+  const { merchant, isLoading, isError, isFetching, retry } = useMerchantMeQuery();
 
   const { categories } = useCategoriesQuery();
 
   if (isLoading) return <VenueDetailSkeleton />;
 
   if (isError || !merchant) {
-    return (
-      <EmptyState
-        variant="page"
-        icon={<Store size={32} strokeWidth={1.5} />}
-        message={t("merchant.home.loadError")}
-      />
-    );
+    return <ErrorState onRetry={retry} isRetrying={isFetching} />;
   }
 
   return (

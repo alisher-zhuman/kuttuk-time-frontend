@@ -1,8 +1,6 @@
 import { useParams } from "react-router";
 
-import { useTranslation } from "react-i18next";
-
-import { Loader2, Store } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { VenueNotFound } from "@widgets/venues/venue-detail";
 import { VenueForm } from "@widgets/venues/venue-form";
@@ -10,16 +8,14 @@ import { VenueForm } from "@widgets/venues/venue-form";
 import { MerchantDeactivatedNotice, useMerchantMeQuery } from "@entities/merchant";
 import { useVenueOptionsQuery } from "@entities/venue";
 
-import { EmptyState, ErrorState } from "@shared/ui";
+import { ErrorState } from "@shared/ui";
 
 // The owner edits the storefront of one of its venues; the venue comes from
 // GET /merchants/me, which already lists them all with full fields.
 export const OwnVenueEditPage = () => {
   const { venueId } = useParams<{ venueId: string }>();
 
-  const { t } = useTranslation();
-
-  const { merchant, isLoading, isError } = useMerchantMeQuery();
+  const { merchant, isLoading, isError, isFetching, retry } = useMerchantMeQuery();
 
   const optionsQuery = useVenueOptionsQuery();
 
@@ -32,13 +28,7 @@ export const OwnVenueEditPage = () => {
   }
 
   if (isError || !merchant) {
-    return (
-      <EmptyState
-        variant="page"
-        icon={<Store size={32} strokeWidth={1.5} />}
-        message={t("merchant.home.loadError")}
-      />
-    );
+    return <ErrorState onRetry={retry} isRetrying={isFetching} />;
   }
 
   // Also reached when a save gets 403 mid-edit: the mutation refetches "me",

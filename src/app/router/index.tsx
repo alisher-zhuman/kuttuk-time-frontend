@@ -31,14 +31,17 @@ import { ROUTE_PATTERNS } from "@shared/constants";
 
 import { RequireRole } from "./guards/require-role";
 import { RootRedirect } from "./guards/root-redirect";
+import { RouteError } from "./route-error";
 
 export const ROUTER = createBrowserRouter([
   {
     path: "/",
-    element: <RootRedirect />
+    element: <RootRedirect />,
+    errorElement: <RouteError />
   },
   {
     element: <AppLayout />,
+    errorElement: <RouteError />,
     children: [
       {
         path: ROUTE_PATTERNS.HOME,

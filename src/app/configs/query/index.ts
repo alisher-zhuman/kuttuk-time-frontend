@@ -18,12 +18,16 @@ const shouldRetry = (failureCount: number, error: unknown) => {
   return !(isAxiosError(error) && error.response && error.response.status < 500);
 };
 
-export const QUERY_CLIENT = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60_000,
-      retry: shouldRetry,
-      refetchOnWindowFocus: false
+// A factory so tests get a fresh client with the app's own settings.
+export const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60_000,
+        retry: shouldRetry,
+        refetchOnWindowFocus: false
+      }
     }
-  }
-});
+  });
+
+export const QUERY_CLIENT = createQueryClient();

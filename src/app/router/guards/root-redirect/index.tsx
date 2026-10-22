@@ -1,14 +1,10 @@
 import { useLayoutEffect } from "react";
 
-import {
-  getOrderRoute,
-  getVenueRoute,
-  ORDER_START_PARAM_PREFIX,
-  ROUTE_PATTERNS
-} from "@shared/constants";
 import { getLaunchParams } from "@shared/helpers";
 import { useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
+
+import { getStartRoute } from "./start-route";
 
 // A component, not a loader: the redirect target depends on viewMode/role,
 // which is only known after auth resolves. createBrowserRouter runs loaders at
@@ -23,35 +19,10 @@ export const RootRedirect = () => {
   useLayoutEffect(() => {
     const { viewMode } = useViewModeStore.getState();
 
-    const startParam = getLaunchParams()?.tgWebAppStartParam;
-
-    // Back from the Finik payment page. Checked before the role redirects:
-    // any role can buy, so an admin/merchant must land on their order too.
-    // The id is validated by the order page (bad one → "not found"), and with
-    // replace this is the only history entry, so Back falls through to the
-    // role's home (useBackButton) instead of closing the mini app.
-    if (startParam?.startsWith(ORDER_START_PARAM_PREFIX)) {
-      navigateTo(getOrderRoute(startParam.slice(ORDER_START_PARAM_PREFIX.length)), {
-        replace: true
-      });
-      return;
-    }
-
-    // Venue deep links are a buyer flow — admins and merchants always land
-    // on their own dashboard.
-    if (viewMode === "admin") {
-      navigateTo(ROUTE_PATTERNS.ADMIN_VENUES, { replace: true });
-      return;
-    }
-
-    if (viewMode === "merchant") {
-      navigateTo(ROUTE_PATTERNS.MERCHANT_HOME, { replace: true });
-      return;
-    }
-
-    navigateTo(startParam ? getVenueRoute(startParam) : ROUTE_PATTERNS.HOME, {
-      replace: true
-    });
+    // The id in startapp=order_<uuid> is validated by the order page (a bad
+    // one → "not found"); with replace this is the only history entry, so Back
+    // falls through to the role's home instead of closing the mini app.
+    navigateTo(getStartRoute(getLaunchParams()?.tgWebAppStartParam, viewMode), { replace: true });
   }, [navigateTo]);
 
   return null;

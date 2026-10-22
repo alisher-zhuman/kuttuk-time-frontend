@@ -1,2 +1,5 @@
 allowBuilds:
   lefthook: true
+  # msw's install script only sets up the browser service worker; tests use
+  # setupServer() in Node, and e2e mock with page.route — nothing for it to do.
+  msw: false

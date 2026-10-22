@@ -24,7 +24,10 @@
       "@widgets/*": ["src/widgets/*"],
       "@features/*": ["src/features/*"],
       "@entities/*": ["src/entities/*"],
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@tests": ["test-utils"],
+      "@tests/*": ["test-utils/*"],
+      "@mocks": ["mocks"]
     },
 
     /* Strict */
@@ -41,5 +44,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "vitest.setup.ts", "mocks", "test-utils"]
 }

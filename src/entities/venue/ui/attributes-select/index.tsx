@@ -55,7 +55,16 @@ export const VenueAttributesSelect = ({
       <ChipSelect
         label={t("merchantAttributes.categories")}
         error={categoriesError}
-        items={categoryOptions}
+        items={[
+          ...categoryOptions,
+          // A selected category that no longer exists (deleted meanwhile) gets
+          // a chip too, so it can be deselected. Not while the list loads.
+          ...(categoryOptions.length === 0
+            ? []
+            : categories
+                .filter((id) => !categoryOptions.some((option) => option.value === id))
+                .map((id) => ({ value: id, label: t("merchantAttributes.removedCategory") })))
+        ]}
         isSelected={(id) => categories.includes(id)}
         onSelect={(id) =>
           onCategoriesChange(

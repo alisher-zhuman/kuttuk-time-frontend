@@ -113,7 +113,8 @@
     "validityUnavailable": "Этот срок больше недоступен — выберите другой",
     "owner": "Владелец",
     "ownerRequired": "Выберите владельца",
-    "slugReserved": "Это слово зарезервировано, выберите другое"
+    "slugReserved": "Это слово зарезервировано, выберите другое",
+    "categoryRemoved": "Категория удалена — снимите её"
   },
   "merchantForm": {
     "title": "Новый владелец",
@@ -141,7 +142,8 @@
     "categories": "Категории",
     "nominals": "Номинал",
     "validity": "Срок действия (мес.)",
-    "months": "{{months}} мес."
+    "months": "{{months}} мес.",
+    "removedCategory": "Удалённая категория"
   },
   "aria": {
     "changeLanguage": "Сменить язык",

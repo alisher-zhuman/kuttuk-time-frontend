@@ -113,7 +113,8 @@
     "validityUnavailable": "This validity period is no longer available — pick another",
     "owner": "Merchant",
     "ownerRequired": "Choose a merchant",
-    "slugReserved": "This word is reserved, choose another"
+    "slugReserved": "This word is reserved, choose another",
+    "categoryRemoved": "This category was deleted — deselect it"
   },
   "merchantForm": {
     "title": "New merchant",
@@ -141,7 +142,8 @@
     "categories": "Categories",
     "nominals": "Amount",
     "validity": "Validity (months)",
-    "months": "{{months}} mo"
+    "months": "{{months}} mo",
+    "removedCategory": "Deleted category"
   },
   "aria": {
     "changeLanguage": "Change language",

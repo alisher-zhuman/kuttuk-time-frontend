@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { useCategoriesQuery } from "@entities/category";
@@ -22,6 +24,13 @@ export const VenueForm = ({ options, variant }: Props) => {
   const isCreate = variant.kind === "create";
   const isAdmin = variant.kind !== "own";
 
+  const { categories: categoryOptions } = useCategoriesQuery();
+
+  const categoryIds = useMemo(
+    () => categoryOptions.map((category) => category.id),
+    [categoryOptions]
+  );
+
   const {
     register,
     errors,
@@ -40,9 +49,8 @@ export const VenueForm = ({ options, variant }: Props) => {
     setValidityMonths,
     setIsActive,
     submit
-  } = useVenueForm(options, variant);
+  } = useVenueForm(options, variant, categoryIds);
 
-  const { categories: categoryOptions } = useCategoriesQuery();
 
   useMainButton({
     text: t(isCreate ? "venueForm.create" : "venueForm.save"),

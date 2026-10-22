@@ -32,11 +32,18 @@ const DEFAULT_VALIDITY_MONTHS = 12;
 // Edit variants receive an already-loaded venue (the page gates on the query),
 // so defaultValues are final on the first render — no reset() that could wipe
 // what the user typed while the request was in flight.
-export const useVenueForm = (options: VenueOptions, variant: VenueFormVariant) => {
+export const useVenueForm = (
+  options: VenueOptions,
+  variant: VenueFormVariant,
+  categoryIds: number[]
+) => {
   const isAdmin = variant.kind !== "own";
   const venue = variant.kind === "create" ? undefined : variant.venue;
 
-  const schema = useMemo(() => createVenueFormSchema(options, isAdmin), [options, isAdmin]);
+  const schema = useMemo(
+    () => createVenueFormSchema(options, isAdmin, categoryIds),
+    [options, isAdmin, categoryIds]
+  );
 
   const navigateTo = useNavigateTo();
 

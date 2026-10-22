@@ -113,7 +113,8 @@
     "validityUnavailable": "Бул мөөнөт мындан ары жеткиликсиз — башкасын тандаңыз",
     "owner": "Ээси",
     "ownerRequired": "Ээсин тандаңыз",
-    "slugReserved": "Бул сөз корголгон, башкасын тандаңыз"
+    "slugReserved": "Бул сөз корголгон, башкасын тандаңыз",
+    "categoryRemoved": "Категория өчүрүлгөн — аны алып салыңыз"
   },
   "merchantForm": {
     "title": "Жаңы ээси",
@@ -141,7 +142,8 @@
     "categories": "Категориялар",
     "nominals": "Номинал",
     "validity": "Жарактуулук мөөнөтү (ай)",
-    "months": "{{months}} ай"
+    "months": "{{months}} ай",
+    "removedCategory": "Өчүрүлгөн категория"
   },
   "aria": {
     "changeLanguage": "Тил алмаштыруу",

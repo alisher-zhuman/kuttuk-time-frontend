@@ -11,7 +11,12 @@ const RESERVED_SLUGS = ["me", "options"];
 // Allowed nominals / validity come from the backend, so the schema is built per
 // options response. withAdminFields: slug and owner are validated only when
 // the admin edits them — the owner's form doesn't show or send them.
-export const createVenueFormSchema = (options: VenueOptions, withAdminFields: boolean) =>
+// categoryIds: the existing categories, [] while they load (no check then).
+export const createVenueFormSchema = (
+  options: VenueOptions,
+  withAdminFields: boolean,
+  categoryIds: number[]
+) =>
   z.object({
     logo: z.string().min(1, "venueForm.logoRequired"),
     name: z.string().trim().min(1, "venueForm.required"),
@@ -31,7 +36,14 @@ export const createVenueFormSchema = (options: VenueOptions, withAdminFields: bo
     descriptionRu: z.string().trim().min(1, "venueForm.required"),
     descriptionKg: z.string().trim().min(1, "venueForm.required"),
     descriptionEn: z.string().trim().min(1, "venueForm.required"),
-    categories: z.array(z.number()).min(1, "venueForm.categoriesRequired"),
+    categories: z
+      .array(z.number())
+      .min(1, "venueForm.categoriesRequired")
+      // A category deleted after the venue was saved — the backend rejects it.
+      .refine(
+        (values) => categoryIds.length === 0 || values.every((id) => categoryIds.includes(id)),
+        { message: "venueForm.categoryRemoved" }
+      ),
     nominals: z
       .array(z.number())
       .min(1, "venueForm.nominalsRequired")

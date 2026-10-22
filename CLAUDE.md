@@ -134,8 +134,7 @@ Always check `isAvailable()` before calling SDK methods.
 
 **Worth adding (when there's time):**
 - `ClosingBehavior.enableConfirmation()` — guard against accidentally closing the app on the payment screen (swipe/back)
-- `Popup.show` — native confirmation dialogs instead of custom modals (e.g. "Mark as used?")
-- `QrScanner` — merchant scans the code instead of typing it (planned, see **TODO** → redemption)
+- «Скачать QR» of the venue link on phones — needs the backend to serve the QR as a PNG at an https URL (like `GET /api/qr/<code>.jpg` for certificates), then `downloadFile(url, name)`. A screenshot is enough for now
 
 **Doesn't fit the product / don't add without a reason:**
 - `Invoice` (`openInvoice`/`openSlug`) — that's Telegram Stars, our payments go through Finik/Bakai/Freedom
@@ -147,7 +146,7 @@ Always check `isAvailable()` before calling SDK methods.
 
 No success toast/message pattern yet — mutations that redirect on success (e.g. `createCategory` → back to the categories list) rely on haptic + the result being visible on the destination page, which is enough on its own.
 
-**Worth adding (when there's time):** a minimal custom toast (own component + small store/hook, same "hand-roll it, don't pull a library" approach as `ErrorBoundary`) for mutations that *don't* navigate away on success (e.g. future "Mark as used", inline edits) — those need a visible confirmation since there's no destination-page context to imply success.
+**Worth adding (when there's time):** a minimal custom toast (own component + small store/hook, same "hand-roll it, don't pull a library" approach as `ErrorBoundary`) for mutations that *don't* navigate away on success (e.g. inline edits; «Погасить» shows its result in place) — those need a visible confirmation since there's no destination-page context to imply success.
 
 ## Payment flow — notes for when it's built
 
@@ -156,10 +155,8 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 
 ## TODO
 
-- **Return after payment — waiting for diagnostics.** In production Finik's redirect landed the buyer in the bot chat with an error instead of the Mini App. Opening `startapp=order_<uuid>` by hand works (frontend routing is fine). The backend is diagnosing the `RedirectUrl` — see `../backend/CLAUDE.md` ("Payment RedirectUrl → back to the order")
 - **Redemption (frontend):** ✅ all on the «Сертификаты» tab (`/app/merchant/certificates`, `widgets/merchants/certificate-list`), no separate page. A code field on top (`inputMode="numeric"`; keeps only digits, at most 8, shown as `0471 8263` while typing; no `maxLength` — it would cut a pasted «Код: 0471 8263» before the digits are picked out): at 8 digits → `GET /merchants/me/certificates/:code` → the card right below (400 «Неверный формат кода», 404 «Сертификат не найден»). Active → «Погасить» → native confirm popup (no undo) → `POST …/redeem`; success clears the field for the next customer, keeps a «Сертификат погашен» card until they type, and refetches the list; 409 re-fetches the GET so the card shows why. Tapping any row opens the same card in a `BottomSheet` (looked up again; «Погасить» only for active). Both are one component, `CertificateLookup` (query + confirm + redeem + card). ✅ Weekly summary (`/app/merchant/summary`) and the list are refreshed after a redemption, never polled. ✅ QR (2026-10-22): the buyer's active certificate and the paid order show `CertificateQr` (`uqr` `encode` → one SVG path, black on white, the 8 digits without spaces); the owner's code field has a scanner icon (`useQrScanner` → `qrScanner.capture`, hidden where unavailable — desktop / old clients). The scanner's own predicate accepts only exactly 8 digits after dropping non-digits (not cut down like typing) — a stray QR is ignored and the scanner stays open.
 - ✅ **Admin «Заказы» and «Выплаты»** (2026-10-21). «Выплаты»: `/app/admin/payouts` (`widgets/payouts`, `entities/payout`, `GET /admin/payouts?week=` — the same numbers as `npm run report:payouts`, shown as sent, never recomputed); `needsReviewCount > 0` → a warning linking to `getAdminOrdersRoute("needs_review")`. Marking paid out (`POST /admin/payouts {merchantId, week, note?}`, shown while `due > 0`): a confirm sheet (`MarkPaidSheet` on `BottomSheet`), the server computes the amount; we send `expectedPayout` (the `due` shown in the sheet) and it records only if its own amount still matches — 409 `amount_changed` = a sale landed meanwhile, nothing recorded → «Сумма изменилась…», the report refetches and the still-open sheet shows the new amount (it reads the row by `merchantId`, not a snapshot); 409 `nothing_to_pay_out` = already marked → refetch; the success popup shows the server's number. **No undo in the app — a mark on prod is a real payout record.** Row states from `paidOut` / `due`: paid ✓ / due / top-up; under each row the week's recorded marks (`payouts[]`: amount · time · note — admin-only, the owner never sees notes); the owner's summary shows the same status (only without the venue filter); orders with `payoutId` get «Выплачен». «Заказы»: `orders/` module — list `/app/admin/orders` (status chips + search in the URL; search 400 → «Введите код…») and detail `/app/admin/orders/:id` with Finik webhooks (Finik's amount next to the order's, a mismatch highlighted), certificate and manual resolutions. Read-only: resolving needs_review stays a backend script. Not used yet: the `venueId` / `merchantId` filters (e.g. «orders of this merchant» from its page)
-- **Bottom nav sits too high** — consider lowering it: now `mx-4 mb-4` above the safe area. Check on a real iPhone (home indicator) before changing. Also: admin kg «Буйрутмалар» is truncated below 375px, and at 320px kg labels truncate in the admin nav
 
 **Verified on a real device:**
 - `openLink` called after `await createOrder` opens the Finik page by itself on a real iPhone (2026-10). The "Open payment" MainButton on the order screen stays as the fallback path (e.g. the user closed the bank page, or a client that ignores `openLink` outside a gesture)
@@ -173,14 +170,14 @@ Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit 
 
 ## Testing
 
-No test setup exists yet (no Vitest/Jest, no test files, nothing in `package.json`). Correctness is currently covered only by `pnpm typecheck` + `pnpm lint` + manual testing in the browser/Telegram.
-
-Worth adding once the codebase grows past the 2-merchant MVP stage:
-- **Vitest** — unit tests for pure logic in `@shared/helpers` (e.g. `getScopedStorageKey`, `formatMoney`) and Zod schemas in `entities/*/model`
-- **React Testing Library** — component tests for anything with real branching logic (e.g. `VenueContent`/`VenueNotFound` state switching in `pages/venue`)
-- **Playwright** (or similar) — e2e for the critical path only: deep link → venue page → pick amount → buy, since that's the entire business
-
-Not a priority before the payment flow ships — don't add test infra just to have it.
+Modelled on `kca-frontend-private`. No request ever reaches prod or real Telegram.
+- **Vitest + jsdom + Testing Library + MSW** (`vitest.config.ts`, `vitest.setup.ts`), `globals: false`, tests colocated as `*.test.ts(x)`. MSW `onUnhandledRequest: "error"` — an unmocked request fails the test that made it. API base in tests: `http://api.test/api`
+- `@tests` (`test-utils/`): `renderWithProviders(ui, { route, path, language })` — memory router, a fresh `createQueryClient()`, i18n `ru`; `renderHookWithProviders`. `installTelegram()` stubs the bridge: `window.__telegram` — `calls`, `last(name)`, `emit`, `replies` (popup button, QR text, write access, share result)
+- `@mocks` (`mocks/`): `server`, `api(path)`, `fixtures` — shaped like the backend's responses, nulls included
+- **Rule tests** (`src/app/*.test.ts`): `useState` first; pages are only `index.tsx`; entity `index.ts` only re-exports; locale key parity; no «мерчант» in ru/kg; `useNavigate` / `retrieveLaunchParams` only through our wrappers
+- A guard test (double tap, 409) must fail without the guard — check by removing it. E.g. the SDK refuses a second popup, so the redeem double-tap test answers both confirmations itself and taps twice in one frame
+- **E2E — Playwright on mocks** (`e2e/`, `playwright.config.ts`): a prod build (`dist-e2e`) + `MiniApp` (`e2e/support.ts`) with the Telegram stub and routed API. Three flows: buy → paid → «Подарить»; owner redeems; admin marks a payout. Locally, if the browser download hangs: `PW_CHROMIUM_PATH=<a cached Chromium> pnpm test:e2e`
+- **CI** (`.github/workflows/ci.yml`, push / PR): install → lint → typecheck → steiger → `test:run` → build → e2e; traces uploaded on failure
 
 ## Commands
 
@@ -189,9 +186,13 @@ pnpm dev          # dev server
 pnpm typecheck    # tsc -b (same as the pre-push hook)
 pnpm lint         # eslint
 pnpm lint:fix     # eslint --fix
+pnpm test         # vitest, watch
+pnpm test:run     # vitest once (pre-push, CI)
+pnpm test:coverage
+pnpm test:e2e     # playwright on mocks
 ```
 
-Pre-push hook (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`)
+Pre-push hook (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`) → `test:run`
 
 ## Git
 

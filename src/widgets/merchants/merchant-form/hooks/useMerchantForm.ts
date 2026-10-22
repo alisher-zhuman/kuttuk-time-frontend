@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -52,7 +54,18 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
   const setIsActive = (next: boolean) =>
     setValue("isActive", next, { shouldValidate: true, shouldDirty: true });
 
-  const submit = handleSubmit((values) => {
+  // isPending lands a render late — two taps in one frame would both submit
+  // (and create two records).
+  const isSubmittingRef = useRef(false);
+  const release = () => {
+    isSubmittingRef.current = false;
+  };
+
+  const onValid = (values: MerchantFormValues) => {
+    if (isSubmittingRef.current) return;
+
+    isSubmittingRef.current = true;
+
     const payload = { name: values.name.trim(), telegramId: Number(values.telegramId) };
 
     const onError = (error: unknown) => {
@@ -74,7 +87,8 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
             haptic.success();
             navigateTo(-1);
           },
-          onError
+          onError,
+          onSettled: release
         }
       );
       return;
@@ -87,9 +101,13 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
         haptic.success();
         navigateTo(getAdminMerchantDetailRoute(created.id), { replace: true });
       },
-      onError
+      onError,
+      onSettled: release
     });
-  });
+  };
+
+  // handleSubmit runs on tap, not during render — onValid reads the ref.
+  const submit = () => handleSubmit(onValid)();
 
   return {
     register,

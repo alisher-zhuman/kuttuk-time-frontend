@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
@@ -108,7 +108,18 @@ export const useVenueForm = (options: VenueOptions, variant: VenueFormVariant) =
   };
   const setIsActive = (next: boolean) => setValue("isActive", next, setValueOptions);
 
-  const submit = handleSubmit((values) => {
+  // isPending lands a render late — two taps in one frame would both submit
+  // (and create two records).
+  const isSubmittingRef = useRef(false);
+  const release = () => {
+    isSubmittingRef.current = false;
+  };
+
+  const onValid = (values: VenueFormValues) => {
+    if (isSubmittingRef.current) return;
+
+    isSubmittingRef.current = true;
+
     const storefront = {
       name: values.name.trim(),
       description: {
@@ -139,7 +150,8 @@ export const useVenueForm = (options: VenueOptions, variant: VenueFormVariant) =
             }
 
             showGenericError();
-          }
+          },
+          onSettled: release
         }
       );
       return;
@@ -162,7 +174,8 @@ export const useVenueForm = (options: VenueOptions, variant: VenueFormVariant) =
         }
 
         showGenericError();
-      }
+      },
+      onSettled: release
     };
 
     if (variant.kind === "edit") {
@@ -173,7 +186,10 @@ export const useVenueForm = (options: VenueOptions, variant: VenueFormVariant) =
     } else {
       create(payload, callbacks);
     }
-  });
+  };
+
+  // handleSubmit runs on tap, not during render — onValid reads the ref.
+  const submit = () => handleSubmit(onValid)();
 
   const isPending = { create: isCreating, edit: isUpdating, own: isUpdatingOwn }[variant.kind];
 

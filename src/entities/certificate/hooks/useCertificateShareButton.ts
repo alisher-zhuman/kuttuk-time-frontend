@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -48,8 +50,19 @@ export const useCertificateShareButton = ({
   // A new card per tap — it expires, so never cached.
   const { mutate: gift, isPending } = useMutation({ mutationFn: prepareGift });
 
+  // isPending lands a render late — a double tap would prepare two cards and
+  // open the chat picker twice.
+  const isGiftingRef = useRef(false);
+
   const handleGift = (certificateId: string) => {
+    if (isGiftingRef.current) return;
+
+    isGiftingRef.current = true;
+
     gift(certificateId, {
+      onSettled: () => {
+        isGiftingRef.current = false;
+      },
       onSuccess: ({ preparedMessageId }) => {
         // Rejects when the user closes the chat picker — nothing to do then.
         shareMessage(preparedMessageId).then(

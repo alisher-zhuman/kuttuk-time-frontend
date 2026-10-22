@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -40,7 +42,18 @@ export const useCategoryForm = (category?: AdminCategory) => {
     }
   });
 
-  const submit = handleSubmit((values) => {
+  // isPending lands a render late — two taps in one frame would both submit
+  // (and create two records).
+  const isSubmittingRef = useRef(false);
+  const release = () => {
+    isSubmittingRef.current = false;
+  };
+
+  const onValid = (values: CategoryFormValues) => {
+    if (isSubmittingRef.current) return;
+
+    isSubmittingRef.current = true;
+
     const name = {
       ru: values.ru.trim(),
       kg: values.kg.trim(),
@@ -52,7 +65,8 @@ export const useCategoryForm = (category?: AdminCategory) => {
         haptic.success();
         navigateTo(ROUTE_PATTERNS.ADMIN_CATEGORIES);
       },
-      onError: showGenericError
+      onError: showGenericError,
+      onSettled: release
     };
 
     if (category) {
@@ -60,7 +74,10 @@ export const useCategoryForm = (category?: AdminCategory) => {
     } else {
       create({ name, ...(values.order.trim() && { order: Number(values.order) }) }, callbacks);
     }
-  });
+  };
+
+  // handleSubmit runs on tap, not during render — onValid reads the ref.
+  const submit = () => handleSubmit(onValid)();
 
   return {
     register,

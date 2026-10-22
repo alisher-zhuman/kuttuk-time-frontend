@@ -65,12 +65,13 @@ export const useMainButton = ({
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;
 
-    if (disabled) {
+    // The loader alone doesn't stop taps — disable the button while loading.
+    if (disabled || loading) {
       mainButton.disable();
     } else {
       mainButton.enable();
     }
-  }, [disabled]);
+  }, [disabled, loading]);
 
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;

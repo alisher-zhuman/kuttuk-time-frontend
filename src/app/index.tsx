@@ -16,6 +16,9 @@ import { ROUTER } from "@app/router";
 import { applyTheme } from "@shared/helpers";
 import { useThemeStore } from "@shared/store";
 
+// Self-hosted (no render-blocking Google Fonts request); only the subsets a
+// page uses (cyrillic, latin) are downloaded.
+import "@fontsource-variable/manrope";
 import "./styles/index.css";
 import "./configs/i18n";
 

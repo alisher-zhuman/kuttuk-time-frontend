@@ -5,9 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+    <!-- Open the connections the first screen waits on while the JS loads:
+         the API (log-in, then the data) and Cloudinary (logos). -->
+    <link rel="preconnect" href="%VITE_API_URL%" crossorigin />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
 
     <link rel="icon" type="image/svg+xml" href="/icons/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/icons/logo-dark.svg" media="(prefers-color-scheme: dark)" />

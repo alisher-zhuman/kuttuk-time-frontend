@@ -28,7 +28,8 @@
       "success": "Сертификат погашен",
       "redeemedAt": "Погашен {{date}}",
       "confirmTitle": "Погасить сертификат?",
-      "confirmMessage": "{{amount}} в {{venue}}, код {{code}}. Отменить нельзя."
+      "confirmMessage": "{{amount}} в {{venue}}, код {{code}}. Отменить нельзя.",
+      "confirmFailed": "Не удалось открыть подтверждение. Попробуйте ещё раз."
     },
     "summary": {
       "title": "Сводка за неделю",

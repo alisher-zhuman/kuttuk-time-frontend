@@ -27,8 +27,15 @@ interface Props {
 
 // One certificate by its code: looked up fresh (the status changes at the
 // counter), with "Redeem" while active. Used by the code field and the sheet.
+// Telegram's popup message is capped at 256 characters and venue names have no
+// limit yet — keep the name short enough for the whole message to fit.
+const VENUE_NAME_MAX = 60;
+const shorten = (value: string) =>
+  value.length > VENUE_NAME_MAX ? `${value.slice(0, VENUE_NAME_MAX - 1).trimEnd()}…` : value;
+
 export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
   const [justRedeemed, setJustRedeemed] = useState(false);
+  const [isConfirmFailed, setIsConfirmFailed] = useState(false);
 
   const { t } = useTranslation();
 
@@ -55,7 +62,7 @@ export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
       title: t("merchant.redeem.confirmTitle"),
       message: t("merchant.redeem.confirmMessage", {
         amount: formatMoney(active.amount, t("certificate.currency")),
-        venue: active.venue.name,
+        venue: shorten(active.venue.name),
         code: formatCertificateCode(active.code)
       }),
       buttons: [
@@ -63,6 +70,9 @@ export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
         { id: "redeem", type: "default", text: t("merchant.redeem.submit") }
       ]
     });
+
+    // The confirmation didn't open — say so instead of a silent button.
+    setIsConfirmFailed(buttonId === undefined);
 
     if (buttonId !== "redeem") {
       isRedeemingRef.current = false;
@@ -116,11 +126,19 @@ export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
   }
 
   return (
-    <CertificateCard
-      certificate={certificate}
-      onRedeem={() => void handleRedeem(certificate)}
-      isRedeeming={isPending}
-      justRedeemed={justRedeemed}
-    />
+    <>
+      <CertificateCard
+        certificate={certificate}
+        onRedeem={() => void handleRedeem(certificate)}
+        isRedeeming={isPending}
+        justRedeemed={justRedeemed}
+      />
+
+      {isConfirmFailed && (
+        <span className="text-sm font-semibold text-(--color-accent) px-1">
+          {t("merchant.redeem.confirmFailed")}
+        </span>
+      )}
+    </>
   );
 };

@@ -28,7 +28,8 @@
       "success": "Certificate redeemed",
       "redeemedAt": "Redeemed {{date}}",
       "confirmTitle": "Redeem the certificate?",
-      "confirmMessage": "{{amount}} at {{venue}}, code {{code}}. This can't be undone."
+      "confirmMessage": "{{amount}} at {{venue}}, code {{code}}. This can't be undone.",
+      "confirmFailed": "Couldn't open the confirmation. Please try again."
     },
     "summary": {
       "title": "Weekly summary",

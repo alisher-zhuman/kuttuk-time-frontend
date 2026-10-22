@@ -14,26 +14,29 @@ import {
 import { isOrderId, useOrderPolling } from "@entities/order";
 import { useVenueQuery } from "@entities/venue";
 
+import { ErrorState } from "@shared/ui";
+
 export const OrderPage = () => {
   const { orderId } = useParams<{ orderId: string }>();
 
   const validOrderId = isOrderId(orderId) ? orderId : undefined;
 
-  const { order, isSettled } = useOrderPolling(validOrderId);
+  const { order, isSettled, isNotFound, isFailed, retry, isFetching } = useOrderPolling(validOrderId);
 
   const { venue } = useVenueQuery(order ? String(order.venueId) : undefined);
 
-  if (!validOrderId) {
+  if (!validOrderId || isNotFound) {
     return <OrderNotFound />;
   }
 
-  if (!order) {
-    // Settled without data = 404/400 (not ours or missing). Otherwise still
-    // loading, or polling through a network error / 5xx.
-    if (isSettled) {
-      return <OrderNotFound />;
-    }
+  // Polling gave up on errors — don't leave a loader (or a stale "checking")
+  // spinning forever.
+  if (isFailed) {
+    return <ErrorState onRetry={retry} isRetrying={isFetching} />;
+  }
 
+  if (!order) {
+    // Still loading, or polling through a network error / 5xx.
     return (
       <div className="flex-1 flex items-center justify-center">
         <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />

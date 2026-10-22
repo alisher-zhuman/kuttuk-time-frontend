@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { ZodError } from "zod";
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { miniApp, useSignal } from "@tma.js/sdk-react";
 import { isAxiosError } from "axios";
@@ -28,15 +30,41 @@ const isSettled = (order: Order, fetchedAt: number) =>
   order.status === "refunded" ||
   fetchedAt > new Date(order.expiresAt).getTime() + LATE_WEBHOOK_GRACE_MS;
 
-// 404 (not ours / missing) and 400 (bad id) won't change on retry. 429 will —
-// the limit is per user (60/min on GET /orders/:id, keyed user:<id>), so the
-// counter resets within a minute — and so will network errors and 5xx; keep
-// polling through those.
-const isPermanentError = (error: unknown) =>
+// 404 (not ours / missing) and 400 (bad id) won't change on retry.
+const isNotFoundError = (error: unknown) =>
   isAxiosError(error) &&
   error.response !== undefined &&
   error.response.status < 500 &&
   error.response.status !== 429;
+
+// Network errors, 5xx and 429 (per user, 60/min — resets within a minute) are
+// polled through, but not forever: with no order yet, give up after this many
+// errors (all of them in a row then); with an order, once errors outlast the
+// last good response by this long, or run past the grace window.
+const MAX_ERRORS_WITHOUT_ORDER = 10;
+const ERROR_STREAK_MS = 30_000;
+
+interface PollState {
+  data: Order | undefined;
+  dataUpdatedAt: number;
+  error: unknown;
+  errorUpdatedAt: number;
+  errorUpdateCount: number;
+  status: "pending" | "error" | "success";
+}
+
+// Stop retrying: not found, a response that doesn't match the schema (won't
+// fix itself), or a long error streak.
+const hasGivenUp = (state: PollState) => {
+  if (state.status !== "error") return false;
+  if (isNotFoundError(state.error) || state.error instanceof ZodError) return true;
+  if (!state.data) return state.errorUpdateCount >= MAX_ERRORS_WITHOUT_ORDER;
+
+  return (
+    state.errorUpdatedAt - state.dataUpdatedAt > ERROR_STREAK_MS ||
+    state.errorUpdatedAt > new Date(state.data.expiresAt).getTime() + LATE_WEBHOOK_GRACE_MS
+  );
+};
 
 export const useOrderPolling = (orderId: string | undefined) => {
   // False while another mini app / the bank app is in front (visibility_changed,
@@ -47,7 +75,7 @@ export const useOrderPolling = (orderId: string | undefined) => {
 
   const queryClient = useQueryClient();
 
-  const { data, dataUpdatedAt, error, isLoading, isError } = useQuery({
+  const { data, dataUpdatedAt, error, errorUpdatedAt, errorUpdateCount, status: queryStatus, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: orderKeys.detail(orderId ?? ""),
     queryFn: ({ signal }) => getOrder(orderId!, signal),
     enabled: Boolean(orderId) && isAppActive,
@@ -61,9 +89,9 @@ export const useOrderPolling = (orderId: string | undefined) => {
     // (refetchIntervalInBackground is false), and an in-flight request is
     // reused rather than duplicated by both the interval and focus refetches.
     refetchInterval: (query) => {
-      const { data: order, dataUpdatedAt: fetchedAt, error: queryError } = query.state;
+      const { data: order, dataUpdatedAt: fetchedAt } = query.state;
 
-      if (isPermanentError(queryError)) {
+      if (hasGivenUp(query.state)) {
         return false;
       }
 
@@ -86,12 +114,29 @@ export const useOrderPolling = (orderId: string | undefined) => {
     }
   }, [status, queryClient]);
 
+  const gaveUp = hasGivenUp({
+    data,
+    dataUpdatedAt,
+    error,
+    errorUpdatedAt,
+    errorUpdateCount,
+    status: queryStatus
+  });
+
   return {
     order: data,
     // True once polling has stopped for good: paid, needs_review, or the
     // grace window after expiresAt has passed (expired, or pending the cron
     // hasn't flipped yet).
-    isSettled: data ? isSettled(data, dataUpdatedAt) : isPermanentError(error),
+    isSettled: data ? isSettled(data, dataUpdatedAt) : false,
+    // 404 / 400: not ours or missing.
+    isNotFound: !data && isNotFoundError(error),
+    // Polling stopped on errors (a long streak, or a response that doesn't
+    // match the schema) — offer a retry instead of an endless loader.
+    isFailed: gaveUp && !isNotFoundError(error),
+    // A manual retry; a success resumes the interval.
+    retry: () => void refetch(),
+    isFetching,
     isLoading,
     isError,
     error

@@ -27,7 +27,6 @@ export const CodeLookup = () => {
   // The last redeemed certificate — shown after the field clears for the next
   // customer, until they start typing.
   const [redeemed, setRedeemed] = useState<MerchantCertificate | null>(null);
-  const [isNotACode, setIsNotACode] = useState(false);
 
   const { t } = useTranslation();
 
@@ -40,28 +39,18 @@ export const CodeLookup = () => {
   const handleScan = async () => {
     haptic.light();
 
-    const text = await scan(t("merchant.certificates.scanHint"));
+    // Only a certificate code closes the scanner: exactly 8 digits once
+    // non-digits are dropped (a longer number is something else, not cut down).
+    const text = await scan(
+      (qr) => qr.replace(/\D/g, "").length === CERTIFICATE_CODE_LENGTH,
+      t("merchant.certificates.scanHint")
+    );
 
     // Closed without scanning.
     if (text === undefined) return;
 
-    // Exactly 8 digits — unlike typing, a QR with more is something else, not
-    // a code to cut down.
-    const scanned = text.replace(/\D/g, "");
-
     setRedeemed(null);
-
-    if (scanned.length !== CERTIFICATE_CODE_LENGTH) {
-      haptic.error();
-      // Drop the previous code too — its card next to "not a code" would
-      // read as the scan's result.
-      setDigits("");
-      setIsNotACode(true);
-      return;
-    }
-
-    setIsNotACode(false);
-    setDigits(scanned);
+    setDigits(text.replace(/\D/g, ""));
   };
 
   return (
@@ -73,11 +62,9 @@ export const CodeLookup = () => {
           inputMode="numeric"
           autoComplete="off"
           className={canScan ? "pr-12" : undefined}
-          error={isNotACode ? t("merchant.certificates.notACode") : undefined}
           onChange={(event) => {
             setDigits(toCertificateCodeDigits(event.target.value));
             setRedeemed(null);
-            setIsNotACode(false);
           }}
         />
 

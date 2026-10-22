@@ -57,8 +57,7 @@
       "codePlaceholder": "Enter a certificate code",
       "sheetTitle": "Certificate",
       "scan": "Scan QR",
-      "scanHint": "Point the camera at the certificate's QR code",
-      "notACode": "Doesn't look like a certificate code"
+      "scanHint": "Point the camera at the certificate's QR code"
     },
     "cabinet": {
       "allVenues": "All venues",

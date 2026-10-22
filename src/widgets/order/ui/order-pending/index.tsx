@@ -12,7 +12,7 @@ import { useCountdown } from "../../hooks/useCountdown";
 interface Props {
   // expired too: shown as "checking" during the late-webhook grace window.
   order: PendingOrder | ExpiredOrder;
-  merchantName: string | undefined;
+  venueName: string | undefined;
 }
 
 const formatTimeLeft = (ms: number) => {
@@ -23,7 +23,7 @@ const formatTimeLeft = (ms: number) => {
   return `${minutes}:${seconds}`;
 };
 
-export const OrderPending = ({ order, merchantName }: Props) => {
+export const OrderPending = ({ order, venueName }: Props) => {
   const { t } = useTranslation();
 
   const msLeft = useCountdown(order.expiresAt);
@@ -58,8 +58,8 @@ export const OrderPending = ({ order, merchantName }: Props) => {
       </div>
 
       <div className="flex flex-col gap-1 px-5 py-4 rounded-2xl bg-(--color-card) border border-(--color-line) min-w-56">
-        {merchantName && (
-          <span className="text-sm font-semibold text-(--color-slate)">{merchantName}</span>
+        {venueName && (
+          <span className="text-sm font-semibold text-(--color-slate)">{venueName}</span>
         )}
 
         <span className="text-2xl font-extrabold text-(--color-ink)">

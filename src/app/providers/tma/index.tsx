@@ -11,7 +11,7 @@ import {
 
 import { AppNotFoundPage } from "@pages/app-not-found";
 
-import { detectTheme } from "@shared/helpers";
+import { detectTheme, getLaunchParams } from "@shared/helpers";
 import { useThemeStore } from "@shared/store";
 
 const TMA_COLORS = {
@@ -71,7 +71,11 @@ export const TMAProvider = ({ children }: Props) => {
           unbindViewportCssVars = viewport.bindCssVars();
         }
 
-        if (viewport.requestFullscreen.isAvailable()) {
+        // Fullscreen is for phones; on desktop clients it would blow the
+        // mini app up over the whole Telegram window.
+        const platform = getLaunchParams()?.tgWebAppPlatform;
+
+        if ((platform === "ios" || platform === "android") && viewport.requestFullscreen.isAvailable()) {
           void viewport.requestFullscreen();
         }
       });
@@ -89,8 +93,15 @@ export const TMAProvider = ({ children }: Props) => {
     const resolved = theme === "system" ? detectTheme() : theme;
     const { header, bg } = TMA_COLORS[resolved];
 
-    miniApp.setHeaderColor(header);
-    miniApp.setBgColor(bg);
+    // An RGB header color needs Mini Apps 6.10+; before that the call throws
+    // and took the whole app down on old clients — skip it there.
+    if (miniApp.setHeaderColor.isAvailable() && miniApp.setHeaderColor.supports("rgb")) {
+      miniApp.setHeaderColor(header);
+    }
+
+    if (miniApp.setBgColor.isAvailable()) {
+      miniApp.setBgColor(bg);
+    }
 
     if (miniApp.setBottomBarColor.isAvailable()) {
       miniApp.setBottomBarColor(bg);

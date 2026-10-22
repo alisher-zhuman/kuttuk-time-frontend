@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
-import { cn, formatDate, formatMoney } from "@shared/helpers";
+import { cn, formatDate, formatMoney, logoUrl } from "@shared/helpers";
 
 import { getCertificateDate } from "../../model/date";
 import type { Certificate } from "../../model/types";
@@ -10,28 +10,36 @@ import { CertificateCode } from "../code";
 
 interface Props {
   certificate: Certificate;
+  // The first cards are on screen at once (the page's LCP): load their logo
+  // right away; the rest lazily.
+  priority?: boolean;
   // Only active certificates open — used/expired have nothing to act on.
   onOpen?: (() => void) | undefined;
 }
 
-export const CertificateCard = ({ certificate, onOpen }: Props) => {
+export const CertificateCard = ({ certificate, onOpen, priority = false }: Props) => {
   const { t } = useTranslation();
 
-  const { merchant, amount, code, status } = certificate;
+  const { venue, amount, code, status } = certificate;
 
   const { key, date } = getCertificateDate(certificate);
 
   const header = (
     <>
       <img
-        src={merchant.logo}
+        src={logoUrl(venue.logo, 48)}
         alt=""
+        width={48}
+        height={48}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 
       <span className="flex-1 min-w-0 flex flex-col gap-0.5 text-left">
         <span className="text-base font-extrabold tracking-tight text-(--color-ink) truncate">
-          {merchant.name}
+          {venue.name}
         </span>
         <span className="text-base font-extrabold text-(--color-primary)">
           {formatMoney(amount, t("certificate.currency"))}

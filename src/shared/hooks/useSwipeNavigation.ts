@@ -1,47 +1,32 @@
-import { useRef } from "react";
+import { type TouchEvent, useRef } from "react";
 
-import { useNavigateTo } from "./useNavigateTo";
+import { useGoBack } from "./useGoBack";
 
 const THRESHOLD = 75;
 const EDGE_ZONE = 30;
 
+// A swipe right from the left edge = the Back button (same target, nothing on
+// root screens). No "forward" swipe: Telegram has no forward button to match.
 export const useSwipeNavigation = () => {
-  const navigateTo = useNavigateTo();
-
   const startX = useRef<number | null>(null);
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    const x = e.touches[0]?.clientX ?? null;
+  const { isRoot, goBack } = useGoBack();
 
-    if (x === null) return;
+  const onTouchStart = (e: TouchEvent) => {
+    const x = e.touches[0]?.clientX;
 
-    const fromLeftEdge = x <= EDGE_ZONE;
-    const fromRightEdge = x >= window.innerWidth - EDGE_ZONE;
-
-    if (!fromLeftEdge && !fromRightEdge) return;
-
-    startX.current = x;
+    startX.current = x !== undefined && x <= EDGE_ZONE ? x : null;
   };
 
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (startX.current === null) {
-      return;
-    }
-
+  const onTouchEnd = (e: TouchEvent) => {
+    const start = startX.current;
     const endX = e.changedTouches[0]?.clientX;
 
-    if (endX === undefined) {
-      return;
-    }
-
-    const diff = endX - startX.current;
     startX.current = null;
 
-    if (diff > THRESHOLD) {
-      navigateTo(-1);
-    } else if (diff < -THRESHOLD) {
-      navigateTo(1);
-    }
+    if (start === null || endX === undefined || isRoot) return;
+
+    if (endX - start > THRESHOLD) goBack();
   };
 
   return { onTouchStart, onTouchEnd };

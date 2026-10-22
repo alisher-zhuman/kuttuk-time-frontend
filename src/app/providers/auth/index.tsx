@@ -1,19 +1,24 @@
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { retrieveRawInitData } from "@tma.js/sdk-react";
 import { isAxiosError } from "axios";
-import { Loader2 } from "lucide-react";
 
+import { ConnectionFailedPage } from "@pages/connection-failed";
 import { SessionExpiredPage } from "@pages/session-expired";
 
 import { logIn } from "@shared/api";
 import { useAuthStore, useViewModeStore } from "@shared/store";
+import { PageLoader } from "@shared/ui";
 
 interface Props {
   children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: Props) => {
+  // Bumped by "Retry" on the connection-failed screen to log in again.
+  const [attempt, setAttempt] = useState(0);
+  const [isFailed, setIsFailed] = useState(false);
+
   const isReady = useAuthStore((s) => s.isReady);
   const isSessionExpired = useAuthStore((s) => s.isSessionExpired);
 
@@ -31,9 +36,8 @@ export const AuthProvider = ({ children }: Props) => {
     logIn({ initData })
       .then(({ accessToken, role }) => {
         setAuth(accessToken, role);
-        setViewMode(
-          role === "admin" ? "admin" : role === "merchant" ? "merchant" : "user"
-        );
+        setViewMode(role);
+        setReady();
       })
       .catch((error: unknown) => {
         // A reload inside Telegram keeps the old initData, so the very first
@@ -43,21 +47,29 @@ export const AuthProvider = ({ children }: Props) => {
           return;
         }
 
+        // Network, 5xx, a cold-starting backend: without a role the app would
+        // open as a buyer (an owner or admin landing on the wrong screens) —
+        // offer a retry instead.
         console.error(error);
-      })
-      .finally(() => {
-        setReady();
+        setIsFailed(true);
       });
-  }, []);
+  }, [attempt]);
 
   if (isSessionExpired) return <SessionExpiredPage />;
 
-  if (!isReady) {
+  if (isFailed) {
     return (
-      <div className="min-h-dvh flex items-center justify-center bg-(--color-bg)">
-        <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
-      </div>
+      <ConnectionFailedPage
+        onRetry={() => {
+          setIsFailed(false);
+          setAttempt((value) => value + 1);
+        }}
+      />
     );
+  }
+
+  if (!isReady) {
+    return <PageLoader fullScreen />;
   }
 
   return <>{children}</>;

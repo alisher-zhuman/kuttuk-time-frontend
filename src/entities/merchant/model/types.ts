@@ -1,13 +1,13 @@
 import type {
   AdminMerchantDetailSchema,
   AdminMerchantSchema,
-  MerchantDetailSchema,
-  MerchantSchema
+  MerchantMeSchema,
+  MerchantWeekSummarySchema
 } from "./schemas";
 
 import type { z } from "zod";
 
-export type Merchant = z.infer<typeof MerchantSchema>;
-export type MerchantDetail = z.infer<typeof MerchantDetailSchema>;
+export type MerchantMe = z.infer<typeof MerchantMeSchema>;
 export type AdminMerchant = z.infer<typeof AdminMerchantSchema>;
 export type AdminMerchantDetail = z.infer<typeof AdminMerchantDetailSchema>;
+export type MerchantWeekSummary = z.infer<typeof MerchantWeekSummarySchema>;

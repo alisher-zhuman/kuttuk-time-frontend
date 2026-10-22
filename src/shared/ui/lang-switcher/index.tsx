@@ -1,11 +1,10 @@
 import { useTranslation } from "react-i18next";
 
 import { LANGUAGE_BADGE, SUPPORTED_LANGUAGES } from "@shared/constants";
+import { resolveLang } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
 import { SegmentedControl } from "../segmented-control";
-
-type Lang = keyof typeof LANGUAGE_BADGE;
 
 interface Props {
   variant?: "compact" | "segmented";
@@ -16,8 +15,8 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
   
   const haptic = useHaptic();
 
-  const lang = i18n.language as Lang;
-  const badge = LANGUAGE_BADGE[lang] ?? LANGUAGE_BADGE.ru;
+  const lang = resolveLang(i18n.language);
+  const badge = LANGUAGE_BADGE[lang];
 
   const cycleLanguage = () => {
     haptic.light();
@@ -54,11 +53,14 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
     <button
       type="button"
       onClick={cycleLanguage}
-      aria-label={t("aria.changeLanguage")}
+      // Starts with the visible code, so voice control ("tap РУ") finds it.
+      aria-label={`${badge.code}, ${t("aria.changeLanguage")}`}
       className="flex items-center gap-1.5 h-7.5 px-3 rounded-full bg-(--color-card) border border-(--color-line) text-(--color-ink) shrink-0 cursor-pointer"
     >
       <span key={lang} className="flex items-center gap-1.5 animate-lang-flip">
-        <span className="text-base leading-none">{badge.flag}</span>
+        <span aria-hidden="true" className="text-base leading-none">
+          {badge.flag}
+        </span>
         <span className="text-sm font-extrabold tracking-wide">{badge.code}</span>
       </span>
     </button>

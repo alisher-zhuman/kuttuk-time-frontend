@@ -8,9 +8,10 @@ interface Props {
   value: string;
   onChange: (value: string) => void;
   isLoading?: boolean;
+  placeholder?: string;
 }
 
-export const SearchBar = ({ value, onChange, isLoading }: Props) => {
+export const SearchBar = ({ value, onChange, isLoading, placeholder }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -27,7 +28,7 @@ export const SearchBar = ({ value, onChange, isLoading }: Props) => {
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={t("search.placeholder")}
+        placeholder={placeholder ?? t("search.placeholder")}
         className="flex-1 bg-transparent text-base font-semibold text-(--color-ink) placeholder:text-(--color-hint) outline-none caret-(--color-primary)"
       />
 

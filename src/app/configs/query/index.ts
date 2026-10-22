@@ -1,6 +1,6 @@
 import { ZodError } from "zod";
 
-import { keepPreviousData, QueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 
 // Retry once, and only what can succeed on a second try: network drops and 5xx.
@@ -18,13 +18,16 @@ const shouldRetry = (failureCount: number, error: unknown) => {
   return !(isAxiosError(error) && error.response && error.response.status < 500);
 };
 
-export const QUERY_CLIENT = new QueryClient({
-  defaultOptions: {
-    queries: {
-      placeholderData: keepPreviousData,
-      staleTime: 60_000,
-      retry: shouldRetry,
-      refetchOnWindowFocus: false
+// A factory so tests get a fresh client with the app's own settings.
+export const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60_000,
+        retry: shouldRetry,
+        refetchOnWindowFocus: false
+      }
     }
-  }
-});
+  });
+
+export const QUERY_CLIENT = createQueryClient();

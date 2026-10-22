@@ -10,7 +10,10 @@ import {
 
 import { getCertificateRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { EmptyState, ErrorState } from "@shared/ui";
+import { EmptyState, ErrorState, PillButton } from "@shared/ui";
+
+// Cards visible without scrolling on a phone.
+const ABOVE_THE_FOLD = 4;
 
 export const CertificatesTab = () => {
   const { t } = useTranslation();
@@ -43,16 +46,14 @@ export const CertificatesTab = () => {
         icon={<Gift size={32} strokeWidth={1.5} />}
         message={t("certificates.empty")}
         action={
-          <button
-            type="button"
+          <PillButton
             onClick={() => {
               haptic.light();
               navigateTo(ROUTE_PATTERNS.HOME);
             }}
-            className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
           >
             {t("certificates.toCatalog")}
-          </button>
+          </PillButton>
         }
       />
     );
@@ -61,10 +62,11 @@ export const CertificatesTab = () => {
   // Order comes from the backend: active first, newest first within a status.
   return (
     <ul className="flex flex-col gap-2.5 list-none">
-      {certificates.map((certificate) => (
+      {certificates.map((certificate, index) => (
         <li key={certificate.id}>
           <CertificateCard
             certificate={certificate}
+            priority={index < ABOVE_THE_FOLD}
             onOpen={
               certificate.status === "active"
                 ? () => {

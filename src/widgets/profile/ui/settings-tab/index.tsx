@@ -1,6 +1,7 @@
 import { useAuthStore, useViewModeStore } from "@shared/store";
 
 import { LanguageSection } from "../language-section";
+import { NotificationsSection } from "../notifications-section";
 import { RoleModeSection } from "../role-mode-section";
 import { SupportSection } from "../support-section";
 import { ThemeSection } from "../theme-section";
@@ -17,7 +18,11 @@ export const SettingsTab = () => {
       {(role === "admin" || role === "merchant") && (
         <RoleModeSection role={role} />
       )}
-      {viewMode === "user" && <SupportSection />}
+      {/* By role, not view mode: sale notices belong to the account. */}
+      {role === "merchant" && <NotificationsSection />}
+      {/* Buyers (incl. an admin previewing as one) and owners — owners ask the
+          most, about payouts and redemption. Not the admin's own mode. */}
+      {(viewMode === "user" || role === "merchant") && <SupportSection />}
     </div>
   );
 };

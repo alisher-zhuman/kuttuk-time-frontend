@@ -1,1 +1,1 @@
-export { MerchantList } from './ui/merchant-list';
+export { VenueList } from './ui/venue-list';

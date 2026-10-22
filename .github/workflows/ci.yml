@@ -1,0 +1,52 @@
+# The pre-push checks (lefthook.yml) on GitHub's runner, where --no-verify
+# can't skip them, plus e2e and the build. Nothing here talks to prod or to
+# Telegram: unit tests answer every request with MSW, e2e with page.route.
+name: CI
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm steiger ./src
+      - run: pnpm test:run
+
+      - name: Build
+        run: pnpm build
+        # The real value lives in Vercel; CI only proves the bundle builds.
+        env:
+          VITE_API_URL: https://api.example.invalid/api
+
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results
+          retention-days: 7

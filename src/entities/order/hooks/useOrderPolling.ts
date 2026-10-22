@@ -2,37 +2,10 @@ import { useEffect } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { miniApp, useSignal } from "@tma.js/sdk-react";
-import { isAxiosError } from "axios";
 
 import { getOrder } from "../api";
 import { orderKeys } from "../model/keys";
-import type { Order } from "../model/types";
-
-const POLL_INTERVAL_MS = 3_000;
-
-// A payment made just before the QR expired is still honoured (expired → paid
-// on the backend), and Finik retries a failed webhook every 30 s for its first
-// 5 attempts — so keep polling 3 min past expiresAt. Longer is pointless: if
-// our server was down, Finik's retries stretch over a day.
-const LATE_WEBHOOK_GRACE_MS = 3 * 60_000;
-
-// paid / needs_review are set only by the webhook and never change again.
-// expired is not final within the grace window. Comparing against the fetch
-// time (not "now") makes the first response received after the deadline the
-// final request.
-const isSettled = (order: Order, fetchedAt: number) =>
-  order.status === "paid" ||
-  order.status === "needs_review" ||
-  fetchedAt > new Date(order.expiresAt).getTime() + LATE_WEBHOOK_GRACE_MS;
-
-// 404 (not ours / missing) and 400 (bad id) won't change on retry. 429 will —
-// the throttler is keyed on the proxy IP, so other users can trip it — and so
-// will network errors and 5xx; keep polling through those.
-const isPermanentError = (error: unknown) =>
-  isAxiosError(error) &&
-  error.response !== undefined &&
-  error.response.status < 500 &&
-  error.response.status !== 429;
+import { hasGivenUp, isNotFoundError, isSettled, POLL_INTERVAL_MS } from "../model/polling";
 
 export const useOrderPolling = (orderId: string | undefined) => {
   // False while another mini app / the bank app is in front (visibility_changed,
@@ -43,23 +16,22 @@ export const useOrderPolling = (orderId: string | undefined) => {
 
   const queryClient = useQueryClient();
 
-  const { data, dataUpdatedAt, error, isLoading, isError } = useQuery({
+  const { data, dataUpdatedAt, error, errorUpdatedAt, errorUpdateCount, status: queryStatus, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: orderKeys.detail(orderId ?? ""),
     queryFn: ({ signal }) => getOrder(orderId!, signal),
     enabled: Boolean(orderId) && isAppActive,
     // Global defaults don't fit polling: no stale data from another order, no
     // extra retry on top of the interval, refetch on every return to the tab.
     staleTime: 0,
-    placeholderData: () => undefined,
     retry: false,
     refetchOnWindowFocus: "always",
     // The interval pauses on its own while the document is hidden
     // (refetchIntervalInBackground is false), and an in-flight request is
     // reused rather than duplicated by both the interval and focus refetches.
     refetchInterval: (query) => {
-      const { data: order, dataUpdatedAt: fetchedAt, error: queryError } = query.state;
+      const { data: order, dataUpdatedAt: fetchedAt } = query.state;
 
-      if (isPermanentError(queryError)) {
+      if (hasGivenUp(query.state)) {
         return false;
       }
 
@@ -82,12 +54,29 @@ export const useOrderPolling = (orderId: string | undefined) => {
     }
   }, [status, queryClient]);
 
+  const gaveUp = hasGivenUp({
+    data,
+    dataUpdatedAt,
+    error,
+    errorUpdatedAt,
+    errorUpdateCount,
+    status: queryStatus
+  });
+
   return {
     order: data,
     // True once polling has stopped for good: paid, needs_review, or the
     // grace window after expiresAt has passed (expired, or pending the cron
     // hasn't flipped yet).
-    isSettled: data ? isSettled(data, dataUpdatedAt) : isPermanentError(error),
+    isSettled: data ? isSettled(data, dataUpdatedAt) : false,
+    // 404 / 400: not ours or missing.
+    isNotFound: !data && isNotFoundError(error),
+    // Polling stopped on errors (a long streak, or a response that doesn't
+    // match the schema) — offer a retry instead of an endless loader.
+    isFailed: gaveUp && !isNotFoundError(error),
+    // A manual retry; a success resumes the interval.
+    retry: () => void refetch(),
+    isFetching,
     isLoading,
     isError,
     error

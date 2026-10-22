@@ -5,16 +5,19 @@ import { useTranslation } from "react-i18next";
 import { ImagePlus, Loader2 } from "lucide-react";
 
 import { MAX_UPLOAD_SIZE, uploadImage } from "@shared/api";
-import { cn } from "@shared/helpers";
+import { cn, logoUrl } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
 interface Props {
   value: string;
   onChange: (url: string) => void;
   error?: string | undefined;
+  // So the form can hold "Save" until the new URL arrives — otherwise it would
+  // save the old logo and drop the new one.
+  onUploadingChange?: (isUploading: boolean) => void;
 }
 
-export const LogoUpload = ({ value, onChange, error }: Props) => {
+export const LogoUpload = ({ value, onChange, error, onUploadingChange }: Props) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -50,6 +53,7 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
     setUploadError(null);
     setPreview(URL.createObjectURL(file));
     setIsUploading(true);
+    onUploadingChange?.(true);
 
     try {
       onChange(await uploadImage(file));
@@ -62,10 +66,12 @@ export const LogoUpload = ({ value, onChange, error }: Props) => {
       setPreview(null);
     } finally {
       setIsUploading(false);
+      onUploadingChange?.(false);
     }
   };
 
-  const src = preview ?? value;
+  // The local preview is a blob URL; a saved logo comes from Cloudinary.
+  const src = preview ?? (value ? logoUrl(value, 96) : value);
   const message = uploadError ?? error;
 
   return (

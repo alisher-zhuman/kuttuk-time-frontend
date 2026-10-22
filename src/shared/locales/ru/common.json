@@ -7,36 +7,125 @@
     "clear": "Очистить"
   },
   "home": {
-    "merchantsSection": "ЗАВЕДЕНИЯ",
+    "venuesSection": "ЗАВЕДЕНИЯ",
     "empty": "Заведения не найдены"
   },
   "merchant": {
-    "from": "от",
     "badge": "Кабинет",
     "label": "Режим отображения",
     "viewAsUser": "Покупатель",
-    "viewAsMerchant": "Мерчант",
-    "home": {
-      "loadError": "Не удалось загрузить профиль"
-    },
+    "viewAsMerchant": "Кабинет",
     "deactivated": {
       "title": "Аккаунт отключён",
-      "message": "Ваше заведение скрыто от покупателей, а редактирование профиля недоступно. Чтобы включить его снова, напишите нам."
+      "message": "Ваши заведения скрыты от покупателей, а их редактирование недоступно. Погашать сертификаты можно. Чтобы включить заведения снова, напишите нам."
     },
-    "form": {
-      "editTitle": "Редактирование профиля",
-      "save": "Сохранить",
-      "name": "Название",
-      "namePlaceholder": "Например: Sierra Coffee",
-      "descriptionRu": "Описание на русском",
-      "descriptionKg": "Описание на кыргызском",
-      "descriptionEn": "Описание на английском",
-      "descriptionPlaceholder": "Коротко о заведении",
-      "required": "Обязательное поле",
-      "logoRequired": "Загрузите логотип",
-      "categoriesRequired": "Выберите хотя бы одну категорию",
-      "nominalsRequired": "Добавьте хотя бы один номинал"
+    "redeem": {
+      "submit": "Погасить",
+      "invalidCode": "Неверный формат кода",
+      "alreadyUsed": "Уже погашен {{date}}",
+      "expired": "Срок действия истёк",
+      "soldAt": "Продан {{date}}",
+      "success": "Сертификат погашен",
+      "redeemedAt": "Погашен {{date}}",
+      "confirmTitle": "Погасить сертификат?",
+      "confirmMessage": "{{amount}} в {{venue}}, код {{code}}. Отменить нельзя.",
+      "confirmFailed": "Не удалось открыть подтверждение. Попробуйте ещё раз."
+    },
+    "summary": {
+      "title": "Сводка за неделю",
+      "sold": "Продано: {{count}} шт · {{amount}}",
+      "commission": "Комиссия 10%: {{amount}}",
+      "payout": "К выплате: {{amount}} (в понедельник)",
+      "redeemed": "Погашено: {{count}} шт · {{amount}}",
+      "redeemedHint": "«Погашено» — сертификаты, погашенные на этой неделе, даже если их продали раньше.",
+      "payoutStatus": {
+        "paidOut": "Выплачено ✓",
+        "pending": "Ожидает выплаты",
+        "partial": "Выплачено {{paid}}, ещё {{due}}"
+      }
+    },
+    "certificates": {
+      "title": "Сертификаты",
+      "tabs": {
+        "all": "Все",
+        "active": "Активные",
+        "used": "Погашенные",
+        "expired": "Истёкшие"
+      },
+      "codePlaceholder": "Введите код сертификата",
+      "sheetTitle": "Сертификат",
+      "scan": "Сканировать QR",
+      "scanHint": "Наведите камеру на QR-код сертификата"
+    },
+    "cabinet": {
+      "allVenues": "Все заведения",
+      "noVenues": "Заведений пока нет — их добавит администратор",
+      "venuesTitle": "ЗАВЕДЕНИЯ"
+    },
+    "nav": {
+      "venues": "Заведения",
+      "summary": "Сводка",
+      "certificates": "Сертификаты"
+    },
+    "notifications": {
+      "title": "Уведомления о продажах",
+      "hint": "Бот напишет в Telegram о каждой продаже",
+      "enable": "Включить",
+      "enabled": "Включены"
     }
+  },
+  "venue": {
+    "fromPrice": "от {{price}}",
+    "nominal": "НОМИНАЛ",
+    "buy": "Купить",
+    "validity": "Действует {{months}} месяцев",
+    "notFound": "Заведение не найдено"
+  },
+  "venueForm": {
+    "title": "Новое заведение",
+    "editTitle": "Редактирование заведения",
+    "create": "Создать",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "status": "Статус",
+    "logoRequired": "Загрузите логотип",
+    "name": "Название",
+    "namePlaceholder": "Например: Sierra Coffee",
+    "slug": "Ссылка",
+    "slugPlaceholder": "sierra-coffee",
+    "slugHint": "Латиница, цифры и дефис. Попадёт в ссылку-приглашение.",
+    "slugInvalid": "Только строчная латиница, цифры и дефис",
+    "descriptionRu": "Описание на русском",
+    "descriptionKg": "Описание на кыргызском",
+    "descriptionEn": "Описание на английском",
+    "descriptionPlaceholder": "Коротко о заведении",
+    "categoriesRequired": "Выберите хотя бы одну категорию",
+    "nominalsRequired": "Добавьте хотя бы один номинал",
+    "required": "Обязательное поле",
+    "alreadyInUse": "Уже используется",
+    "nominalsUnavailable": "Некоторые номиналы больше недоступны — снимите их",
+    "validityUnavailable": "Этот срок больше недоступен — выберите другой",
+    "owner": "Владелец",
+    "ownerRequired": "Выберите владельца",
+    "slugReserved": "Это слово зарезервировано, выберите другое",
+    "categoryRemoved": "Категория удалена — снимите её",
+    "nameTooLong": "Не длиннее {{max}} символов"
+  },
+  "merchantForm": {
+    "title": "Новый владелец",
+    "editTitle": "Редактирование владельца",
+    "create": "Создать",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "status": "Статус",
+    "name": "Имя или название бизнеса",
+    "namePlaceholder": "Например: ИП Асанов",
+    "telegramId": "Telegram ID",
+    "telegramIdPlaceholder": "123456789",
+    "telegramIdHint": "По этому Telegram ID владелец войдёт в кабинет",
+    "telegramIdInvalid": "Введите целое положительное число",
+    "required": "Обязательное поле",
+    "alreadyInUse": "Уже используется"
   },
   "logoUpload": {
     "hint": "Логотип, до 5 МБ",
@@ -48,11 +137,13 @@
     "categories": "Категории",
     "nominals": "Номинал",
     "validity": "Срок действия (мес.)",
-    "months": "{{months}} мес."
+    "months": "{{months}} мес.",
+    "removedCategory": "Удалённая категория"
   },
   "aria": {
     "changeLanguage": "Сменить язык",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "categories": "Категории"
   },
   "profile": {
     "id": "ID",
@@ -74,54 +165,26 @@
   "admin": {
     "badge": "Админ",
     "label": "Режим отображения",
-    "viewAsUser": "Пользователь",
+    "viewAsUser": "Покупатель",
     "viewAsAdmin": "Админ",
     "nav": {
-      "merchants": "Заведения",
+      "venues": "Заведения",
+      "merchants": "Владельцы",
       "orders": "Заказы",
-      "payments": "Платежи"
+      "payouts": "Выплаты"
     },
     "merchants": {
-      "active": "Активен",
-      "inactive": "Неактивен",
-      "empty": "Заведения не найдены",
+      "listTitle": "ВЛАДЕЛЬЦЫ",
+      "empty": "Владельцы не найдены",
+      "addVenue": "Добавить заведение",
       "detail": {
-        "description": "Описание",
-        "categories": "КАТЕГОРИИ",
-        "nominals": "НОМИНАЛЫ",
-        "validity": "СРОК ДЕЙСТВИЯ",
-        "validityValue": "{{months}} месяцев",
         "telegramId": "TELEGRAM ID",
         "createdAt": "СОЗДАН",
-        "notFound": "Заведение не найдено"
+        "venues": "ЗАВЕДЕНИЯ",
+        "noVenues": "У владельца пока нет заведений",
+        "notFound": "Владелец не найден"
       },
-      "form": {
-        "title": "Новое заведение",
-        "editTitle": "Редактирование заведения",
-        "create": "Создать",
-        "save": "Сохранить",
-        "edit": "Редактировать",
-        "status": "Статус",
-        "logoRequired": "Загрузите логотип",
-        "name": "Название",
-        "namePlaceholder": "Например: Sierra Coffee",
-        "slug": "Ссылка",
-        "slugPlaceholder": "sierra-coffee",
-        "slugHint": "Латиница, цифры и дефис. Попадёт в ссылку-приглашение.",
-        "slugInvalid": "Только строчная латиница, цифры и дефис",
-        "descriptionRu": "Описание на русском",
-        "descriptionKg": "Описание на кыргызском",
-        "descriptionEn": "Описание на английском",
-        "descriptionPlaceholder": "Коротко о заведении",
-        "categoriesRequired": "Выберите хотя бы одну категорию",
-        "nominalsRequired": "Добавьте хотя бы один номинал",
-        "telegramId": "Telegram ID",
-        "telegramIdPlaceholder": "123456789",
-        "telegramIdHint": "ID владельца заведения в Telegram",
-        "telegramIdInvalid": "Введите целое положительное число",
-        "required": "Обязательное поле",
-        "alreadyInUse": "Уже используется"
-      }
+      "searchPlaceholder": "Поиск владельцев"
     },
     "categories": {
       "manage": "Управление категориями",
@@ -145,6 +208,87 @@
       "deleteConfirmMessage": "Категория будет удалена, а заведения, к которым она привязана, потеряют эту привязку. Действие необратимо.",
       "required": "Обязательное поле",
       "orderInvalid": "Введите число"
+    },
+    "venues": {
+      "listTitle": "ЗАВЕДЕНИЯ",
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "empty": "Заведения не найдены",
+      "detail": {
+        "description": "Описание",
+        "categories": "КАТЕГОРИИ",
+        "nominals": "НОМИНАЛЫ",
+        "validity": "СРОК ДЕЙСТВИЯ",
+        "validityValue": "{{months}} месяцев",
+        "createdAt": "СОЗДАН",
+        "notFound": "Заведение не найдено",
+        "owner": "ВЛАДЕЛЕЦ"
+      }
+    },
+    "payouts": {
+      "title": "Выплаты",
+      "total": "Итого за неделю",
+      "orders": "Заказов: {{count}}",
+      "gross": "Оборот: {{amount}}",
+      "commission": "Комиссия 10%: {{amount}}",
+      "payout": "К выплате: {{amount}}",
+      "merchants": "ВЛАДЕЛЬЦЫ",
+      "empty": "За эту неделю продаж нет",
+      "needsReview": "На проверке: {{count}} — эти заказы не вошли в выплату",
+      "openOrders": "Открыть заказы",
+      "paidOut": "Выплачено ✓",
+      "due": "К выплате: {{amount}}",
+      "partial": "Выплачено {{paid}}, доплатить {{due}}",
+      "totalPaidOut": "Выплачено: {{amount}}",
+      "totalDue": "Осталось выплатить: {{amount}}",
+      "markPaid": "Отметить выплаченным",
+      "confirmTitle": "Отметить выплату",
+      "confirmMessage": "Отметить выплату {{amount}} для {{merchant}} за {{from}} – {{to}}? Отменить нельзя.",
+      "note": "Заметка (необязательно)",
+      "notePlaceholder": "Например: перевод в Mbank 27.10",
+      "confirm": "Отметить",
+      "cancel": "Отмена",
+      "doneTitle": "Выплата отмечена",
+      "done": "{{amount}} для {{merchant}}. Владелец получит сообщение в боте.",
+      "nothingToPay": "Эта неделя уже отмечена — данные обновлены.",
+      "amountChanged": "Сумма изменилась — проверьте и подтвердите снова."
+    },
+    "orders": {
+      "all": "Все",
+      "searchPlaceholder": "Код сертификата или номер заказа",
+      "searchInvalid": "Введите код сертификата или номер заказа",
+      "empty": "Заказов нет",
+      "notFound": "Заказ не найден",
+      "status": {
+        "pending": "Ожидает оплаты",
+        "paid": "Оплачен",
+        "expired": "Истёк",
+        "needs_review": "На проверке",
+        "refunded": "Возвращён"
+      },
+      "detail": {
+        "id": "НОМЕР ЗАКАЗА",
+        "venue": "ЗАВЕДЕНИЕ",
+        "merchant": "ВЛАДЕЛЕЦ (ВЫПЛАТА)",
+        "createdAt": "СОЗДАН",
+        "paidAt": "ОПЛАЧЕН",
+        "expiresAt": "ОПЛАТИТЬ ДО",
+        "transaction": "ТРАНЗАКЦИЯ FINIK",
+        "buyer": "ПОКУПАТЕЛЬ",
+        "certificate": "СЕРТИФИКАТ",
+        "validUntil": "Действует до {{date}}",
+        "usedAt": "Погашен {{date}}",
+        "webhooks": "ВЕБХУКИ FINIK",
+        "noWebhooks": "Finik ещё ничего не присылал",
+        "webhookAmount": "Сумма от Finik: {{amount}}",
+        "noAmount": "Сумма от Finik: нет",
+        "amountMismatch": "Не совпадает с суммой заказа ({{amount}})",
+        "resolutions": "РУЧНЫЕ РЕШЕНИЯ",
+        "issue": "Выдан сертификат",
+        "refunded": "Возврат",
+        "resolvedBy": "{{by}} · {{date}}"
+      },
+      "paidOut": "Выплачен"
     }
   },
   "certificate": {
@@ -161,7 +305,11 @@
     "usedAt": "Использован {{date}}",
     "expiredAt": "Истёк {{date}}",
     "share": "Поделиться",
-    "shareText": "🎁 Подарочный сертификат {{merchant}} на {{amount}}. Код: {{code}}"
+    "shareText": "🎁 Подарочный сертификат {{venue}} на {{amount}}. Код: {{code}}",
+    "gift": "Подарить",
+    "giftUnavailable": "Сертификат уже погашен или истёк",
+    "giftFailed": "Не получилось, попробуйте ещё раз",
+    "qrHint": "Покажите QR на кассе"
   },
   "certificates": {
     "empty": "Пока нет сертификатов",
@@ -189,6 +337,10 @@
       "title": "Оплата получена",
       "hint": "Проверяем её. Сертификат появится после проверки."
     },
+    "refunded": {
+      "title": "Деньги возвращены",
+      "hint": "Мы не смогли подтвердить оплату и вернули деньги. Если они ещё не пришли — напишите в поддержку."
+    },
     "errors": {
       "unavailable": "Этот номинал или заведение сейчас недоступны. Обновите страницу и попробуйте снова.",
       "notFound": "Заказ не найден.",
@@ -213,11 +365,8 @@
     "goHome": "На главную",
     "goBack": "Назад"
   },
-  "merchantDetail": {
-    "nominal": "НОМИНАЛ",
-    "buy": "Купить",
-    "validity": "Действует {{months}} месяцев",
-    "notFound": "Заведение не найдено"
+  "footer": {
+    "madeWithLove": "С любовью KuttukTime ♥"
   },
   "categories": {
     "all": "Все"
@@ -228,5 +377,25 @@
     "reload": "Обновить страницу",
     "loadFailed": "Не удалось загрузить данные",
     "retry": "Повторить"
+  },
+  "connectionFailed": {
+    "title": "Не удалось подключиться",
+    "description": "Проверьте интернет и попробуйте ещё раз."
+  },
+  "week": {
+    "prev": "Пред.",
+    "next": "След.",
+    "range": "{{from}} – {{to}}"
+  },
+  "venueLink": {
+    "title": "Ссылка для соцсетей",
+    "hint": "Для шапки Instagram, сторис, WhatsApp — или распечатайте QR на кассу",
+    "copy": "Скопировать",
+    "copied": "Скопировано",
+    "share": "Поделиться",
+    "download": "Скачать QR",
+    "qr": "QR-код ссылки {{venue}}",
+    "screenshotHint": "Для печати — сделайте скриншот QR",
+    "shareText": "Подарочные сертификаты {{venue}} — купить в Telegram"
   }
 }

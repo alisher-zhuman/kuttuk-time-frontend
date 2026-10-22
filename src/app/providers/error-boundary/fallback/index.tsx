@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { PillButton } from "@shared/ui";
+
 interface Props {
   onReload: () => void;
 }
@@ -15,13 +17,7 @@ export const Fallback = ({ onReload }: Props) => {
 
       <p className="text-(--color-slate) text-base">{t("errors.generic")}</p>
 
-      <button
-        type="button"
-        onClick={onReload}
-        className="px-6 py-3 rounded-full bg-(--color-primary) text-(--color-card) font-semibold text-sm cursor-pointer"
-      >
-        {t("errors.reload")}
-      </button>
+      <PillButton onClick={onReload}>{t("errors.reload")}</PillButton>
     </div>
   );
 };

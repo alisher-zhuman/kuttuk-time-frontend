@@ -6,8 +6,8 @@
   --color-card: #ffffff;
   --color-header: #ffffff;
   --color-ink: #1b2238;
-  --color-slate: #6b7280;
-  --color-hint: #9ca3af;
+  --color-slate: #4b5563;
+  --color-hint: #677180;
   --color-line: #e6e8ee;
   --color-primary: #5a4be8;
   --color-primary-press: #4a3cd0;
@@ -33,7 +33,7 @@
   --color-header: #161d2e;
   --color-ink: #f4f6fb;
   --color-slate: #9aa3b5;
-  --color-hint: #6b7488;
+  --color-hint: #80899b;
   --color-line: #2c3447;
   --color-primary: #8b7dfb;
   --color-primary-press: #6f5ff0;
@@ -59,7 +59,7 @@ body {
 
 body {
   background-color: var(--color-bg);
-  font-family: "Manrope", system-ui, sans-serif;
+  font-family: "Manrope Variable", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 

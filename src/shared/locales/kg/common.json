@@ -7,52 +7,143 @@
     "clear": "Тазалоо"
   },
   "home": {
-    "merchantsSection": "МЕКЕМЕЛЕР",
+    "venuesSection": "МЕКЕМЕЛЕР",
     "empty": "Мекемелер табылган жок"
   },
   "merchant": {
-    "from": "баштапкы",
     "badge": "Кабинет",
     "label": "Көрүнүш режими",
     "viewAsUser": "Сатып алуучу",
-    "viewAsMerchant": "Мерчант",
-    "home": {
-      "loadError": "Профилди жүктөө мүмкүн болбоду"
-    },
+    "viewAsMerchant": "Кабинет",
     "deactivated": {
       "title": "Аккаунт өчүрүлгөн",
-      "message": "Мекемеңиз сатып алуучуларга көрүнбөйт, профилди түзөтүү жеткиликсиз. Кайра күйгүзүү үчүн бизге жазыңыз."
+      "message": "Мекемелериңиз сатып алуучуларга көрүнбөйт, аларды түзөтүү жеткиликсиз. Сертификаттарды белгилей бересиз. Кайра күйгүзүү үчүн бизге жазыңыз."
     },
-    "form": {
-      "editTitle": "Профилди түзөтүү",
-      "save": "Сактоо",
-      "name": "Аталышы",
-      "namePlaceholder": "Мисалы: Sierra Coffee",
-      "descriptionRu": "Орусча сүрөттөмө",
-      "descriptionKg": "Кыргызча сүрөттөмө",
-      "descriptionEn": "Англисче сүрөттөмө",
-      "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
-      "required": "Милдеттүү талаа",
-      "logoRequired": "Логотипти жүктөңүз",
-      "categoriesRequired": "Кеминде бир категория тандаңыз",
-      "nominalsRequired": "Кеминде бир номинал кошуңуз"
+    "redeem": {
+      "submit": "Колдонулду деп белгилөө",
+      "invalidCode": "Коддун форматы туура эмес",
+      "alreadyUsed": "Мурунтан колдонулган: {{date}}",
+      "expired": "Жарактуулук мөөнөтү бүттү",
+      "soldAt": "Сатылган: {{date}}",
+      "success": "Сертификат колдонулду деп белгиленди",
+      "redeemedAt": "Белгиленди: {{date}}",
+      "confirmTitle": "Сертификатты белгилейсизби?",
+      "confirmMessage": "{{venue}} — {{amount}}, код {{code}}. Жокко чыгаруу мүмкүн эмес.",
+      "confirmFailed": "Ырастоону ачуу мүмкүн болгон жок. Кайра аракет кылыңыз."
+    },
+    "summary": {
+      "title": "Апталык жыйынтык",
+      "sold": "Сатылды: {{count}} даана · {{amount}}",
+      "commission": "Комиссия 10%: {{amount}}",
+      "payout": "Төлөнө турган сумма: {{amount}} (дүйшөмбүдө)",
+      "redeemed": "Колдонулду: {{count}} даана · {{amount}}",
+      "redeemedHint": "«Колдонулду» — ушул аптада белгиленген сертификаттар, мурда сатылгандары да кирет.",
+      "payoutStatus": {
+        "paidOut": "Төлөп берилди ✓",
+        "pending": "Төлөп берүү күтүлүүдө",
+        "partial": "Төлөп берилди {{paid}}, дагы {{due}}"
+      }
+    },
+    "certificates": {
+      "title": "Сертификаттар",
+      "tabs": {
+        "all": "Баары",
+        "active": "Активдүү",
+        "used": "Колдонулган",
+        "expired": "Мөөнөтү бүткөн"
+      },
+      "codePlaceholder": "Сертификаттын кодун жазыңыз",
+      "sheetTitle": "Сертификат",
+      "scan": "QR сканерлөө",
+      "scanHint": "Камераны сертификаттын QR-кодуна багыттаңыз"
+    },
+    "cabinet": {
+      "allVenues": "Бардык мекемелер",
+      "noVenues": "Азырынча мекемелер жок — аларды администратор кошот",
+      "venuesTitle": "МЕКЕМЕЛЕР"
+    },
+    "nav": {
+      "venues": "Мекемелер",
+      "summary": "Жыйынтык",
+      "certificates": "Сертификаттар"
+    },
+    "notifications": {
+      "title": "Сатуулар тууралуу билдирүүлөр",
+      "hint": "Бот ар бир сатуу тууралуу Telegram'га жазат",
+      "enable": "Күйгүзүү",
+      "enabled": "Күйгүзүлгөн"
     }
+  },
+  "venue": {
+    "fromPrice": "{{price}}дон баштап",
+    "nominal": "НОМИНАЛ",
+    "buy": "Сатып алуу",
+    "validity": "{{months}} ай жарактуу",
+    "notFound": "Мекеме табылган жок"
+  },
+  "venueForm": {
+    "title": "Жаңы мекеме",
+    "editTitle": "Мекемени түзөтүү",
+    "create": "Түзүү",
+    "save": "Сактоо",
+    "edit": "Түзөтүү",
+    "status": "Статус",
+    "logoRequired": "Логотипти жүктөңүз",
+    "name": "Аталышы",
+    "namePlaceholder": "Мисалы: Sierra Coffee",
+    "slug": "Шилтеме",
+    "slugPlaceholder": "sierra-coffee",
+    "slugHint": "Латын тамгалары, сандар жана дефис. Чакыруу шилтемесине кирет.",
+    "slugInvalid": "Кичине латын тамгалары, сандар жана дефис гана",
+    "descriptionRu": "Орусча сүрөттөмө",
+    "descriptionKg": "Кыргызча сүрөттөмө",
+    "descriptionEn": "Англисче сүрөттөмө",
+    "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
+    "categoriesRequired": "Кеминде бир категория тандаңыз",
+    "nominalsRequired": "Кеминде бир номинал кошуңуз",
+    "required": "Милдеттүү талаа",
+    "alreadyInUse": "Мурунтан колдонулууда",
+    "nominalsUnavailable": "Айрым номиналдар мындан ары жеткиликсиз — аларды алып салыңыз",
+    "validityUnavailable": "Бул мөөнөт мындан ары жеткиликсиз — башкасын тандаңыз",
+    "owner": "Ээси",
+    "ownerRequired": "Ээсин тандаңыз",
+    "slugReserved": "Бул сөз корголгон, башкасын тандаңыз",
+    "categoryRemoved": "Категория өчүрүлгөн — аны алып салыңыз",
+    "nameTooLong": "{{max}} белгиден ашпасын"
+  },
+  "merchantForm": {
+    "title": "Жаңы ээси",
+    "editTitle": "Ээсин түзөтүү",
+    "create": "Түзүү",
+    "save": "Сактоо",
+    "edit": "Түзөтүү",
+    "status": "Статус",
+    "name": "Аты же бизнестин аталышы",
+    "namePlaceholder": "Мисалы: ЖИ Асанов",
+    "telegramId": "Telegram ID",
+    "telegramIdPlaceholder": "123456789",
+    "telegramIdHint": "Ээси кабинетке ушул Telegram ID аркылуу кирет",
+    "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
+    "required": "Милдеттүү талаа",
+    "alreadyInUse": "Мурунтан колдонулууда"
   },
   "logoUpload": {
     "hint": "Логотип, 5 МБ чейин",
     "fileType": "Сүрөттөр гана",
     "fileTooLarge": "Файл 5 МБ ашык",
-    "uploadFailed": "Жүктөө ишке ашкан жок"
+    "uploadFailed": "Жүктөө мүмкүн болгон жок"
   },
   "merchantAttributes": {
     "categories": "Категориялар",
     "nominals": "Номинал",
     "validity": "Жарактуулук мөөнөтү (ай)",
-    "months": "{{months}} ай"
+    "months": "{{months}} ай",
+    "removedCategory": "Өчүрүлгөн категория"
   },
   "aria": {
     "changeLanguage": "Тил алмаштыруу",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "categories": "Категориялар"
   },
   "profile": {
     "id": "ID",
@@ -74,54 +165,26 @@
   "admin": {
     "badge": "Админ",
     "label": "Көрүнүш режими",
-    "viewAsUser": "Колдонуучу",
+    "viewAsUser": "Сатып алуучу",
     "viewAsAdmin": "Админ",
     "nav": {
-      "merchants": "Мекемелер",
+      "venues": "Мекемелер",
+      "merchants": "Ээлер",
       "orders": "Буйрутмалар",
-      "payments": "Төлөмдөр"
+      "payouts": "Төлөп берүү"
     },
     "merchants": {
-      "active": "Активдүү",
-      "inactive": "Активдүү эмес",
-      "empty": "Мекемелер табылган жок",
+      "listTitle": "ЭЭЛЕР",
+      "empty": "Ээлер табылган жок",
+      "addVenue": "Мекеме кошуу",
       "detail": {
-        "description": "Сүрөттөмө",
-        "categories": "КАТЕГОРИЯЛАР",
-        "nominals": "НОМИНАЛДАР",
-        "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",
-        "validityValue": "{{months}} ай",
         "telegramId": "TELEGRAM ID",
         "createdAt": "ТҮЗҮЛГӨН",
-        "notFound": "Мекеме табылган жок"
+        "venues": "МЕКЕМЕЛЕР",
+        "noVenues": "Ээсинин азырынча мекемелери жок",
+        "notFound": "Ээси табылган жок"
       },
-      "form": {
-        "title": "Жаңы мекеме",
-        "editTitle": "Мекемени түзөтүү",
-        "create": "Түзүү",
-        "save": "Сактоо",
-        "edit": "Түзөтүү",
-        "status": "Статус",
-        "logoRequired": "Логотипти жүктөңүз",
-        "name": "Аталышы",
-        "namePlaceholder": "Мисалы: Sierra Coffee",
-        "slug": "Шилтеме",
-        "slugPlaceholder": "sierra-coffee",
-        "slugHint": "Латын тамгалары, сандар жана дефис. Чакыруу шилтемесине кирет.",
-        "slugInvalid": "Кичине латын тамгалары, сандар жана дефис гана",
-        "descriptionRu": "Орусча сүрөттөмө",
-        "descriptionKg": "Кыргызча сүрөттөмө",
-        "descriptionEn": "Англисче сүрөттөмө",
-        "descriptionPlaceholder": "Мекеме жөнүндө кыскача",
-        "categoriesRequired": "Кеминде бир категория тандаңыз",
-        "nominalsRequired": "Кеминде бир номинал кошуңуз",
-        "telegramId": "Telegram ID",
-        "telegramIdPlaceholder": "123456789",
-        "telegramIdHint": "Мекеме ээсинин Telegram ID'си",
-        "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
-        "required": "Милдеттүү талаа",
-        "alreadyInUse": "Мурунтан колдонулууда"
-      }
+      "searchPlaceholder": "Ээлерди издөө"
     },
     "categories": {
       "manage": "Категорияларды башкаруу",
@@ -142,9 +205,90 @@
       "reorder": "Тартипти өзгөртүү",
       "delete": "Өчүрүү",
       "deleteConfirmTitle": "Категорияны өчүрөсүзбү?",
-      "deleteConfirmMessage": "Категория өчүрүлөт, ага байланган ишканалар бул байланышты жоготот. Аракетти артка кайтаруу мүмкүн эмес.",
+      "deleteConfirmMessage": "Категория өчүрүлөт, ага байланган мекемелер бул байланышты жоготот. Аракетти артка кайтаруу мүмкүн эмес.",
       "required": "Милдеттүү талаа",
       "orderInvalid": "Санды киргизиңиз"
+    },
+    "venues": {
+      "listTitle": "МЕКЕМЕЛЕР",
+      "active": "Активдүү",
+      "inactive": "Активдүү эмес",
+      "empty": "Мекемелер табылган жок",
+      "detail": {
+        "description": "Сүрөттөмө",
+        "categories": "КАТЕГОРИЯЛАР",
+        "nominals": "НОМИНАЛДАР",
+        "validity": "ЖАРАКТУУЛУК МӨӨНӨТҮ",
+        "validityValue": "{{months}} ай",
+        "createdAt": "ТҮЗҮЛГӨН",
+        "notFound": "Мекеме табылган жок",
+        "owner": "ЭЭСИ"
+      }
+    },
+    "payouts": {
+      "title": "Төлөп берүү",
+      "total": "Апталык жыйынтык",
+      "orders": "Буйрутмалар: {{count}}",
+      "gross": "Жүгүртүү: {{amount}}",
+      "commission": "Комиссия 10%: {{amount}}",
+      "payout": "Төлөп берилет: {{amount}}",
+      "merchants": "ЭЭЛЕР",
+      "empty": "Бул аптада сатуу болгон жок",
+      "needsReview": "Текшерүүдө: {{count}} — бул буйрутмалар төлөп берүүгө кирген жок",
+      "openOrders": "Буйрутмаларды ачуу",
+      "paidOut": "Төлөп берилди ✓",
+      "due": "Төлөп берилет: {{amount}}",
+      "partial": "Төлөп берилди {{paid}}, дагы {{due}}",
+      "totalPaidOut": "Төлөп берилди: {{amount}}",
+      "totalDue": "Калганы: {{amount}}",
+      "markPaid": "Төлөп берилди деп белгилөө",
+      "confirmTitle": "Төлөп берүүнү белгилөө",
+      "confirmMessage": "{{merchant}} үчүн {{from}} – {{to}} аралыгына {{amount}} төлөп берилди деп белгилейсизби? Жокко чыгаруу мүмкүн эмес.",
+      "note": "Эскертүү (милдеттүү эмес)",
+      "notePlaceholder": "Мисалы: Mbank аркылуу которуу 27.10",
+      "confirm": "Белгилөө",
+      "cancel": "Жокко чыгаруу",
+      "doneTitle": "Төлөп берүү белгиленди",
+      "done": "{{merchant}} үчүн {{amount}}. Ээси ботто билдирүү алат.",
+      "nothingToPay": "Бул апта мурун эле белгиленген — маалымат жаңыртылды.",
+      "amountChanged": "Сумма өзгөрдү — текшерип, кайра ырастаңыз."
+    },
+    "orders": {
+      "all": "Баары",
+      "searchPlaceholder": "Сертификаттын коду же буйрутманын номери",
+      "searchInvalid": "Сертификаттын кодун же буйрутманын номерин жазыңыз",
+      "empty": "Буйрутмалар жок",
+      "notFound": "Буйрутма табылган жок",
+      "status": {
+        "pending": "Төлөм күтүлүүдө",
+        "paid": "Төлөндү",
+        "expired": "Мөөнөтү бүттү",
+        "needs_review": "Текшерүүдө",
+        "refunded": "Кайтарылды"
+      },
+      "detail": {
+        "id": "БУЙРУТМАНЫН НОМЕРИ",
+        "venue": "МЕКЕМЕ",
+        "merchant": "ЭЭСИ (ТӨЛӨП БЕРҮҮ)",
+        "createdAt": "ТҮЗҮЛДҮ",
+        "paidAt": "ТӨЛӨНДҮ",
+        "expiresAt": "ТӨЛӨӨ МӨӨНӨТҮ",
+        "transaction": "FINIK ТРАНЗАКЦИЯСЫ",
+        "buyer": "САТЫП АЛУУЧУ",
+        "certificate": "СЕРТИФИКАТ",
+        "validUntil": "{{date}} чейин жарактуу",
+        "usedAt": "{{date}} белгиленди",
+        "webhooks": "FINIK ВЕБХУКТАРЫ",
+        "noWebhooks": "Finik азырынча эч нерсе жөнөтө элек",
+        "webhookAmount": "Finik жөнөткөн сумма: {{amount}}",
+        "noAmount": "Finik жөнөткөн сумма: жок",
+        "amountMismatch": "Буйрутманын суммасына дал келбейт ({{amount}})",
+        "resolutions": "КОЛ МЕНЕН ЧЕЧИМДЕР",
+        "issue": "Сертификат берилди",
+        "refunded": "Кайтарылды",
+        "resolvedBy": "{{by}} · {{date}}"
+      },
+      "paidOut": "Төлөп берилген"
     }
   },
   "certificate": {
@@ -161,7 +305,11 @@
     "usedAt": "{{date}} колдонулган",
     "expiredAt": "Мөөнөтү {{date}} бүттү",
     "share": "Бөлүшүү",
-    "shareText": "🎁 {{merchant}} мекемесинин {{amount}} суммасындагы белек сертификаты. Код: {{code}}"
+    "shareText": "🎁 {{venue}} мекемесинин {{amount}} суммасындагы белек сертификаты. Код: {{code}}",
+    "gift": "Белек кылуу",
+    "giftUnavailable": "Сертификат колдонулуп калган же мөөнөтү бүткөн",
+    "giftFailed": "Болбой калды, кайра аракет кылыңыз",
+    "qrHint": "QR-кодду кассада көрсөтүңүз"
   },
   "certificates": {
     "empty": "Азырынча сертификаттар жок",
@@ -189,6 +337,10 @@
       "title": "Төлөм алынды",
       "hint": "Текшерип жатабыз. Сертификат текшерүүдөн кийин пайда болот."
     },
+    "refunded": {
+      "title": "Акча кайтарылды",
+      "hint": "Төлөмдү ырастай алган жокпуз, ошондуктан акчаны кайтардык. Эгер акча али келе элек болсо — колдоо кызматына жазыңыз."
+    },
     "errors": {
       "unavailable": "Бул номинал же мекеме азыр жеткиликсиз. Баракты жаңыртып, кайра аракет кылыңыз.",
       "notFound": "Буйрутма табылган жок.",
@@ -213,11 +365,8 @@
     "goHome": "Башкы бетке",
     "goBack": "Артка"
   },
-  "merchantDetail": {
-    "nominal": "НОМИНАЛ",
-    "buy": "Сатып алуу",
-    "validity": "{{months}} айга чейин колдонулат",
-    "notFound": "Мекеме табылган жок"
+  "footer": {
+    "madeWithLove": "Сүйүү менен KuttukTime ♥"
   },
   "categories": {
     "all": "Баары"
@@ -228,5 +377,25 @@
     "reload": "Бетти жаңыртуу",
     "loadFailed": "Маалыматтарды жүктөө мүмкүн болгон жок",
     "retry": "Кайталоо"
+  },
+  "connectionFailed": {
+    "title": "Туташуу мүмкүн болгон жок",
+    "description": "Интернетти текшерип, кайра аракет кылыңыз."
+  },
+  "week": {
+    "prev": "Мурунку",
+    "next": "Кийинки",
+    "range": "{{from}} – {{to}}"
+  },
+  "venueLink": {
+    "title": "Соцтармактар үчүн шилтеме",
+    "hint": "Instagram профилине, стористерге, WhatsApp'ка — же QR'ды басып чыгарып, кассага коюңуз",
+    "copy": "Көчүрүү",
+    "copied": "Көчүрүлдү",
+    "share": "Бөлүшүү",
+    "download": "QR жүктөө",
+    "qr": "{{venue}} шилтемесинин QR коду",
+    "screenshotHint": "Басып чыгаруу үчүн QR'дын скриншотун жасаңыз",
+    "shareText": "{{venue}} белек сертификаттары — Telegram'дан сатып алыңыз"
   }
 }

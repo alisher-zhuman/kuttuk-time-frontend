@@ -16,7 +16,8 @@ export const getOrderErrorKey = (error: unknown): string => {
       return "orders.errors.unavailable";
     case 404:
       return "orders.errors.notFound";
-    // Keyed on the proxy IP, so it may not be this user's fault.
+    // Per-user limit (user:<id>) that resets within a minute — the message
+    // just asks to wait, it doesn't blame the user.
     case 429:
       return "orders.errors.tooManyRequests";
     // Finik failed; the backend expired the order and no payment URL was
@@ -27,3 +28,7 @@ export const getOrderErrorKey = (error: unknown): string => {
       return "errors.generic";
   }
 };
+
+// GET /admin/orders?search= that is neither a certificate code nor an order id.
+export const isAdminOrderSearchError = (error: unknown) =>
+  isAxiosError(error) && error.response?.status === 400;

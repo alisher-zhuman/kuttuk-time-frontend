@@ -1,4 +1,4 @@
-import { openLink, retrieveLaunchParams } from "@tma.js/sdk-react";
+import { openLink, requestWriteAccess, retrieveLaunchParams } from "@tma.js/sdk-react";
 
 import type { TmaUserInfo } from "../types";
 
@@ -31,6 +31,14 @@ export const getTMAUserInfo = (): TmaUserInfo | null => {
   };
 };
 
+// A file made in the page (a data: URL) downloads reliably only in a browser —
+// Telegram's own downloadFile takes only an https URL, and the mobile apps'
+// webviews ignore <a download>.
+const BROWSER_PLATFORMS = new Set(["weba", "webk", "web"]);
+
+export const canDownloadFiles = () =>
+  BROWSER_PLATFORMS.has(getLaunchParams()?.tgWebAppPlatform ?? "");
+
 // openLink keeps the Mini App open (unlike openTelegramLink / location
 // changes), so polling survives while the user pays in the bank's page.
 // Telegram may ignore it outside a user gesture — callers after an await
@@ -46,4 +54,34 @@ export const openExternalLink = (url: string) => {
   }
 
   window.open(url, "_blank", "noopener,noreferrer");
+};
+
+// Whether the bot may message the user (sale notices, the certificate code).
+// initData is fixed for the session, so a grant made now is remembered here.
+let writeAccess: boolean | undefined;
+let hasAsked = false;
+
+export const hasWriteAccess = () =>
+  (writeAccess ??= getLaunchParams()?.tgWebAppData?.user?.allows_write_to_pm === true);
+
+// Native "allow messages from the bot" prompt. Resolves to whether access is
+// granted; never throws — a refusal or an old client must not block anything.
+// oncePerSession: an unprompted ask (the purchase) — after a refusal, don't nag
+// on every purchase; an explicit button asks every time.
+export const requestBotMessages = async (
+  { oncePerSession = false }: { oncePerSession?: boolean } = {}
+): Promise<boolean> => {
+  if (hasWriteAccess()) return true;
+
+  if (!requestWriteAccess.isAvailable() || (oncePerSession && hasAsked)) return false;
+
+  hasAsked = true;
+
+  try {
+    writeAccess = (await requestWriteAccess()) === "allowed";
+  } catch {
+    return false;
+  }
+
+  return writeAccess;
 };

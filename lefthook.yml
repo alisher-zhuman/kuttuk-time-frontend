@@ -7,3 +7,5 @@ pre-push:
       run: pnpm run typecheck
     steiger:
       run: pnpm steiger ./src
+    test:
+      run: pnpm run test:run

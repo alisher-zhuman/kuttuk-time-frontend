@@ -8,9 +8,7 @@ import { Check, Copy, Download, Share2 } from "lucide-react";
 import { getVenueShareLink } from "@shared/constants";
 import { canDownloadFiles, downloadQrPng } from "@shared/helpers";
 import { useCopyToClipboard, useHaptic } from "@shared/hooks";
-import { FieldLabel, QrCode } from "@shared/ui";
-
-import { QrFullscreen } from "../qr-fullscreen";
+import { BottomSheet, FieldLabel, QrCode } from "@shared/ui";
 
 interface Props {
   slug: string;
@@ -75,7 +73,7 @@ export const VenueShareLink = ({ slug, venueName }: Props) => {
               haptic.light();
               setIsQrOpen(true);
             }}
-            aria-label={t("venueLink.enlargeQr")}
+            aria-label={t("venueLink.openQr")}
             className="shrink-0 cursor-pointer"
           >
             <QrCode value={link} label={qrLabel} className="size-20 rounded-xl p-1 border border-(--color-line)" />
@@ -105,13 +103,29 @@ export const VenueShareLink = ({ slug, venueName }: Props) => {
       </div>
 
       {isQrOpen && (
-        <QrFullscreen
-          link={link}
-          shownLink={shownLink}
-          label={qrLabel}
-          venueName={venueName}
-          onClose={() => setIsQrOpen(false)}
-        />
+        <BottomSheet title={venueName} onClose={() => setIsQrOpen(false)}>
+          {(close) => (
+            <>
+              <QrCode value={link} label={qrLabel} className="self-center w-full max-w-64 h-auto" />
+
+              <span className="text-sm text-(--color-slate) text-center break-all">{shownLink}</span>
+
+              {!canDownloadFiles() && (
+                <span className="text-xs text-(--color-hint) text-center">
+                  {t("venueLink.screenshotHint")}
+                </span>
+              )}
+
+              <button
+                type="button"
+                onClick={close}
+                className="py-3 rounded-2xl bg-(--color-chip) text-(--color-ink) text-sm font-bold cursor-pointer"
+              >
+                {t("venueLink.close")}
+              </button>
+            </>
+          )}
+        </BottomSheet>
       )}
     </div>
   );

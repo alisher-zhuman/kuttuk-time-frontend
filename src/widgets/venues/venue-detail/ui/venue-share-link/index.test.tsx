@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { describe, expect, it } from "vitest";
@@ -31,17 +31,21 @@ describe("venue share link", () => {
     expect(decodeURIComponent(shared)).toContain("Подарочные сертификаты Coffeeroom");
   });
 
-  it("opens the QR full screen; no PNG download on a phone", async () => {
+  it("opens the QR in a sheet; no PNG download on a phone", async () => {
     renderWithProviders(<VenueShareLink slug="coffeeroom" venueName="Coffeeroom" />);
 
     expect(screen.queryByRole("button", { name: "Скачать QR" })).not.toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole("button", { name: "Открыть QR на весь экран" }));
+    await userEvent.click(screen.getByRole("button", { name: "Открыть QR" }));
 
-    expect(screen.getByRole("dialog", { name: "QR-код ссылки Coffeeroom" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Coffeeroom" })).toBeInTheDocument();
+    expect(screen.getAllByRole("img", { name: "QR-код ссылки Coffeeroom" })).toHaveLength(2);
     expect(screen.getByText("Сделайте скриншот, чтобы распечатать")).toBeInTheDocument();
 
+    // The sheet closes when its slide-out ends — no transitions in jsdom.
+    const sheet = screen.getByRole("dialog");
     await userEvent.click(screen.getByRole("button", { name: "Закрыть" }));
+    fireEvent.transitionEnd(sheet, { propertyName: "transform" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

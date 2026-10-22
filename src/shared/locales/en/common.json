@@ -395,7 +395,7 @@
     "share": "Share",
     "download": "Download QR",
     "qr": "QR code of the {{venue}} link",
-    "enlargeQr": "Open the QR full screen",
+    "openQr": "Open the QR",
     "screenshotHint": "Take a screenshot to print it",
     "close": "Close",
     "shareText": "{{venue}} gift certificates — buy in Telegram"

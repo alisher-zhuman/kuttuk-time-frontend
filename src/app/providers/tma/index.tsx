@@ -11,7 +11,7 @@ import {
 
 import { AppNotFoundPage } from "@pages/app-not-found";
 
-import { detectTheme } from "@shared/helpers";
+import { detectTheme, getLaunchParams } from "@shared/helpers";
 import { useThemeStore } from "@shared/store";
 
 const TMA_COLORS = {
@@ -71,7 +71,11 @@ export const TMAProvider = ({ children }: Props) => {
           unbindViewportCssVars = viewport.bindCssVars();
         }
 
-        if (viewport.requestFullscreen.isAvailable()) {
+        // Fullscreen is for phones; on desktop clients it would blow the
+        // mini app up over the whole Telegram window.
+        const platform = getLaunchParams()?.tgWebAppPlatform;
+
+        if ((platform === "ios" || platform === "android") && viewport.requestFullscreen.isAvailable()) {
           void viewport.requestFullscreen();
         }
       });

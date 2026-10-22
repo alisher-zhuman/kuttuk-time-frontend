@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Gift, Loader2 } from "lucide-react";
+import { Gift } from "lucide-react";
 
 import { VenueFilter } from "@features/venue-filter";
 
@@ -14,7 +14,7 @@ import {
 import { useMerchantMeQuery } from "@entities/merchant";
 
 import { useLoadMoreOnScroll } from "@shared/hooks";
-import { ChipSelect, EmptyState, ErrorState } from "@shared/ui";
+import { ChipSelect, EmptyState, ErrorState, LoadMore } from "@shared/ui";
 
 import { CertificateRow } from "../certificate-row";
 import { CertificateSheet } from "../certificate-sheet";
@@ -39,6 +39,7 @@ export const CertificateList = () => {
     isError,
     isFetching,
     isFetchingNextPage,
+    isLoadMoreError,
     hasNextPage,
     fetchNextPage,
     retry
@@ -50,7 +51,11 @@ export const CertificateList = () => {
   // list isn't already narrowed to one.
   const showVenue = venueId === null && (merchant?.venues.length ?? 0) > 1;
 
-  const setSentinel = useLoadMoreOnScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
+  const setSentinel = useLoadMoreOnScroll(
+    fetchNextPage,
+    // Stop on a failed page — the footer's retry takes over.
+    hasNextPage && !isFetchingNextPage && !isLoadMoreError
+  );
 
   return (
     <div className="flex flex-col gap-4 mt-3.5 pb-5">
@@ -92,11 +97,12 @@ export const CertificateList = () => {
             </li>
           ))}
 
-          <li ref={setSentinel} className="flex justify-center py-2">
-            {isFetchingNextPage && (
-              <Loader2 size={20} color="var(--color-hint)" className="animate-spin" />
-            )}
-          </li>
+          <LoadMore
+            sentinelRef={setSentinel}
+            isLoading={isFetchingNextPage}
+            isError={isLoadMoreError}
+            onRetry={fetchNextPage}
+          />
         </ul>
       )}
 

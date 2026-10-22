@@ -10,7 +10,7 @@ export const useMerchantCertificatesQuery = (
   status: CertificateStatus | null,
   venueId: number | null
 ) => {
-  const { data, isLoading, isError, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+  const { data, isLoading, isError, isFetching, isFetchingNextPage, isFetchNextPageError, hasNextPage, fetchNextPage, refetch } =
     useInfiniteQuery({
       queryKey: certificateKeys.merchantList(status, venueId),
       queryFn: ({ pageParam, signal }) =>
@@ -24,7 +24,10 @@ export const useMerchantCertificatesQuery = (
   return {
     certificates: data?.pages.flatMap((page) => page.items) ?? [],
     isLoading,
-    isError,
+    // Only when there's nothing to show: a failed next page keeps the rows and
+    // offers its own retry (isLoadMoreError).
+    isError: isError && data === undefined,
+    isLoadMoreError: isFetchNextPageError,
     isFetching,
     isFetchingNextPage,
     hasNextPage,

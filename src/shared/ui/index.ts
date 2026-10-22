@@ -8,6 +8,7 @@ export { Fab } from './fab';
 export { FieldLabel } from './field-label';
 export { Input } from './input';
 export { LangSwitcher } from './lang-switcher';
+export { LoadMore } from './load-more';
 export { Logo } from './logo';
 export { LogoUpload } from './logo-upload';
 export { MetaField } from './meta-field';

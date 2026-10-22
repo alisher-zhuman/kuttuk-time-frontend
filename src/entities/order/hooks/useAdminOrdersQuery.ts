@@ -5,7 +5,7 @@ import { orderKeys } from "../model/keys";
 import type { OrderStatus } from "../model/types";
 
 export const useAdminOrdersQuery = (status: OrderStatus | null, search: string) => {
-  const { data, error, isLoading, isError, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+  const { data, error, isLoading, isError, isFetching, isFetchingNextPage, isFetchNextPageError, hasNextPage, fetchNextPage, refetch } =
     useInfiniteQuery({
       queryKey: orderKeys.adminList(status, search),
       queryFn: ({ pageParam, signal }) =>
@@ -20,7 +20,10 @@ export const useAdminOrdersQuery = (status: OrderStatus | null, search: string) 
     orders: data?.pages.flatMap((page) => page.items) ?? [],
     error,
     isLoading,
-    isError,
+    // Only when there's nothing to show: a failed next page keeps the rows and
+    // offers its own retry (isLoadMoreError).
+    isError: isError && data === undefined,
+    isLoadMoreError: isFetchNextPageError,
     isFetching,
     isFetchingNextPage,
     hasNextPage,

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { ClipboardList, Loader2, SearchX } from "lucide-react";
+import { ClipboardList, SearchX } from "lucide-react";
 
 import {
   isAdminOrderSearchError,
@@ -10,7 +10,7 @@ import {
 
 import { getAdminOrderDetailRoute } from "@shared/constants";
 import { useHaptic, useLoadMoreOnScroll, useNavigateTo } from "@shared/hooks";
-import { ChipSelect, EmptyState, ErrorState } from "@shared/ui";
+import { ChipSelect, EmptyState, ErrorState, LoadMore } from "@shared/ui";
 
 import { OrderRow } from "../order-row";
 
@@ -43,12 +43,17 @@ export const OrderList = ({ status, onStatusChange, search }: Props) => {
     isError,
     isFetching,
     isFetchingNextPage,
+    isLoadMoreError,
     hasNextPage,
     fetchNextPage,
     retry
   } = useAdminOrdersQuery(status, search);
 
-  const setSentinel = useLoadMoreOnScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
+  const setSentinel = useLoadMoreOnScroll(
+    fetchNextPage,
+    // Stop on a failed page — the footer's retry takes over.
+    hasNextPage && !isFetchingNextPage && !isLoadMoreError
+  );
 
   return (
     <div className="flex flex-col gap-4 mt-3.5 pb-5">
@@ -94,11 +99,12 @@ export const OrderList = ({ status, onStatusChange, search }: Props) => {
             </li>
           ))}
 
-          <li ref={setSentinel} className="flex justify-center py-2">
-            {isFetchingNextPage && (
-              <Loader2 size={20} color="var(--color-hint)" className="animate-spin" />
-            )}
-          </li>
+          <LoadMore
+            sentinelRef={setSentinel}
+            isLoading={isFetchingNextPage}
+            isError={isLoadMoreError}
+            onRetry={fetchNextPage}
+          />
         </ul>
       )}
     </div>

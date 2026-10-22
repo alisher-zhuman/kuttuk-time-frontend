@@ -198,4 +198,10 @@ Pre-push hook (lefthook): lint → steiger (FSD) → typecheck (`tsc -b`) → `t
 
 Commits are signed by Alisher only. No `Co-Authored-By`.
 
-Workflow for fixes: one fix per commit → push to `dev` → Alisher verifies in Telegram → next fix
+**Pushing** (Alisher, 2026-10-22):
+- **A push to `dev` is a prod deploy** — Vercel builds `dev`, and it doesn't wait for GitHub Actions: a red commit still reaches users. No PRs to `main`
+- **Push in batches.** Commit each verified step locally; push when a task (or a batch of tasks) is done. Docs- or comment-only changes are never pushed alone — they go with the next code push
+- **Exception — an urgent prod fix:** push right away
+- **Before a push**, run everything CI runs, not just the pre-push hook: `pnpm lint && pnpm typecheck && pnpm steiger ./src && pnpm test:run && pnpm test:e2e && pnpm build`
+- **Before a push**, send Alisher the list of commits going out
+- **After the deploy**, check what changed on prod: the Vercel deployment is Ready (Vercel MCP), and Alisher opens the prod Mini App in Telegram — the agent can't open Telegram and doesn't send requests to the prod API

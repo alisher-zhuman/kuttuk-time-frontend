@@ -1,29 +1,14 @@
+import { type ComponentType } from "react";
 import { createBrowserRouter } from "react-router";
 
-import { CategoryCreatePage } from "@pages/categories/create";
-import { CategoryEditPage } from "@pages/categories/edit";
-import { CategoryListPage } from "@pages/categories/list";
+import { Loader2 } from "lucide-react";
+
 import { CertificatePage } from "@pages/certificate";
 import { HomePage } from "@pages/home";
-import { MerchantCabinetPage } from "@pages/merchants/cabinet";
-import { MerchantCertificatesPage } from "@pages/merchants/certificates";
-import { MerchantCreatePage } from "@pages/merchants/create";
-import { MerchantDetailPage } from "@pages/merchants/detail";
-import { MerchantEditPage } from "@pages/merchants/edit";
-import { MerchantListPage } from "@pages/merchants/list";
-import { MerchantSummaryPage } from "@pages/merchants/summary";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
-import { OrderDetailPage } from "@pages/orders/detail";
-import { OrderListPage } from "@pages/orders/list";
-import { PayoutsPage } from "@pages/payouts";
 import { ProfilePage } from "@pages/profile";
 import { VenuePage } from "@pages/venue";
-import { VenueCreatePage } from "@pages/venues/create";
-import { VenueDetailPage } from "@pages/venues/detail";
-import { VenueEditPage } from "@pages/venues/edit";
-import { VenueListPage } from "@pages/venues/list";
-import { OwnVenueEditPage } from "@pages/venues/own-edit";
 
 import { AppLayout } from "@widgets/layout";
 
@@ -32,6 +17,20 @@ import { ROUTE_PATTERNS } from "@shared/constants";
 import { RequireRole } from "./guards/require-role";
 import { RootRedirect } from "./guards/root-redirect";
 import { RouteError } from "./route-error";
+
+// Admin and owner screens load on demand: a buyer — most users — never
+// downloads them (or their form / drag-and-drop libraries).
+const page =
+  <M extends Record<string, ComponentType>>(load: () => Promise<M>, name: keyof M) =>
+  async () => ({ Component: (await load())[name] });
+
+// Shown while a lazy route's chunk loads on the very first render (e.g. the
+// app opened straight into the cabinet).
+const loader = (
+  <div className="min-h-dvh flex items-center justify-center bg-(--color-bg)">
+    <Loader2 size={28} color="var(--color-hint)" className="animate-spin" />
+  </div>
+);
 
 export const ROUTER = createBrowserRouter([
   {
@@ -42,6 +41,7 @@ export const ROUTER = createBrowserRouter([
   {
     element: <AppLayout />,
     errorElement: <RouteError />,
+    hydrateFallbackElement: loader,
     children: [
       {
         path: ROUTE_PATTERNS.HOME,
@@ -68,59 +68,59 @@ export const ROUTER = createBrowserRouter([
         children: [
           {
             path: ROUTE_PATTERNS.ADMIN_VENUES,
-            element: <VenueListPage />
+            lazy: page(() => import("@pages/venues/list"), "VenueListPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_VENUE_CREATE,
-            element: <VenueCreatePage />
+            lazy: page(() => import("@pages/venues/create"), "VenueCreatePage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_VENUE_DETAIL,
-            element: <VenueDetailPage />
+            lazy: page(() => import("@pages/venues/detail"), "VenueDetailPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_VENUE_EDIT,
-            element: <VenueEditPage />
+            lazy: page(() => import("@pages/venues/edit"), "VenueEditPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANTS,
-            element: <MerchantListPage />
+            lazy: page(() => import("@pages/merchants/list"), "MerchantListPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANT_CREATE,
-            element: <MerchantCreatePage />
+            lazy: page(() => import("@pages/merchants/create"), "MerchantCreatePage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANT_DETAIL,
-            element: <MerchantDetailPage />
+            lazy: page(() => import("@pages/merchants/detail"), "MerchantDetailPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_MERCHANT_EDIT,
-            element: <MerchantEditPage />
+            lazy: page(() => import("@pages/merchants/edit"), "MerchantEditPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_CATEGORIES,
-            element: <CategoryListPage />
+            lazy: page(() => import("@pages/categories/list"), "CategoryListPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_CATEGORY_CREATE,
-            element: <CategoryCreatePage />
+            lazy: page(() => import("@pages/categories/create"), "CategoryCreatePage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_CATEGORY_EDIT,
-            element: <CategoryEditPage />
+            lazy: page(() => import("@pages/categories/edit"), "CategoryEditPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_ORDERS,
-            element: <OrderListPage />
+            lazy: page(() => import("@pages/orders/list"), "OrderListPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_ORDER_DETAIL,
-            element: <OrderDetailPage />
+            lazy: page(() => import("@pages/orders/detail"), "OrderDetailPage")
           },
           {
             path: ROUTE_PATTERNS.ADMIN_PAYOUTS,
-            element: <PayoutsPage />
+            lazy: page(() => import("@pages/payouts"), "PayoutsPage")
           }
         ]
       },
@@ -129,19 +129,19 @@ export const ROUTER = createBrowserRouter([
         children: [
           {
             path: ROUTE_PATTERNS.MERCHANT_HOME,
-            element: <MerchantCabinetPage />
+            lazy: page(() => import("@pages/merchants/cabinet"), "MerchantCabinetPage")
           },
           {
             path: ROUTE_PATTERNS.MERCHANT_VENUE_EDIT,
-            element: <OwnVenueEditPage />
+            lazy: page(() => import("@pages/venues/own-edit"), "OwnVenueEditPage")
           },
           {
             path: ROUTE_PATTERNS.MERCHANT_SUMMARY,
-            element: <MerchantSummaryPage />
+            lazy: page(() => import("@pages/merchants/summary"), "MerchantSummaryPage")
           },
           {
             path: ROUTE_PATTERNS.MERCHANT_CERTIFICATES,
-            element: <MerchantCertificatesPage />
+            lazy: page(() => import("@pages/merchants/certificates"), "MerchantCertificatesPage")
           }
         ]
       },

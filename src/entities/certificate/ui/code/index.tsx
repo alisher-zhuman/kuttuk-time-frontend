@@ -44,7 +44,8 @@ export const CertificateCode = ({ code, caption, size = "md" }: Props) => {
       <button
         type="button"
         onClick={(event) => void handleCopy(event)}
-        aria-label={t("certificate.copy")}
+        // Contains the visible code, so voice control ("tap 0471 8263") finds it.
+        aria-label={`${t("certificate.copy")} ${formatCertificateCode(code)}`}
         className={cn(
           "flex items-center gap-2 rounded-xl bg-(--color-chip) cursor-pointer",
           isLarge ? "px-5 py-3 rounded-2xl gap-2.5" : "px-2.5 py-1.5"

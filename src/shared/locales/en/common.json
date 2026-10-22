@@ -388,16 +388,14 @@
     "range": "{{from}} – {{to}}"
   },
   "venueLink": {
-    "title": "LINK FOR SOCIAL MEDIA",
+    "title": "Link for social media",
     "hint": "For your Instagram bio, stories, WhatsApp — or print the QR for the counter",
     "copy": "Copy",
     "copied": "Copied",
     "share": "Share",
     "download": "Download QR",
     "qr": "QR code of the {{venue}} link",
-    "openQr": "Open the QR",
-    "screenshotHint": "Take a screenshot to print it",
-    "close": "Close",
+    "screenshotHint": "To print it, take a screenshot of the QR",
     "shareText": "{{venue}} gift certificates — buy in Telegram"
   }
 }

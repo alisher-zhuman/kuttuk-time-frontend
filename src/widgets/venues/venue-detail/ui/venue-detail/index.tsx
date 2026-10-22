@@ -9,6 +9,7 @@ import { VenueDetailChips } from "../venue-detail-chips";
 import { VenueDetailDescription } from "../venue-detail-description";
 import { VenueDetailHeader } from "../venue-detail-header";
 import { VenueDetailMeta } from "../venue-detail-meta";
+import { VenueShareLink } from "../venue-share-link";
 
 interface Props {
   venue: ManagedVenue;
@@ -38,6 +39,8 @@ export const VenueDetail = ({ venue, categories, onEdit, owner }: Props) => {
       />
 
       <VenueDetailDescription description={venue.description} />
+
+      <VenueShareLink slug={venue.slug} venueName={venue.name} />
 
       {venueCategories.length > 0 && (
         <VenueDetailChips

@@ -31,6 +31,14 @@ export const getTMAUserInfo = (): TmaUserInfo | null => {
   };
 };
 
+// A file made in the page (a data: URL) downloads reliably only in a browser —
+// Telegram's own downloadFile takes only an https URL, and the mobile apps'
+// webviews ignore <a download>.
+const BROWSER_PLATFORMS = new Set(["weba", "webk", "web"]);
+
+export const canDownloadFiles = () =>
+  BROWSER_PLATFORMS.has(getLaunchParams()?.tgWebAppPlatform ?? "");
+
 // openLink keeps the Mini App open (unlike openTelegramLink / location
 // changes), so polling survives while the user pays in the bank's page.
 // Telegram may ignore it outside a user gesture — callers after an await

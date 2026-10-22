@@ -386,5 +386,18 @@
     "prev": "Prev",
     "next": "Next",
     "range": "{{from}} – {{to}}"
+  },
+  "venueLink": {
+    "title": "LINK FOR SOCIAL MEDIA",
+    "hint": "For your Instagram bio, stories, WhatsApp — or print the QR for the counter",
+    "copy": "Copy",
+    "copied": "Copied",
+    "share": "Share",
+    "download": "Download QR",
+    "qr": "QR code of the {{venue}} link",
+    "enlargeQr": "Open the QR full screen",
+    "screenshotHint": "Take a screenshot to print it",
+    "close": "Close",
+    "shareText": "{{venue}} gift certificates — buy in Telegram"
   }
 }

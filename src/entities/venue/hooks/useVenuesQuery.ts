@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { getVenues } from "../api";
 import { venueKeys } from "../model/keys";
@@ -15,6 +15,8 @@ export const useVenuesQuery = ({ search, category }: Params) => {
 
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: venueKeys.list(search, category, i18n.language),
+    // Typing a search or switching a category keeps the current cards until the new ones land.
+    placeholderData: keepPreviousData,
     queryFn: () => getVenues({ search, category })
   });
 

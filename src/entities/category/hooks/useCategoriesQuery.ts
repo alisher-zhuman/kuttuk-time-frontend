@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { getCategories } from "../api";
 import { categoryKeys } from "../model/keys";
@@ -10,6 +10,8 @@ export const useCategoriesQuery = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: categoryKeys.list(i18n.language),
+    // A language switch keeps the chips until the translated ones land.
+    placeholderData: keepPreviousData,
     queryFn: getCategories
   });
 

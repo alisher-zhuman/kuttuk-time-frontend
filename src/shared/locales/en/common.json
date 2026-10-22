@@ -33,9 +33,6 @@
     },
     "summary": {
       "title": "Weekly summary",
-      "week": "{{from}} – {{to}}",
-      "prev": "Prev",
-      "next": "Next",
       "sold": "Sold: {{count}} pcs · {{amount}}",
       "commission": "Commission 10%: {{amount}}",
       "payout": "Payout: {{amount}} (on Monday)",
@@ -255,7 +252,6 @@
       "nothingToPay": "This week is already marked — refreshed."
     },
     "orders": {
-      "title": "Orders",
       "all": "All",
       "searchPlaceholder": "Certificate code or order number",
       "searchInvalid": "Enter a certificate code or an order number",
@@ -383,5 +379,10 @@
   "connectionFailed": {
     "title": "Couldn't connect",
     "description": "Check your connection and try again."
+  },
+  "week": {
+    "prev": "Prev",
+    "next": "Next",
+    "range": "{{from}} – {{to}}"
   }
 }

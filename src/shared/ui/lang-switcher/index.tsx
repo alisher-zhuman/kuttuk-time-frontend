@@ -1,11 +1,10 @@
 import { useTranslation } from "react-i18next";
 
 import { LANGUAGE_BADGE, SUPPORTED_LANGUAGES } from "@shared/constants";
+import { resolveLang } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
 import { SegmentedControl } from "../segmented-control";
-
-type Lang = keyof typeof LANGUAGE_BADGE;
 
 interface Props {
   variant?: "compact" | "segmented";
@@ -16,8 +15,8 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
   
   const haptic = useHaptic();
 
-  const lang = i18n.language as Lang;
-  const badge = LANGUAGE_BADGE[lang] ?? LANGUAGE_BADGE.ru;
+  const lang = resolveLang(i18n.language);
+  const badge = LANGUAGE_BADGE[lang];
 
   const cycleLanguage = () => {
     haptic.light();

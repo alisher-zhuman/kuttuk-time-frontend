@@ -1,5 +1,6 @@
 export const DEFAULT_LANGUAGE = "kg" as const;
 export const SUPPORTED_LANGUAGES = ["kg", "ru", "en"] as const;
+export type Language = (typeof SUPPORTED_LANGUAGES)[number];
 export const I18N_STORAGE_KEY = "kuttuk-time-language";
 
 export const LANGUAGE_BADGE = {

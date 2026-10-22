@@ -16,3 +16,4 @@ export { SearchBar } from './search-bar';
 export { SegmentedControl } from './segmented-control';
 export { StatusBadge } from './status-badge';
 export { Textarea } from './textarea';
+export { WeekSwitcher } from './week-switcher';

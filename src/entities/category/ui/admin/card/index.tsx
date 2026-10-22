@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { GripVertical, Pencil, Trash2 } from "lucide-react";
 
-import { cn } from "@shared/helpers";
+import { cn, resolveLang } from "@shared/helpers";
 
 import type { AdminCategory } from "../../../model/types";
 
@@ -23,7 +23,7 @@ export const AdminCategoryCard = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
 
-  const name = category.name[i18n.language as keyof typeof category.name];
+  const name = category.name[resolveLang(i18n.language)];
 
   return (
     <div

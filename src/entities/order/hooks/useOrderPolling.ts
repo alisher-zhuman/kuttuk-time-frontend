@@ -82,7 +82,6 @@ export const useOrderPolling = (orderId: string | undefined) => {
     // Global defaults don't fit polling: no stale data from another order, no
     // extra retry on top of the interval, refetch on every return to the tab.
     staleTime: 0,
-    placeholderData: () => undefined,
     retry: false,
     refetchOnWindowFocus: "always",
     // The interval pauses on its own while the document is hidden

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { ChevronLeft, ChevronRight, TriangleAlert, Wallet } from "lucide-react";
+import { TriangleAlert, Wallet } from "lucide-react";
 
 import {
   isNothingToPayOut,
@@ -12,9 +12,9 @@ import {
 } from "@entities/payout";
 
 import { getAdminMerchantDetailRoute, getAdminOrdersRoute } from "@shared/constants";
-import { formatIsoDate, formatMoney, shiftIsoDate } from "@shared/helpers";
-import { useGenericError, useHaptic, useNavigateTo, usePopup } from "@shared/hooks";
-import { EmptyState, ErrorState } from "@shared/ui";
+import { formatMoney } from "@shared/helpers";
+import { useGenericError, useHaptic, useNavigateTo, usePopup, useWeekParam } from "@shared/hooks";
+import { EmptyState, ErrorState, WeekSwitcher } from "@shared/ui";
 
 import { MarkPaidSheet } from "../mark-paid-sheet";
 import { PayoutRow } from "../payout-row";
@@ -22,8 +22,6 @@ import { PayoutRow } from "../payout-row";
 // The weekly payout to merchants — the same report as the backend's
 // `npm run report:payouts`. Week switching works like the owner's summary.
 export const PayoutReport = () => {
-  // null = the current week; otherwise any date inside the shown week.
-  const [week, setWeek] = useState<string | null>(null);
   // The merchant row whose payout is being confirmed.
   const [marking, setMarking] = useState<PayoutWeek["merchants"][number] | null>(null);
 
@@ -39,21 +37,14 @@ export const PayoutReport = () => {
 
   const { mutate: markPaid, isPending: isMarking } = useMarkPaidOutMutation();
 
-  const { report, isLoading, isError, isFetching, retry } = usePayoutWeekQuery(week);
-
-  // Which week is "current" is the backend's call (Bishkek time) — read it from
-  // the default request instead of the device clock.
+  // The current week as the backend sees it — see useWeekParam.
   const { report: current } = usePayoutWeekQuery(null);
 
+  const { week, shift } = useWeekParam(current?.from);
+
+  const { report, isLoading, isError, isFetching, retry } = usePayoutWeekQuery(week);
+
   const currency = t("certificate.currency");
-
-  const goTo = (from: string, days: number) => {
-    haptic.selection();
-
-    const target = shiftIsoDate(from, days);
-
-    setWeek(target === current?.from ? null : target);
-  };
 
   const handleConfirm = (note: string) => {
     if (!report || !marking) return;
@@ -101,36 +92,7 @@ export const PayoutReport = () => {
         {t("admin.payouts.title")}
       </h1>
 
-      <div className="flex items-center justify-between gap-2">
-        <button
-          type="button"
-          disabled={!report}
-          onClick={() => report && goTo(report.from, -7)}
-          className="flex items-center gap-1 px-3 py-2 rounded-full bg-(--color-chip) text-sm font-semibold text-(--color-ink) cursor-pointer disabled:opacity-50"
-        >
-          <ChevronLeft size={16} />
-          {t("merchant.summary.prev")}
-        </button>
-
-        <span className="text-sm font-bold text-(--color-slate) text-center">
-          {report
-            ? t("merchant.summary.week", { from: formatIsoDate(report.from), to: formatIsoDate(report.to) })
-            : "…"}
-        </span>
-
-        {report && !isCurrentWeek ? (
-          <button
-            type="button"
-            onClick={() => goTo(report.from, 7)}
-            className="flex items-center gap-1 px-3 py-2 rounded-full bg-(--color-chip) text-sm font-semibold text-(--color-ink) cursor-pointer"
-          >
-            {t("merchant.summary.next")}
-            <ChevronRight size={16} />
-          </button>
-        ) : (
-          <span className="w-20" />
-        )}
-      </div>
+      <WeekSwitcher range={report} isCurrent={isCurrentWeek} onShift={shift} />
 
       {isError ? (
         <ErrorState onRetry={retry} isRetrying={isFetching} />

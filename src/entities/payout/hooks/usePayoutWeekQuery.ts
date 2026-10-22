@@ -6,10 +6,7 @@ import { payoutKeys } from "../model/keys";
 export const usePayoutWeekQuery = (week: string | null) => {
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: payoutKeys.week(week),
-    queryFn: () => getPayoutWeek(week),
-    // The header dates come from the data — never show last week's money
-    // under the new week.
-    placeholderData: () => undefined
+    queryFn: () => getPayoutWeek(week)
   });
 
   return { report: data, isLoading, isError, isFetching, retry: () => void refetch() };

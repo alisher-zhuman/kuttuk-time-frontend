@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router";
+
+import { useSearchParamState } from "@shared/hooks";
 
 import { PROFILE_TABS } from "../constants";
 import type { Tab } from "../types";
@@ -12,12 +13,9 @@ export const useProfileTab = () => {
     "animate-tab-enter-right"
   );
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [requestedTab, setTabParam] = useSearchParamState("tab");
 
-  const requestedTab = searchParams.get("tab") as Tab | null;
-  const activeTab: Tab = PROFILE_TABS.includes(requestedTab as Tab)
-    ? (requestedTab as Tab)
-    : "certificates";
+  const activeTab = PROFILE_TABS.find((tab) => tab === requestedTab) ?? "certificates";
 
   const handleTabChange = (tab: Tab) => {
     if (tab === activeTab) return;
@@ -27,14 +25,7 @@ export const useProfileTab = () => {
         ? "animate-tab-enter-right"
         : "animate-tab-enter-left"
     );
-    setSearchParams(
-      (prev) => {
-        prev.set("tab", tab);
-
-        return prev;
-      },
-      { replace: true }
-    );
+    setTabParam(tab);
   };
 
   return { activeTab, contentAnimation, handleTabChange };

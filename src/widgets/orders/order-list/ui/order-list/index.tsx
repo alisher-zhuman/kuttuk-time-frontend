@@ -4,6 +4,7 @@ import { ClipboardList, SearchX } from "lucide-react";
 
 import {
   isAdminOrderSearchError,
+  ORDER_STATUSES,
   type OrderStatus,
   useAdminOrdersQuery
 } from "@entities/order";
@@ -14,14 +15,12 @@ import { ChipSelect, EmptyState, ErrorState, LoadMore } from "@shared/ui";
 
 import { OrderRow } from "../order-row";
 
-const STATUSES: (OrderStatus | "all")[] = [
+// «На проверке» first — the queue to watch; the rest in the backend's order.
+const STATUSES = [
   "all",
   "needs_review",
-  "paid",
-  "pending",
-  "expired",
-  "refunded"
-];
+  ...ORDER_STATUSES.filter((status) => status !== "needs_review")
+] as const;
 
 interface Props {
   status: OrderStatus | null;

@@ -6,6 +6,7 @@ export {
   formatMoney,
   shiftIsoDate
 } from "./base";
+export { resolveLang } from "./i18n";
 export { logoUrl } from "./image";
 export { canGoBack } from "./navigation";
 export { getScopedStorageKey } from "./storage";

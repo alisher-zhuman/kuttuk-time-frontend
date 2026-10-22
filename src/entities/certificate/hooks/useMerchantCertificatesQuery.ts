@@ -16,9 +16,7 @@ export const useMerchantCertificatesQuery = (
       queryFn: ({ pageParam, signal }) =>
         getMerchantCertificates(status, venueId, pageParam, signal),
       initialPageParam: null as string | null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      // Switching tabs must not show the previous tab's rows while loading.
-      placeholderData: () => undefined
+      getNextPageParam: (lastPage) => lastPage.nextCursor
     });
 
   return {

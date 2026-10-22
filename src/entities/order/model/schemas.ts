@@ -20,6 +20,11 @@ const OrderBaseSchema = z.object({
   expiresAt: z.string()
 });
 
+export const ORDER_STATUSES = ["pending", "paid", "expired", "needs_review", "refunded"] as const;
+
+export const isOrderStatus = (value: unknown): value is (typeof ORDER_STATUSES)[number] =>
+  ORDER_STATUSES.includes(value as (typeof ORDER_STATUSES)[number]);
+
 // GET /orders/:id (../backend/src/orders/orders.service.ts `findOwn`) always
 // sends paymentUrl / paidAt / certificate, with null where the status has no
 // value. Each variant lists only the fields its status guarantees — z.object

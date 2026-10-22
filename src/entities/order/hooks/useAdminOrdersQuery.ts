@@ -11,9 +11,7 @@ export const useAdminOrdersQuery = (status: OrderStatus | null, search: string) 
       queryFn: ({ pageParam, signal }) =>
         getAdminOrders({ status, search, cursor: pageParam }, signal),
       initialPageParam: null as string | null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      // Switching the status / search must not show the previous filter's rows.
-      placeholderData: () => undefined
+      getNextPageParam: (lastPage) => lastPage.nextCursor
     });
 
   return {

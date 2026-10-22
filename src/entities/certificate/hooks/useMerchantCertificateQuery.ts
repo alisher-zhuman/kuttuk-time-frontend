@@ -10,9 +10,6 @@ export const useMerchantCertificateQuery = (code: string | null) => {
     queryKey: certificateKeys.merchantLookup(code ?? ""),
     queryFn: ({ signal }) => getMerchantCertificate(code!, signal),
     enabled: code !== null,
-    // Never show the previous code's certificate while the new one loads —
-    // its "Redeem" button would act on the wrong code.
-    placeholderData: () => undefined,
     // Status changes at the counter; always ask the backend again.
     staleTime: 0
   });

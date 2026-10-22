@@ -2,41 +2,29 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
 import { VenueFilter } from "@features/venue-filter";
 
 import { useMerchantSummaryQuery } from "@entities/merchant";
 
-import { formatIsoDate, formatMoney, shiftIsoDate } from "@shared/helpers";
-import { useHaptic } from "@shared/hooks";
-import { ErrorState } from "@shared/ui";
+import { formatMoney } from "@shared/helpers";
+import { useWeekParam } from "@shared/hooks";
+import { ErrorState, WeekSwitcher } from "@shared/ui";
 
 export const WeekSummary = () => {
-  // null = the current week; otherwise any date inside the shown week.
-  const [week, setWeek] = useState<string | null>(null);
   // null = all the owner's venues.
   const [venueId, setVenueId] = useState<number | null>(null);
 
   const { t } = useTranslation();
 
-  const haptic = useHaptic();
+  // The current week as the backend sees it — see useWeekParam. Without the
+  // venue filter: the week is the same for every venue, so one cached request.
+  const { summary: current } = useMerchantSummaryQuery(null, null);
+
+  const { week, shift } = useWeekParam(current?.from);
 
   const { summary, isLoading, isError, isFetching, retry } = useMerchantSummaryQuery(week, venueId);
 
-  // Which week is "current" is the backend's call (Bishkek time) — read it from
-  // the default request (cached after the first load) instead of the device clock.
-  const { summary: current } = useMerchantSummaryQuery(null, venueId);
-
   const currency = t("certificate.currency");
-
-  const goTo = (from: string, days: number) => {
-    haptic.selection();
-
-    const target = shiftIsoDate(from, days);
-
-    setWeek(target === current?.from ? null : target);
-  };
 
   const isCurrentWeek = summary !== undefined && summary.from === current?.from;
 
@@ -72,36 +60,7 @@ export const WeekSummary = () => {
 
       <VenueFilter active={venueId} onChange={setVenueId} />
 
-      <div className="flex items-center justify-between gap-2">
-        <button
-          type="button"
-          disabled={!summary}
-          onClick={() => summary && goTo(summary.from, -7)}
-          className="flex items-center gap-1 px-3 py-2 rounded-full bg-(--color-chip) text-sm font-semibold text-(--color-ink) cursor-pointer disabled:opacity-50"
-        >
-          <ChevronLeft size={16} />
-          {t("merchant.summary.prev")}
-        </button>
-
-        <span className="text-sm font-bold text-(--color-slate) text-center">
-          {summary
-            ? t("merchant.summary.week", { from: formatIsoDate(summary.from), to: formatIsoDate(summary.to) })
-            : "…"}
-        </span>
-
-        {summary && !isCurrentWeek ? (
-          <button
-            type="button"
-            onClick={() => goTo(summary.from, 7)}
-            className="flex items-center gap-1 px-3 py-2 rounded-full bg-(--color-chip) text-sm font-semibold text-(--color-ink) cursor-pointer"
-          >
-            {t("merchant.summary.next")}
-            <ChevronRight size={16} />
-          </button>
-        ) : (
-          <span className="w-20" />
-        )}
-      </div>
+      <WeekSwitcher range={summary} isCurrent={isCurrentWeek} onShift={shift} />
 
       {isError ? (
         <ErrorState onRetry={retry} isRetrying={isFetching} />

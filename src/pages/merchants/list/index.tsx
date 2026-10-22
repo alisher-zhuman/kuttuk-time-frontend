@@ -1,11 +1,9 @@
-import { useSearchParams } from "react-router";
-
 import { useTranslation } from "react-i18next";
 
 import { MerchantList } from "@widgets/merchants/merchant-list";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { useDebounce, useNavigateTo } from "@shared/hooks";
+import { useDebounce, useNavigateTo, useSearchParamState } from "@shared/hooks";
 import { ActiveFilter, SearchBar } from "@shared/ui";
 
 export const MerchantListPage = () => {
@@ -13,40 +11,27 @@ export const MerchantListPage = () => {
 
   const navigateTo = useNavigateTo();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParam, setSearch] = useSearchParamState("search");
+  const [isActiveParam, setIsActive] = useSearchParamState("isActive");
 
-  const search = searchParams.get("search") ?? "";
-  const activeStatus = searchParams.get("isActive") !== "false";
+  const search = searchParam ?? "";
+  const activeStatus = isActiveParam !== "false";
 
   const debouncedSearch = useDebounce(search);
 
-  const setParam = (key: string, value: string | null) => {
-    setSearchParams(
-      (prev) => {
-        if (value !== null) {
-          prev.set(key, value);
-        } else {
-          prev.delete(key);
-        }
-
-        return prev;
-      },
-      { replace: true }
-    );
-  };
 
   return (
     <>
       <SearchBar
         value={search}
-        onChange={(value) => setParam("search", value || null)}
+        onChange={(value) => setSearch(value)}
         isLoading={search !== debouncedSearch}
         placeholder={t("admin.merchants.searchPlaceholder")}
       />
 
       <ActiveFilter
         active={activeStatus}
-        onChange={(isActive) => setParam("isActive", String(isActive))}
+        onChange={(isActive) => setIsActive(String(isActive))}
         onCreate={() => navigateTo(ROUTE_PATTERNS.ADMIN_MERCHANT_CREATE)}
         labels={{
           active: t("admin.venues.active"),

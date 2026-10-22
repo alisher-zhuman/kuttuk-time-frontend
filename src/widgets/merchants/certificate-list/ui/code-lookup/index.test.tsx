@@ -1,9 +1,10 @@
 import { api, fixtures, server } from "@mocks";
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
+import { popup } from "@tma.js/sdk-react";
 import { http, HttpResponse } from "msw";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { CodeLookup } from "./index";
 
@@ -70,13 +71,18 @@ describe("redeeming by code", () => {
     expect(state.redeems).toBe(0);
   });
 
-  it("sends one redeem for a double tap", async () => {
+  it("sends one redeem for a double tap, even if Telegram opens two confirmations", async () => {
     const state = answer();
-    window.__telegram.replies.popup = "redeem";
+    // The SDK refuses a second popup while one is open — without that, only
+    // our own guard stands between a double tap and two redeems.
+    vi.spyOn(popup, "show").mockImplementation(() => Promise.resolve("redeem") as ReturnType<typeof popup.show>);
     renderWithProviders(<CodeLookup />);
 
     await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
-    await userEvent.dblClick(await screen.findByRole("button", { name: "Погасить" }));
+    // Both taps in one frame — before isPending can disable the button.
+    const button = await screen.findByRole("button", { name: "Погасить" });
+    fireEvent.click(button);
+    fireEvent.click(button);
 
     await screen.findByText("Сертификат погашен");
     expect(state.redeems).toBe(1);

@@ -24,6 +24,8 @@ export const AdminVenueCard = ({ venue, onClick }: Props) => {
     >
       <img
         src={logoUrl(venue.logo, 48)}
+        width={48}
+        height={48}
         alt={venue.name}
         loading="lazy"
         decoding="async"

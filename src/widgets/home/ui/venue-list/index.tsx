@@ -15,6 +15,9 @@ interface Props {
   search: string;
 }
 
+// Cards visible without scrolling on a phone.
+const ABOVE_THE_FOLD = 4;
+
 export const VenueList = ({ category, search }: Props) => {
   const { t } = useTranslation();
 
@@ -46,9 +49,9 @@ export const VenueList = ({ category, search }: Props) => {
         />
       ) : (
         <ul className="pb-5 flex flex-col gap-2.5 list-none">
-          {venues.map((venue) => (
+          {venues.map((venue, index) => (
             <li key={venue.id}>
-              <VenueCard venue={venue} />
+              <VenueCard venue={venue} priority={index < ABOVE_THE_FOLD} />
             </li>
           ))}
         </ul>

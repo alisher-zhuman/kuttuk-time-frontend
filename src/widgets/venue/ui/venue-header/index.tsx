@@ -10,6 +10,8 @@ export const VenueHeader = ({ logo, name, description }: Props) => (
   <div className="flex items-center gap-3.5">
     <img
       src={logoUrl(logo, 64)}
+      width={64}
+      height={64}
       alt={name}
       className="size-16 rounded-xl shrink-0 object-cover"
     />

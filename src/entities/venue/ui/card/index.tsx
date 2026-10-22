@@ -10,9 +10,12 @@ import type { Venue } from "../../model/types";
 
 interface Props {
   venue: Venue;
+  // The first cards are on screen at once (the page's LCP): load their logo
+  // right away; the rest lazily.
+  priority?: boolean;
 }
 
-export const VenueCard = ({ venue }: Props) => {
+export const VenueCard = ({ venue, priority = false }: Props) => {
   const { t } = useTranslation();
   const haptic = useHaptic();
   const navigateTo = useNavigateTo();
@@ -33,19 +36,22 @@ export const VenueCard = ({ venue }: Props) => {
     <button
       type="button"
       onClick={handleClick}
-      aria-label={`${venue.name}, ${fromPrice}`}
       className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
       <img
         src={logoUrl(venue.logo, 48)}
-        alt={venue.name}
-        loading="lazy"
+        // The name is right next to it — the logo itself says nothing more.
+        alt=""
+        width={48}
+        height={48}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
         decoding="async"
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 
       <span className="flex-1 min-w-0 flex flex-col">
-        <span className="text-base font-extrabold tracking-tight text-(--color-ink) break-words">
+        <span className="text-base font-extrabold tracking-tight text-(--color-ink) wrap-break-word">
           {venue.name}
         </span>
         <span className="text-sm text-(--color-slate) font-semibold mt-0.5 truncate">

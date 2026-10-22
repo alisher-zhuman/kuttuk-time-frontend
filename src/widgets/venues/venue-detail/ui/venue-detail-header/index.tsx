@@ -22,7 +22,13 @@ export const VenueDetailHeader = ({ logo, name, slug, isActive, onEdit }: Props)
 
   return (
     <div className="flex items-center gap-3.5">
-      <img src={logoUrl(logo, 64)} alt={name} className="size-16 rounded-xl shrink-0 object-cover" />
+      <img
+        src={logoUrl(logo, 64)}
+        width={64}
+        height={64}
+        alt={name}
+        className="size-16 rounded-xl shrink-0 object-cover"
+      />
 
       <div className="flex-1 flex flex-col min-w-0 gap-1">
         <span className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight truncate">

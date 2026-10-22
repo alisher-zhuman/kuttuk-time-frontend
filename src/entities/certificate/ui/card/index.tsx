@@ -10,11 +10,14 @@ import { CertificateCode } from "../code";
 
 interface Props {
   certificate: Certificate;
+  // The first cards are on screen at once (the page's LCP): load their logo
+  // right away; the rest lazily.
+  priority?: boolean;
   // Only active certificates open — used/expired have nothing to act on.
   onOpen?: (() => void) | undefined;
 }
 
-export const CertificateCard = ({ certificate, onOpen }: Props) => {
+export const CertificateCard = ({ certificate, onOpen, priority = false }: Props) => {
   const { t } = useTranslation();
 
   const { venue, amount, code, status } = certificate;
@@ -26,7 +29,10 @@ export const CertificateCard = ({ certificate, onOpen }: Props) => {
       <img
         src={logoUrl(venue.logo, 48)}
         alt=""
-        loading="lazy"
+        width={48}
+        height={48}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
         decoding="async"
         className="size-12 rounded-xl shrink-0 object-cover"
       />

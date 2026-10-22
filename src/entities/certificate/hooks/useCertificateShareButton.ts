@@ -10,7 +10,8 @@ import { useHaptic, useMainButton, usePopup } from "@shared/hooks";
 
 import { prepareGift } from "../api";
 import { formatCertificateCode } from "../model/code";
-import { GiftConflictSchema } from "../model/schemas";
+// …/share answers 409 with the same body as …/redeem.
+import { RedeemConflictSchema } from "../model/schemas";
 
 interface Options {
   // The certificate's id — needed for "Подарить"; without it, plain-text share.
@@ -61,7 +62,7 @@ export const useCertificateShareButton = ({
 
         // Used / expired meanwhile: refresh so the screen shows it (and the
         // button hides).
-        if (isAxiosError(error) && error.response?.status === 409 && GiftConflictSchema.safeParse(error.response.data).success) {
+        if (isAxiosError(error) && error.response?.status === 409 && RedeemConflictSchema.safeParse(error.response.data).success) {
           void queryClient.invalidateQueries({ queryKey: ["certificates"] });
           void showPopup({ message: t("certificate.giftUnavailable") });
           return;

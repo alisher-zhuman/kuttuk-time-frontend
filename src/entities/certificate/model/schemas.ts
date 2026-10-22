@@ -47,7 +47,8 @@ export const MerchantCertificateSchema = z.discriminatedUnion("status", [
   MerchantCertificateBaseSchema.extend({ status: z.literal("expired") })
 ]);
 
-// 409 body from POST …/redeem; `error` says why nothing was redeemed.
+// 409 body from POST …/redeem and POST /certificates/:id/share: the
+// certificate is no longer active, `error` says why.
 export const RedeemConflictSchema = z.object({
   error: z.enum(["already_used", "expired"])
 });
@@ -63,6 +64,3 @@ export const MerchantCertificatePageSchema = z.object({
 // POST /certificates/:id/share — a card stored with Telegram for shareMessage.
 // Short-lived: ask for a new one on every tap.
 export const PreparedGiftSchema = z.object({ preparedMessageId: z.string() });
-
-// 409 from …/share: the certificate can't be gifted any more.
-export const GiftConflictSchema = z.object({ error: z.enum(["used", "expired"]) });

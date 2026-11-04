@@ -72,6 +72,12 @@
       "hint": "The bot will message you in Telegram about every sale",
       "enable": "Turn on",
       "enabled": "On"
+    },
+    "homeScreen": {
+      "title": "Home screen",
+      "hint": "An icon on your phone's screen opens the cabinet in one tap",
+      "add": "Add",
+      "added": "The icon is on your home screen"
     }
   },
   "venue": {

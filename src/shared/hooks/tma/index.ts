@@ -1,6 +1,7 @@
 export { useBackButton } from "./useBackButton";
 export { useCopyToClipboard } from "./useCopyToClipboard";
 export { useHaptic } from "./useHaptic";
+export { useHomeScreen } from "./useHomeScreen";
 export { useMainButton } from "./useMainButton";
 export { useOpenSupport } from "./useOpenSupport";
 export { usePopup } from "./usePopup";

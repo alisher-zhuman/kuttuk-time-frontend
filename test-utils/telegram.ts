@@ -13,6 +13,9 @@ interface Replies {
   qr?: string;
   writeAccess?: "allowed" | "cancelled";
   share?: "sent" | "failed";
+  // What the home screen check finds; "added" or "failed" after the prompt.
+  homeScreen?: "unsupported" | "unknown" | "added" | "missed";
+  addToHomeScreen?: "added" | "failed";
 }
 
 declare global {
@@ -84,6 +87,10 @@ export const installTelegram = () => {
           return reply("write_access_requested", { status: replies.writeAccess ?? "allowed" });
         case "web_app_open_scan_qr_popup":
           return replies.qr === undefined ? undefined : reply("qr_text_received", { data: replies.qr });
+        case "web_app_check_home_screen":
+          return reply("home_screen_checked", { status: replies.homeScreen ?? "missed" });
+        case "web_app_add_to_home_screen":
+          return reply(replies.addToHomeScreen === "failed" ? "home_screen_failed" : "home_screen_added");
         case "web_app_send_prepared_message":
           return replies.share === "failed"
             ? reply("prepared_message_failed", { error: "USER_DECLINED" })

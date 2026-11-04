@@ -2,6 +2,7 @@ export {
   useBackButton,
   useCopyToClipboard,
   useHaptic,
+  useHomeScreen,
   useMainButton,
   useOpenSupport,
   usePopup,

@@ -38,6 +38,13 @@ Source of truth: `../backend/CLAUDE.md`, section **Product decisions** — don't
 - **merchant ≠ venue.** `merchant` = the owner's business account (role, cabinet, payouts, `isActive`, `telegramId`); `venue` = a storefront the buyer sees and buys from. One merchant owns one or more venues. `venue` is data, not a role
 - A certificate is redeemed in full — no partial redemption
 
+## Who decides what
+
+(Alisher, 2026-11-04)
+- The backend agent owns what's shared across the project: product decisions, the API contract, common rules (tone, pushing, deploys) and the task plan. Source of truth — `../backend/CLAUDE.md` and `../backend/docs/workflow.md`
+- The frontend agent does frontend tasks from prompts and follows the frontend rules in this file
+- If this file disagrees with the backend's on a shared question, the backend's is right — tell Alisher, don't fix it here on your own
+
 ## Stack
 
 - **React 19** + **TypeScript** + **Vite**
@@ -129,16 +136,19 @@ Always check `isAvailable()` before calling SDK methods.
 - **Bot messages (`requestWriteAccess`)** — the bot can message a person only after they started it or allowed it. Via `requestBotMessages()` / `hasWriteAccess()` (`@shared/helpers`): skipped when initData has `user.allows_write_to_pm`, never throws, a refusal blocks nothing. Buyer: asked at purchase, before `createOrder` → `openLink`, at most once per session (`oncePerSession`) — never on first launch. Owner: «Уведомления о продажах» section in profile settings (`widgets/profile` → `NotificationsSection`, shown by `role === "merchant"`, not view mode), asks on every tap until allowed. Bot language = `Accept-Language`, sent on every request incl. `log-in` (plain axios in `shared/api/auth.ts`, set by hand). Message logic: `../backend/CLAUDE.md`, section "Bot"
 - **«Подарить» (`useCertificateShareButton`)** — MainButton for an active certificate, on the certificate screen and the paid order. With `shareMessage` (Mini Apps 8.0+): `POST /certificates/:id/share` (a new card per tap — it expires; language = `Accept-Language`) → `shareMessage(preparedMessageId)` sends the bot's card from the buyer; a closed picker rejects — ignored; 409 → refresh certificates + «уже погашен или истёк»; 502 / other → «Не получилось…». Older clients: «Поделиться» — text via `shareURL` (closes the Mini App). The paid-order screen gets the certificate's effective `status` from `GET /orders/:id` — not active → no QR, no «Подарить», «Использован {date}» / «Истёк {date}» like the certificate screen
 - **Venue share link** (`VenueShareLink` in `VenueDetail` — the owner's cabinet and the admin's venue card): `getVenueShareLink(slug)` (`@shared/constants`) → `${BOT_URL}/app?startapp=<slug>`, never the short koyeb link. Copy (SDK `copyTextToClipboard` — already falls back to `navigator.clipboard` / `execCommand`), «Поделиться» via `shareURL` (hidden when unavailable), the QR large in a `BottomSheet` (a single row on the venue opens it: QR, link, copy, share). «Скачать QR» (PNG from a canvas) only in web clients (`canDownloadFiles`): Telegram's `downloadFile` takes only an https URL, mobile webviews ignore `<a download>` — on a phone the owner screenshots the QR in the sheet
+- **Home screen icon** (`useHomeScreen`, `@shared/hooks`; `HomeScreenSection` in profile settings, `role === "merchant"` like notifications): `checkHomeScreenStatus` → `missed` / `unknown` — «Добавить» (`addToHomeScreen`; the answer comes as the `home_screen_added` / `home_screen_failed` event), `added` — «Иконка на главном экране», `unsupported` / an error / no Mini Apps 8.0 — the section isn't shown
 - An owner gets the `merchant` role on `POST /auth/log-in` by matching the merchant's `telegramId` — so the admin can create a merchant before that person ever opened the bot
 - Deactivated merchant (`isActive: false`, hides all its venues from buyers): `GET /merchants/me` still works, `PATCH /merchants/me/venues/:id` → 403. Cabinet shows `MerchantDeactivatedNotice` and hides edit; a 403 on save refetches "me" so the edit page swaps to the notice
 
 **Worth adding (when there's time):**
 - `ClosingBehavior.enableConfirmation()` — guard against accidentally closing the app on the payment screen (swipe/back)
+- `shareStory` for the buyer — later, once live sales start: needs a story image at an https URL from the backend, and a design
+- Inline mode (`@kuttuk_time_bot <query>` in any chat → venue cards) — later, with dozens of venues; mostly backend
 - «Скачать QR» of the venue link on phones — needs the backend to serve the QR as a PNG at an https URL (like `GET /api/qr/<code>.jpg` for certificates), then `downloadFile(url, name)`. A screenshot is enough for now
 
 **Doesn't fit the product / don't add without a reason:**
 - `Invoice` (`openInvoice`/`openSlug`) — that's Telegram Stars, our payments go through Finik/Bakai/Freedom
-- `Biometry`, `LocationManager`, `SecureStorage`, `emoji-status`, `shareStory` — not relevant to this product
+- `Biometry`, `LocationManager`, `SecureStorage`, `emoji-status` — not relevant to this product
 - `requestPhoneAccess`/`requestContact` — business model: "no phone number required"
 - `CloudStorage` — do NOT use it for the auth token/language/theme: `i18next-browser-languagedetector` is synchronous, `CloudStorage.getItem` is async → incompatible without a flash of the wrong language on render; there's no meaningful benefit for the token or theme either (see `AuthProvider` — re-authenticating via `initData` is already transparent). Only fits non-critical data that's fine to load in a bit later (once such a feature exists)
 
@@ -166,6 +176,8 @@ No success toast/message pattern yet — mutations that redirect on success (e.g
 Locale files: `src/shared/locales/{ru,kg,en}/common.json`
 When adding a new key — add it to all three files.
 Locale files are exactly `JSON.stringify(obj, null, 2) + "\n"` — safe to edit programmatically
+**Tone** (Alisher, 2026-11-04): everything the app says to a person is formal — ru «вы», kg «сиз» / «-ыңыз» (imperatives too: «жазыңыз», not «жаз»), en makes no difference. **Exception** — text the person sends themselves, under their own name («Подарить», a future story caption): «ты» / «сен».
+
 **Terminology:** the word «мерчант» (any case/form) is allowed only in the `en` locale ("merchant"). In `ru`/`kg` user-facing text use a normal word: «заведение» / «мекеме» for the venue, «Владелец» / «Ээси» for the merchant account, «Кабинет» for the merchant's own mode. In code, **`venue`** = the storefront everywhere (`entities/venue`, `pages/venue`, `venues/` module, i18n `venue.*`, `venueForm.*`, `admin.venues.*`); **`merchant`** = the owner account (`entities/merchant`, `merchants/` module, `merchantForm.*`, `admin.merchants.*`, the cabinet)
 
 ## Testing

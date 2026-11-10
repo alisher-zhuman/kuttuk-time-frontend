@@ -1,5 +1,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { retrieveRawInitData } from "@tma.js/sdk-react";
 import { isAxiosError } from "axios";
 
@@ -14,10 +16,17 @@ interface Props {
   children: ReactNode;
 }
 
+// Log-in usually answers within a second; past this the backend is most
+// likely waking up (Koyeb sleeps when idle) - say so instead of a bare spinner.
+const SLOW_LOG_IN_MS = 3000;
+
 export const AuthProvider = ({ children }: Props) => {
   // Bumped by "Retry" on the connection-failed screen to log in again.
   const [attempt, setAttempt] = useState(0);
   const [isFailed, setIsFailed] = useState(false);
+  const [isSlow, setIsSlow] = useState(false);
+
+  const { t } = useTranslation();
 
   const isReady = useAuthStore((s) => s.isReady);
   const isSessionExpired = useAuthStore((s) => s.isSessionExpired);
@@ -32,6 +41,8 @@ export const AuthProvider = ({ children }: Props) => {
       setReady();
       return;
     }
+
+    const slowTimer = setTimeout(() => setIsSlow(true), SLOW_LOG_IN_MS);
 
     logIn({ initData })
       .then(({ accessToken, role }) => {
@@ -52,7 +63,13 @@ export const AuthProvider = ({ children }: Props) => {
         // offer a retry instead.
         console.error(error);
         setIsFailed(true);
+      })
+      .finally(() => {
+        clearTimeout(slowTimer);
+        setIsSlow(false);
       });
+
+    return () => clearTimeout(slowTimer);
   }, [attempt]);
 
   if (isSessionExpired) return <SessionExpiredPage />;
@@ -69,7 +86,7 @@ export const AuthProvider = ({ children }: Props) => {
   }
 
   if (!isReady) {
-    return <PageLoader fullScreen />;
+    return <PageLoader fullScreen message={isSlow ? t("connection.waking") : undefined} />;
   }
 
   return <>{children}</>;

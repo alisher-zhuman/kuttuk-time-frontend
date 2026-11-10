@@ -10,7 +10,7 @@ import { ErrorState, PageLoader } from "@shared/ui";
 export const VenueEditPage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { venue, isLoading, isError } = useAdminVenueQuery(id);
+  const { venue, isLoading, isError, isNotFound, isFetching, retry } = useAdminVenueQuery(id);
 
   const optionsQuery = useVenueOptionsQuery();
 
@@ -18,7 +18,8 @@ export const VenueEditPage = () => {
     return <PageLoader />;
   }
 
-  if (isError || !venue) return <VenueNotFound />;
+  if (isNotFound) return <VenueNotFound />;
+  if (isError || !venue) return <ErrorState onRetry={retry} isRetrying={isFetching} />;
 
   if (optionsQuery.isError || !optionsQuery.options) {
     return <ErrorState onRetry={optionsQuery.retry} isRetrying={optionsQuery.isFetching} />;

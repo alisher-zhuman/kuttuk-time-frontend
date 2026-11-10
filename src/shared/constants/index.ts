@@ -7,7 +7,7 @@ export {
   ORDER_START_PARAM_PREFIX,
   SUPPORT_URL
 } from "./base";
-export { API_URL } from "./env";
+export { API_URL, LOG_IN_TIMEOUT_MS, REQUEST_TIMEOUT_MS, UPLOAD_TIMEOUT_MS } from "./env";
 export {
   DEFAULT_LANGUAGE,
   I18N_STORAGE_KEY,

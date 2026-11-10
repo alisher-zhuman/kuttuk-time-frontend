@@ -7,7 +7,7 @@ import { isOrderStatus } from "@entities/order";
 import { useAdminVenueQuery } from "@entities/venue";
 
 import { useDebounce, useSearchParamState } from "@shared/hooks";
-import { SearchBar } from "@shared/ui";
+import { Input, SearchBar } from "@shared/ui";
 
 const toId = (value: string | null) => (value && /^\d+$/.test(value) ? Number(value) : null);
 
@@ -21,13 +21,14 @@ export const OrderListPage = () => {
   const [statusParam, setStatus] = useSearchParamState("status");
   const [venueParam, setVenueParam] = useSearchParamState("venueId");
   const [merchantParam, setMerchantParam] = useSearchParamState("merchantId");
+  const [userParam, setUserParam] = useSearchParamState("userId");
 
   const search = searchParam ?? "";
   const status = isOrderStatus(statusParam) ? statusParam : null;
   const venueId = toId(venueParam);
   const merchantId = toId(merchantParam);
-
   const debouncedSearch = useDebounce(search);
+  const userId = toId(useDebounce(userParam ?? ""));
 
   // Only for the chip's name; the list doesn't wait for it.
   const { venue } = useAdminVenueQuery(venueId !== null ? String(venueId) : undefined);
@@ -55,12 +56,24 @@ export const OrderListPage = () => {
         placeholder={t("admin.orders.searchPlaceholder")}
       />
 
+      {/* The «ID» in the buyer's profile - support asks for it. */}
+      <div className="mt-2.5">
+        <Input
+          aria-label={t("admin.orders.buyerId")}
+          placeholder={t("admin.orders.buyerId")}
+          inputMode="numeric"
+          value={userParam ?? ""}
+          onChange={(event) => setUserParam(event.target.value.replace(/\D/g, "") || null)}
+        />
+      </div>
+
       <OrderList
         status={status}
         onStatusChange={setStatus}
         search={debouncedSearch.trim()}
         venueId={venueId}
         merchantId={merchantId}
+        userId={userId}
         scope={scope}
       />
     </>

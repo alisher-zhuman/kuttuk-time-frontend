@@ -34,6 +34,7 @@ export const getAdminOrders = async (
     search: string;
     venueId: number | null;
     merchantId: number | null;
+    userId: number | null;
     cursor: string | null;
   },
   signal: AbortSignal
@@ -44,6 +45,7 @@ export const getAdminOrders = async (
       ...(params.search && { search: params.search }),
       ...(params.venueId != null && { venueId: params.venueId }),
       ...(params.merchantId != null && { merchantId: params.merchantId }),
+      ...(params.userId != null && { userId: params.userId }),
       ...(params.cursor && { cursor: params.cursor })
     },
     signal

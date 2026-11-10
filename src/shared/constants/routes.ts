@@ -79,15 +79,16 @@ export const getAdminOrderDetailRoute = (id: string) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}/${id}`;
 
 // Preselected filters: «На проверке» from the payouts warning, one venue's or
-// one owner's orders from their card.
+// one owner's orders from their card, one buyer's from an order.
 export const getAdminOrdersRoute = (
-  filters: { status?: string; venueId?: number; merchantId?: number } = {}
+  filters: { status?: string; venueId?: number; merchantId?: number; userId?: number } = {}
 ) => {
   const query = new URLSearchParams();
 
   if (filters.status) query.set("status", filters.status);
   if (filters.venueId !== undefined) query.set("venueId", String(filters.venueId));
   if (filters.merchantId !== undefined) query.set("merchantId", String(filters.merchantId));
+  if (filters.userId !== undefined) query.set("userId", String(filters.userId));
 
   const search = query.toString();
 
@@ -104,4 +105,17 @@ export const getHomeRoute = (mode: string | null) => {
   if (mode === "admin") return ROUTE_PATTERNS.ADMIN_VENUES;
   if (mode === "merchant") return ROUTE_PATTERNS.MERCHANT_HOME;
   return ROUTE_PATTERNS.HOME;
+};
+
+// «Выплаты»: view "due" - every debt at once («Все долги»); week - the weekly
+// report on that week (any date inside it), else the previous week.
+export const getAdminPayoutsRoute = (params: { view?: "due"; week?: string } = {}) => {
+  const query = new URLSearchParams();
+
+  if (params.view) query.set("view", params.view);
+  if (params.week) query.set("week", params.week);
+
+  const search = query.toString();
+
+  return `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.PAYOUTS}` + (search ? `?${search}` : "");
 };

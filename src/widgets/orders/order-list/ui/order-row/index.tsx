@@ -30,6 +30,8 @@ export const OrderRow = ({ order, onOpen }: Props) => {
         </div>
         <span className="text-sm font-bold text-(--color-ink) truncate">{order.venue.name}</span>
         <span className="text-xs text-(--color-hint)">
+          <span className="font-mono font-bold text-(--color-slate)">№{order.number}</span>
+          {" · "}
           {formatDateTime(order.createdAt)}
           {order.status === "paid" && (
             <span className="font-mono font-bold tracking-wider text-(--color-slate)">

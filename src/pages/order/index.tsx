@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import {
   OrderExpired,
   OrderNotFound,
+  OrderNumber,
   OrderPaid,
   OrderPending,
   OrderRefunded,
@@ -38,28 +39,37 @@ export const OrderPage = () => {
     return <PageLoader />;
   }
 
-  // Still polling: pending, or expired within the late-webhook grace window
-  // (the backend cron flips pending → expired right at expiresAt, but a late
-  // payment can still turn it into paid). Both read as "checking" until
-  // polling settles - showing "expired" first and "paid" a minute later
-  // would be confusing.
-  if (!isSettled && (order.status === "pending" || order.status === "expired")) {
-    return <OrderPending order={order} venueName={venue?.name} />;
-  }
-
   const venueName = venue?.name;
 
-  switch (order.status) {
-    case "paid":
-      return <OrderPaid order={order} venueName={venueName} />;
-    case "needs_review":
-      return <OrderReview order={order} venueName={venueName} />;
-    case "refunded":
-      return <OrderRefunded order={order} venueName={venueName} />;
-    // pending here = polling gave up past the grace window before the cron
-    // flipped it; for the user that's the same as expired.
-    case "pending":
-    case "expired":
-      return <OrderExpired order={order} venueName={venueName} />;
-  }
+  const screen = (() => {
+    // Still polling: pending, or expired within the late-webhook grace window
+    // (the backend cron flips pending → expired right at expiresAt, but a late
+    // payment can still turn it into paid). Both read as "checking" until
+    // polling settles - showing "expired" first and "paid" a minute later
+    // would be confusing.
+    if (!isSettled && (order.status === "pending" || order.status === "expired")) {
+      return <OrderPending order={order} venueName={venueName} />;
+    }
+
+    switch (order.status) {
+      case "paid":
+        return <OrderPaid order={order} venueName={venueName} />;
+      case "needs_review":
+        return <OrderReview order={order} venueName={venueName} />;
+      case "refunded":
+        return <OrderRefunded order={order} venueName={venueName} />;
+      // pending here = polling gave up past the grace window before the cron
+      // flipped it; for the user that's the same as expired.
+      case "pending":
+      case "expired":
+        return <OrderExpired order={order} venueName={venueName} />;
+    }
+  })();
+
+  return (
+    <>
+      {screen}
+      <OrderNumber number={order.number} />
+    </>
+  );
 };

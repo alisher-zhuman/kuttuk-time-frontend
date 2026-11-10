@@ -26,6 +26,9 @@ export const OrderCertificateSchema = z.discriminatedUnion("status", [
 
 const OrderBaseSchema = z.object({
   orderId: z.string(),
+  // «Заказ №A1B2C3D4» - the first 8 characters of the id, upper case
+  // (../backend src/orders/order-number.ts). What the buyer quotes to support.
+  number: z.string(),
   amount: z.number(),
   venueId: z.number(),
   expiresAt: z.string()
@@ -82,6 +85,7 @@ export const isOrderId = (value: unknown): value is string =>
 // arrived, certificateCode once a certificate exists - that's paid.
 const AdminOrderBaseSchema = z.object({
   id: z.string(),
+  number: z.string(),
   amount: z.number(),
   createdAt: z.string(),
   venue: z.object({ id: z.number(), name: z.string() }),
@@ -115,6 +119,8 @@ const AdminOrderCertificateBaseSchema = z.object({ code: z.string(), validUntil:
 
 const AdminOrderExtraSchema = z.object({
   expiresAt: z.string(),
+  // false = Finik never created the payment - why such an order expired.
+  paymentCreated: z.boolean(),
   finikTransactionId: z.string().optional(),
   buyer: z.object({ userId: z.number(), telegramId: z.number() }),
   // Present once a certificate exists (paid); status is effective.

@@ -28,11 +28,20 @@ interface Props {
   search: string;
   venueId: number | null;
   merchantId: number | null;
+  userId: number | null;
   // «Заведение: Coffeeroom» / «Владелец: …» while one is picked, with a way out.
   scope?: { label: string; onClear: () => void } | undefined;
 }
 
-export const OrderList = ({ status, onStatusChange, search, venueId, merchantId, scope }: Props) => {
+export const OrderList = ({
+  status,
+  onStatusChange,
+  search,
+  venueId,
+  merchantId,
+  userId,
+  scope
+}: Props) => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -50,7 +59,7 @@ export const OrderList = ({ status, onStatusChange, search, venueId, merchantId,
     hasNextPage,
     fetchNextPage,
     retry
-  } = useAdminOrdersQuery({ status, search, venueId, merchantId });
+  } = useAdminOrdersQuery({ status, search, venueId, merchantId, userId });
 
   const setSentinel = useLoadMoreOnScroll(
     fetchNextPage,

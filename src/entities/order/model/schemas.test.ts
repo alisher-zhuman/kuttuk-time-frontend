@@ -1,7 +1,7 @@
 import { fixtures } from "@mocks";
 import { describe, expect, it } from "vitest";
 
-import { AdminOrderPageSchema, isOrderId, isOrderStatus, OrderSchema } from "./schemas";
+import { AdminOrderDetailSchema, AdminOrderPageSchema, isOrderId, isOrderStatus, OrderSchema } from "./schemas";
 
 describe("OrderSchema - GET /orders/:id", () => {
   it.each(Object.entries(fixtures.orders))("parses the %s order as the backend sends it", (_, order) => {
@@ -58,5 +58,16 @@ describe("guards", () => {
   it("isOrderId accepts a uuid only", () => {
     expect(isOrderId(fixtures.ORDER_ID)).toBe(true);
     expect(isOrderId("order_1")).toBe(false);
+  });
+});
+
+describe("the order number", () => {
+  it("comes with the buyer's order and the admin's list item", () => {
+    expect(OrderSchema.parse(fixtures.orders.paid).number).toBe("22222222");
+    expect(AdminOrderPageSchema.parse({ items: [fixtures.adminOrder("a1b2c3d4-1111-4111-8111-111111111111")], nextCursor: null }).items[0]?.number).toBe("A1B2C3D4");
+  });
+
+  it("the admin's detail says whether Finik created the payment", () => {
+    expect(AdminOrderDetailSchema.parse(fixtures.adminOrderDetail("a1b2c3d4-1111-4111-8111-111111111111", "expired", false)).paymentCreated).toBe(false);
   });
 });

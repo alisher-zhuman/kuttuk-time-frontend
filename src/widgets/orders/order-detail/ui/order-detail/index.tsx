@@ -11,14 +11,17 @@ import { MetaField } from "@shared/ui";
 
 import { OrderResolutions } from "../order-resolutions";
 import { OrderWebhooks } from "../order-webhooks";
+import { ResolveReviewHint } from "../resolve-review-hint";
 
 interface Props {
   order: AdminOrderDetail;
   onOpenVenue: () => void;
   onOpenMerchant: () => void;
+  // The buyer's other orders - support asks for the ID in their profile.
+  onOpenBuyerOrders: () => void;
 }
 
-export const OrderDetail = ({ order, onOpenVenue, onOpenMerchant }: Props) => {
+export const OrderDetail = ({ order, onOpenVenue, onOpenMerchant, onOpenBuyerOrders }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -53,7 +56,17 @@ export const OrderDetail = ({ order, onOpenVenue, onOpenMerchant }: Props) => {
         </div>
       </div>
 
+      {order.status === "expired" && !order.paymentCreated && (
+        <p className="text-sm font-semibold text-(--color-amber)">{t("admin.orders.detail.noPayment")}</p>
+      )}
+
+      {order.status === "needs_review" && <ResolveReviewHint orderId={order.id} />}
+
       <div className="grid grid-cols-2 gap-x-3 gap-y-4">
+        <MetaField
+          label={t("admin.orders.detail.number")}
+          value={<span className="font-mono">№{order.number}</span>}
+        />
         <MetaField label={t("admin.orders.detail.venue")} value={link(order.venue.name, onOpenVenue)} />
         <MetaField
           label={t("admin.orders.detail.merchant")}
@@ -67,6 +80,10 @@ export const OrderDetail = ({ order, onOpenVenue, onOpenMerchant }: Props) => {
         )}
         <MetaField
           label={t("admin.orders.detail.buyer")}
+          value={link(t("admin.orders.detail.buyerId", { id: order.buyer.userId }), onOpenBuyerOrders)}
+        />
+        <MetaField
+          label={t("admin.orders.detail.buyerTelegram")}
           value={<span className="font-mono">{order.buyer.telegramId}</span>}
         />
         {order.finikTransactionId && (

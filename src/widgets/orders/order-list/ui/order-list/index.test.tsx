@@ -57,7 +57,7 @@ describe("an infinite list", () => {
     );
 
     renderWithProviders(
-      <OrderList status={null} onStatusChange={() => {}} search="" venueId={null} merchantId={null} />
+      <OrderList status={null} onStatusChange={() => {}} search="" venueId={null} merchantId={null} userId={null} />
     );
 
     const retry = await screen.findByRole("button", { name: "Повторить" }, { timeout: 4000 });
@@ -89,6 +89,7 @@ describe("an infinite list", () => {
         search=""
         venueId={7}
         merchantId={null}
+        userId={null}
         scope={{ label: "Заведение: Coffeeroom", onClear: () => (cleared = true) }}
       />
     );
@@ -99,5 +100,21 @@ describe("an infinite list", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /Заведение: Coffeeroom/ }));
     expect(cleared).toBe(true);
+  });
+
+  it("asks for one buyer's orders and shows each order's number", async () => {
+    let query: URLSearchParams | undefined;
+    server.use(
+      http.get(api("/admin/orders"), ({ request }) => {
+        query = new URL(request.url).searchParams;
+        return HttpResponse.json({ items: [order(1)], nextCursor: null });
+      })
+    );
+    renderWithProviders(
+      <OrderList status={null} onStatusChange={() => {}} search="" venueId={null} merchantId={null} userId={42} />
+    );
+
+    expect(await screen.findByText("№11111111")).toBeInTheDocument();
+    expect(query?.get("userId")).toBe("42");
   });
 });

@@ -7,6 +7,7 @@ export const ORDER_ID = "22222222-2222-4222-8222-222222222222";
 
 const orderBase = {
   orderId: ORDER_ID,
+  number: ORDER_ID.slice(0, 8).toUpperCase(),
   amount: 1000,
   venueId: 1,
   expiresAt: "2026-10-21T05:00:00.000Z"
@@ -132,6 +133,7 @@ export const payoutWeek = (due = 27) => ({
 // GET /admin/orders - src/orders/admin-orders.service.ts (status keys only when set).
 export const adminOrder = (id: string, status = "paid") => ({
   id,
+  number: id.slice(0, 8).toUpperCase(),
   amount: 1000,
   status,
   createdAt: "2026-10-21T04:25:00.000Z",
@@ -140,6 +142,47 @@ export const adminOrder = (id: string, status = "paid") => ({
   venue: { id: 1, name: "Coffeeroom" },
   merchant: { id: 10, name: "ИП Асанов" }
 });
+
+// GET /admin/orders/:id - the list item + the detail (src/orders/admin-orders.service.ts).
+export const adminOrderDetail = (id: string, status = "paid", paymentCreated = true) => ({
+  ...adminOrder(id, status),
+  expiresAt: "2026-10-21T04:55:00.000Z",
+  paymentCreated,
+  buyer: { userId: 42, telegramId: 123456789 },
+  ...(status === "paid" ? { certificate: { code: "04718263", validUntil: "2027-10-21T17:59:59.999Z", status: "active" } } : {}),
+  webhooks: [],
+  resolutions: []
+});
+
+// GET /admin/merchants/:id - src/merchants/merchants.service.ts (+ venues).
+export const adminMerchant = (overrides: Record<string, unknown> = {}) => ({
+  id: 10,
+  name: "ИП Асанов",
+  telegramId: 123456789,
+  isActive: true,
+  payoutDetails: "Mbank 0555 123 456, Асанов А.",
+  contact: null,
+  createdAt: "2026-09-01T04:00:00.000Z",
+  owner: { lastSeenAt: "2026-11-09T08:00:00.000Z", botReachable: true },
+  venues: [],
+  ...overrides
+});
+
+// GET /admin/payouts/due - src/payouts/admin-payouts.service.ts allDue.
+export const payoutDue = {
+  merchants: [
+    {
+      merchantId: 10,
+      merchantName: "ИП Асанов",
+      due: 54,
+      weeks: [
+        { from: "2026-10-12", to: "2026-10-18", ordersCount: 3, due: 27 },
+        { from: "2026-10-19", to: "2026-10-25", ordersCount: 3, due: 27 }
+      ]
+    }
+  ],
+  total: 54
+};
 
 export const venueOptions = { nominals: [500, 1000, 2000], validityMonths: [6, 12], nameMaxLength: 100 };
 

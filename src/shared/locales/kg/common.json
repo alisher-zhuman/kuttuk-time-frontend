@@ -132,10 +132,15 @@
     "namePlaceholder": "Мисалы: ЖИ Асанов",
     "telegramId": "Telegram ID",
     "telegramIdPlaceholder": "123456789",
-    "telegramIdHint": "Ээси кабинетке ушул Telegram ID аркылуу кирет",
+    "telegramIdHint": "Ээсинен ботко /id деп жазуусун сураныңыз - бот санды жөнөтөт",
     "telegramIdInvalid": "Бүтүн оң сан киргизиңиз",
     "required": "Милдеттүү талаа",
-    "alreadyInUse": "Мурунтан колдонулууда"
+    "alreadyInUse": "Мурунтан колдонулууда",
+    "payoutDetails": "Төлөп берүү реквизиттери",
+    "payoutDetailsPlaceholder": "Мисалы: Mbank 0555 123 456, Асанов А.",
+    "contact": "Байланыш",
+    "contactPlaceholder": "Ээсинин телефону же @username",
+    "noteTooLong": "{{max}} белгиден ашпасын"
   },
   "logoUpload": {
     "hint": "Логотип, 5 МБ чейин",
@@ -193,9 +198,16 @@
         "venues": "МЕКЕМЕЛЕР",
         "noVenues": "Ээсинин азырынча мекемелери жок",
         "notFound": "Ээси табылган жок",
-        "orders": "Ээсинин буйрутмалары"
+        "orders": "Ээсинин буйрутмалары",
+        "notSet": "Көрсөтүлгөн эмес"
       },
-      "searchPlaceholder": "Ээлерди издөө"
+      "searchPlaceholder": "Ээлерди издөө",
+      "owner": {
+        "lastSeen": "Акыркы жолу кирген: {{date}}",
+        "neverSeen": "Бир да жолу кирген эмес",
+        "botReachable": "Бот: жетет",
+        "botUnreachable": "Бот: жетпейт"
+      }
     },
     "categories": {
       "manage": "Категорияларды башкаруу",
@@ -264,14 +276,21 @@
       "confirm": "Белгилөө",
       "cancel": "Жокко чыгаруу",
       "doneTitle": "Төлөп берүү белгиленди",
-      "done": "{{merchant}} үчүн {{amount}}. Ээси ботто билдирүү алат.",
       "nothingToPay": "Бул апта мурун эле белгиленген - маалымат жаңыртылды.",
-      "amountChanged": "Сумма өзгөрдү - текшерип, кайра ырастаңыз."
+      "amountChanged": "Сумма өзгөрдү - текшерип, кайра ырастаңыз.",
+      "doneNotified": "{{merchant}} үчүн {{amount}}. Ээси билдирүү алды.",
+      "doneNotNotified": "{{merchant}} үчүн {{amount}}. Билдирүү жеткен жок - ээсине өзүңүз жазыңыз.",
+      "noDetails": "Реквизиттер көрсөтүлгөн эмес - ээсинин карточкасына кошуңуз",
+      "viewWeek": "Апталар боюнча",
+      "viewDue": "Бардык карыздар",
+      "dueTotal": "Бардыгы төлөнө турган",
+      "noDebts": "Карыз жок - баары төлөнгөн",
+      "markShort": "Белгилөө"
     },
     "orders": {
       "all": "Баары",
-      "searchPlaceholder": "Сертификаттын коду же буйрутманын номери",
-      "searchInvalid": "Сертификаттын кодун же буйрутманын номерин жазыңыз",
+      "searchPlaceholder": "Буйрутма №, код же Finik ID",
+      "searchInvalid": "Буйрутманын номерин, сертификаттын кодун же Finik төлөмүнүн ID'син жазыңыз",
       "empty": "Буйрутмалар жок",
       "notFound": "Буйрутма табылган жок",
       "status": {
@@ -282,7 +301,7 @@
         "refunded": "Кайтарылды"
       },
       "detail": {
-        "id": "БУЙРУТМАНЫН НОМЕРИ",
+        "id": "БУЙРУТМАНЫН ID",
         "venue": "МЕКЕМЕ",
         "merchant": "ЭЭСИ (ТӨЛӨП БЕРҮҮ)",
         "createdAt": "ТҮЗҮЛДҮ",
@@ -301,12 +320,21 @@
         "resolutions": "КОЛ МЕНЕН ЧЕЧИМДЕР",
         "issue": "Сертификат берилди",
         "refunded": "Кайтарылды",
-        "resolvedBy": "{{by}} · {{date}}"
+        "resolvedBy": "{{by}} · {{date}}",
+        "number": "БУЙРУТМАНЫН НОМЕРИ",
+        "buyerId": "ID {{id}}",
+        "buyerTelegram": "TELEGRAM ID",
+        "noPayment": "Finik төлөмдү түзгөн жок",
+        "resolveHint": "Серверде чечиңиз - буйруктардын бирин аткарыңыз:",
+        "resolveIssue": "Сертификат берүү",
+        "resolveRefunded": "Акча кайтарылды",
+        "copyCommand": "буйрукту көчүрүү"
       },
       "paidOut": "Төлөп берилген",
       "scopeVenue": "Мекеме: {{name}}",
       "scopeMerchant": "Ээси: {{name}}",
-      "clearScope": "чыпканы алып салуу"
+      "clearScope": "чыпканы алып салуу",
+      "buyerId": "Сатып алуучунун ID"
     }
   },
   "certificate": {
@@ -381,7 +409,9 @@
       "tooManyRequests": "Суроо-талаптар өтө көп, бир мүнөттөн кийин кайра аракет кылыңыз.",
       "paymentProvider": "Төлөм системасы убактылуу жеткиликсиз. Акча алынган жок, бир аздан кийин кайра аракет кылыңыз.",
       "network": "Сервер менен байланыш жок. Интернетти текшерип, кайра аракет кылыңыз."
-    }
+    },
+    "number": "Буйрутма №{{number}}",
+    "numberCopied": "Номер көчүрүлдү"
   },
   "appNotFound": {
     "subtitle": "Mini App",

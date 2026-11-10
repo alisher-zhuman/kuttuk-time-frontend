@@ -132,10 +132,15 @@
     "namePlaceholder": "e.g. Asanov LLC",
     "telegramId": "Telegram ID",
     "telegramIdPlaceholder": "123456789",
-    "telegramIdHint": "The merchant signs in to the cabinet with this Telegram ID",
+    "telegramIdHint": "Ask the owner to send /id to the bot - it replies with the number",
     "telegramIdInvalid": "Enter a positive whole number",
     "required": "Required field",
-    "alreadyInUse": "Already in use"
+    "alreadyInUse": "Already in use",
+    "payoutDetails": "Payout details",
+    "payoutDetailsPlaceholder": "e.g. Mbank 0555 123 456, A. Asanov",
+    "contact": "Contact",
+    "contactPlaceholder": "The owner's phone or @username",
+    "noteTooLong": "At most {{max}} characters"
   },
   "logoUpload": {
     "hint": "Logo, up to 5 MB",
@@ -193,9 +198,16 @@
         "venues": "VENUES",
         "noVenues": "This merchant has no venues yet",
         "notFound": "Merchant not found",
-        "orders": "This owner's orders"
+        "orders": "This owner's orders",
+        "notSet": "Not set"
       },
-      "searchPlaceholder": "Search merchants"
+      "searchPlaceholder": "Search merchants",
+      "owner": {
+        "lastSeen": "Last seen {{date}}",
+        "neverSeen": "Never opened the app",
+        "botReachable": "Bot: reaches them",
+        "botUnreachable": "Bot: doesn't reach them"
+      }
     },
     "categories": {
       "manage": "Manage categories",
@@ -264,14 +276,21 @@
       "confirm": "Mark",
       "cancel": "Cancel",
       "doneTitle": "Payout marked",
-      "done": "{{amount}} to {{merchant}}. The owner will get a bot message.",
       "nothingToPay": "This week is already marked - refreshed.",
-      "amountChanged": "The amount changed - check it and confirm again."
+      "amountChanged": "The amount changed - check it and confirm again.",
+      "doneNotified": "{{amount}} to {{merchant}}. The owner got a message.",
+      "doneNotNotified": "{{amount}} to {{merchant}}. The message didn't reach the owner - write to them yourself.",
+      "noDetails": "No payout details - add them on the owner's card",
+      "viewWeek": "By week",
+      "viewDue": "All debts",
+      "dueTotal": "Total due",
+      "noDebts": "No debts - everything is paid out",
+      "markShort": "Mark paid"
     },
     "orders": {
       "all": "All",
-      "searchPlaceholder": "Certificate code or order number",
-      "searchInvalid": "Enter a certificate code or an order number",
+      "searchPlaceholder": "Order #, code or Finik ID",
+      "searchInvalid": "Enter an order number, a certificate code or a Finik payment ID",
       "empty": "No orders",
       "notFound": "Order not found",
       "status": {
@@ -282,7 +301,7 @@
         "refunded": "Refunded"
       },
       "detail": {
-        "id": "ORDER NUMBER",
+        "id": "ORDER ID",
         "venue": "VENUE",
         "merchant": "MERCHANT (PAYOUT)",
         "createdAt": "CREATED",
@@ -301,12 +320,21 @@
         "resolutions": "MANUAL DECISIONS",
         "issue": "Certificate issued",
         "refunded": "Refund",
-        "resolvedBy": "{{by}} · {{date}}"
+        "resolvedBy": "{{by}} · {{date}}",
+        "number": "ORDER NUMBER",
+        "buyerId": "ID {{id}}",
+        "buyerTelegram": "TELEGRAM ID",
+        "noPayment": "Finik never created the payment",
+        "resolveHint": "Resolve it on the server - run one of the commands:",
+        "resolveIssue": "Issue the certificate",
+        "resolveRefunded": "Money refunded",
+        "copyCommand": "copy the command"
       },
       "paidOut": "Paid out",
       "scopeVenue": "Venue: {{name}}",
       "scopeMerchant": "Owner: {{name}}",
-      "clearScope": "clear the filter"
+      "clearScope": "clear the filter",
+      "buyerId": "Buyer ID"
     }
   },
   "certificate": {
@@ -381,7 +409,9 @@
       "tooManyRequests": "Too many requests, please try again in a minute.",
       "paymentProvider": "The payment service is temporarily unavailable. You haven’t been charged - please try again a bit later.",
       "network": "Can’t reach the server. Check your connection and try again."
-    }
+    },
+    "number": "Order #{{number}}",
+    "numberCopied": "Number copied"
   },
   "appNotFound": {
     "subtitle": "Mini App",

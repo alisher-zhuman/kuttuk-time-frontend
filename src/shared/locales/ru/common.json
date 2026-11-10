@@ -132,10 +132,15 @@
     "namePlaceholder": "Например: ИП Асанов",
     "telegramId": "Telegram ID",
     "telegramIdPlaceholder": "123456789",
-    "telegramIdHint": "По этому Telegram ID владелец войдёт в кабинет",
+    "telegramIdHint": "Попросите владельца написать боту /id - бот пришлёт число",
     "telegramIdInvalid": "Введите целое положительное число",
     "required": "Обязательное поле",
-    "alreadyInUse": "Уже используется"
+    "alreadyInUse": "Уже используется",
+    "payoutDetails": "Реквизиты для выплаты",
+    "payoutDetailsPlaceholder": "Например: Mbank 0555 123 456, Асанов А.",
+    "contact": "Контакт",
+    "contactPlaceholder": "Телефон или @username владельца",
+    "noteTooLong": "Не больше {{max}} символов"
   },
   "logoUpload": {
     "hint": "Логотип, до 5 МБ",
@@ -193,9 +198,16 @@
         "venues": "ЗАВЕДЕНИЯ",
         "noVenues": "У владельца пока нет заведений",
         "notFound": "Владелец не найден",
-        "orders": "Заказы владельца"
+        "orders": "Заказы владельца",
+        "notSet": "Не указано"
       },
-      "searchPlaceholder": "Поиск владельцев"
+      "searchPlaceholder": "Поиск владельцев",
+      "owner": {
+        "lastSeen": "Заходил {{date}}",
+        "neverSeen": "Ни разу не заходил",
+        "botReachable": "Бот: доходит",
+        "botUnreachable": "Бот: не доходит"
+      }
     },
     "categories": {
       "manage": "Управление категориями",
@@ -264,14 +276,21 @@
       "confirm": "Отметить",
       "cancel": "Отмена",
       "doneTitle": "Выплата отмечена",
-      "done": "{{amount}} для {{merchant}}. Владелец получит сообщение в боте.",
       "nothingToPay": "Эта неделя уже отмечена - данные обновлены.",
-      "amountChanged": "Сумма изменилась - проверьте и подтвердите снова."
+      "amountChanged": "Сумма изменилась - проверьте и подтвердите снова.",
+      "doneNotified": "{{merchant}}: {{amount}}. Владелец получил сообщение.",
+      "doneNotNotified": "{{merchant}}: {{amount}}. Сообщение не дошло - напишите владельцу сами.",
+      "noDetails": "Реквизиты не указаны - добавьте их в карточке владельца",
+      "viewWeek": "По неделям",
+      "viewDue": "Все долги",
+      "dueTotal": "Всего к выплате",
+      "noDebts": "Долгов нет - всё выплачено",
+      "markShort": "Отметить"
     },
     "orders": {
       "all": "Все",
-      "searchPlaceholder": "Код сертификата или номер заказа",
-      "searchInvalid": "Введите код сертификата или номер заказа",
+      "searchPlaceholder": "№ заказа, код или ID Finik",
+      "searchInvalid": "Введите номер заказа, код сертификата или ID платежа Finik",
       "empty": "Заказов нет",
       "notFound": "Заказ не найден",
       "status": {
@@ -282,7 +301,7 @@
         "refunded": "Возвращён"
       },
       "detail": {
-        "id": "НОМЕР ЗАКАЗА",
+        "id": "ID ЗАКАЗА",
         "venue": "ЗАВЕДЕНИЕ",
         "merchant": "ВЛАДЕЛЕЦ (ВЫПЛАТА)",
         "createdAt": "СОЗДАН",
@@ -301,12 +320,21 @@
         "resolutions": "РУЧНЫЕ РЕШЕНИЯ",
         "issue": "Выдан сертификат",
         "refunded": "Возврат",
-        "resolvedBy": "{{by}} · {{date}}"
+        "resolvedBy": "{{by}} · {{date}}",
+        "number": "НОМЕР ЗАКАЗА",
+        "buyerId": "ID {{id}}",
+        "buyerTelegram": "TELEGRAM ID",
+        "noPayment": "Финик не создал платёж",
+        "resolveHint": "Разбор на сервере - выполните одну из команд:",
+        "resolveIssue": "Выдать сертификат",
+        "resolveRefunded": "Деньги вернули",
+        "copyCommand": "скопировать команду"
       },
       "paidOut": "Выплачен",
       "scopeVenue": "Заведение: {{name}}",
       "scopeMerchant": "Владелец: {{name}}",
-      "clearScope": "убрать фильтр"
+      "clearScope": "убрать фильтр",
+      "buyerId": "ID покупателя"
     }
   },
   "certificate": {
@@ -381,7 +409,9 @@
       "tooManyRequests": "Слишком много запросов, попробуйте через минуту.",
       "paymentProvider": "Платёжная система временно недоступна. Деньги не списаны, попробуйте чуть позже.",
       "network": "Нет соединения с сервером. Проверьте интернет и попробуйте снова."
-    }
+    },
+    "number": "Заказ №{{number}}",
+    "numberCopied": "Номер скопирован"
   },
   "appNotFound": {
     "subtitle": "Mini App",

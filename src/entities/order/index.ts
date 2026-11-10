@@ -3,6 +3,7 @@ export { useAdminOrdersQuery } from "./hooks/useAdminOrdersQuery";
 export { useCreateOrderMutation } from "./hooks/useCreateOrderMutation";
 export { useOrderPolling } from "./hooks/useOrderPolling";
 export { getOrderErrorKey, isAdminOrderSearchError } from "./model/errors";
+export type { AdminOrderFilters } from "./model/keys";
 export { isOrderId, isOrderStatus, ORDER_STATUSES } from "./model/schemas";
 export type {
   AdminOrder,

@@ -1,15 +1,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getAdminOrders } from "../api";
-import { orderKeys } from "../model/keys";
-import type { OrderStatus } from "../model/types";
+import { type AdminOrderFilters, orderKeys } from "../model/keys";
 
-export const useAdminOrdersQuery = (status: OrderStatus | null, search: string) => {
+export const useAdminOrdersQuery = (filters: AdminOrderFilters) => {
   const { data, error, isLoading, isError, isFetching, isFetchingNextPage, isFetchNextPageError, hasNextPage, fetchNextPage, refetch } =
     useInfiniteQuery({
-      queryKey: orderKeys.adminList(status, search),
-      queryFn: ({ pageParam, signal }) =>
-        getAdminOrders({ status, search, cursor: pageParam }, signal),
+      queryKey: orderKeys.adminList(filters),
+      queryFn: ({ pageParam, signal }) => getAdminOrders({ ...filters, cursor: pageParam }, signal),
       initialPageParam: null as string | null,
       getNextPageParam: (lastPage) => lastPage.nextCursor
     });

@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 
-import { Pencil, UserRound } from "lucide-react";
+import { ClipboardList, Pencil, UserRound } from "lucide-react";
 
 import { type AdminMerchantDetail } from "@entities/merchant";
 
 import { formatDate } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
-import { MetaField, StatusBadge } from "@shared/ui";
+import { MetaField, RowButton, StatusBadge } from "@shared/ui";
 
 import { MerchantDetailVenues } from "../merchant-detail-venues";
 
@@ -15,9 +15,10 @@ interface Props {
   onEdit: () => void;
   onOpenVenue: (venueId: number) => void;
   onAddVenue: () => void;
+  onOpenOrders: () => void;
 }
 
-export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue }: Props) => {
+export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOpenOrders }: Props) => {
   const { t } = useTranslation();
 
   const haptic = useHaptic();
@@ -58,6 +59,12 @@ export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue }: Pr
           value={formatDate(merchant.createdAt)}
         />
       </div>
+
+      <RowButton
+        icon={<ClipboardList size={20} />}
+        label={t("admin.merchants.detail.orders")}
+        onClick={onOpenOrders}
+      />
 
       <MerchantDetailVenues
         venues={merchant.venues}

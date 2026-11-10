@@ -6,15 +6,20 @@ import { useCategoriesQuery } from "@entities/category";
 import { useAdminMerchantQuery } from "@entities/merchant";
 import { useAdminVenueQuery } from "@entities/venue";
 
-import { getAdminMerchantDetailRoute, getAdminVenueEditRoute } from "@shared/constants";
+import {
+  getAdminMerchantDetailRoute,
+  getAdminOrdersRoute,
+  getAdminVenueEditRoute
+} from "@shared/constants";
 import { useNavigateTo } from "@shared/hooks";
+import { ErrorState } from "@shared/ui";
 
 export const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const navigateTo = useNavigateTo();
 
-  const { venue, isLoading, isError } = useAdminVenueQuery(id);
+  const { venue, isLoading, isError, isNotFound, isFetching, retry } = useAdminVenueQuery(id);
 
   // Only for the owner's name - the venue itself carries just merchantId.
   const { merchant } = useAdminMerchantQuery(venue ? String(venue.merchantId) : undefined);
@@ -22,13 +27,15 @@ export const VenueDetailPage = () => {
   const { categories } = useCategoriesQuery();
 
   if (isLoading) return <VenueDetailSkeleton />;
-  if (isError || !venue) return <VenueNotFound />;
+  if (isNotFound) return <VenueNotFound />;
+  if (isError || !venue) return <ErrorState onRetry={retry} isRetrying={isFetching} />;
 
   return (
     <VenueDetail
       venue={venue}
       categories={categories}
       onEdit={() => navigateTo(getAdminVenueEditRoute(venue.id))}
+      onOpenOrders={() => navigateTo(getAdminOrdersRoute({ venueId: venue.id }))}
       owner={
         merchant && {
           name: merchant.name,

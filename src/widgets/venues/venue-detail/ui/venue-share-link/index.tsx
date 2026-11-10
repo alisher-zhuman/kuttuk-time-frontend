@@ -3,12 +3,12 @@ import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { shareURL } from "@tma.js/sdk-react";
-import { Check, ChevronRight, Copy, Download, QrCode as QrIcon, Share2 } from "lucide-react";
+import { Check, Copy, Download, QrCode as QrIcon, Share2 } from "lucide-react";
 
 import { getVenueShareLink } from "@shared/constants";
 import { canDownloadFiles, downloadQrPng } from "@shared/helpers";
 import { useCopyToClipboard, useHaptic } from "@shared/hooks";
-import { BottomSheet, QrCode } from "@shared/ui";
+import { BottomSheet, QrCode, RowButton } from "@shared/ui";
 
 interface Props {
   slug: string;
@@ -63,22 +63,7 @@ export const VenueShareLink = ({ slug, venueName }: Props) => {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => {
-          haptic.light();
-          setIsOpen(true);
-        }}
-        className="flex items-center gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line) text-left cursor-pointer"
-      >
-        <span className="flex items-center justify-center size-10 shrink-0 rounded-xl bg-(--color-primary-tint) text-(--color-primary)">
-          <QrIcon size={20} />
-        </span>
-
-        <span className="flex-1 min-w-0 text-sm font-bold text-(--color-ink)">{t("venueLink.title")}</span>
-
-        <ChevronRight size={18} className="shrink-0 text-(--color-hint)" />
-      </button>
+      <RowButton icon={<QrIcon size={20} />} label={t("venueLink.title")} onClick={() => setIsOpen(true)} />
 
       {isOpen && (
         <BottomSheet title={t("venueLink.title")} onClose={() => setIsOpen(false)}>

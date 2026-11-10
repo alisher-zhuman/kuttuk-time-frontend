@@ -1,9 +1,12 @@
 import { useTranslation } from "react-i18next";
 
+import { ClipboardList } from "lucide-react";
+
 import { type Category } from "@entities/category";
 import { type ManagedVenue } from "@entities/venue";
 
 import { formatMoney } from "@shared/helpers";
+import { RowButton } from "@shared/ui";
 
 import { VenueDetailChips } from "../venue-detail-chips";
 import { VenueDetailDescription } from "../venue-detail-description";
@@ -17,11 +20,13 @@ interface Props {
   onEdit?: (() => void) | undefined;
   // Admin only: who owns the venue, with a link to the merchant's page.
   owner?: { name: string; onOpen: () => void } | undefined;
+  // Admin only: this venue's orders.
+  onOpenOrders?: (() => void) | undefined;
 }
 
 // The full venue as the admin and the owner see it (the buyer sees the
 // storefront in widgets/venue instead).
-export const VenueDetail = ({ venue, categories, onEdit, owner }: Props) => {
+export const VenueDetail = ({ venue, categories, onEdit, owner, onOpenOrders }: Props) => {
   const { t } = useTranslation();
 
   const venueCategories = categories.filter((category) => venue.categories.includes(category.id));
@@ -41,6 +46,14 @@ export const VenueDetail = ({ venue, categories, onEdit, owner }: Props) => {
       <VenueDetailDescription description={venue.description} />
 
       <VenueShareLink slug={venue.slug} venueName={venue.name} />
+
+      {onOpenOrders && (
+        <RowButton
+          icon={<ClipboardList size={20} />}
+          label={t("admin.venues.detail.orders")}
+          onClick={onOpenOrders}
+        />
+      )}
 
       {venueCategories.length > 0 && (
         <VenueDetailChips

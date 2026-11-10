@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { ClipboardList, SearchX } from "lucide-react";
+import { ClipboardList, SearchX, X } from "lucide-react";
 
 import {
   isAdminOrderSearchError,
@@ -26,9 +26,13 @@ interface Props {
   status: OrderStatus | null;
   onStatusChange: (status: OrderStatus | null) => void;
   search: string;
+  venueId: number | null;
+  merchantId: number | null;
+  // «Заведение: Coffeeroom» / «Владелец: …» while one is picked, with a way out.
+  scope?: { label: string; onClear: () => void } | undefined;
 }
 
-export const OrderList = ({ status, onStatusChange, search }: Props) => {
+export const OrderList = ({ status, onStatusChange, search, venueId, merchantId, scope }: Props) => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -46,7 +50,7 @@ export const OrderList = ({ status, onStatusChange, search }: Props) => {
     hasNextPage,
     fetchNextPage,
     retry
-  } = useAdminOrdersQuery(status, search);
+  } = useAdminOrdersQuery({ status, search, venueId, merchantId });
 
   const setSentinel = useLoadMoreOnScroll(
     fetchNextPage,
@@ -56,6 +60,21 @@ export const OrderList = ({ status, onStatusChange, search }: Props) => {
 
   return (
     <div className="flex flex-col gap-4 mt-3.5 pb-5">
+      {scope && (
+        <button
+          type="button"
+          onClick={() => {
+            haptic.light();
+            scope.onClear();
+          }}
+          aria-label={`${scope.label} - ${t("admin.orders.clearScope")}`}
+          className="self-start max-w-full flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-(--color-primary-tint) text-(--color-primary) text-sm font-bold cursor-pointer"
+        >
+          <span className="truncate">{scope.label}</span>
+          <X size={14} className="shrink-0" />
+        </button>
+      )}
+
       <ChipSelect
         items={STATUSES.map((value) => ({
           value,

@@ -15,6 +15,7 @@ export { MetaField } from './meta-field';
 export { PageLoader } from './page-loader';
 export { PillButton } from './pill-button';
 export { QrCode } from './qr-code';
+export { RowButton } from './row-button';
 export { SearchBar } from './search-bar';
 export { SegmentedControl } from './segmented-control';
 export { StatusBadge } from './status-badge';

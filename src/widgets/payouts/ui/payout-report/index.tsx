@@ -125,7 +125,7 @@ export const PayoutReport = () => {
               type="button"
               onClick={() => {
                 haptic.light();
-                navigateTo(getAdminOrdersRoute("needs_review"), { replace: true });
+                navigateTo(getAdminOrdersRoute({ status: "needs_review" }), { replace: true });
               }}
               className="flex items-start gap-3 p-3 rounded-2xl bg-(--color-amber-tint) text-left cursor-pointer"
             >

@@ -56,7 +56,9 @@ describe("an infinite list", () => {
       })
     );
 
-    renderWithProviders(<OrderList status={null} onStatusChange={() => {}} search="" />);
+    renderWithProviders(
+      <OrderList status={null} onStatusChange={() => {}} search="" venueId={null} merchantId={null} />
+    );
 
     const retry = await screen.findByRole("button", { name: "Повторить" }, { timeout: 4000 });
     expect(screen.getByText("Venue 1")).toBeInTheDocument();
@@ -67,5 +69,35 @@ describe("an infinite list", () => {
 
     expect(await screen.findByText("Venue 3")).toBeInTheDocument();
     expect(screen.getByText("Venue 1")).toBeInTheDocument();
+  });
+
+  it("asks for one venue's orders and shows the scope, which clears", async () => {
+    let query: URLSearchParams | undefined;
+
+    server.use(
+      http.get(api("/admin/orders"), ({ request }) => {
+        query = new URL(request.url).searchParams;
+        return HttpResponse.json({ items: [order(1)], nextCursor: null });
+      })
+    );
+
+    let cleared = false;
+    renderWithProviders(
+      <OrderList
+        status={null}
+        onStatusChange={() => {}}
+        search=""
+        venueId={7}
+        merchantId={null}
+        scope={{ label: "Заведение: Coffeeroom", onClear: () => (cleared = true) }}
+      />
+    );
+
+    expect(await screen.findByText("Venue 1")).toBeInTheDocument();
+    expect(query?.get("venueId")).toBe("7");
+    expect(query?.has("merchantId")).toBe(false);
+
+    await userEvent.click(screen.getByRole("button", { name: /Заведение: Coffeeroom/ }));
+    expect(cleared).toBe(true);
   });
 });

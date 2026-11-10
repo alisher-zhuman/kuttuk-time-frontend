@@ -78,9 +78,21 @@ export const getAdminMerchantDetailRoute = (id: string | number) =>
 export const getAdminOrderDetailRoute = (id: string) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}/${id}`;
 
-// status preselects the filter (e.g. «На проверке» from the payouts warning).
-export const getAdminOrdersRoute = (status?: string) =>
-  `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}` + (status ? `?status=${status}` : "");
+// Preselected filters: «На проверке» from the payouts warning, one venue's or
+// one owner's orders from their card.
+export const getAdminOrdersRoute = (
+  filters: { status?: string; venueId?: number; merchantId?: number } = {}
+) => {
+  const query = new URLSearchParams();
+
+  if (filters.status) query.set("status", filters.status);
+  if (filters.venueId !== undefined) query.set("venueId", String(filters.venueId));
+  if (filters.merchantId !== undefined) query.set("merchantId", String(filters.merchantId));
+
+  const search = query.toString();
+
+  return `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.ORDERS}` + (search ? `?${search}` : "");
+};
 
 export const getCategoryEditRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_EDIT}/${id}`;

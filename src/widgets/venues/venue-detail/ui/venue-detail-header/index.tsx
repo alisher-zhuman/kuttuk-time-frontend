@@ -30,19 +30,20 @@ export const VenueDetailHeader = ({ logo, name, slug, isActive, onEdit }: Props)
         className="size-16 rounded-xl shrink-0 object-cover"
       />
 
-      <div className="flex-1 flex flex-col min-w-0 gap-1">
-        <span className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight truncate">
+      {/* Name, slug and status in one column: a badge beside them left a
+          long name three letters at 320 px. */}
+      <div className="flex-1 flex flex-col items-start min-w-0 gap-1">
+        <span className="max-w-full text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight line-clamp-3 wrap-break-word">
           {name}
         </span>
-        <span className="text-sm text-(--color-slate) font-semibold truncate">
+        <span className="max-w-full text-sm text-(--color-slate) font-semibold truncate">
           {slug}
         </span>
+        <StatusBadge
+          active={isActive}
+          label={t(isActive ? "admin.venues.active" : "admin.venues.inactive")}
+        />
       </div>
-
-      <StatusBadge
-        active={isActive}
-        label={t(isActive ? "admin.venues.active" : "admin.venues.inactive")}
-      />
 
       {onEdit && (
         <button

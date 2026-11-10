@@ -108,7 +108,7 @@ export const GiftScreen = ({ token, gift }: Props) => {
         {t(getMessageKey(gift))}
       </h1>
 
-      <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-(--color-card) border border-(--color-line) min-w-56 text-left">
+      <div className="w-full max-w-sm flex items-center gap-3 px-4 py-3 rounded-2xl bg-(--color-card) border border-(--color-line) text-left">
         <img
           src={logoUrl(gift.venue.logo, 48)}
           width={48}
@@ -118,7 +118,9 @@ export const GiftScreen = ({ token, gift }: Props) => {
         />
 
         <span className="flex flex-col gap-0.5 min-w-0">
-          <span className="text-sm font-semibold text-(--color-slate) truncate">{gift.venue.name}</span>
+          <span className="text-sm font-semibold text-(--color-slate) line-clamp-2 wrap-break-word">
+            {gift.venue.name}
+          </span>
           <span className="text-2xl font-extrabold text-(--color-ink)">
             {formatMoney(gift.amount, t("certificate.currency"))}
           </span>

@@ -32,14 +32,18 @@ export const AdminVenueCard = ({ venue, onClick }: Props) => {
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 
-      <span className="flex-1 min-w-0 text-base font-extrabold tracking-tight text-(--color-ink) truncate">
-        {venue.name}
-      </span>
+      {/* The badge under the name: beside it, «Активдүү эмес» leaves a
+          100-char name a few letters on a 320 px screen. */}
+      <span className="flex-1 min-w-0 flex flex-col items-start gap-1.5">
+        <span className="max-w-full text-base font-extrabold tracking-tight text-(--color-ink) line-clamp-2 wrap-break-word">
+          {venue.name}
+        </span>
 
-      <StatusBadge
-        active={venue.isActive}
-        label={t(venue.isActive ? "admin.venues.active" : "admin.venues.inactive")}
-      />
+        <StatusBadge
+          active={venue.isActive}
+          label={t(venue.isActive ? "admin.venues.active" : "admin.venues.inactive")}
+        />
+      </span>
 
       <ChevronRight size={17} color="var(--color-hint)" />
     </button>

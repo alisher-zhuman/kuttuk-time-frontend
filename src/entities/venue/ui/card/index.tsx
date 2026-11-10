@@ -50,19 +50,16 @@ export const VenueCard = ({ venue, priority = false }: Props) => {
         className="size-12 rounded-xl shrink-0 object-cover"
       />
 
+      {/* The price under the text, not beside it: a right-hand column
+          (kg «500 сомдон баштап») left the name a letter per line at 320 px. */}
       <span className="flex-1 min-w-0 flex flex-col">
-        <span className="text-base font-extrabold tracking-tight text-(--color-ink) wrap-break-word">
+        <span className="text-base font-extrabold tracking-tight text-(--color-ink) line-clamp-2 wrap-break-word">
           {venue.name}
         </span>
         <span className="text-sm text-(--color-slate) font-semibold mt-0.5 truncate">
           {venue.description}
         </span>
-      </span>
-
-      {/* Wraps instead of stretching: kg «500 сомдон баштап» takes two lines
-          rather than squeezing the name off the card. */}
-      <span className="shrink-0 max-w-28 text-right text-sm leading-tight text-(--color-primary) font-extrabold">
-        {fromPrice}
+        <span className="text-sm text-(--color-primary) font-extrabold mt-1">{fromPrice}</span>
       </span>
 
       <ChevronRight size={17} color="var(--color-hint)" />

@@ -30,14 +30,17 @@ export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOp
           <UserRound size={28} />
         </span>
 
-        <span className="flex-1 min-w-0 text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight break-words">
-          {merchant.name}
-        </span>
+        {/* Status under the name: beside it, a long name broke a letter per line. */}
+        <span className="flex-1 min-w-0 flex flex-col items-start gap-1.5">
+          <span className="max-w-full text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight line-clamp-3 wrap-break-word">
+            {merchant.name}
+          </span>
 
-        <StatusBadge
-          active={merchant.isActive}
-          label={t(merchant.isActive ? "admin.venues.active" : "admin.venues.inactive")}
-        />
+          <StatusBadge
+            active={merchant.isActive}
+            label={t(merchant.isActive ? "admin.venues.active" : "admin.venues.inactive")}
+          />
+        </span>
 
         <button
           type="button"

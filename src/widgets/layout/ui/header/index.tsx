@@ -30,15 +30,16 @@ export const Header = () => {
 
         {viewMode === "admin" && (
           <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-(--color-primary) text-(--color-card) text-xs font-bold shrink-0">
-            <Shield size={12} />
-            {t("admin.badge")}
+            <Shield size={12} aria-label={t("admin.badge")} />
+            {/* Below 360 px the word ran under the language switch. */}
+            <span className="hidden min-[360px]:inline">{t("admin.badge")}</span>
           </span>
         )}
 
         {viewMode === "merchant" && (
           <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-(--color-primary) text-(--color-card) text-xs font-bold shrink-0">
-            <Store size={12} />
-            {t("merchant.badge")}
+            <Store size={12} aria-label={t("merchant.badge")} />
+            <span className="hidden min-[360px]:inline">{t("merchant.badge")}</span>
           </span>
         )}
       </button>

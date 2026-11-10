@@ -21,7 +21,7 @@ export const VenueDetailMeta = ({ validityMonths, createdAt, owner }: Props) => 
     <div className="grid grid-cols-2 gap-x-3 gap-y-4">
       <MetaField
         label={t("admin.venues.detail.validity")}
-        value={t("admin.venues.detail.validityValue", { months: validityMonths })}
+        value={t("admin.venues.detail.validityValue", { count: validityMonths })}
       />
 
       <MetaField

@@ -43,7 +43,7 @@ export const CertPreviewCard = ({
           {formatMoney(amount, t("certificate.currency"))}
         </span>
         <span className="text-xs font-semibold opacity-80 mt-2">
-          {t("venue.validity", { months: validityMonths })}
+          {t("venue.validity", { count: validityMonths })}
         </span>
       </div>
     </div>

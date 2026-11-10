@@ -35,7 +35,7 @@
       "title": "Сводка за неделю",
       "sold": "Продано: {{count}} шт · {{amount}}",
       "commission": "Комиссия 10%: {{amount}}",
-      "payout": "К выплате: {{amount}} (в понедельник)",
+      "payout": "К выплате: {{amount}}",
       "redeemed": "Погашено: {{count}} шт · {{amount}}",
       "redeemedHint": "«Погашено» - сертификаты, погашенные на этой неделе, даже если их продали раньше.",
       "payoutStatus": {
@@ -71,7 +71,8 @@
       "title": "Уведомления о продажах",
       "hint": "Бот напишет в Telegram о каждой продаже",
       "enable": "Включить",
-      "enabled": "Включены"
+      "enabled": "Включены",
+      "bannerTitle": "Включите уведомления о продажах"
     },
     "homeScreen": {
       "title": "Главный экран",
@@ -84,7 +85,10 @@
     "fromPrice": "от {{price}}",
     "nominal": "НОМИНАЛ",
     "buy": "Купить",
-    "validity": "Действует {{months}} месяцев",
+    "validity_one": "Действует {{count}} месяц",
+    "validity_few": "Действует {{count}} месяца",
+    "validity_many": "Действует {{count}} месяцев",
+    "validity_other": "Действует {{count}} месяца",
     "notFound": "Заведение не найдено"
   },
   "venueForm": {
@@ -188,7 +192,8 @@
         "createdAt": "СОЗДАН",
         "venues": "ЗАВЕДЕНИЯ",
         "noVenues": "У владельца пока нет заведений",
-        "notFound": "Владелец не найден"
+        "notFound": "Владелец не найден",
+        "orders": "Заказы владельца"
       },
       "searchPlaceholder": "Поиск владельцев"
     },
@@ -225,10 +230,14 @@
         "categories": "КАТЕГОРИИ",
         "nominals": "НОМИНАЛЫ",
         "validity": "СРОК ДЕЙСТВИЯ",
-        "validityValue": "{{months}} месяцев",
+        "validityValue_one": "{{count}} месяц",
+        "validityValue_few": "{{count}} месяца",
+        "validityValue_many": "{{count}} месяцев",
+        "validityValue_other": "{{count}} месяца",
         "createdAt": "СОЗДАН",
         "notFound": "Заведение не найдено",
-        "owner": "ВЛАДЕЛЕЦ"
+        "owner": "ВЛАДЕЛЕЦ",
+        "orders": "Заказы заведения"
       }
     },
     "payouts": {
@@ -294,7 +303,10 @@
         "refunded": "Возврат",
         "resolvedBy": "{{by}} · {{date}}"
       },
-      "paidOut": "Выплачен"
+      "paidOut": "Выплачен",
+      "scopeVenue": "Заведение: {{name}}",
+      "scopeMerchant": "Владелец: {{name}}",
+      "clearScope": "убрать фильтр"
     }
   },
   "certificate": {
@@ -364,7 +376,7 @@
       "hint": "Мы не смогли подтвердить оплату и вернули деньги. Если они ещё не пришли - напишите в поддержку."
     },
     "errors": {
-      "unavailable": "Этот номинал или заведение сейчас недоступны. Обновите страницу и попробуйте снова.",
+      "unavailable": "Номиналы изменились или заведение сейчас недоступно - мы обновили страницу. Выберите номинал снова.",
       "notFound": "Заказ не найден.",
       "tooManyRequests": "Слишком много запросов, попробуйте через минуту.",
       "paymentProvider": "Платёжная система временно недоступна. Деньги не списаны, попробуйте чуть позже.",
@@ -373,7 +385,7 @@
   },
   "appNotFound": {
     "subtitle": "Mini App",
-    "description": "Это Telegram Mini App. Открой его через бота в Telegram.",
+    "description": "Это Telegram Mini App. Откройте его через бота в Telegram.",
     "openInTelegram": "Открыть в Telegram"
   },
   "sessionExpired": {
@@ -419,5 +431,8 @@
     "qr": "QR-код ссылки {{venue}}",
     "screenshotHint": "Для печати - сделайте скриншот QR",
     "shareText": "Подарочные сертификаты {{venue}} - купить в Telegram"
+  },
+  "connection": {
+    "waking": "Запускаем сервер, это может занять до 30 секунд"
   }
 }

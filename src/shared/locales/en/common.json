@@ -35,7 +35,7 @@
       "title": "Weekly summary",
       "sold": "Sold: {{count}} pcs · {{amount}}",
       "commission": "Commission 10%: {{amount}}",
-      "payout": "Payout: {{amount}} (on Monday)",
+      "payout": "Payout: {{amount}}",
       "redeemed": "Redeemed: {{count}} pcs · {{amount}}",
       "redeemedHint": "\"Redeemed\" counts certificates redeemed this week, even if they were sold earlier.",
       "payoutStatus": {
@@ -71,7 +71,8 @@
       "title": "Sale notifications",
       "hint": "The bot will message you in Telegram about every sale",
       "enable": "Turn on",
-      "enabled": "On"
+      "enabled": "On",
+      "bannerTitle": "Turn on sale notifications"
     },
     "homeScreen": {
       "title": "Home screen",
@@ -84,7 +85,10 @@
     "fromPrice": "from {{price}}",
     "nominal": "AMOUNT",
     "buy": "Buy",
-    "validity": "Valid for {{months}} months",
+    "validity_one": "Valid for {{count}} month",
+    "validity_few": "Valid for {{count}} months",
+    "validity_many": "Valid for {{count}} months",
+    "validity_other": "Valid for {{count}} months",
     "notFound": "Venue not found"
   },
   "venueForm": {
@@ -188,7 +192,8 @@
         "createdAt": "CREATED",
         "venues": "VENUES",
         "noVenues": "This merchant has no venues yet",
-        "notFound": "Merchant not found"
+        "notFound": "Merchant not found",
+        "orders": "This owner's orders"
       },
       "searchPlaceholder": "Search merchants"
     },
@@ -225,10 +230,14 @@
         "categories": "CATEGORIES",
         "nominals": "AMOUNTS",
         "validity": "VALIDITY",
-        "validityValue": "{{months}} months",
+        "validityValue_one": "{{count}} month",
+        "validityValue_few": "{{count}} months",
+        "validityValue_many": "{{count}} months",
+        "validityValue_other": "{{count}} months",
         "createdAt": "CREATED",
         "notFound": "Venue not found",
-        "owner": "MERCHANT"
+        "owner": "MERCHANT",
+        "orders": "This venue's orders"
       }
     },
     "payouts": {
@@ -294,7 +303,10 @@
         "refunded": "Refund",
         "resolvedBy": "{{by}} · {{date}}"
       },
-      "paidOut": "Paid out"
+      "paidOut": "Paid out",
+      "scopeVenue": "Venue: {{name}}",
+      "scopeMerchant": "Owner: {{name}}",
+      "clearScope": "clear the filter"
     }
   },
   "certificate": {
@@ -364,7 +376,7 @@
       "hint": "We couldn't confirm the payment and refunded it. If the money hasn't arrived yet, contact support."
     },
     "errors": {
-      "unavailable": "This amount or venue is no longer available. Refresh the page and try again.",
+      "unavailable": "The amounts changed or the venue is unavailable right now - we refreshed the page. Pick an amount again.",
       "notFound": "Order not found.",
       "tooManyRequests": "Too many requests, please try again in a minute.",
       "paymentProvider": "The payment service is temporarily unavailable. You haven’t been charged - please try again a bit later.",
@@ -419,5 +431,8 @@
     "qr": "QR code of the {{venue}} link",
     "screenshotHint": "To print it, take a screenshot of the QR",
     "shareText": "{{venue}} gift certificates - buy in Telegram"
+  },
+  "connection": {
+    "waking": "Starting the server, this can take up to 30 seconds"
   }
 }

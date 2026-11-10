@@ -1,5 +1,5 @@
 import { api, fixtures, server } from "@mocks";
-import { screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { http, HttpResponse } from "msw";
@@ -85,6 +85,9 @@ describe("marking a payout", () => {
 
     const sheet = await openSheet();
     await userEvent.click(within(sheet).getByRole("button", { name: "Отмена" }));
+    // The sheet closes when its slide-out ends - jsdom has no transitions, and
+    // on a slow runner the sheet is already shown, so end it by hand.
+    fireEvent.transitionEnd(sheet, { propertyName: "transform" });
 
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(state.sent).toEqual([]);

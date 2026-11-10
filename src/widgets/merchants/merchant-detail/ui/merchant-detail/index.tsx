@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ClipboardList, Pencil, UserRound } from "lucide-react";
 
-import { type AdminMerchantDetail } from "@entities/merchant";
+import { type AdminMerchantDetail, MerchantOwnerStatus } from "@entities/merchant";
 
 import { formatDate } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -17,6 +17,14 @@ interface Props {
   onAddVenue: () => void;
   onOpenOrders: () => void;
 }
+
+// Free text as typed (line breaks kept), or a muted "not set".
+const Note = ({ text, empty }: { text: string | null; empty: string }) =>
+  text ? (
+    <span className="font-semibold whitespace-pre-wrap wrap-break-word">{text}</span>
+  ) : (
+    <span className="font-semibold text-(--color-hint)">{empty}</span>
+  );
 
 export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOpenOrders }: Props) => {
   const { t } = useTranslation();
@@ -40,6 +48,7 @@ export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOp
             active={merchant.isActive}
             label={t(merchant.isActive ? "admin.venues.active" : "admin.venues.inactive")}
           />
+          <MerchantOwnerStatus owner={merchant.owner} />
         </span>
 
         <button
@@ -61,6 +70,18 @@ export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOp
           label={t("admin.merchants.detail.createdAt")}
           value={formatDate(merchant.createdAt)}
         />
+        <div className="col-span-2">
+          <MetaField
+            label={t("merchantForm.payoutDetails")}
+            value={<Note text={merchant.payoutDetails} empty={t("admin.merchants.detail.notSet")} />}
+          />
+        </div>
+        <div className="col-span-2">
+          <MetaField
+            label={t("merchantForm.contact")}
+            value={<Note text={merchant.contact} empty={t("admin.merchants.detail.notSet")} />}
+          />
+        </div>
       </div>
 
       <RowButton

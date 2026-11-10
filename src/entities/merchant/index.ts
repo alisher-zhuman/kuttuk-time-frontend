@@ -12,3 +12,4 @@ export type {
 } from "./model/types";
 export { AdminMerchantCard } from "./ui/admin-card";
 export { MerchantDeactivatedNotice } from "./ui/deactivated-notice";
+export { MerchantOwnerStatus } from "./ui/owner-status";

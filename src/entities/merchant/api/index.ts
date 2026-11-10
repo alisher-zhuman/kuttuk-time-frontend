@@ -45,6 +45,9 @@ export const getAdminMerchant = async (id: string | number) => {
 export interface CreateMerchantPayload {
   name: string;
   telegramId: number;
+  // null clears the note; the backend trims and caps it at 500 chars.
+  payoutDetails: string | null;
+  contact: string | null;
 }
 
 export const createMerchant = async (payload: CreateMerchantPayload) => {

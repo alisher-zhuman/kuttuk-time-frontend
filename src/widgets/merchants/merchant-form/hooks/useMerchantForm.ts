@@ -45,7 +45,9 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
     defaultValues: {
       name: merchant?.name ?? "",
       telegramId: merchant ? String(merchant.telegramId) : "",
-      isActive: merchant?.isActive ?? true
+      isActive: merchant?.isActive ?? true,
+      payoutDetails: merchant?.payoutDetails ?? "",
+      contact: merchant?.contact ?? ""
     }
   });
 
@@ -66,7 +68,13 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
 
     isSubmittingRef.current = true;
 
-    const payload = { name: values.name.trim(), telegramId: Number(values.telegramId) };
+    const payload = {
+      name: values.name.trim(),
+      telegramId: Number(values.telegramId),
+      // Blank clears the note (the backend takes null).
+      payoutDetails: values.payoutDetails.trim() || null,
+      contact: values.contact.trim() || null
+    };
 
     const onError = (error: unknown) => {
       if (isTelegramIdConflict(error)) {

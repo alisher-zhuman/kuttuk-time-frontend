@@ -5,6 +5,7 @@ import { ChevronRight, UserRound } from "lucide-react";
 import { StatusBadge } from "@shared/ui";
 
 import type { AdminMerchant } from "../../model/types";
+import { MerchantOwnerStatus } from "../owner-status";
 
 interface Props {
   merchant: AdminMerchant;
@@ -24,19 +25,21 @@ export const AdminMerchantCard = ({ merchant, onClick }: Props) => {
         <UserRound size={22} />
       </span>
 
-      <span className="flex-1 min-w-0 flex flex-col">
-        <span className="text-base font-extrabold tracking-tight text-(--color-ink) truncate">
+      <span className="flex-1 min-w-0 flex flex-col items-start gap-0.5">
+        <span className="text-base font-extrabold tracking-tight text-(--color-ink) line-clamp-2 wrap-break-word">
           {merchant.name}
         </span>
         <span className="text-xs font-semibold text-(--color-hint)">
           {t("merchantForm.telegramId")} {merchant.telegramId}
         </span>
+        <MerchantOwnerStatus owner={merchant.owner} />
+        <span className="mt-1">
+          <StatusBadge
+            active={merchant.isActive}
+            label={t(merchant.isActive ? "admin.venues.active" : "admin.venues.inactive")}
+          />
+        </span>
       </span>
-
-      <StatusBadge
-        active={merchant.isActive}
-        label={t(merchant.isActive ? "admin.venues.active" : "admin.venues.inactive")}
-      />
 
       <ChevronRight size={17} color="var(--color-hint)" />
     </button>

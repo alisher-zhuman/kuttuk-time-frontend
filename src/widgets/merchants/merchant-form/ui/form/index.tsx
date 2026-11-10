@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 
 import { useMainButton } from "@shared/hooks";
-import { ActiveToggle, Input } from "@shared/ui";
+import { ActiveToggle, Input, Textarea } from "@shared/ui";
 
 import { useMerchantForm } from "../../hooks/useMerchantForm";
+import { NOTE_MAX_LENGTH } from "../../model/schemas";
 import type { MerchantFormVariant } from "../../model/types";
 import { MerchantFormTelegramId } from "../telegram-id-field";
 
@@ -40,6 +41,22 @@ export const MerchantForm = ({ variant }: Props) => {
       />
 
       <MerchantFormTelegramId register={register} errors={errors} />
+
+      <Textarea
+        label={t("merchantForm.payoutDetails")}
+        placeholder={t("merchantForm.payoutDetailsPlaceholder")}
+        maxLength={NOTE_MAX_LENGTH}
+        error={errors.payoutDetails?.message && t(errors.payoutDetails.message, { max: NOTE_MAX_LENGTH })}
+        {...register("payoutDetails")}
+      />
+
+      <Textarea
+        label={t("merchantForm.contact")}
+        placeholder={t("merchantForm.contactPlaceholder")}
+        maxLength={NOTE_MAX_LENGTH}
+        error={errors.contact?.message && t(errors.contact.message, { max: NOTE_MAX_LENGTH })}
+        {...register("contact")}
+      />
 
       {!isCreate && (
         <ActiveToggle

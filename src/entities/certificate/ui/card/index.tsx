@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 
 import { cn, formatDate, formatMoney, logoUrl } from "@shared/helpers";
 
-import { getCertificateDate } from "../../model/date";
+import { getCertificateDate, isUsable } from "../../model/date";
 import type { Certificate } from "../../model/types";
 import { CertificateCode } from "../code";
 
@@ -13,14 +13,14 @@ interface Props {
   // The first cards are on screen at once (the page's LCP): load their logo
   // right away; the rest lazily.
   priority?: boolean;
-  // Only active certificates open - used/expired have nothing to act on.
+  // Only usable certificates open - used / expired / gifted have nothing to act on.
   onOpen?: (() => void) | undefined;
 }
 
 export const CertificateCard = ({ certificate, onOpen, priority = false }: Props) => {
   const { t } = useTranslation();
 
-  const { venue, amount, code, status } = certificate;
+  const { venue, amount, code } = certificate;
 
   const { key, date } = getCertificateDate(certificate);
 
@@ -54,7 +54,7 @@ export const CertificateCard = ({ certificate, onOpen, priority = false }: Props
     <div
       className={cn(
         "flex flex-col gap-3 p-3 bg-(--color-card) rounded-2xl border border-(--color-line)",
-        status !== "active" && "opacity-55"
+        !isUsable(certificate) && "opacity-55"
       )}
     >
       {onOpen ? (
@@ -69,7 +69,14 @@ export const CertificateCard = ({ certificate, onOpen, priority = false }: Props
         <div className="flex items-center gap-3">{header}</div>
       )}
 
-      <CertificateCode code={code} caption={t(key, { date: formatDate(date) })} />
+      {/* Given away: the code is the friend's now - nothing to copy or show. */}
+      {certificate.giftedAt ? (
+        <span className="text-xs font-semibold text-(--color-hint)">
+          {t(key, { date: formatDate(date) })}
+        </span>
+      ) : (
+        <CertificateCode code={code} caption={t(key, { date: formatDate(date) })} />
+      )}
     </div>
   );
 };

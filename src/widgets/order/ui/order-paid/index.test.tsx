@@ -31,4 +31,22 @@ describe("the paid order screen", () => {
     expect(screen.queryByRole("img", { name: "Покажите QR на кассе" })).not.toBeInTheDocument();
     expect(mainButton()?.["is_visible"]).not.toBe(true);
   });
+
+  it("a certificate given away: «Подарен», no code, QR or «Подарить»", async () => {
+    renderWithProviders(<OrderPaid order={paid(fixtures.orders.paidGifted)} venueName="Coffeeroom" />);
+
+    expect(await screen.findByText("Подарен 10.11.2026")).toBeInTheDocument();
+    expect(screen.queryByText("0471 8263")).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "Покажите QR на кассе" })).not.toBeInTheDocument();
+    expect(mainButton()?.["is_visible"]).not.toBe(true);
+  });
+
+  it("explains «Подарить» while it sends the claimable card", async () => {
+    renderWithProviders(<OrderPaid order={paid(fixtures.orders.paid)} venueName="Coffeeroom" />);
+
+    expect(await screen.findByText("Друг нажмёт «Забрать подарок» - и сертификат будет у него")).toBeInTheDocument();
+    expect(
+      screen.getByText("Отправили не тому? Подарите ещё раз - старая ссылка перестанет работать")
+    ).toBeInTheDocument();
+  });
 });

@@ -102,3 +102,47 @@ test("an admin marks a merchant's week as paid out", async ({ app, page }) => {
   });
   await expect.poll(async () => JSON.stringify(await app.calls("web_app_open_popup"))).toContain("27 сом");
 });
+
+test("a friend opens the gift link, claims it and finds it in «Мои сертификаты»", async ({ app, page }) => {
+  let claimed = false;
+
+  await app.open("/", {
+    startParam: `gift_${fixtures.GIFT_TOKEN}`,
+    routes: ({ path, method }) => {
+      if (path === `/gifts/${fixtures.GIFT_TOKEN}`) return [200, fixtures.gift(claimed ? "received" : "available")];
+      if (path === `/gifts/${fixtures.GIFT_TOKEN}/claim` && method === "POST") {
+        claimed = true;
+        return [200, fixtures.claimedCertificate];
+      }
+      if (path === "/certificates/my") return [200, claimed ? [fixtures.claimedCertificate] : []];
+      return undefined;
+    }
+  });
+
+  await expect(page).toHaveURL(new RegExp(`/app/gifts/${fixtures.GIFT_TOKEN}`));
+  await expect(page.getByText("Вам подарок")).toBeVisible();
+  await expect.poll(async () => (await app.mainButton())?.text).toBe("Забрать подарок");
+  await app.pressMainButton();
+
+  // The certificate is the friend's now: its code and QR for the counter.
+  await expect(page).toHaveURL(/\/app\/certificates\/c7/);
+  await expect(page.getByText("7777 8888")).toBeVisible();
+  await expect(page.getByRole("img", { name: "Покажите QR на кассе" })).toBeVisible();
+  expect(app.sent).toContainEqual(expect.objectContaining({ method: "POST", path: `/gifts/${fixtures.GIFT_TOKEN}/claim` }));
+
+  await page.goto(`/app/profile${new URL(page.url()).hash}`);
+  await expect(page.getByText("7777 8888")).toBeVisible();
+});
+
+test("the giver sees the claimed certificate as «Подарен», without its code or QR", async ({ app, page }) => {
+  await app.open("/app/profile", {
+    routes: ({ path }) => {
+      if (path === "/certificates/my") return [200, [fixtures.giftedCertificate("active")]];
+      return undefined;
+    }
+  });
+
+  await expect(page.getByText("Подарен 10.11.2026")).toBeVisible();
+  await expect(page.getByText("5555 6666")).toHaveCount(0);
+  await expect(page.getByRole("img", { name: "Покажите QR на кассе" })).toHaveCount(0);
+});

@@ -2,7 +2,9 @@ import { api } from "@shared/api";
 import { API_PATHS } from "@shared/constants";
 
 import {
+  CertificateSchema,
   CertificatesSchema,
+  GiftSchema,
   MerchantCertificatePageSchema,
   MerchantCertificateSchema,
   PreparedGiftSchema
@@ -56,4 +58,19 @@ export const prepareGift = async (id: string) => {
   const response = await api.post(`${API_PATHS.CERTIFICATES}/${id}/share`);
 
   return PreparedGiftSchema.parse(response.data);
+};
+
+const giftPath = (token: string) => `${API_PATHS.GIFTS}/${encodeURIComponent(token)}`;
+
+export const getGift = async (token: string) => {
+  const response = await api.get(giftPath(token));
+
+  return GiftSchema.parse(response.data);
+};
+
+// The same person again gets the same 200 - safe to repeat.
+export const claimGift = async (token: string) => {
+  const response = await api.post(`${giftPath(token)}/claim`);
+
+  return CertificateSchema.parse(response.data);
 };

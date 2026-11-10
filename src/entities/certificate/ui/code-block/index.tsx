@@ -13,13 +13,18 @@ interface Props {
 
 // The buyer's view of one certificate's code: its status if no longer valid,
 // the code with its one relevant date, and the QR for the counter - only while
-// active (a QR of a used code would invite a pointless scan).
+// active (a QR of a used code would invite a pointless scan). Given away and
+// claimed: only «Подарен <date>» - the code is the friend's now.
 export const CertificateCodeBlock = ({ certificate }: Props) => {
   const { t } = useTranslation();
 
   const { key, date } = getCertificateDate(certificate);
 
   const isActive = certificate.status === "active";
+
+  if (certificate.giftedAt) {
+    return <StatusBadge active={false} label={t(key, { date: formatDate(date) })} />;
+  }
 
   return (
     <>

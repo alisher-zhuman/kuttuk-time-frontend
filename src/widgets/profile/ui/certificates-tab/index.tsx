@@ -5,6 +5,7 @@ import { Gift } from "lucide-react";
 import {
   CertificateCard,
   CertificateCardSkeleton,
+  isUsable,
   useMyCertificatesQuery
 } from "@entities/certificate";
 
@@ -68,7 +69,7 @@ export const CertificatesTab = () => {
             certificate={certificate}
             priority={index < ABOVE_THE_FOLD}
             onOpen={
-              certificate.status === "active"
+              isUsable(certificate)
                 ? () => {
                     haptic.light();
                     navigateTo(getCertificateRoute(certificate.id));

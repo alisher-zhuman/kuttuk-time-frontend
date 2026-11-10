@@ -10,7 +10,10 @@ const OrderCertificateBaseSchema = z.object({
   // For «Подарить» (POST /certificates/:id/share) right from the order screen.
   id: z.string(),
   code: z.string(),
-  validUntil: z.string()
+  validUntil: z.string(),
+  // The buyer gave it away and a friend claimed it (../backend
+  // orders.service.ts: the key only then) - shown as «Подарен», no code / QR.
+  giftedAt: z.string().optional()
 });
 
 // The effective status (../backend src/orders/orders.service.ts): an order

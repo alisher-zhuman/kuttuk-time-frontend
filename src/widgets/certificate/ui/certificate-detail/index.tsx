@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import {
   type Certificate,
   CertificateCodeBlock,
+  CertificateGiftHint,
+  isUsable,
   useCertificateShareButton
 } from "@entities/certificate";
 
@@ -15,17 +17,16 @@ interface Props {
 export const CertificateDetail = ({ certificate }: Props) => {
   const { t } = useTranslation();
 
-  const { venue, amount, code, status } = certificate;
+  const { venue, amount, code } = certificate;
 
-  const isActive = status === "active";
-
-  // Sharing a used/expired code would only mislead the recipient.
-  useCertificateShareButton({
+  // Sharing a used / expired / already given code would only mislead the
+  // recipient.
+  const { canGift } = useCertificateShareButton({
     id: certificate.id,
     code,
     amount,
     venueName: venue.name,
-    hidden: !isActive
+    hidden: !isUsable(certificate)
   });
 
   return (
@@ -46,6 +47,8 @@ export const CertificateDetail = ({ certificate }: Props) => {
       </div>
 
       <CertificateCodeBlock certificate={certificate} />
+
+      {canGift && <CertificateGiftHint />}
     </div>
   );
 };

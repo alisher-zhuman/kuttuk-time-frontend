@@ -2,6 +2,7 @@ import { type ComponentType } from "react";
 import { createBrowserRouter } from "react-router";
 
 import { CertificatePage } from "@pages/certificate";
+import { GiftPage } from "@pages/gift";
 import { HomePage } from "@pages/home";
 import { NotFoundPage } from "@pages/not-found";
 import { OrderPage } from "@pages/order";
@@ -57,6 +58,10 @@ export const ROUTER = createBrowserRouter([
       {
         path: ROUTE_PATTERNS.CERTIFICATE,
         element: <CertificatePage />
+      },
+      {
+        path: ROUTE_PATTERNS.GIFT,
+        element: <GiftPage />
       },
       {
         element: <RequireRole role="admin" />,

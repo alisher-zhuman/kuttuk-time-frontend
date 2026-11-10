@@ -1,5 +1,12 @@
 export { API_PATHS } from "./api-paths";
-export { BOT_URL, getVenueShareLink, ORDER_START_PARAM_PREFIX, SUPPORT_URL } from "./base";
+export {
+  BOT_URL,
+  getVenueShareLink,
+  GIFT_START_PARAM_PREFIX,
+  MY_CERTIFICATES_START_PARAM,
+  ORDER_START_PARAM_PREFIX,
+  SUPPORT_URL
+} from "./base";
 export { API_URL } from "./env";
 export {
   DEFAULT_LANGUAGE,
@@ -18,6 +25,7 @@ export {
   getAdminVenueEditRoute,
   getCategoryEditRoute,
   getCertificateRoute,
+  getGiftRoute,
   getHomeRoute,
   getOrderRoute,
   getOwnVenueEditRoute,

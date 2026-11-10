@@ -8,6 +8,7 @@ export const ROUTES = {
   PAYOUTS: "payouts",
   CATEGORIES: "categories",
   CERTIFICATES: "certificates",
+  GIFTS: "gifts",
   CATEGORY_CREATE: "category-create",
   CATEGORY_EDIT: "category-edit",
   MERCHANT_CREATE: "merchant-create",
@@ -25,6 +26,7 @@ export const ROUTE_PATTERNS = {
   VENUE: `/${ROUTES.APP}/${ROUTES.VENUES}/:handle`,
   ORDER: `/${ROUTES.APP}/${ROUTES.ORDERS}/:orderId`,
   CERTIFICATE: `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/:certificateId`,
+  GIFT: `/${ROUTES.APP}/${ROUTES.GIFTS}/:token`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
   MERCHANT_VENUE_EDIT: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.VENUES}/:venueId/${ROUTES.EDIT}`,
   MERCHANT_SUMMARY: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.SUMMARY}`,
@@ -53,6 +55,8 @@ export const getOrderRoute = (orderId: string) =>
 
 export const getCertificateRoute = (certificateId: string) =>
   `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/${certificateId}`;
+
+export const getGiftRoute = (token: string) => `/${ROUTES.APP}/${ROUTES.GIFTS}/${token}`;
 
 export const getOwnVenueEditRoute = (venueId: string | number) =>
   `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.VENUES}/${venueId}/${ROUTES.EDIT}`;

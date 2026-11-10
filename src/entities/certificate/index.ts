@@ -1,4 +1,6 @@
 export { useCertificateShareButton } from "./hooks/useCertificateShareButton";
+export { useClaimGiftMutation } from "./hooks/useClaimGiftMutation";
+export { useGiftQuery } from "./hooks/useGiftQuery";
 export { useMerchantCertificateQuery } from "./hooks/useMerchantCertificateQuery";
 export { useMerchantCertificatesQuery } from "./hooks/useMerchantCertificatesQuery";
 export { useMyCertificatesQuery } from "./hooks/useMyCertificatesQuery";
@@ -8,12 +10,14 @@ export {
   formatCertificateCode,
   toCertificateCodeDigits
 } from "./model/code";
-export { getCertificateDate } from "./model/date";
+export { getCertificateDate, isUsable } from "./model/date";
+export { isGiftConflict, isGiftNotFound } from "./model/gift-errors";
 export { certificateKeys } from "./model/keys";
 export { getRedemptionErrorKey, isRedeemConflict } from "./model/redemption-errors";
-export type { Certificate, CertificateStatus, MerchantCertificate } from "./model/types";
+export type { Certificate, CertificateStatus, Gift, MerchantCertificate } from "./model/types";
 export { CertificateCard } from "./ui/card";
 export { CertificateCardSkeleton } from "./ui/card-skeleton";
 export { CertificateCode } from "./ui/code";
 export { CertificateCodeBlock } from "./ui/code-block";
+export { CertificateGiftHint } from "./ui/gift-hint";
 export { CertificateQr } from "./ui/qr";

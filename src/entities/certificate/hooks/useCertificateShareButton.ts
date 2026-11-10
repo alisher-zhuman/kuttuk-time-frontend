@@ -25,9 +25,10 @@ interface Options {
 }
 
 // MainButton for an active certificate.
-// "Подарить" (Mini Apps 8.0+): the backend prepares a card (venue, amount, code,
-// "Open <venue>" / "Copy code" buttons), shareMessage sends it from the buyer
-// to the chat they pick, and the Mini App stays open.
+// "Подарить" (Mini Apps 8.0+): the backend prepares a card (the code's QR,
+// «Забрать подарок» / «Скопировать код» buttons), shareMessage sends it from
+// the buyer to the private chat they pick, and the Mini App stays open. A new
+// card replaces the previous unclaimed «Забрать подарок» link.
 // Older clients: "Поделиться" - a text via shareURL, which closes the Mini App,
 // so it's offered only where the code is already on screen to copy first.
 export const useCertificateShareButton = ({
@@ -114,4 +115,7 @@ export const useCertificateShareButton = ({
     loading: isPending,
     hidden: hidden || (!canGift && !shareURL.isAvailable())
   });
+
+  // The screen explains «Подарить» only where it sends the claimable card.
+  return { canGift: canGift && !hidden };
 };

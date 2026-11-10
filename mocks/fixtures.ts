@@ -22,6 +22,14 @@ export const orders = {
     paidAt: "2026-10-21T04:30:00.000Z",
     certificate: { id: "c1", code: "04718263", validUntil: "2027-10-21T04:30:00.000Z", status: "active" }
   },
+  // The buyer gave the certificate away and a friend claimed it.
+  paidGifted: {
+    ...orderBase,
+    status: "paid",
+    paymentUrl: null,
+    paidAt: "2026-10-21T04:30:00.000Z",
+    certificate: { id: "c1", code: "04718263", validUntil: "2027-10-21T04:30:00.000Z", status: "active", giftedAt: "2026-11-10T06:00:00.000Z" }
+  },
   paidUsed: {
     ...orderBase,
     status: "paid",
@@ -55,6 +63,39 @@ export const myCertificates = [
   { id: "c2", code: "11112222", amount: 500, status: "used", validUntil: "2027-10-21T04:30:00.000Z", usedAt: "2026-10-22T08:00:00.000Z", createdAt: "2026-10-21T04:30:00.000Z", venue: venueRef },
   { id: "c3", code: "33334444", amount: 2000, status: "expired", validUntil: "2026-10-01T00:00:00.000Z", createdAt: "2025-10-01T00:00:00.000Z", venue: venueRef }
 ];
+
+// A certificate the caller gave away and a friend claimed: giftedAt, status
+// still the effective one (the friend may have used it).
+export const giftedCertificate = (status: "active" | "used" = "active") => ({
+  id: "c9",
+  code: "55556666",
+  amount: 1000,
+  status,
+  validUntil: "2027-10-21T04:30:00.000Z",
+  createdAt: "2026-10-21T04:30:00.000Z",
+  giftedAt: "2026-11-10T06:00:00.000Z",
+  venue: venueRef,
+  ...(status === "used" ? { usedAt: "2026-11-11T08:00:00.000Z" } : {})
+});
+
+// GET /gifts/:token - src/certificates/gifts.service.ts. No code.
+export const GIFT_TOKEN = "aB3_dE6-gH9iJ2kL5mN8oP";
+
+export const gift = (
+  state: "available" | "own" | "received" | "claimed" = "available",
+  status: "active" | "used" | "expired" = "active"
+) => ({ state, status, amount: 1000, validUntil: "2027-10-21T04:30:00.000Z", venue: venueRef });
+
+// POST /gifts/:token/claim - the certificate as in /certificates/my, now the caller's.
+export const claimedCertificate = {
+  id: "c7",
+  code: "77778888",
+  amount: 1000,
+  status: "active",
+  validUntil: "2027-10-21T04:30:00.000Z",
+  createdAt: "2026-10-21T04:30:00.000Z",
+  venue: venueRef
+};
 
 // GET /merchants/me/certificates/:code (and POST …/redeem).
 export const merchantCertificate = (status: "active" | "used" | "expired" = "active") => ({

@@ -6,6 +6,8 @@ import { Gift } from "lucide-react";
 
 import {
   CertificateCodeBlock,
+  CertificateGiftHint,
+  isUsable,
   useCertificateShareButton
 } from "@entities/certificate";
 import { type Order } from "@entities/order";
@@ -24,18 +26,23 @@ export const OrderPaid = ({ order, venueName }: Props) => {
 
   const haptic = useHaptic();
 
-  const { id, code, status } = order.certificate;
-
-  // An order reopened later may hold a certificate already used or expired -
-  // then no QR and no «Подарить», like on the certificate screen.
-  const isActive = status === "active";
+  const { id, code } = order.certificate;
 
   // Mounts when polling sees "paid" - the moment the payment lands.
   useEffect(() => {
     haptic.success();
   }, [haptic]);
 
-  useCertificateShareButton({ id, code, amount: order.amount, venueName, hidden: !isActive });
+  // An order reopened later (from the bot's old messages) may hold a
+  // certificate already used, expired or given away - then no QR and no
+  // «Подарить», like on the certificate screen.
+  const { canGift } = useCertificateShareButton({
+    id,
+    code,
+    amount: order.amount,
+    venueName,
+    hidden: !isUsable(order.certificate)
+  });
 
   return (
     <OrderResult
@@ -46,6 +53,8 @@ export const OrderPaid = ({ order, venueName }: Props) => {
       amount={order.amount}
     >
       <CertificateCodeBlock certificate={order.certificate} />
+
+      {canGift && <CertificateGiftHint />}
     </OrderResult>
   );
 };

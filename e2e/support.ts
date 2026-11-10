@@ -8,8 +8,9 @@ type Route = (request: { path: string; method: string; query: URLSearchParams; b
   | [number, unknown]
   | undefined;
 
-// Launch params as Telegram passes them (in the URL hash).
-const launchParams = () =>
+// Launch params as Telegram passes them (in the URL hash); startParam - the
+// link's startapp (order_…, gift_…, a venue slug).
+const launchParams = (startParam?: string) =>
   new URLSearchParams({
     tgWebAppData: new URLSearchParams({
       auth_date: String(Math.floor(Date.now() / 1000)),
@@ -19,7 +20,8 @@ const launchParams = () =>
     }).toString(),
     tgWebAppVersion: "8.0",
     tgWebAppPlatform: "android",
-    tgWebAppThemeParams: JSON.stringify({ bg_color: "#ffffff" })
+    tgWebAppThemeParams: JSON.stringify({ bg_color: "#ffffff" }),
+    ...(startParam ? { tgWebAppStartParam: startParam } : {})
   }).toString();
 
 // The Telegram bridge: records calls, answers the ones that wait for a reply.
@@ -58,7 +60,10 @@ export class MiniApp {
   }
 
   // role: what log-in answers; routes: the rest of the API for this test.
-  async open(path: string, { role = "user", routes }: { role?: string; routes: Route }) {
+  async open(
+    path: string,
+    { role = "user", routes, startParam }: { role?: string; routes: Route; startParam?: string }
+  ) {
     await this.page.addInitScript(installTelegram);
     await this.page.route(`${API}/**`, async (route) => {
       const request = route.request();
@@ -84,7 +89,7 @@ export class MiniApp {
 
       await route.fulfill({ status: answer[0], contentType: "application/json", body: JSON.stringify(answer[1]) });
     });
-    await this.page.goto(`${path}#${launchParams()}`);
+    await this.page.goto(`${path}#${launchParams(startParam)}`);
   }
 
   // The native MainButton: Telegram draws it, so tests read its params and

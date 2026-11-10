@@ -24,6 +24,25 @@ describe("getStartRoute - where a launch lands", () => {
     expect(getStartRoute(startParam, "user")).toBe("/app/venues/sierra-coffee");
   });
 
+  it("opens «Забрать подарок» on startapp=gift_<token>, for any role", () => {
+    const token = "aB3_dE6-gH9iJ2kL5mN8oP";
+
+    expect(getStartRoute(`gift_${token}`, "user")).toBe(`/app/gifts/${token}`);
+    expect(getStartRoute(`gift_${token}`, "merchant")).toBe(`/app/gifts/${token}`);
+    expect(getStartRoute(`gift_${token}`, "admin")).toBe(`/app/gifts/${token}`);
+  });
+
+  it("opens «Мои сертификаты» on startapp=my_certificates, for any role", () => {
+    expect(getStartRoute("my_certificates", "user")).toBe("/app/profile");
+    expect(getStartRoute("my_certificates", "merchant")).toBe("/app/profile");
+    expect(getStartRoute("my_certificates", "admin")).toBe("/app/profile");
+  });
+
+  it("reads a slug that only starts like a prefix as a venue", () => {
+    expect(getStartRoute("giftshop", "user")).toBe("/app/venues/giftshop");
+    expect(getStartRoute("orderly", "user")).toBe("/app/venues/orderly");
+  });
+
   it("sends the admin and the owner to their own home, deep link or not", () => {
     expect(getStartRoute("coffeeroom", "admin")).toBe("/app/admin/venues");
     expect(getStartRoute(undefined, "merchant")).toBe("/app/merchant");

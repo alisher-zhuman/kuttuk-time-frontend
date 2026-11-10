@@ -2,7 +2,14 @@ import { fixtures } from "@mocks";
 import { describe, expect, it } from "vitest";
 
 import { formatCertificateCode, toCertificateCodeDigits } from "./code";
-import { CertificatesSchema, MerchantCertificateSchema, RedeemConflictSchema } from "./schemas";
+import {
+  CertificateSchema,
+  CertificatesSchema,
+  GiftConflictSchema,
+  GiftSchema,
+  MerchantCertificateSchema,
+  RedeemConflictSchema
+} from "./schemas";
 
 describe("CertificatesSchema - GET /certificates/my", () => {
   it("parses active, used and expired certificates", () => {
@@ -14,6 +21,36 @@ describe("CertificatesSchema - GET /certificates/my", () => {
     const { usedAt: _, ...withoutUsedAt } = used!;
 
     expect(CertificatesSchema.safeParse([withoutUsedAt]).success).toBe(false);
+  });
+});
+
+describe("giftedAt - given away and claimed by a friend", () => {
+  it.each(["active", "used"] as const)("keeps giftedAt on a %s certificate", (status) => {
+    const parsed = CertificatesSchema.parse([fixtures.giftedCertificate(status)]);
+
+    expect(parsed[0]?.giftedAt).toBe("2026-11-10T06:00:00.000Z");
+  });
+
+  it("is optional - an own certificate has no key", () => {
+    expect(CertificatesSchema.parse(fixtures.myCertificates)[0]).not.toHaveProperty("giftedAt");
+  });
+});
+
+describe("GiftSchema - GET /gifts/:token", () => {
+  it.each(["available", "own", "received", "claimed"] as const)("parses state %s", (state) => {
+    expect(GiftSchema.safeParse(fixtures.gift(state)).success).toBe(true);
+  });
+
+  it("has no code", () => {
+    expect(GiftSchema.parse(fixtures.gift())).not.toHaveProperty("code");
+  });
+
+  it("the claim answers a certificate as in /certificates/my", () => {
+    expect(CertificateSchema.safeParse(fixtures.claimedCertificate).success).toBe(true);
+  });
+
+  it.each(["own", "already_claimed", "already_used", "expired"])("knows the 409 %s", (error) => {
+    expect(GiftConflictSchema.safeParse({ message: "x", error }).success).toBe(true);
   });
 });
 

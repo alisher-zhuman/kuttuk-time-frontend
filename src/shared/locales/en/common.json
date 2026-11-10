@@ -315,13 +315,29 @@
     "gift": "Gift",
     "giftUnavailable": "The certificate is already used or expired",
     "giftFailed": "That didn't work, please try again",
-    "qrHint": "Show the QR at the counter"
+    "qrHint": "Show the QR at the counter",
+    "gifted": "Gifted {{date}}",
+    "giftedUsed": "Gifted {{date}} · used",
+    "giftedExpired": "Gifted {{date}} · expired",
+    "giftHint": "Your friend taps \"Claim gift\" and the certificate is theirs",
+    "giftResend": "Sent it to the wrong person? Gift it again - the old link will stop working"
   },
   "certificates": {
     "empty": "No certificates yet",
     "toCatalog": "Browse venues",
     "notFound": "Certificate not found",
     "toList": "To certificates"
+  },
+  "gift": {
+    "title": "A gift for you",
+    "claim": "Claim gift",
+    "used": "This certificate has already been used",
+    "expired": "This certificate has expired",
+    "own": "This is your certificate - send the link to a friend",
+    "received": "The gift is already yours",
+    "claimed": "Someone has already claimed this gift",
+    "notFound": "This link no longer works - a new one may have been sent. Ask for it again",
+    "toMyCertificates": "My certificates"
   },
   "orders": {
     "pending": {

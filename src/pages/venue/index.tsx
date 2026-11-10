@@ -16,7 +16,10 @@ export const VenuePage = () => {
   const { venue, isLoading, isError, isNotFound, isFetching, retry } = useVenueQuery(handle);
 
   if (isLoading) return <VenueSkeleton />;
-  if (isError && !isNotFound) return <ErrorState onRetry={retry} isRetrying={isFetching} />;
+  // Before the data check: a refetch after a failed «Купить» can find the
+  // venue gone (404) while the old data is still cached.
+  if (isNotFound) return <VenueNotFound />;
+  if (isError && !venue) return <ErrorState onRetry={retry} isRetrying={isFetching} />;
   if (!venue) return <VenueNotFound />;
 
   return <VenueContent venue={venue} />;

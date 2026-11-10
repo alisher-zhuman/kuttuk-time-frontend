@@ -2,6 +2,9 @@ import { useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
+
 import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
 import { type VenueDetail } from "@entities/venue";
 
@@ -27,6 +30,8 @@ export const VenueContent = ({ venue }: Props) => {
   const haptic = useHaptic();
 
   const showPopup = usePopup();
+
+  const queryClient = useQueryClient();
 
   // The pending flag only lands on the next render, so two taps in the same
   // frame would both see it false and create two orders - guard with a ref.
@@ -64,6 +69,14 @@ export const VenueContent = ({ venue }: Props) => {
         },
         onError: (error) => {
           haptic.error();
+
+          // 400: the nominal was removed or the venue switched off while the
+          // buyer was on the page. Reload it - the page shows today's nominals,
+          // or «not found» - instead of failing every «Купить» the same way.
+          // A literal key: the detail is keyed by language too.
+          if (isAxiosError(error) && error.response?.status === 400) {
+            void queryClient.invalidateQueries({ queryKey: ["venues", "detail"] });
+          }
 
           void showPopup({
             title: t("errors.genericTitle"),

@@ -108,4 +108,108 @@ describe("redeeming by code", () => {
 
     expect(await screen.findByText("Сертификат не найден")).toBeInTheDocument();
   });
+
+  // A bad connection at the counter: the redeem lands, its answer doesn't.
+  const lostAnswer = ({ landed, usedAt = new Date().toISOString() }: { landed: boolean; usedAt?: string }) => {
+    const state = { redeems: 0 };
+
+    server.use(
+      http.get(api(`/merchants/me/certificates/${CODE}`), () =>
+        HttpResponse.json(
+          state.redeems > 0 && landed
+            ? { ...fixtures.merchantCertificate("used"), usedAt }
+            : fixtures.merchantCertificate("active")
+        )
+      ),
+      http.post(api(`/merchants/me/certificates/${CODE}/redeem`), () => {
+        state.redeems += 1;
+        return HttpResponse.error();
+      })
+    );
+
+    return state;
+  };
+
+  it("a lost answer on a redeem that landed: looks it up and shows success, not «Уже погашен»", async () => {
+    lostAnswer({ landed: true });
+    window.__telegram.replies.popup = "redeem";
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
+    await userEvent.click(await screen.findByRole("button", { name: "Погасить" }));
+
+    expect(await screen.findByText("Сертификат погашен")).toBeInTheDocument();
+    expect(screen.queryByText(/Уже погашен/)).not.toBeInTheDocument();
+  });
+
+  it("a lost answer on a redeem that didn't land: says «Нет соединения», «Погасить» stays", async () => {
+    const state = lostAnswer({ landed: false });
+    window.__telegram.replies.popup = "redeem";
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
+    await userEvent.click(await screen.findByRole("button", { name: "Погасить" }));
+
+    await waitFor(() =>
+      expect(window.__telegram.calls.filter((call) => call.name === "web_app_open_popup")).toHaveLength(2)
+    );
+    expect(window.__telegram.last("web_app_open_popup")?.["message"]).toContain("Нет соединения");
+    expect(state.redeems).toBe(1);
+    expect(screen.getByRole("button", { name: "Погасить" })).toBeInTheDocument();
+  });
+
+  it("409 right after a lost answer (used a moment ago): success, not an alarm", async () => {
+    let redeemed = false;
+
+    server.use(
+      http.get(api(`/merchants/me/certificates/${CODE}`), () =>
+        HttpResponse.json(
+          redeemed
+            ? { ...fixtures.merchantCertificate("used"), usedAt: new Date(Date.now() - 30_000).toISOString() }
+            : fixtures.merchantCertificate("active")
+        )
+      ),
+      http.post(api(`/merchants/me/certificates/${CODE}/redeem`), () => {
+        redeemed = true;
+        return HttpResponse.json(fixtures.conflicts.alreadyUsed, { status: 409 });
+      })
+    );
+    window.__telegram.replies.popup = "redeem";
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
+    await userEvent.click(await screen.findByRole("button", { name: "Погасить" }));
+
+    expect(await screen.findByText("Сертификат погашен")).toBeInTheDocument();
+  });
+
+  it("a failed look-up (5xx / no connection) offers «Повторить»", async () => {
+    let failures = 2;
+    server.use(
+      http.get(api(`/merchants/me/certificates/${CODE}`), () => {
+        if (failures > 0) {
+          failures -= 1;
+          return HttpResponse.json({}, { status: 503 });
+        }
+
+        return HttpResponse.json(fixtures.merchantCertificate("active"));
+      })
+    );
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
+    await userEvent.click(await screen.findByRole("button", { name: "Повторить" }, { timeout: 4000 }));
+
+    expect(await screen.findByRole("button", { name: "Погасить" })).toBeInTheDocument();
+  });
+
+  it("no «Повторить» for a code that isn't there (404)", async () => {
+    server.use(http.get(api(`/merchants/me/certificates/${CODE}`), () => HttpResponse.json({}, { status: 404 })));
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
+
+    expect(await screen.findByText("Сертификат не найден")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Повторить" })).not.toBeInTheDocument();
+  });
 });

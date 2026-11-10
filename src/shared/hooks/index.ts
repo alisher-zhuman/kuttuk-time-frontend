@@ -1,5 +1,6 @@
 export {
   useBackButton,
+  useBotMessages,
   useCopyToClipboard,
   useHaptic,
   useHomeScreen,

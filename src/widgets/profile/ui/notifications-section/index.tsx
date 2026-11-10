@@ -1,33 +1,15 @@
-import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
 
 import { Bell, BellRing } from "lucide-react";
 
-import { hasWriteAccess, requestBotMessages } from "@shared/helpers";
-import { useHaptic } from "@shared/hooks";
+import { useBotMessages } from "@shared/hooks";
 
 // Merchant only: the bot can send "new sale" only after the owner allowed it -
 // started the bot, or granted it here. A refusal keeps the button.
 export const NotificationsSection = () => {
-  const [isEnabled, setIsEnabled] = useState(hasWriteAccess);
-  const [isRequesting, setIsRequesting] = useState(false);
-
   const { t } = useTranslation();
 
-  const haptic = useHaptic();
-
-  const handleEnable = async () => {
-    haptic.light();
-    setIsRequesting(true);
-
-    const granted = await requestBotMessages();
-
-    setIsRequesting(false);
-    setIsEnabled(granted);
-
-    if (granted) haptic.success();
-  };
+  const { isAllowed: isEnabled, isRequesting, allow } = useBotMessages();
 
   const Icon = isEnabled ? BellRing : Bell;
 
@@ -52,7 +34,7 @@ export const NotificationsSection = () => {
           <button
             type="button"
             disabled={isRequesting}
-            onClick={() => void handleEnable()}
+            onClick={() => void allow()}
             className="shrink-0 px-3.5 py-2 rounded-full bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer disabled:opacity-60"
           >
             {t("merchant.notifications.enable")}

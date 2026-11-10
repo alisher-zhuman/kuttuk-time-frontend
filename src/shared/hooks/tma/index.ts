@@ -1,4 +1,5 @@
 export { useBackButton } from "./useBackButton";
+export { useBotMessages } from "./useBotMessages";
 export { useCopyToClipboard } from "./useCopyToClipboard";
 export { useHaptic } from "./useHaptic";
 export { useHomeScreen } from "./useHomeScreen";

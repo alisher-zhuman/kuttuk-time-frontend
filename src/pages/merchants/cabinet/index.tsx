@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Store } from "lucide-react";
 
+import { SaleNotificationsBanner } from "@widgets/merchants/sale-notifications";
 import { VenueDetail, VenueDetailSkeleton } from "@widgets/venues/venue-detail";
 
 import { useCategoriesQuery } from "@entities/category";
@@ -31,6 +32,8 @@ export const MerchantCabinetPage = () => {
       {/* Deactivated: the backend rejects edits with 403, so explain why
           instead of offering an edit that can only fail. */}
       {!merchant.isActive && <MerchantDeactivatedNotice />}
+
+      <SaleNotificationsBanner />
 
       {merchant.venues.length === 0 ? (
         <EmptyState

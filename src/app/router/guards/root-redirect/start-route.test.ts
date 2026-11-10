@@ -43,8 +43,13 @@ describe("getStartRoute - where a launch lands", () => {
     expect(getStartRoute("orderly", "user")).toBe("/app/venues/orderly");
   });
 
-  it("sends the admin and the owner to their own home, deep link or not", () => {
-    expect(getStartRoute("coffeeroom", "admin")).toBe("/app/admin/venues");
+  it("opens a venue link on the storefront for the owner and the admin too", () => {
+    expect(getStartRoute("coffeeroom", "merchant")).toBe("/app/venues/coffeeroom");
+    expect(getStartRoute("coffeeroom", "admin")).toBe("/app/venues/coffeeroom");
+  });
+
+  it("sends the admin and the owner to their own home without a link", () => {
+    expect(getStartRoute(undefined, "admin")).toBe("/app/admin/venues");
     expect(getStartRoute(undefined, "merchant")).toBe("/app/merchant");
   });
 

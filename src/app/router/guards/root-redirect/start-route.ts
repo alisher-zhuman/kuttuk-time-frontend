@@ -9,11 +9,12 @@ import {
   type ViewMode
 } from "@shared/constants";
 
-// Where a launch lands. Personal links come first, for any role - anyone can
-// buy, be gifted or get a reminder: startapp=order_<uuid> (back from Finik) →
-// that order, gift_<token> → «Забрать подарок», my_certificates → «Мои
-// сертификаты». Otherwise the admin and the owner open their own home, and a
-// buyer the venue from startapp=<handle> or the catalog.
+// Where a launch lands. Every link opens what it points to, for any role -
+// anyone can buy, be gifted or get a reminder, and an owner checking their own
+// venue link must see the storefront, not the cabinet: order_<uuid> (back from
+// Finik) → that order, gift_<token> → «Забрать подарок», my_certificates →
+// «Мои сертификаты», any other value → the venue by its handle. Without a link
+// the admin and the owner open their own home, a buyer the catalog.
 export const getStartRoute = (startParam: string | undefined, viewMode: ViewMode) => {
   if (startParam?.startsWith(ORDER_START_PARAM_PREFIX)) {
     return getOrderRoute(startParam.slice(ORDER_START_PARAM_PREFIX.length));
@@ -26,8 +27,10 @@ export const getStartRoute = (startParam: string | undefined, viewMode: ViewMode
   // The profile opens on its certificates tab.
   if (startParam === MY_CERTIFICATES_START_PARAM) return ROUTE_PATTERNS.PROFILE;
 
+  if (startParam) return getVenueRoute(startParam);
+
   if (viewMode === "admin") return ROUTE_PATTERNS.ADMIN_VENUES;
   if (viewMode === "merchant") return ROUTE_PATTERNS.MERCHANT_HOME;
 
-  return startParam ? getVenueRoute(startParam) : ROUTE_PATTERNS.HOME;
+  return ROUTE_PATTERNS.HOME;
 };

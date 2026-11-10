@@ -26,7 +26,7 @@ export const CertificateCode = ({ code, caption, size = "md" }: Props) => {
   const copyToClipboard = useCopyToClipboard();
 
   const handleCopy = async (event: MouseEvent) => {
-    // The code can sit inside a tappable card — copying shouldn't open it.
+    // The code can sit inside a tappable card - copying shouldn't open it.
     event.stopPropagation();
     haptic.light();
 

@@ -31,7 +31,7 @@ export const redeemMerchantCertificate = async (code: string) => {
   return MerchantCertificateSchema.parse(response.data);
 };
 
-// limit is left to the backend (default 50); the cursor is opaque — only ever
+// limit is left to the backend (default 50); the cursor is opaque - only ever
 // the previous page's nextCursor.
 export const getMerchantCertificates = async (
   status: CertificateStatus | null,

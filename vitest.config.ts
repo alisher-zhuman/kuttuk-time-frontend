@@ -3,7 +3,7 @@ import { defineConfig, mergeConfig } from "vitest/config";
 
 import viteConfig from "./vite.config";
 
-// The app's aliases and plugins come from vite.config — one source of truth.
+// The app's aliases and plugins come from vite.config - one source of truth.
 export default mergeConfig(
   viteConfig,
   defineConfig({
@@ -19,7 +19,7 @@ export default mergeConfig(
       // Colocated unit / component tests only; e2e/ is Playwright's.
       include: ["src/**/*.test.{ts,tsx}"],
       setupFiles: ["./vitest.setup.ts"],
-      // A fake origin: nothing is ever fetched from it — MSW fails any request
+      // A fake origin: nothing is ever fetched from it - MSW fails any request
       // a test doesn't answer.
       env: { VITE_API_URL: "http://api.test/api" },
       // describe / it / expect are imported explicitly.

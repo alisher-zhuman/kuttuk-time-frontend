@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { QrCode } from "@shared/ui";
 
 interface Props {
-  // The 8 digits as stored — no spaces, so the cashier's scanner gets a code.
+  // The 8 digits as stored - no spaces, so the cashier's scanner gets a code.
   code: string;
 }
 

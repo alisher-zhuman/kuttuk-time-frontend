@@ -11,7 +11,7 @@ export const encodeQr = (value: string) => {
   return { size: qr.size, path, modules: qr.data };
 };
 
-// The QR as a black-on-white PNG file — for printing.
+// The QR as a black-on-white PNG file - for printing.
 export const downloadQrPng = (value: string, fileName: string) => {
   const MODULE_PX = 16;
 

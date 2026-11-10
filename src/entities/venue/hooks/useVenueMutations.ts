@@ -10,7 +10,7 @@ import {
 } from "../api";
 
 // Any venue edit changes the buyer catalog / storefront and the merchant views
-// that embed venues (GET /merchants/me, admin merchant detail) — the latter by
+// that embed venues (GET /merchants/me, admin merchant detail) - the latter by
 // literal key: entities don't import each other.
 const invalidateVenueViews = (queryClient: ReturnType<typeof useQueryClient>) => {
   void queryClient.invalidateQueries({ queryKey: ["venues"] });

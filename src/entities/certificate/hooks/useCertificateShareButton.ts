@@ -16,7 +16,7 @@ import { formatCertificateCode } from "../model/code";
 import { RedeemConflictSchema } from "../model/schemas";
 
 interface Options {
-  // The certificate's id — needed for "Подарить"; without it, plain-text share.
+  // The certificate's id - needed for "Подарить"; without it, plain-text share.
   id: string | undefined;
   code: string;
   amount: number;
@@ -28,7 +28,7 @@ interface Options {
 // "Подарить" (Mini Apps 8.0+): the backend prepares a card (venue, amount, code,
 // "Open <venue>" / "Copy code" buttons), shareMessage sends it from the buyer
 // to the chat they pick, and the Mini App stays open.
-// Older clients: "Поделиться" — a text via shareURL, which closes the Mini App,
+// Older clients: "Поделиться" - a text via shareURL, which closes the Mini App,
 // so it's offered only where the code is already on screen to copy first.
 export const useCertificateShareButton = ({
   id,
@@ -47,10 +47,10 @@ export const useCertificateShareButton = ({
 
   const canGift = id !== undefined && shareMessage.isAvailable();
 
-  // A new card per tap — it expires, so never cached.
+  // A new card per tap - it expires, so never cached.
   const { mutate: gift, isPending } = useMutation({ mutationFn: prepareGift });
 
-  // isPending lands a render late — a double tap would prepare two cards and
+  // isPending lands a render late - a double tap would prepare two cards and
   // open the chat picker twice.
   const isGiftingRef = useRef(false);
 
@@ -64,7 +64,7 @@ export const useCertificateShareButton = ({
         isGiftingRef.current = false;
       },
       onSuccess: ({ preparedMessageId }) => {
-        // Rejects when the user closes the chat picker — nothing to do then.
+        // Rejects when the user closes the chat picker - nothing to do then.
         shareMessage(preparedMessageId).then(
           () => haptic.success(),
           () => undefined
@@ -81,7 +81,7 @@ export const useCertificateShareButton = ({
           return;
         }
 
-        // 502: Telegram didn't store the card; anything else — same advice.
+        // 502: Telegram didn't store the card; anything else - same advice.
         void showPopup({ message: t("certificate.giftFailed") });
       }
     });

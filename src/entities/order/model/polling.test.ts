@@ -30,7 +30,7 @@ const state = (overrides: Partial<PollState>): PollState => ({
   ...overrides
 });
 
-describe("isSettled — when polling stops for good", () => {
+describe("isSettled - when polling stops for good", () => {
   it.each([
     ["paid", fixtures.orders.paid],
     ["needs_review", fixtures.orders.needsReview],
@@ -50,16 +50,16 @@ describe("isSettled — when polling stops for good", () => {
   });
 });
 
-describe("hasGivenUp — errors that end polling", () => {
+describe("hasGivenUp - errors that end polling", () => {
   it("never while the last response was fine", () => {
     expect(hasGivenUp(state({ status: "success" }))).toBe(false);
   });
 
-  it("on 404 / 400 — the order isn't ours or doesn't exist", () => {
+  it("on 404 / 400 - the order isn't ours or doesn't exist", () => {
     expect(hasGivenUp(state({ error: httpError(404), errorUpdateCount: 1 }))).toBe(true);
   });
 
-  it("on a response that doesn't match the schema — it won't fix itself", () => {
+  it("on a response that doesn't match the schema - it won't fix itself", () => {
     expect(hasGivenUp(state({ error: new ZodError([]), errorUpdateCount: 1 }))).toBe(true);
   });
 

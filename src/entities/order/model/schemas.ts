@@ -35,12 +35,12 @@ export const isOrderStatus = (value: unknown): value is (typeof ORDER_STATUSES)[
 
 // GET /orders/:id (../backend/src/orders/orders.service.ts `findOwn`) always
 // sends paymentUrl / paidAt / certificate, with null where the status has no
-// value. Each variant lists only the fields its status guarantees — z.object
+// value. Each variant lists only the fields its status guarantees - z.object
 // strips the rest, so those nulls never reach the type or the components.
 export const OrderSchema = z.discriminatedUnion("status", [
   OrderBaseSchema.extend({
     status: z.literal("pending"),
-    // Set right after Finik returns it, before POST /orders responds — so any
+    // Set right after Finik returns it, before POST /orders responds - so any
     // order a client knows about has it while pending.
     paymentUrl: z.string()
   }),
@@ -48,7 +48,7 @@ export const OrderSchema = z.discriminatedUnion("status", [
     status: z.literal("paid"),
     paidAt: z.string(),
     // Created by the Finik webhook in the same transaction that marks the
-    // order paid (also when a needs_review order is honoured by hand — the
+    // order paid (also when a needs_review order is honoured by hand - the
     // other manual outcome of needs_review is refunded).
     certificate: OrderCertificateSchema
   }),
@@ -76,13 +76,13 @@ export const isOrderId = (value: unknown): value is string =>
 
 // GET /admin/orders and /admin/orders/:id (../backend src/orders/admin-orders.service.ts).
 // Status-dependent keys come only when set (never null): paidAt once the money
-// arrived, certificateCode once a certificate exists — that's paid.
+// arrived, certificateCode once a certificate exists - that's paid.
 const AdminOrderBaseSchema = z.object({
   id: z.string(),
   amount: z.number(),
   createdAt: z.string(),
   venue: z.object({ id: z.number(), name: z.string() }),
-  // The venue's owner at the moment of the sale — the one it's paid out to.
+  // The venue's owner at the moment of the sale - the one it's paid out to.
   merchant: z.object({ id: z.number(), name: z.string() })
 });
 
@@ -97,7 +97,7 @@ export const AdminOrderSchema = z.discriminatedUnion("status", [
     payoutId: z.string().optional()
   }),
   AdminOrderBaseSchema.extend({ status: z.literal("needs_review"), paidAt: z.string() }),
-  // Refunded comes out of needs_review by hand — paidAt is expected but not
+  // Refunded comes out of needs_review by hand - paidAt is expected but not
   // worth failing the whole list over.
   AdminOrderBaseSchema.extend({ status: z.literal("refunded"), paidAt: z.string().optional() })
 ]);
@@ -124,7 +124,7 @@ const AdminOrderExtraSchema = z.object({
     .optional(),
   // Every Finik webhook for the order, oldest first. `result` is
   // finik_webhook_events.result (nullable column); `amount` is read raw from
-  // Finik's JSON body, so its type isn't guaranteed — normalized to a number or
+  // Finik's JSON body, so its type isn't guaranteed - normalized to a number or
   // null here, where an amount mismatch (needs_review) is what matters.
   webhooks: z.array(
     z.object({

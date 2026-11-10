@@ -17,7 +17,7 @@ init();
 interface Options {
   // The URL the component is rendered at.
   route?: string;
-  // The pattern it matches — for a component reading useParams.
+  // The pattern it matches - for a component reading useParams.
   path?: string;
   // Russian by default: the team reads ru; kg is asked for explicitly.
   language?: string;

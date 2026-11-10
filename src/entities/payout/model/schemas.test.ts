@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { AmountChangedSchema, NothingToPayOutSchema, PayoutWeekSchema } from "./schemas";
 
-describe("PayoutWeekSchema — GET /admin/payouts", () => {
+describe("PayoutWeekSchema - GET /admin/payouts", () => {
   it("parses a week with progress and recorded payouts", () => {
     const week = fixtures.payoutWeek();
     const withMarks = {

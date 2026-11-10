@@ -6,7 +6,7 @@ export interface AuthState {
   accessToken: string | null;
   role: UserRole | null;
   isReady: boolean;
-  // initData rejected by log-in (401, older than 24h) — only a relaunch helps.
+  // initData rejected by log-in (401, older than 24h) - only a relaunch helps.
   isSessionExpired: boolean;
   setAuth: (accessToken: string, role: UserRole) => void;
   clearAuth: () => void;

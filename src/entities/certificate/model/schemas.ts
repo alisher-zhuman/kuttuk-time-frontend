@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// GET /certificates/my — contract agreed ahead of the backend endpoint; the
+// GET /certificates/my - contract agreed ahead of the backend endpoint; the
 // backend implements exactly this shape.
 const CertificateVenueSchema = z.object({
   id: z.number(),
@@ -18,7 +18,7 @@ const CertificateBaseSchema = z.object({
   venue: CertificateVenueSchema
 });
 
-// expired is computed by the backend — the client never compares dates.
+// expired is computed by the backend - the client never compares dates.
 // usedAt exists only once the merchant marked it used.
 export const CertificateSchema = z.discriminatedUnion("status", [
   CertificateBaseSchema.extend({ status: z.literal("active") }),
@@ -31,8 +31,8 @@ export const CertificatesSchema = z.array(CertificateSchema);
 // GET /merchants/me/certificates/:code and POST …/redeem (../backend
 // src/certificates/redemption.service.ts): the merchant's view of its own
 // certificate. Effective status (active past validUntil → expired), usedAt only
-// on used — same rules as the buyer's list.
-// Which of the merchant's venues sold it — one merchant can own several.
+// on used - same rules as the buyer's list.
+// Which of the merchant's venues sold it - one merchant can own several.
 const MerchantCertificateBaseSchema = z.object({
   code: z.string(),
   amount: z.number(),
@@ -53,7 +53,7 @@ export const RedeemConflictSchema = z.object({
   error: z.enum(["already_used", "expired"])
 });
 
-// GET /merchants/me/certificates — newest first, keyset pages. nextCursor is
+// GET /merchants/me/certificates - newest first, keyset pages. nextCursor is
 // opaque (pass it back as cursor); null is the backend's "last page"
 // (MerchantCertificatePage.nextCursor: string | null).
 export const MerchantCertificatePageSchema = z.object({
@@ -61,6 +61,6 @@ export const MerchantCertificatePageSchema = z.object({
   nextCursor: z.string().nullable()
 });
 
-// POST /certificates/:id/share — a card stored with Telegram for shareMessage.
+// POST /certificates/:id/share - a card stored with Telegram for shareMessage.
 // Short-lived: ask for a new one on every tap.
 export const PreparedGiftSchema = z.object({ preparedMessageId: z.string() });

@@ -73,13 +73,13 @@ describe("redeeming by code", () => {
 
   it("sends one redeem for a double tap, even if Telegram opens two confirmations", async () => {
     const state = answer();
-    // The SDK refuses a second popup while one is open — without that, only
+    // The SDK refuses a second popup while one is open - without that, only
     // our own guard stands between a double tap and two redeems.
     vi.spyOn(popup, "show").mockImplementation(() => Promise.resolve("redeem") as ReturnType<typeof popup.show>);
     renderWithProviders(<CodeLookup />);
 
     await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
-    // Both taps in one frame — before isPending can disable the button.
+    // Both taps in one frame - before isPending can disable the button.
     const button = await screen.findByRole("button", { name: "Погасить" });
     fireEvent.click(button);
     fireEvent.click(button);

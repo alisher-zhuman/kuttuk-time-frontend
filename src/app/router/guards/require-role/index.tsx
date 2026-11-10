@@ -11,7 +11,7 @@ interface Props {
 
 // AuthProvider wraps RouterProvider (see app/index.tsx) and blocks rendering
 // until logIn resolves, so `role` is always already settled by the time any
-// route under this guard renders — no loading state to handle here.
+// route under this guard renders - no loading state to handle here.
 // Gates on `role` (real capability), not viewMode (current chrome preference):
 // an admin who toggled to "view as buyer" can still deep-link back into
 // /app/admin/..., only an account that genuinely isn't that role gets bounced.

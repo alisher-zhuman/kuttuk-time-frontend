@@ -26,7 +26,7 @@ export const getOrder = async (id: string, signal: AbortSignal) => {
   return OrderSchema.parse(response.data);
 };
 
-// search: a certificate code (any case / spacing) or an order id — anything
+// search: a certificate code (any case / spacing) or an order id - anything
 // else is a 400 (see isAdminOrderSearchError).
 export const getAdminOrders = async (
   params: { status: OrderStatus | null; search: string; cursor: string | null },

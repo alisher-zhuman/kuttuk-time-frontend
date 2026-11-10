@@ -59,7 +59,7 @@ export const getAdminVenue = async (id: string | number) => {
   return AdminVenueDetailSchema.parse(response.data);
 };
 
-// The storefront fields — what the owner may change on its own venue.
+// The storefront fields - what the owner may change on its own venue.
 export interface VenueStorefrontPayload {
   name: string;
   description: { ru: string; kg: string; en: string };
@@ -90,7 +90,7 @@ export const updateVenue = async (id: number, payload: UpdateVenuePayload) => {
   return AdminVenueDetailSchema.parse(response.data);
 };
 
-// The owner editing one of its venues — storefront only; slug / isActive /
+// The owner editing one of its venues - storefront only; slug / isActive /
 // owner stay with the admin. 404: not own venue, 403: merchant deactivated.
 export const updateOwnVenue = async (venueId: number, payload: VenueStorefrontPayload) => {
   const response = await api.patch(`${API_PATHS.MERCHANTS}/me/venues/${venueId}`, payload);

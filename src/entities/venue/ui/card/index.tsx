@@ -40,7 +40,7 @@ export const VenueCard = ({ venue, priority = false }: Props) => {
     >
       <img
         src={logoUrl(venue.logo, 48)}
-        // The name is right next to it — the logo itself says nothing more.
+        // The name is right next to it - the logo itself says nothing more.
         alt=""
         width={48}
         height={48}

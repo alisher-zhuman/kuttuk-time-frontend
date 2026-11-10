@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 // CLAUDE.md: in components, local state (useState) is declared before other
-// hooks. A test rather than a note — it runs on every push.
+// hooks. A test rather than a note - it runs on every push.
 
 // Components only (.tsx): a hook's own order is dictated by its job.
 const SOURCES = import.meta.glob(["/src/**/*.tsx", "!/src/**/*.test.tsx"], {
@@ -19,13 +19,13 @@ const withoutNoise = (source: string) =>
     .filter((line) => !line.trimStart().startsWith("import"))
     .join("\n");
 
-// `[(<]` — useState( and useState<T>( are the same call.
+// `[(<]` - useState( and useState<T>( are the same call.
 const HOOK_CALL = /\buse[A-Z]\w*\s*[(<]/g;
 
 const hooksOf = (source: string) =>
   [...withoutNoise(source).matchAll(HOOK_CALL)].map((match) => match[0].replace(/\s*[(<]$/, ""));
 
-// Every useState comes before any other hook — the whole order, not just the
+// Every useState comes before any other hook - the whole order, not just the
 // first call (a second useState below useTranslation breaks the rule too).
 const isDisplaced = (hooks: string[]) => {
   const firstOther = hooks.findIndex((hook) => hook !== "useState");

@@ -19,7 +19,7 @@ const isTelegramIdConflict = (error: unknown) =>
   isAxiosError(error) && error.response?.status === 409;
 
 // The edit page gates on the query, so defaultValues are final on the first
-// render — no reset() that could wipe input typed while loading.
+// render - no reset() that could wipe input typed while loading.
 export const useMerchantForm = (variant: MerchantFormVariant) => {
   const navigateTo = useNavigateTo();
 
@@ -54,7 +54,7 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
   const setIsActive = (next: boolean) =>
     setValue("isActive", next, { shouldValidate: true, shouldDirty: true });
 
-  // isPending lands a render late — two taps in one frame would both submit
+  // isPending lands a render late - two taps in one frame would both submit
   // (and create two records).
   const isSubmittingRef = useRef(false);
   const release = () => {
@@ -95,7 +95,7 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
     }
 
     create(payload, {
-      // Straight to the new merchant's page — the next step is adding a venue.
+      // Straight to the new merchant's page - the next step is adding a venue.
       // replace: "back" from there returns to the list, not to this form.
       onSuccess: (created) => {
         haptic.success();
@@ -106,7 +106,7 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
     });
   };
 
-  // handleSubmit runs on tap, not during render — onValid reads the ref.
+  // handleSubmit runs on tap, not during render - onValid reads the ref.
   const submit = () => handleSubmit(onValid)();
 
   return {

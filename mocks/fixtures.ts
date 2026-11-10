@@ -12,7 +12,7 @@ const orderBase = {
   expiresAt: "2026-10-21T05:00:00.000Z"
 };
 
-// GET /orders/:id — src/orders/orders.service.ts findOwn.
+// GET /orders/:id - src/orders/orders.service.ts findOwn.
 export const orders = {
   pending: { ...orderBase, status: "pending", paymentUrl: "https://pay.finik.test/x", paidAt: null, certificate: null },
   paid: {
@@ -49,7 +49,7 @@ export const orders = {
 
 const venueRef = { id: 1, name: "Coffeeroom", slug: "coffeeroom", logo: `${CLOUDINARY}sample.jpg` };
 
-// GET /certificates/my — src/certificates/certificates.service.ts.
+// GET /certificates/my - src/certificates/certificates.service.ts.
 export const myCertificates = [
   { id: "c1", code: "04718263", amount: 1000, status: "active", validUntil: "2027-10-21T04:30:00.000Z", createdAt: "2026-10-21T04:30:00.000Z", venue: venueRef },
   { id: "c2", code: "11112222", amount: 500, status: "used", validUntil: "2027-10-21T04:30:00.000Z", usedAt: "2026-10-22T08:00:00.000Z", createdAt: "2026-10-21T04:30:00.000Z", venue: venueRef },
@@ -67,7 +67,7 @@ export const merchantCertificate = (status: "active" | "used" | "expired" = "act
   ...(status === "used" ? { usedAt: "2026-10-22T08:00:00.000Z" } : {})
 });
 
-// GET /admin/payouts?week= — src/payouts/admin-payouts.service.ts.
+// GET /admin/payouts?week= - src/payouts/admin-payouts.service.ts.
 export const payoutWeek = (due = 27) => ({
   from: "2026-10-19",
   to: "2026-10-25",
@@ -88,7 +88,7 @@ export const payoutWeek = (due = 27) => ({
   needsReviewCount: 0
 });
 
-// GET /admin/orders — src/orders/admin-orders.service.ts (status keys only when set).
+// GET /admin/orders - src/orders/admin-orders.service.ts (status keys only when set).
 export const adminOrder = (id: string, status = "paid") => ({
   id,
   amount: 1000,

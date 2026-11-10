@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const TranslationsSchema = z.object({ ru: z.string(), kg: z.string(), en: z.string() });
 
-// Buyer surface — GET /venues (list) and /venues/:idOrSlug (storefront),
+// Buyer surface - GET /venues (list) and /venues/:idOrSlug (storefront),
 // description resolved to one language via Accept-Language.
 export const VenueSchema = z.object({
   id: z.number(),
@@ -24,7 +24,7 @@ export const VenueDetailSchema = z.object({
 });
 
 // GET /venues/options (no JWT): VALID_NOMINALS / VALID_VALIDITY_MONTHS sorted
-// ascending — the only source of allowed venue values; no frontend list.
+// ascending - the only source of allowed venue values; no frontend list.
 export const VenueOptionsSchema = z.object({
   nominals: z.array(z.number()).nonempty(),
   validityMonths: z.array(z.number()).nonempty(),
@@ -47,7 +47,7 @@ export const ManagedVenueSchema = z.object({
   createdAt: z.string()
 });
 
-// Admin — GET /admin/venues (list) and /admin/venues/:id (+ owner merchantId).
+// Admin - GET /admin/venues (list) and /admin/venues/:id (+ owner merchantId).
 export const AdminVenueSchema = z.object({
   id: z.number(),
   name: z.string(),

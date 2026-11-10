@@ -12,7 +12,7 @@ interface Props {
   venueName: string | undefined;
 }
 
-// Money was taken but the amount didn't match — resolved by hand on the
+// Money was taken but the amount didn't match - resolved by hand on the
 // backend. No technical details for the user, just reassurance and support.
 export const OrderReview = ({ order, venueName }: Props) => {
   const { t } = useTranslation();

@@ -1,5 +1,5 @@
 // Certificate codes are 8 digits (../backend src/certificates/certificate-code.ts),
-// always a string — leading zeros happen ("04718263"), so never Number() them.
+// always a string - leading zeros happen ("04718263"), so never Number() them.
 export const CERTIFICATE_CODE_LENGTH = 8;
 
 // "04718263" → "0471 8263", as in the bot's messages; a partial "047182" →

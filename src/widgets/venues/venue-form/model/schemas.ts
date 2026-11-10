@@ -4,13 +4,13 @@ import type { VenueOptions } from "@entities/venue";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-// Static GET /venues/* routes on the backend (RESERVED_SLUGS) — a venue with
+// Static GET /venues/* routes on the backend (RESERVED_SLUGS) - a venue with
 // such a slug would be unreachable, so the backend rejects it with 400.
 const RESERVED_SLUGS = ["me", "options"];
 
 // Allowed nominals / validity come from the backend, so the schema is built per
 // options response. withAdminFields: slug and owner are validated only when
-// the admin edits them — the owner's form doesn't show or send them.
+// the admin edits them - the owner's form doesn't show or send them.
 // categoryIds: the existing categories, [] while they load (no check then).
 export const createVenueFormSchema = (
   options: VenueOptions,
@@ -43,7 +43,7 @@ export const createVenueFormSchema = (
     categories: z
       .array(z.number())
       .min(1, "venueForm.categoriesRequired")
-      // A category deleted after the venue was saved — the backend rejects it.
+      // A category deleted after the venue was saved - the backend rejects it.
       .refine(
         (values) => categoryIds.length === 0 || values.every((id) => categoryIds.includes(id)),
         { message: "venueForm.categoryRemoved" }

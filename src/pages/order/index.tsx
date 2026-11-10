@@ -27,7 +27,7 @@ export const OrderPage = () => {
     return <OrderNotFound />;
   }
 
-  // Polling gave up on errors — don't leave a loader (or a stale "checking")
+  // Polling gave up on errors - don't leave a loader (or a stale "checking")
   // spinning forever.
   if (isFailed) {
     return <ErrorState onRetry={retry} isRetrying={isFetching} />;
@@ -41,7 +41,7 @@ export const OrderPage = () => {
   // Still polling: pending, or expired within the late-webhook grace window
   // (the backend cron flips pending → expired right at expiresAt, but a late
   // payment can still turn it into paid). Both read as "checking" until
-  // polling settles — showing "expired" first and "paid" a minute later
+  // polling settles - showing "expired" first and "paid" a minute later
   // would be confusing.
   if (!isSettled && (order.status === "pending" || order.status === "expired")) {
     return <OrderPending order={order} venueName={venue?.name} />;

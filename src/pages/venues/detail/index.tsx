@@ -16,7 +16,7 @@ export const VenueDetailPage = () => {
 
   const { venue, isLoading, isError } = useAdminVenueQuery(id);
 
-  // Only for the owner's name — the venue itself carries just merchantId.
+  // Only for the owner's name - the venue itself carries just merchantId.
   const { merchant } = useAdminMerchantQuery(venue ? String(venue.merchantId) : undefined);
 
   const { categories } = useCategoriesQuery();

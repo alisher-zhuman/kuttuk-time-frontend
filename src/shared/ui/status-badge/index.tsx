@@ -12,7 +12,7 @@ const TONES: Record<Tone, string> = {
 
 interface Props {
   label: string;
-  // Active / inactive — the common case; tone overrides it.
+  // Active / inactive - the common case; tone overrides it.
   active?: boolean;
   tone?: Tone;
 }

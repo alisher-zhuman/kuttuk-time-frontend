@@ -6,9 +6,9 @@ import { useSafeArea } from "@shared/hooks";
 interface Props {
   title: string;
   onClose: () => void;
-  // False while a request is in flight — no closing mid-save.
+  // False while a request is in flight - no closing mid-save.
   dismissible?: boolean;
-  // A function gets the animated close — for a "Cancel" button inside.
+  // A function gets the animated close - for a "Cancel" button inside.
   children: ReactNode | ((close: () => void) => ReactNode);
 }
 
@@ -51,7 +51,7 @@ export const BottomSheet = ({ title, onClose, dismissible = true, children }: Pr
   const close = () => {
     if (!dismissible || isClosing) return;
 
-    // Not on screen yet — there's no transition to wait for.
+    // Not on screen yet - there's no transition to wait for.
     if (!isShown) {
       onClose();
       return;

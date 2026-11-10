@@ -12,7 +12,7 @@ interface Props {
   // Shown only for an active certificate.
   onRedeem?: (() => void) | undefined;
   isRedeeming?: boolean;
-  // Just redeemed by this owner — a success line instead of "already used".
+  // Just redeemed by this owner - a success line instead of "already used".
   justRedeemed?: boolean;
 }
 
@@ -44,7 +44,7 @@ export const CertificateCard = ({ certificate, onRedeem, isRedeeming = false, ju
       </div>
 
       <div className="flex flex-col gap-0.5">
-        {/* Which of the owner's venues sold it — a code from any of them is
+        {/* Which of the owner's venues sold it - a code from any of them is
             redeemable at the counter. */}
         <span className="text-base font-bold text-(--color-ink) break-words">
           {certificate.venue.name}

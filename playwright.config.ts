@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 // End-to-end on mocks only: there is no test stand, and logging in needs a
 // Telegram signature. A production build points at a fake API origin, every
 // request to it is answered by page.route (e2e/support.ts), and the Telegram
-// client is a stub — nothing reaches prod or Telegram.
+// client is a stub - nothing reaches prod or Telegram.
 const PORT = 4180;
 
 export default defineConfig({

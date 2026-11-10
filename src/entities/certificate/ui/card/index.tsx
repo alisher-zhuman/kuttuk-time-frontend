@@ -13,7 +13,7 @@ interface Props {
   // The first cards are on screen at once (the page's LCP): load their logo
   // right away; the rest lazily.
   priority?: boolean;
-  // Only active certificates open — used/expired have nothing to act on.
+  // Only active certificates open - used/expired have nothing to act on.
   onOpen?: (() => void) | undefined;
 }
 

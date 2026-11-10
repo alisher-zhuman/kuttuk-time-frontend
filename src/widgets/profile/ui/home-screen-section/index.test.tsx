@@ -10,7 +10,7 @@ const ADD = { name: "Добавить" };
 
 const called = (method: string) => window.__telegram.calls.some((call) => call.name === method);
 
-// Telegram answers on the next tick — let that answer land.
+// Telegram answers on the next tick - let that answer land.
 const telegramAnswered = () => new Promise((resolve) => setTimeout(resolve, 10));
 
 describe("home screen icon for the owner", () => {
@@ -44,7 +44,7 @@ describe("home screen icon for the owner", () => {
     expect(screen.getByRole("button", ADD)).toBeInTheDocument();
   });
 
-  it("no button when the icon is already added — just the note", async () => {
+  it("no button when the icon is already added - just the note", async () => {
     window.__telegram.replies.homeScreen = "added";
     renderWithProviders(<HomeScreenSection />);
 
@@ -61,7 +61,7 @@ describe("home screen icon for the owner", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("nothing on clients without Mini Apps 8.0 — not even the check", () => {
+  it("nothing on clients without Mini Apps 8.0 - not even the check", () => {
     vi.spyOn(checkHomeScreenStatus, "isAvailable").mockReturnValue(false);
     const { container } = renderWithProviders(<HomeScreenSection />);
 

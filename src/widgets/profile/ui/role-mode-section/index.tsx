@@ -11,7 +11,7 @@ interface Props {
 
 // Privileged roles (admin, merchant) get a toggle to preview the app as a plain
 // buyer. One account is never both roles at once, so this is always a binary
-// {user, own role} control — hence the `role` prop instead of a 3-way switch.
+// {user, own role} control - hence the `role` prop instead of a 3-way switch.
 export const RoleModeSection = ({ role }: Props) => {
   const { t } = useTranslation();
 

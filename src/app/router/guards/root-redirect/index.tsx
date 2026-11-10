@@ -8,7 +8,7 @@ import { getStartRoute } from "./start-route";
 
 // A component, not a loader: the redirect target depends on viewMode/role,
 // which is only known after auth resolves. createBrowserRouter runs loaders at
-// router-init time (module load) — before AuthProvider's logIn completes — so a
+// router-init time (module load) - before AuthProvider's logIn completes - so a
 // loader would always read the default "user" mode. A component renders inside
 // the router, i.e. after AuthProvider has unblocked, so viewMode is correct.
 // useLayoutEffect + replace: true redirects before the empty "/" frame paints

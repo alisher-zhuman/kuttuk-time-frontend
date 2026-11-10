@@ -10,7 +10,7 @@ interface Props {
 }
 
 // "All venues" + each of the owner's venues. Renders nothing for a single
-// venue — there is nothing to narrow down.
+// venue - there is nothing to narrow down.
 export const VenueFilter = ({ active, onChange }: Props) => {
   const { t } = useTranslation();
 

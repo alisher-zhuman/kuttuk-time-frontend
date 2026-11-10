@@ -26,11 +26,11 @@ export const OrderPaid = ({ order, venueName }: Props) => {
 
   const { id, code, status } = order.certificate;
 
-  // An order reopened later may hold a certificate already used or expired —
+  // An order reopened later may hold a certificate already used or expired -
   // then no QR and no «Подарить», like on the certificate screen.
   const isActive = status === "active";
 
-  // Mounts when polling sees "paid" — the moment the payment lands.
+  // Mounts when polling sees "paid" - the moment the payment lands.
   useEffect(() => {
     haptic.success();
   }, [haptic]);

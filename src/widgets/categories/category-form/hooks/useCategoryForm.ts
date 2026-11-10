@@ -16,7 +16,7 @@ import { CategoryFormSchema } from "../model/schemas";
 import type { CategoryFormValues } from "../model/types";
 
 // Edit mode receives an already-loaded category (the page gates on the query),
-// so defaultValues are final on the first render — no reset() racing user input.
+// so defaultValues are final on the first render - no reset() racing user input.
 export const useCategoryForm = (category?: AdminCategory) => {
   const navigateTo = useNavigateTo();
 
@@ -42,7 +42,7 @@ export const useCategoryForm = (category?: AdminCategory) => {
     }
   });
 
-  // isPending lands a render late — two taps in one frame would both submit
+  // isPending lands a render late - two taps in one frame would both submit
   // (and create two records).
   const isSubmittingRef = useRef(false);
   const release = () => {
@@ -76,7 +76,7 @@ export const useCategoryForm = (category?: AdminCategory) => {
     }
   };
 
-  // handleSubmit runs on tap, not during render — onValid reads the ref.
+  // handleSubmit runs on tap, not during render - onValid reads the ref.
   const submit = () => handleSubmit(onValid)();
 
   return {

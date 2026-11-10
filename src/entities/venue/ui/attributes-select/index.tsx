@@ -26,10 +26,10 @@ interface Props {
 }
 
 // Category/nominal/validity picker for a merchant's sellable attributes.
-// Presentational — category options are passed in so it never reaches into
+// Presentational - category options are passed in so it never reaches into
 // another entity, which lets both the admin and merchant forms reuse it.
 // A saved value the backend no longer offers (e.g. a retired nominal) still
-// gets a chip, so it can be deselected — the form flags it as unavailable.
+// gets a chip, so it can be deselected - the form flags it as unavailable.
 const withSelected = (offered: readonly number[], selected: readonly number[]) =>
   [...new Set([...offered, ...selected])].sort((a, b) => a - b);
 

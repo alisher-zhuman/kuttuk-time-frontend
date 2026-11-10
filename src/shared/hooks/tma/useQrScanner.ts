@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { qrScanner } from "@tma.js/sdk-react";
 
 // Telegram's native QR scanner (Mini Apps 6.4+; not on desktop clients).
-// accept: which QR texts close the scanner — anything else is ignored and the
+// accept: which QR texts close the scanner - anything else is ignored and the
 // scanner stays open, so a stray QR nearby doesn't cut the scan short.
 // scan resolves to the accepted text, or undefined if closed / unavailable.
 export const useQrScanner = () => {

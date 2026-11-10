@@ -11,7 +11,7 @@ const PayoutTotalsSchema = z.object({
   due: z.number()
 });
 
-// GET /admin/payouts (../backend src/payouts/admin-payouts.service.ts) — the
+// GET /admin/payouts (../backend src/payouts/admin-payouts.service.ts) - the
 // same numbers as `npm run report:payouts`. Whole som, payout + commission =
 // gross per row and in total: shown as is, never recomputed here.
 export const PayoutWeekSchema = z.object({
@@ -35,7 +35,7 @@ export const PayoutWeekSchema = z.object({
     })
   ),
   total: PayoutTotalsSchema,
-  // The week's needs_review orders — not paid out until resolved by hand.
+  // The week's needs_review orders - not paid out until resolved by hand.
   needsReviewCount: z.number()
 });
 
@@ -48,9 +48,9 @@ export const MarkedPayoutSchema = z.object({
   payout: z.number()
 });
 
-// 409 bodies of POST /admin/payouts — nothing recorded in both cases:
-// nothing_to_pay_out — already marked (a double tap, another tab);
-// amount_changed — a sale landed while the confirmation was open, so the
+// 409 bodies of POST /admin/payouts - nothing recorded in both cases:
+// nothing_to_pay_out - already marked (a double tap, another tab);
+// amount_changed - a sale landed while the confirmation was open, so the
 // server's amount differs from expectedPayout.
 export const NothingToPayOutSchema = z.object({ error: z.literal("nothing_to_pay_out") });
 export const AmountChangedSchema = z.object({ error: z.literal("amount_changed") });

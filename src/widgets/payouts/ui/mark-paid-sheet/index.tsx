@@ -17,7 +17,7 @@ interface Props {
 
 const NOTE_MAX_LENGTH = 500;
 
-// Confirmation before recording a payout — there's no undo. A sheet, not the
+// Confirmation before recording a payout - there's no undo. A sheet, not the
 // native popup: the popup can't take the optional note.
 export const MarkPaidSheet = ({
   merchantName,

@@ -1,4 +1,4 @@
-// Any certificate shape with an effective status — the buyer's list item or
+// Any certificate shape with an effective status - the buyer's list item or
 // the one inside an order.
 export type DatedCertificate =
   | { status: "active" | "expired"; validUntil: string }

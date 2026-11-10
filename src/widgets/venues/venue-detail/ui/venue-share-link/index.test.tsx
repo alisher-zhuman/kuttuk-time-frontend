@@ -10,7 +10,7 @@ const LINK = "https://t.me/kuttuk_time_bot/app?startapp=coffeeroom";
 const openSheet = async (user = userEvent.setup()) => {
   renderWithProviders(<VenueShareLink slug="coffeeroom" venueName="Coffeeroom" />);
 
-  // On the venue — only the row; the link and the QR live in the sheet.
+  // On the venue - only the row; the link and the QR live in the sheet.
   expect(screen.queryByText("t.me/kuttuk_time_bot/app?startapp=coffeeroom")).not.toBeInTheDocument();
 
   await user.click(screen.getByRole("button", { name: "Ссылка для соцсетей" }));
@@ -47,6 +47,6 @@ describe("venue share link", () => {
 
     expect(screen.getByRole("img", { name: "QR-код ссылки Coffeeroom" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Скачать QR" })).not.toBeInTheDocument();
-    expect(screen.getByText("Для печати — сделайте скриншот QR")).toBeInTheDocument();
+    expect(screen.getByText("Для печати - сделайте скриншот QR")).toBeInTheDocument();
   });
 });

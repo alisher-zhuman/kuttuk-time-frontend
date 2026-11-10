@@ -12,7 +12,7 @@ interface Props {
   value: string;
   onChange: (url: string) => void;
   error?: string | undefined;
-  // So the form can hold "Save" until the new URL arrives — otherwise it would
+  // So the form can hold "Save" until the new URL arrives - otherwise it would
   // save the old logo and drop the new one.
   onUploadingChange?: (isUploading: boolean) => void;
 }

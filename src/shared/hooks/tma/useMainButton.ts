@@ -65,7 +65,7 @@ export const useMainButton = ({
   useEffect(() => {
     if (!mainButton.mount.isAvailable()) return;
 
-    // The loader alone doesn't stop taps — disable the button while loading.
+    // The loader alone doesn't stop taps - disable the button while loading.
     if (disabled || loading) {
       mainButton.disable();
     } else {

@@ -11,12 +11,12 @@ export const getOrderErrorKey = (error: unknown): string => {
   }
 
   switch (error.response.status) {
-    // Merchant deactivated or nominal no longer offered — the page is stale.
+    // Merchant deactivated or nominal no longer offered - the page is stale.
     case 400:
       return "orders.errors.unavailable";
     case 404:
       return "orders.errors.notFound";
-    // Per-user limit (user:<id>) that resets within a minute — the message
+    // Per-user limit (user:<id>) that resets within a minute - the message
     // just asks to wait, it doesn't blame the user.
     case 429:
       return "orders.errors.tooManyRequests";

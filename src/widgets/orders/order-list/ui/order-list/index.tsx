@@ -15,7 +15,7 @@ import { ChipSelect, EmptyState, ErrorState, LoadMore } from "@shared/ui";
 
 import { OrderRow } from "../order-row";
 
-// «На проверке» first — the queue to watch; the rest in the backend's order.
+// «На проверке» first - the queue to watch; the rest in the backend's order.
 const STATUSES = [
   "all",
   "needs_review",
@@ -50,7 +50,7 @@ export const OrderList = ({ status, onStatusChange, search }: Props) => {
 
   const setSentinel = useLoadMoreOnScroll(
     fetchNextPage,
-    // Stop on a failed page — the footer's retry takes over.
+    // Stop on a failed page - the footer's retry takes over.
     hasNextPage && !isFetchingNextPage && !isLoadMoreError
   );
 

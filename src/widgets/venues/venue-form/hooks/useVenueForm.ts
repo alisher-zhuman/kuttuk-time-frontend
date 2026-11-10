@@ -24,13 +24,13 @@ const isSlugConflict = (error: unknown) =>
   error.response?.status === 409 &&
   /^slug\s+"/.test((error.response.data as { message?: string } | undefined)?.message ?? "");
 
-// Product defaults for a new venue — not an allowed-values list; used only
+// Product defaults for a new venue - not an allowed-values list; used only
 // while the backend still offers them.
 const DEFAULT_NOMINAL = 500;
 const DEFAULT_VALIDITY_MONTHS = 12;
 
 // Edit variants receive an already-loaded venue (the page gates on the query),
-// so defaultValues are final on the first render — no reset() that could wipe
+// so defaultValues are final on the first render - no reset() that could wipe
 // what the user typed while the request was in flight.
 export const useVenueForm = (
   options: VenueOptions,
@@ -115,7 +115,7 @@ export const useVenueForm = (
   };
   const setIsActive = (next: boolean) => setValue("isActive", next, setValueOptions);
 
-  // isPending lands a render late — two taps in one frame would both submit
+  // isPending lands a render late - two taps in one frame would both submit
   // (and create two records).
   const isSubmittingRef = useRef(false);
   const release = () => {
@@ -195,7 +195,7 @@ export const useVenueForm = (
     }
   };
 
-  // handleSubmit runs on tap, not during render — onValid reads the ref.
+  // handleSubmit runs on tap, not during render - onValid reads the ref.
   const submit = () => handleSubmit(onValid)();
 
   const isPending = { create: isCreating, edit: isUpdating, own: isUpdatingOwn }[variant.kind];

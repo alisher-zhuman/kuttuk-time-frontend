@@ -11,7 +11,7 @@ interface Props {
 }
 
 // Admin-only: picks the merchant account that owns the venue. Inactive
-// merchants are listed too — the admin may prepare a venue before activation.
+// merchants are listed too - the admin may prepare a venue before activation.
 export const VenueFormOwnerSelect = ({ value, onChange, error }: Props) => {
   const { t } = useTranslation();
 

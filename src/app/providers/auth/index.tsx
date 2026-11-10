@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: Props) => {
         }
 
         // Network, 5xx, a cold-starting backend: without a role the app would
-        // open as a buyer (an owner or admin landing on the wrong screens) —
+        // open as a buyer (an owner or admin landing on the wrong screens) -
         // offer a retry instead.
         console.error(error);
         setIsFailed(true);

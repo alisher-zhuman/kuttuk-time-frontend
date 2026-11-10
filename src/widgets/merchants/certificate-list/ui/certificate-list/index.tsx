@@ -53,7 +53,7 @@ export const CertificateList = () => {
 
   const setSentinel = useLoadMoreOnScroll(
     fetchNextPage,
-    // Stop on a failed page — the footer's retry takes over.
+    // Stop on a failed page - the footer's retry takes over.
     hasNextPage && !isFetchingNextPage && !isLoadMoreError
   );
 

@@ -7,7 +7,7 @@ import {
 } from "@shared/constants";
 
 // Where a launch lands: startapp=order_<uuid> (back from Finik) → that order
-// for any role — anyone can buy; otherwise the admin and the owner open their
+// for any role - anyone can buy; otherwise the admin and the owner open their
 // own home, and a buyer the venue from startapp=<handle> or the catalog.
 export const getStartRoute = (startParam: string | undefined, viewMode: ViewMode) => {
   if (startParam?.startsWith(ORDER_START_PARAM_PREFIX)) {

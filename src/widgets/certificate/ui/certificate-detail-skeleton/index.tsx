@@ -1,5 +1,5 @@
 // Mirrors CertificateDetail so a cold open (direct link / reload, empty cache)
-// shows the layout while the list loads — never "not found" before data.
+// shows the layout while the list loads - never "not found" before data.
 export const CertificateDetailSkeleton = () => (
   <div className="flex-1 flex flex-col items-center justify-center gap-5 py-8">
     <span className="size-16 rounded-2xl bg-(--color-chip) animate-pulse" />

@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { formatCertificateCode, toCertificateCodeDigits } from "./code";
 import { CertificatesSchema, MerchantCertificateSchema, RedeemConflictSchema } from "./schemas";
 
-describe("CertificatesSchema — GET /certificates/my", () => {
+describe("CertificatesSchema - GET /certificates/my", () => {
   it("parses active, used and expired certificates", () => {
     expect(CertificatesSchema.safeParse(fixtures.myCertificates).success).toBe(true);
   });
@@ -17,7 +17,7 @@ describe("CertificatesSchema — GET /certificates/my", () => {
   });
 });
 
-describe("MerchantCertificateSchema — the owner's lookup by code", () => {
+describe("MerchantCertificateSchema - the owner's lookup by code", () => {
   it.each(["active", "used", "expired"] as const)("parses a %s certificate", (status) => {
     expect(MerchantCertificateSchema.safeParse(fixtures.merchantCertificate(status)).success).toBe(true);
   });

@@ -7,7 +7,7 @@ import { SUPPORT_URL } from "@shared/constants";
 import { useHaptic } from "./useHaptic";
 
 // Opens the support chat in Telegram. canOpen is false outside Telegram's
-// link support — callers hide their button then.
+// link support - callers hide their button then.
 export const useOpenSupport = () => {
   const haptic = useHaptic();
 

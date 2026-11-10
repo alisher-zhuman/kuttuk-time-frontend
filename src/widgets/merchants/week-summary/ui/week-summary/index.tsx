@@ -16,7 +16,7 @@ export const WeekSummary = () => {
 
   const { t } = useTranslation();
 
-  // The current week as the backend sees it — see useWeekParam. Without the
+  // The current week as the backend sees it - see useWeekParam. Without the
   // venue filter: the week is the same for every venue, so one cached request.
   const { summary: current } = useMerchantSummaryQuery(null, null);
 
@@ -28,7 +28,7 @@ export const WeekSummary = () => {
 
   const isCurrentWeek = summary !== undefined && summary.from === current?.from;
 
-  // Only for the whole merchant (no venue filter) — payouts are per merchant.
+  // Only for the whole merchant (no venue filter) - payouts are per merchant.
   const payoutStatus = (() => {
     if (summary?.paidOut === undefined || summary.due === undefined) return null;
     if (summary.paidOut === 0 && summary.due === 0) return null;
@@ -86,7 +86,7 @@ export const WeekSummary = () => {
       )}
 
       {/* Redeemed counts certificates used this week whatever their sale date,
-          so it can exceed "sold" — say so before anyone reads it as a bug. */}
+          so it can exceed "sold" - say so before anyone reads it as a bug. */}
       <p className="text-xs text-(--color-hint) px-1">{t("merchant.summary.redeemedHint")}</p>
     </div>
   );

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 
 interface Props {
-  // From useLoadMoreOnScroll — the next page loads when this comes into view.
+  // From useLoadMoreOnScroll - the next page loads when this comes into view.
   sentinelRef: (element: HTMLElement | null) => void;
   isLoading: boolean;
   // The next page failed: the rows above stay, this retries just that page.

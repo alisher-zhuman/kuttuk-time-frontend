@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { enCommon, kgCommon, ruCommon } from "@shared/locales";
 
-// Rules from CLAUDE.md that steiger doesn't check — a machine catches them on
+// Rules from CLAUDE.md that steiger doesn't check - a machine catches them on
 // every push, not a reader.
 
 const SOURCES: Record<string, string> = import.meta.glob(
@@ -16,7 +16,7 @@ const withoutComments = (source: string) =>
   source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
 
 describe("a page is the route and nothing else", () => {
-  it("holds only index.tsx — no hooks / helpers / model / ui of its own", () => {
+  it("holds only index.tsx - no hooks / helpers / model / ui of its own", () => {
     const strays = FILES.filter((path) => path.startsWith("/src/pages/")).filter(
       (path) => !path.endsWith("/index.tsx")
     );
@@ -76,5 +76,27 @@ describe("one way to do it", () => {
 
   it("reads launch params only through getLaunchParams", () => {
     expect(usesOutside(/\bretrieveLaunchParams\(/, "/src/shared/helpers/tma.ts")).toEqual([]);
+  });
+});
+
+describe("dashes", () => {
+  // Everything we write, tests and docs included - not node_modules / lock files.
+  const WRITTEN: Record<string, string> = import.meta.glob(
+    [
+      "/src/**/*.{ts,tsx,json,css}",
+      "/e2e/**/*.ts",
+      "/mocks/**/*.ts",
+      "/test-utils/**/*.{ts,tsx}",
+      "/*.{md,ts,json,yml,yaml,html}",
+      "!/pnpm-lock.yaml",
+      "/.github/**/*.yml"
+    ],
+    { query: "?raw", import: "default", eager: true }
+  );
+
+  it("only the plain hyphen - no em or en dash anywhere", () => {
+    const offenders = Object.keys(WRITTEN).filter((path) => /[–—]/.test(WRITTEN[path] ?? ""));
+
+    expect(offenders).toEqual([]);
   });
 });

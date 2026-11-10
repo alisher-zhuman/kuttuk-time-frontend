@@ -7,7 +7,7 @@ interface Props {
 }
 
 // The first log-in failed for a reason other than expired initData (network,
-// 5xx, the backend waking up) — retrying usually helps.
+// 5xx, the backend waking up) - retrying usually helps.
 export const ConnectionFailedPage = ({ onRetry }: Props) => {
   const { t } = useTranslation();
 

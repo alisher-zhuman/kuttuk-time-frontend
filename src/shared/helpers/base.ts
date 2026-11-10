@@ -6,7 +6,7 @@ export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 export const formatMoney = (amount: number, currency: string): string =>
   amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + currency;
 
-// Business time is Bishkek (payout weeks, validity, redemption) — show every
+// Business time is Bishkek (payout weeks, validity, redemption) - show every
 // timestamp there, not in the device's zone, so a merchant abroad and the
 // payout report see the same day.
 const BISHKEK_PARTS = new Intl.DateTimeFormat("en-GB", {
@@ -37,7 +37,7 @@ export const formatDateTime = (iso: string): string => {
 };
 
 // Calendar dates the backend sends as "YYYY-MM-DD" (e.g. payout weeks) are
-// handled as plain strings in UTC — never through the local zone, which would
+// handled as plain strings in UTC - never through the local zone, which would
 // shift the day.
 export const formatIsoDate = (date: string): string => {
   const [year, month, day] = date.split("-");

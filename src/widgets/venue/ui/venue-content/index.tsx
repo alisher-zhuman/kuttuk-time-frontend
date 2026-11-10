@@ -29,13 +29,13 @@ export const VenueContent = ({ venue }: Props) => {
   const showPopup = usePopup();
 
   // The pending flag only lands on the next render, so two taps in the same
-  // frame would both see it false and create two orders — guard with a ref.
+  // frame would both see it false and create two orders - guard with a ref.
   const isSubmittingRef = useRef(false);
 
   const { mutate: createOrder, isPending } = useCreateOrderMutation();
 
   // nominals can change under the selection (refetch after a language switch,
-  // the owner editing them) — never buy an amount that's no longer offered.
+  // the owner editing them) - never buy an amount that's no longer offered.
   const activeNominal =
     selectedNominal !== null && venue.nominals.includes(selectedNominal)
       ? selectedNominal
@@ -49,7 +49,7 @@ export const VenueContent = ({ venue }: Props) => {
     isSubmittingRef.current = true;
     haptic.medium();
 
-    // The bot sends the code after payment — a backup if the buyer closes the
+    // The bot sends the code after payment - a backup if the buyer closes the
     // app. Asked here, not on first launch: the purchase is the context that
     // makes "allow messages" make sense. The answer doesn't matter for buying.
     await requestBotMessages({ oncePerSession: true });

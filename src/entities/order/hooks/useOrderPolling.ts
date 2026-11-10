@@ -11,7 +11,7 @@ export const useOrderPolling = (orderId: string | undefined) => {
   // False while another mini app / the bank app is in front (visibility_changed,
   // v8.0+; stays true on older clients). Document visibility alone doesn't
   // cover it. Disabling pauses the interval; re-enabling with staleTime 0
-  // refetches at once — the user is back from paying.
+  // refetches at once - the user is back from paying.
   const isAppActive = useSignal(miniApp.isActive);
 
   const queryClient = useQueryClient();
@@ -46,7 +46,7 @@ export const useOrderPolling = (orderId: string | undefined) => {
   const status = data?.status;
 
   // The webhook created the certificate in the same transaction that marked
-  // the order paid — refresh "My certificates". Literal key: entities can't
+  // the order paid - refresh "My certificates". Literal key: entities can't
   // import each other (FSD), and the certificate entity owns ["certificates"].
   useEffect(() => {
     if (status === "paid") {
@@ -72,7 +72,7 @@ export const useOrderPolling = (orderId: string | undefined) => {
     // 404 / 400: not ours or missing.
     isNotFound: !data && isNotFoundError(error),
     // Polling stopped on errors (a long streak, or a response that doesn't
-    // match the schema) — offer a retry instead of an endless loader.
+    // match the schema) - offer a retry instead of an endless loader.
     isFailed: gaveUp && !isNotFoundError(error),
     // A manual retry; a success resumes the interval.
     retry: () => void refetch(),

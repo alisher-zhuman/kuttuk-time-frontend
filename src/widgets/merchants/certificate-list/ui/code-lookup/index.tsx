@@ -24,7 +24,7 @@ export const CodeLookup = () => {
   // never grows past 8 digits, and a pasted "Код: 0471 8263" must not be cut
   // before its digits are picked out.
   const [digits, setDigits] = useState("");
-  // The last redeemed certificate — shown after the field clears for the next
+  // The last redeemed certificate - shown after the field clears for the next
   // customer, until they start typing.
   const [redeemed, setRedeemed] = useState<MerchantCertificate | null>(null);
 

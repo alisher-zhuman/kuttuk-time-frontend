@@ -12,7 +12,7 @@ export const OrderDetailPage = () => {
 
   const navigateTo = useNavigateTo();
 
-  // A non-uuid would only get a 400 — skip the request.
+  // A non-uuid would only get a 400 - skip the request.
   const { order, isLoading, isError } = useAdminOrderQuery(id && isOrderId(id) ? id : undefined);
 
   if (isLoading) return <OrderDetailSkeleton />;

@@ -15,7 +15,7 @@ import { logIn } from "./auth";
 export const api = axios.create({ baseURL: API_URL });
 
 // Shared across concurrent 401s: when the token expires, every in-flight
-// request fails at once — they should all wait on a single re-login.
+// request fails at once - they should all wait on a single re-login.
 let pendingLogIn: ReturnType<typeof logIn> | null = null;
 
 api.interceptors.request.use((config) => {
@@ -54,7 +54,7 @@ api.interceptors.response.use(
         const { accessToken, role } = await pendingLogIn;
 
         // The role can change while the app is open (a merchant deactivated
-        // or created meanwhile) — the screens follow it, like on a fresh start.
+        // or created meanwhile) - the screens follow it, like on a fresh start.
         if (role !== useAuthStore.getState().role) {
           useViewModeStore.getState().setViewMode(role);
         }

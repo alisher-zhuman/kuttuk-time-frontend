@@ -26,7 +26,7 @@ export const NAV_TABS: Partial<Record<string, readonly NavTab[]>> = {
   merchant: [
     { path: ROUTE_PATTERNS.MERCHANT_HOME, labelKey: "merchant.nav.venues", icon: Store },
     { path: ROUTE_PATTERNS.MERCHANT_SUMMARY, labelKey: "merchant.nav.summary", icon: ChartColumn },
-    // Redeeming starts from here (MainButton / an active row) — the list and
+    // Redeeming starts from here (MainButton / an active row) - the list and
     // the action on its items live together.
     { path: ROUTE_PATTERNS.MERCHANT_CERTIFICATES, labelKey: "merchant.nav.certificates", icon: Ticket }
   ]

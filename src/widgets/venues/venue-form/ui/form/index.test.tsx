@@ -57,7 +57,7 @@ describe("the venue form", () => {
     await userEvent.type(nameInput(), " 2");
     save();
 
-    expect(await screen.findByText("Категория удалена — снимите её")).toBeInTheDocument();
+    expect(await screen.findByText("Категория удалена - снимите её")).toBeInTheDocument();
     expect(patches).toEqual([]);
 
     await userEvent.click(removed);

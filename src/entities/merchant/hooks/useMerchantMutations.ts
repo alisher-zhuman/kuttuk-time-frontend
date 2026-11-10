@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createMerchant, updateMerchant, type UpdateMerchantPayload } from "../api";
 
 // Deactivating a merchant hides all its venues from buyers, so the venue
-// views refresh too (literal key — entities don't import each other).
+// views refresh too (literal key - entities don't import each other).
 const invalidateMerchantViews = (queryClient: ReturnType<typeof useQueryClient>) => {
   void queryClient.invalidateQueries({ queryKey: ["merchants"] });
   void queryClient.invalidateQueries({ queryKey: ["venues"] });

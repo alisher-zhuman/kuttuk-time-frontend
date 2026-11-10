@@ -5,7 +5,7 @@ import { CircleCheck, Smartphone } from "lucide-react";
 import { useHaptic, useHomeScreen } from "@shared/hooks";
 
 // Merchant only: an icon on the phone's home screen opens the app (and so the
-// cabinet) in one tap — at the counter, without looking for the bot.
+// cabinet) in one tap - at the counter, without looking for the bot.
 // Hidden where Telegram can't add one.
 export const HomeScreenSection = () => {
   const { t } = useTranslation();

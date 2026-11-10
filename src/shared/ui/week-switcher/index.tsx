@@ -7,12 +7,12 @@ import { formatIsoDate } from "@shared/helpers";
 interface Props {
   // The shown week (YYYY-MM-DD, Bishkek); undefined while it loads.
   range: { from: string; to: string } | undefined;
-  // No "Next" on the current week — the future has nothing yet.
+  // No "Next" on the current week - the future has nothing yet.
   isCurrent: boolean;
   onShift: (from: string, days: number) => void;
 }
 
-// "‹ Prev · 19.10.2026 – 25.10.2026 · Next ›" for weekly reports.
+// "‹ Prev · 19.10.2026-25.10.2026 · Next ›" for weekly reports.
 export const WeekSwitcher = ({ range, isCurrent, onShift }: Props) => {
   const { t } = useTranslation();
 

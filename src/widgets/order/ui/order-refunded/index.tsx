@@ -13,7 +13,7 @@ interface Props {
 }
 
 // A needs_review order resolved by returning the money by hand. Nothing to act
-// on in the app — just say so and point to support in case it hasn't arrived.
+// on in the app - just say so and point to support in case it hasn't arrived.
 export const OrderRefunded = ({ order, venueName }: Props) => {
   const { t } = useTranslation();
 

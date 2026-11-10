@@ -39,7 +39,7 @@ beforeAll(() => {
   server.listen({ onUnhandledRequest: "error" });
 });
 
-// "error" alone only refuses the request — the screen shows its error state
+// "error" alone only refuses the request - the screen shows its error state
 // and a test asserting something else still passes. So every unanswered
 // request fails the test that made it, by name.
 const unanswered: string[] = [];

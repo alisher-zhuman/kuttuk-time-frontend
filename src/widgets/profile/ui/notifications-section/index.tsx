@@ -7,7 +7,7 @@ import { Bell, BellRing } from "lucide-react";
 import { hasWriteAccess, requestBotMessages } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 
-// Merchant only: the bot can send "new sale" only after the owner allowed it —
+// Merchant only: the bot can send "new sale" only after the owner allowed it -
 // started the bot, or granted it here. A refusal keeps the button.
 export const NotificationsSection = () => {
   const [isEnabled, setIsEnabled] = useState(hasWriteAccess);

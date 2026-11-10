@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { AdminOrderPageSchema, isOrderId, isOrderStatus, OrderSchema } from "./schemas";
 
-describe("OrderSchema — GET /orders/:id", () => {
+describe("OrderSchema - GET /orders/:id", () => {
   it.each(Object.entries(fixtures.orders))("parses the %s order as the backend sends it", (_, order) => {
     expect(OrderSchema.safeParse(order).success).toBe(true);
   });
@@ -34,7 +34,7 @@ describe("OrderSchema — GET /orders/:id", () => {
   });
 });
 
-describe("AdminOrderPageSchema — GET /admin/orders", () => {
+describe("AdminOrderPageSchema - GET /admin/orders", () => {
   it("parses a page with every status and a cursor", () => {
     const page = {
       items: ["paid", "needs_review", "pending", "expired", "refunded"].map((status, i) =>

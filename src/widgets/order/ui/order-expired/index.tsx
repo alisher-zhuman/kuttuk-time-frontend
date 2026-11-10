@@ -20,7 +20,7 @@ export const OrderExpired = ({ order, venueName }: Props) => {
 
   const navigateTo = useNavigateTo();
 
-  // A fresh order needs a fresh payment link — back to the venue to buy
+  // A fresh order needs a fresh payment link - back to the venue to buy
   // again (the venue page accepts the numeric id as its handle).
   useMainButton({
     text: t("orders.expired.retry"),

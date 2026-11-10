@@ -19,9 +19,9 @@ export const getPayoutWeek = async (week: string | null) => {
 
 export interface MarkPaidOutPayload {
   merchantId: number;
-  // Any date inside the week — the report's `from`.
+  // Any date inside the week - the report's `from`.
   week: string;
-  // The amount the admin saw and transferred — the server records only if
+  // The amount the admin saw and transferred - the server records only if
   // its own amount still matches (else 409 amount_changed).
   expectedPayout: number;
   note?: string;

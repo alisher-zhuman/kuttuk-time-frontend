@@ -22,7 +22,7 @@ export const SettingsTab = () => {
       {/* By role, not view mode: sale notices belong to the account. */}
       {role === "merchant" && <NotificationsSection />}
       {role === "merchant" && <HomeScreenSection />}
-      {/* Buyers (incl. an admin previewing as one) and owners — owners ask the
+      {/* Buyers (incl. an admin previewing as one) and owners - owners ask the
           most, about payouts and redemption. Not the admin's own mode. */}
       {(viewMode === "user" || role === "merchant") && <SupportSection />}
     </div>

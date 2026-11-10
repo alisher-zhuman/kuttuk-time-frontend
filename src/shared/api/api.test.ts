@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { useAuthStore, useViewModeStore } from "@shared/store";
 
-// The app's i18n (language from the Telegram user, here ru) — as at startup.
+// The app's i18n (language from the Telegram user, here ru) - as at startup.
 import "@tests";
 
 import { api } from "./api";
@@ -107,7 +107,7 @@ describe("401 → re-login", () => {
 });
 
 describe("headers", () => {
-  it("sends the app language with every request — the bot writes in it", async () => {
+  it("sends the app language with every request - the bot writes in it", async () => {
     let language: string | null = null;
 
     server.use(

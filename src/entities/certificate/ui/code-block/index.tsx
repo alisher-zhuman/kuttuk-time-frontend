@@ -12,7 +12,7 @@ interface Props {
 }
 
 // The buyer's view of one certificate's code: its status if no longer valid,
-// the code with its one relevant date, and the QR for the counter — only while
+// the code with its one relevant date, and the QR for the counter - only while
 // active (a QR of a used code would invite a pointless scan).
 export const CertificateCodeBlock = ({ certificate }: Props) => {
   const { t } = useTranslation();

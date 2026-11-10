@@ -8,7 +8,7 @@ export const POLL_INTERVAL_MS = 3_000;
 
 // A payment made just before the QR expired is still honoured (expired → paid
 // on the backend), and Finik retries a failed webhook every 30 s for its first
-// 5 attempts — so keep polling 3 min past expiresAt. Longer is pointless: if
+// 5 attempts - so keep polling 3 min past expiresAt. Longer is pointless: if
 // our server was down, Finik's retries stretch over a day.
 const LATE_WEBHOOK_GRACE_MS = 3 * 60_000;
 
@@ -31,7 +31,7 @@ export const isNotFoundError = (error: unknown) =>
   error.response.status < 500 &&
   error.response.status !== 429;
 
-// Network errors, 5xx and 429 (per user, 60/min — resets within a minute) are
+// Network errors, 5xx and 429 (per user, 60/min - resets within a minute) are
 // polled through, but not forever: with no order yet, give up after this many
 // errors (all of them in a row then); with an order, once errors outlast the
 // last good response by this long, or run past the grace window.

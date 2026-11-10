@@ -17,7 +17,7 @@ import { RequireRole } from "./guards/require-role";
 import { RootRedirect } from "./guards/root-redirect";
 import { RouteError } from "./route-error";
 
-// Admin and owner screens load on demand: a buyer — most users — never
+// Admin and owner screens load on demand: a buyer - most users - never
 // downloads them (or their form / drag-and-drop libraries).
 const page =
   <M extends Record<string, ComponentType>>(load: () => Promise<M>, name: keyof M) =>

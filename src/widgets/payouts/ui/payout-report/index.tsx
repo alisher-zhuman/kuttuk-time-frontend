@@ -19,10 +19,10 @@ import { EmptyState, ErrorState, WeekSwitcher } from "@shared/ui";
 import { MarkPaidSheet } from "../mark-paid-sheet";
 import { PayoutRow } from "../payout-row";
 
-// The weekly payout to merchants — the same report as the backend's
+// The weekly payout to merchants - the same report as the backend's
 // `npm run report:payouts`. Week switching works like the owner's summary.
 export const PayoutReport = () => {
-  // The merchant whose payout is being confirmed — an id, not a row snapshot,
+  // The merchant whose payout is being confirmed - an id, not a row snapshot,
   // so the open confirmation shows the amount from the latest report.
   const [markingId, setMarkingId] = useState<number | null>(null);
 
@@ -38,7 +38,7 @@ export const PayoutReport = () => {
 
   const { mutate: markPaid, isPending: isMarking } = useMarkPaidOutMutation();
 
-  // The current week as the backend sees it — see useWeekParam.
+  // The current week as the backend sees it - see useWeekParam.
   const { report: current } = usePayoutWeekQuery(null);
 
   const { week, shift } = useWeekParam(current?.from);
@@ -65,7 +65,7 @@ export const PayoutReport = () => {
         onSuccess: (payout) => {
           haptic.success();
           setMarkingId(null);
-          // The server's amount — it may differ from the screen if an order
+          // The server's amount - it may differ from the screen if an order
           // landed in the week meanwhile.
           void showPopup({
             title: t("admin.payouts.doneTitle"),
@@ -77,7 +77,7 @@ export const PayoutReport = () => {
         },
         onError: (error) => {
           // A sale landed while the confirmation was open: nothing recorded.
-          // Keep it open — the report refetches and it shows the new amount
+          // Keep it open - the report refetches and it shows the new amount
           // to check against what was transferred.
           if (isAmountChanged(error)) {
             haptic.warning();

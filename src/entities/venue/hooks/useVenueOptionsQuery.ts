@@ -7,7 +7,7 @@ export const useVenueOptionsQuery = () => {
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: venueKeys.options(),
     queryFn: getVenueOptions,
-    // Backend constants — they only change with a deploy, so once per session.
+    // Backend constants - they only change with a deploy, so once per session.
     staleTime: Infinity
   });
 

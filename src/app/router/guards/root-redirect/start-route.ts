@@ -1,4 +1,6 @@
 import {
+  ADMIN_PAYOUTS_START_PARAM,
+  getAdminPayoutsRoute,
   getGiftRoute,
   getOrderRoute,
   getVenueRoute,
@@ -13,8 +15,9 @@ import {
 // anyone can buy, be gifted or get a reminder, and an owner checking their own
 // venue link must see the storefront, not the cabinet: order_<uuid> (back from
 // Finik) → that order, gift_<token> → «Забрать подарок», my_certificates →
-// «Мои сертификаты», any other value → the venue by its handle. Without a link
-// the admin and the owner open their own home, a buyer the catalog.
+// «Мои сертификаты», admin_payouts → «Все долги» (admins only), any other
+// value → the venue by its handle. Without a link the admin and the owner open
+// their own home, a buyer the catalog.
 export const getStartRoute = (startParam: string | undefined, viewMode: ViewMode) => {
   if (startParam?.startsWith(ORDER_START_PARAM_PREFIX)) {
     return getOrderRoute(startParam.slice(ORDER_START_PARAM_PREFIX.length));
@@ -27,7 +30,12 @@ export const getStartRoute = (startParam: string | undefined, viewMode: ViewMode
   // The profile opens on its certificates tab.
   if (startParam === MY_CERTIFICATES_START_PARAM) return ROUTE_PATTERNS.PROFILE;
 
-  if (startParam) return getVenueRoute(startParam);
+  // For an admin - every debt; for anyone else not a venue handle, just home.
+  if (startParam === ADMIN_PAYOUTS_START_PARAM) {
+    if (viewMode === "admin") return getAdminPayoutsRoute({ view: "due" });
+  } else if (startParam) {
+    return getVenueRoute(startParam);
+  }
 
   if (viewMode === "admin") return ROUTE_PATTERNS.ADMIN_VENUES;
   if (viewMode === "merchant") return ROUTE_PATTERNS.MERCHANT_HOME;

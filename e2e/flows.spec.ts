@@ -78,11 +78,15 @@ test("an owner redeems a certificate by its code", async ({ app, page }) => {
 test("an admin marks a merchant's week as paid out", async ({ app, page }) => {
   await app.open("/app/admin/payouts", {
     role: "admin",
-    routes: ({ path, method, body }) => {
-      if (path === "/admin/payouts" && method === "GET") return [200, fixtures.payoutWeek()];
+    routes: ({ path, method, body, query }) => {
+      // Without ?week= - the current week; the screen opens on the previous one.
+      if (path === "/admin/payouts" && method === "GET") {
+        return [200, query.has("week") ? fixtures.payoutWeek() : { ...fixtures.payoutWeek(0), from: "2026-10-26", to: "2026-11-01", merchants: [] }];
+      }
+      if (path === "/admin/merchants/10") return [200, fixtures.adminMerchant()];
       if (path === "/admin/payouts" && method === "POST") {
         const { expectedPayout } = body as { expectedPayout: number };
-        return [201, { id: "p1", merchantId: 10, from: "2026-10-19", to: "2026-10-25", ordersCount: 3, gross: 30, commission: 3, payout: expectedPayout, paidBy: 4, createdAt: "2026-10-27T04:00:00.000Z" }];
+        return [201, { id: "p1", merchantId: 10, from: "2026-10-19", to: "2026-10-25", ordersCount: 3, gross: 30, commission: 3, payout: expectedPayout, paidBy: 4, createdAt: "2026-10-27T04:00:00.000Z", ownerNotified: true }];
       }
       return undefined;
     }
@@ -91,6 +95,7 @@ test("an admin marks a merchant's week as paid out", async ({ app, page }) => {
   await page.getByRole("button", { name: "Отметить выплаченным" }).click();
   const sheet = page.getByRole("dialog");
   await expect(sheet).toContainText("27 сом для Coffeeroom");
+  await expect(sheet).toContainText("Mbank 0555 123 456");
   await sheet.getByRole("textbox").fill("Mbank 27.10");
   await sheet.getByRole("button", { name: "Отметить", exact: true }).click();
 
@@ -100,7 +105,23 @@ test("an admin marks a merchant's week as paid out", async ({ app, page }) => {
     expectedPayout: 27,
     note: "Mbank 27.10"
   });
-  await expect.poll(async () => JSON.stringify(await app.calls("web_app_open_popup"))).toContain("27 сом");
+  await expect.poll(async () => JSON.stringify(await app.calls("web_app_open_popup"))).toContain("Владелец получил сообщение");
+});
+
+test("the Monday reminder's button opens «Все долги» for an admin", async ({ app, page }) => {
+  await app.open("/", {
+    role: "admin",
+    startParam: "admin_payouts",
+    routes: ({ path }) => {
+      if (path === "/admin/payouts/due") return [200, fixtures.payoutDue];
+      if (path === "/admin/merchants/10") return [200, fixtures.adminMerchant()];
+      return undefined;
+    }
+  });
+
+  await expect(page).toHaveURL(/\/app\/admin\/payouts\?view=due/);
+  await expect(page.getByText("12.10.2026-18.10.2026")).toBeVisible();
+  await expect(page.getByText("Mbank 0555 123 456, Асанов А.")).toBeVisible();
 });
 
 test("a friend opens the gift link, claims it and finds it in «Мои сертификаты»", async ({ app, page }) => {

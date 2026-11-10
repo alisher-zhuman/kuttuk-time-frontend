@@ -15,6 +15,11 @@ export const GIFT_START_PARAM_PREFIX = "gift_";
 // claimed gift). Shared with ../backend src/orders/payment-redirect-url.ts.
 export const MY_CERTIFICATES_START_PARAM = "my_certificates";
 
+// startapp=admin_payouts - the Monday payout reminder's button: «Выплаты» →
+// «Все долги» for an admin, the usual start for anyone else. Shared with
+// ../backend src/orders/payment-redirect-url.ts (ADMIN_PAYOUTS_START_PARAM).
+export const ADMIN_PAYOUTS_START_PARAM = "admin_payouts";
+
 // The venue's own link for social bios, stories and a printed QR: opens the
 // Mini App on its page (RootRedirect reads a startapp without the order prefix
 // as a venue handle). Not the short kuttuk-time.koyeb.app/<slug> - someone

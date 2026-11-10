@@ -38,6 +38,15 @@ describe("getStartRoute - where a launch lands", () => {
     expect(getStartRoute("my_certificates", "admin")).toBe("/app/profile");
   });
 
+  it("opens «Все долги» on startapp=admin_payouts for an admin", () => {
+    expect(getStartRoute("admin_payouts", "admin")).toBe("/app/admin/payouts?view=due");
+  });
+
+  it("startapp=admin_payouts for anyone else is the usual start, not a venue", () => {
+    expect(getStartRoute("admin_payouts", "merchant")).toBe("/app/merchant");
+    expect(getStartRoute("admin_payouts", "user")).toBe("/app");
+  });
+
   it("reads a slug that only starts like a prefix as a venue", () => {
     expect(getStartRoute("giftshop", "user")).toBe("/app/venues/giftshop");
     expect(getStartRoute("orderly", "user")).toBe("/app/venues/orderly");

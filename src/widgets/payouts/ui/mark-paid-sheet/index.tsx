@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next";
 import { cn, formatIsoDate, formatMoney } from "@shared/helpers";
 import { BottomSheet, Textarea } from "@shared/ui";
 
+import { PayoutDetails } from "../payout-details";
+
 interface Props {
+  merchantId: number;
   merchantName: string;
   amount: number;
   from: string;
@@ -20,6 +23,7 @@ const NOTE_MAX_LENGTH = 500;
 // Confirmation before recording a payout - there's no undo. A sheet, not the
 // native popup: the popup can't take the optional note.
 export const MarkPaidSheet = ({
+  merchantId,
   merchantName,
   amount,
   from,
@@ -48,6 +52,8 @@ export const MarkPaidSheet = ({
               to: formatIsoDate(to)
             })}
           </p>
+
+          <PayoutDetails merchantId={merchantId} />
 
           <Textarea
             label={t("admin.payouts.note")}

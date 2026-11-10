@@ -7,6 +7,7 @@ import {
   AmountChangedSchema,
   MarkedPayoutSchema,
   NothingToPayOutSchema,
+  PayoutDueSchema,
   PayoutWeekSchema
 } from "../model/schemas";
 
@@ -15,6 +16,12 @@ export const getPayoutWeek = async (week: string | null) => {
   const response = await api.get(API_PATHS.ADMIN_PAYOUTS, { params: week ? { week } : {} });
 
   return PayoutWeekSchema.parse(response.data);
+};
+
+export const getPayoutDue = async () => {
+  const response = await api.get(`${API_PATHS.ADMIN_PAYOUTS}/due`);
+
+  return PayoutDueSchema.parse(response.data);
 };
 
 export interface MarkPaidOutPayload {

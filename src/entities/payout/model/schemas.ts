@@ -45,7 +45,25 @@ export const MarkedPayoutSchema = z.object({
   merchantId: z.number(),
   from: z.string(),
   to: z.string(),
-  payout: z.number()
+  payout: z.number(),
+  // Did the bot's «💸 Выплата» reach the owner; false - tell them by hand
+  // (the mark is saved either way).
+  ownerNotified: z.boolean()
+});
+
+// GET /admin/payouts/due (../backend src/payouts/payout-ledger.ts allDue) -
+// everything still owed, per merchant and Mon-Sun week (oldest first). Only
+// what's due; pay a week with POST /admin/payouts, week = its `from`.
+export const PayoutDueSchema = z.object({
+  merchants: z.array(
+    z.object({
+      merchantId: z.number(),
+      merchantName: z.string(),
+      due: z.number(),
+      weeks: z.array(z.object({ from: z.string(), to: z.string(), ordersCount: z.number(), due: z.number() }))
+    })
+  ),
+  total: z.number()
 });
 
 // 409 bodies of POST /admin/payouts - nothing recorded in both cases:

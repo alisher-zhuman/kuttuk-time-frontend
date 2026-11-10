@@ -1,30 +1,24 @@
-import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
 
 import { TriangleAlert, Wallet } from "lucide-react";
 
-import {
-  isAmountChanged,
-  isNothingToPayOut,
-  useMarkPaidOutMutation,
-  usePayoutWeekQuery
-} from "@entities/payout";
+import { usePayoutWeekQuery } from "@entities/payout";
 
 import { getAdminMerchantDetailRoute, getAdminOrdersRoute } from "@shared/constants";
-import { formatMoney } from "@shared/helpers";
-import { useGenericError, useHaptic, useNavigateTo, usePopup, useWeekParam } from "@shared/hooks";
+import { formatMoney, shiftIsoDate } from "@shared/helpers";
+import { useHaptic, useNavigateTo, useSearchParamState } from "@shared/hooks";
 import { EmptyState, ErrorState, WeekSwitcher } from "@shared/ui";
 
+import { useMarkPayout } from "../../hooks/useMarkPayout";
 import { MarkPaidSheet } from "../mark-paid-sheet";
 import { PayoutRow } from "../payout-row";
 
 // The weekly payout to merchants - the same report as the backend's
-// `npm run report:payouts`. Week switching works like the owner's summary.
+// `npm run report:payouts`.
 export const PayoutReport = () => {
-  // The merchant whose payout is being confirmed - an id, not a row snapshot,
-  // so the open confirmation shows the amount from the latest report.
-  const [markingId, setMarkingId] = useState<number | null>(null);
+  // The week in the URL - linkable from «Все долги»; without it, the previous
+  // week: the one to pay for (the backend's default is the current one).
+  const [weekParam, setWeekParam] = useSearchParamState("week");
 
   const { t } = useTranslation();
 
@@ -32,83 +26,31 @@ export const PayoutReport = () => {
 
   const haptic = useHaptic();
 
-  const showPopup = usePopup();
+  const marking = useMarkPayout();
 
-  const showGenericError = useGenericError();
-
-  const { mutate: markPaid, isPending: isMarking } = useMarkPaidOutMutation();
-
-  // The current week as the backend sees it - see useWeekParam.
+  // The current week as the backend sees it (Bishkek, not the device clock).
   const { report: current } = usePayoutWeekQuery(null);
 
-  const { week, shift } = useWeekParam(current?.from);
+  const week = weekParam ?? (current ? shiftIsoDate(current.from, -7) : undefined);
 
   const { report, isLoading, isError, isFetching, retry } = usePayoutWeekQuery(week);
 
+  const shift = (from: string, days: number) => {
+    haptic.selection();
+    setWeekParam(shiftIsoDate(from, days));
+  };
+
   const currency = t("certificate.currency");
 
-  const marking = report?.merchants.find((row) => row.merchantId === markingId);
-
-  const handleConfirm = (note: string) => {
-    if (!report || !marking) return;
-
-    const merchantName = marking.merchantName;
-
-    markPaid(
-      {
-        merchantId: marking.merchantId,
-        week: report.from,
-        expectedPayout: marking.due,
-        ...(note && { note })
-      },
-      {
-        onSuccess: (payout) => {
-          haptic.success();
-          setMarkingId(null);
-          // The server's amount - it may differ from the screen if an order
-          // landed in the week meanwhile.
-          void showPopup({
-            title: t("admin.payouts.doneTitle"),
-            message: t("admin.payouts.done", {
-              amount: formatMoney(payout.payout, currency),
-              merchant: merchantName
-            })
-          });
-        },
-        onError: (error) => {
-          // A sale landed while the confirmation was open: nothing recorded.
-          // Keep it open - the report refetches and it shows the new amount
-          // to check against what was transferred.
-          if (isAmountChanged(error)) {
-            haptic.warning();
-            void showPopup({ message: t("admin.payouts.amountChanged") });
-            return;
-          }
-
-          setMarkingId(null);
-
-          // Already marked (double tap, another tab): the week refetches.
-          if (isNothingToPayOut(error)) {
-            haptic.warning();
-            void showPopup({ message: t("admin.payouts.nothingToPay") });
-            return;
-          }
-
-          haptic.error();
-          showGenericError();
-        }
-      }
-    );
-  };
+  const markingRow =
+    marking.target && report?.from === marking.target.week
+      ? report.merchants.find((row) => row.merchantId === marking.target?.merchantId)
+      : undefined;
 
   const isCurrentWeek = report !== undefined && report.from === current?.from;
 
   return (
-    <div className="flex flex-col gap-4 mt-3.5 pb-5">
-      <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) leading-tight">
-        {t("admin.payouts.title")}
-      </h1>
-
+    <div className="flex flex-col gap-4">
       <WeekSwitcher range={report} isCurrent={isCurrentWeek} onShift={shift} />
 
       {isError ? (
@@ -186,7 +128,7 @@ export const PayoutReport = () => {
                         haptic.light();
                         navigateTo(getAdminMerchantDetailRoute(row.merchantId));
                       }}
-                      onMarkPaid={() => setMarkingId(row.merchantId)}
+                      onMarkPaid={() => marking.open({ merchantId: row.merchantId, week: report.from })}
                     />
                   </li>
                 ))}
@@ -197,15 +139,16 @@ export const PayoutReport = () => {
       )}
 
       {/* Closes by itself if the refetched row has nothing left to pay. */}
-      {report && marking && marking.due > 0 && (
+      {report && markingRow && markingRow.due > 0 && (
         <MarkPaidSheet
-          merchantName={marking.merchantName}
-          amount={marking.due}
+          merchantId={markingRow.merchantId}
+          merchantName={markingRow.merchantName}
+          amount={markingRow.due}
           from={report.from}
           to={report.to}
-          isPending={isMarking}
-          onConfirm={handleConfirm}
-          onCancel={() => setMarkingId(null)}
+          isPending={marking.isPending}
+          onConfirm={(note) => marking.confirm(markingRow, note)}
+          onCancel={marking.close}
         />
       )}
     </div>

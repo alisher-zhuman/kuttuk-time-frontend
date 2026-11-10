@@ -1,5 +1,6 @@
 export { API_PATHS } from "./api-paths";
 export {
+  ADMIN_PAYOUTS_START_PARAM,
   BOT_URL,
   getVenueShareLink,
   GIFT_START_PARAM_PREFIX,
@@ -20,6 +21,7 @@ export {
   getAdminMerchantEditRoute,
   getAdminOrderDetailRoute,
   getAdminOrdersRoute,
+  getAdminPayoutsRoute,
   getAdminVenueCreateRoute,
   getAdminVenueDetailRoute,
   getAdminVenueEditRoute,

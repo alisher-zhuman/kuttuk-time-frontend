@@ -9,10 +9,21 @@ import { PayoutReport } from "./index";
 
 // GET answers the current due; POST records it unless a sale landed meanwhile.
 const answer = ({ changeOnce = false } = {}) => {
-  const state = { due: 27, sent: [] as unknown[] };
+  const state = { due: 27, sent: [] as unknown[], weeks: [] as (string | null)[], notified: true };
 
   server.use(
-    http.get(api("/admin/payouts"), () => HttpResponse.json(fixtures.payoutWeek(state.due))),
+    // Without ?week= the backend answers the current week; the screen opens
+    // on the previous one (19.10-25.10), which is the one to pay for.
+    http.get(api("/admin/payouts"), ({ request }) => {
+      state.weeks.push(new URL(request.url).searchParams.get("week"));
+
+      return HttpResponse.json(
+        new URL(request.url).searchParams.has("week")
+          ? fixtures.payoutWeek(state.due)
+          : { ...fixtures.payoutWeek(0), from: "2026-10-26", to: "2026-11-01", merchants: [] }
+      );
+    }),
+    http.get(api("/admin/merchants/10"), () => HttpResponse.json(fixtures.adminMerchant())),
     http.post(api("/admin/payouts"), async ({ request }) => {
       const body = (await request.json()) as { expectedPayout: number };
       state.sent.push(body);
@@ -34,7 +45,8 @@ const answer = ({ changeOnce = false } = {}) => {
         commission: 4,
         payout: body.expectedPayout,
         paidBy: 4,
-        createdAt: "2026-10-27T04:00:00.000Z"
+        createdAt: "2026-10-27T04:00:00.000Z",
+        ownerNotified: state.notified
       });
     })
   );
@@ -91,5 +103,36 @@ describe("marking a payout", () => {
 
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(state.sent).toEqual([]);
+  });
+
+  it("opens on the previous week - the one to pay for", async () => {
+    const state = answer();
+    renderWithProviders(<PayoutReport />);
+
+    expect(await screen.findByText("19.10.2026-25.10.2026")).toBeInTheDocument();
+    expect(state.weeks).toContain("2026-10-19");
+  });
+
+  it("shows the owner's payout details in the confirmation", async () => {
+    answer();
+    renderWithProviders(<PayoutReport />);
+
+    const sheet = await openSheet();
+
+    expect(await within(sheet).findByText("Mbank 0555 123 456, Асанов А.")).toBeInTheDocument();
+  });
+
+  it.each([
+    [true, "Владелец получил сообщение"],
+    [false, "Сообщение не дошло - напишите владельцу сами"]
+  ])("ownerNotified %s → says whether the owner got the message", async (notified, text) => {
+    const state = answer();
+    state.notified = notified;
+    renderWithProviders(<PayoutReport />);
+
+    const sheet = await openSheet();
+    await userEvent.click(within(sheet).getByRole("button", { name: "Отметить" }));
+
+    await waitFor(() => expect(String(window.__telegram.last("web_app_open_popup")?.["message"])).toContain(text));
   });
 });

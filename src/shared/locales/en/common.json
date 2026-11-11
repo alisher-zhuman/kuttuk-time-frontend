@@ -370,7 +370,9 @@
     "giftedUsed": "Gifted {{date}} · used",
     "giftedExpired": "Gifted {{date}} · expired",
     "giftHint": "Your friend taps \"Claim gift\" and the certificate is theirs",
-    "giftResend": "Sent it to the wrong person? Gift it again - the old link will stop working"
+    "giftResend": "Sent it to the wrong person? Gift it again - the old link will stop working",
+    "webGiftText": "🎁 A gift for you - a {{amount}} certificate for {{venue}}",
+    "linkCopied": "Link copied - send it to a friend"
   },
   "certificates": {
     "empty": "No certificates yet",
@@ -425,11 +427,6 @@
     "number": "Order #{{number}}",
     "numberCopied": "Number copied"
   },
-  "appNotFound": {
-    "subtitle": "Mini App",
-    "description": "This is a Telegram Mini App. Open it via the bot in Telegram.",
-    "openInTelegram": "Open in Telegram"
-  },
   "sessionExpired": {
     "title": "Session expired",
     "description": "The app has been open for too long. Close it and open it again from the bot.",
@@ -481,5 +478,25 @@
     "loading": "Loading…",
     "empty": "Nothing found",
     "done": "Done"
+  },
+  "site": {
+    "about": {
+      "title": "About us",
+      "text": "KuttukTime - gift certificates for Bishkek's coffee shops, restaurants, spas and studios. Pick a venue and an amount, pay - the certificate is yours, and you can gift it by a link."
+    },
+    "payment": "Payments via Finik",
+    "detailsSoon": "The sole proprietor's details will appear here",
+    "support": "Support: @alisher_zh",
+    "offer": {
+      "title": "Offer",
+      "soon": "The public offer will appear here"
+    },
+    "telegramOnly": {
+      "title": "The owner's cabinet works in Telegram",
+      "open": "Open in Telegram"
+    },
+    "login": {
+      "hint": "Sign in with Telegram to keep your certificates and get expiry reminders"
+    }
   }
 }

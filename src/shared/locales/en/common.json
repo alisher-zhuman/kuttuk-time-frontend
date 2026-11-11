@@ -208,8 +208,7 @@
         "venues": "VENUES",
         "noVenues": "This merchant has no venues yet",
         "notFound": "Merchant not found",
-        "orders": "This owner's orders",
-        "notSet": "Not set"
+        "orders": "This owner's orders"
       },
       "searchPlaceholder": "Search merchants",
       "owner": {
@@ -290,13 +289,11 @@
       "amountChanged": "The amount changed - check it and confirm again.",
       "doneNotified": "{{amount}} to {{merchant}}. The owner got a message.",
       "doneNotNotified": "{{amount}} to {{merchant}}. The message didn't reach the owner - write to them yourself.",
-      "noDetails": "No payout details",
       "viewWeek": "By week",
       "viewDue": "All debts",
       "dueTotal": "Total due",
       "noDebts": "No debts - everything is paid out",
-      "markShort": "Mark paid",
-      "addDetails": "Add payout details"
+      "markShort": "Mark paid"
     },
     "orders": {
       "all": "All",

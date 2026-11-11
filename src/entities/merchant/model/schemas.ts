@@ -20,9 +20,9 @@ export const AdminMerchantSchema = z.object({
   telegramId: z.number(),
   isActive: z.boolean(),
   // Admin-only notes: where to transfer the payout, how to reach the owner.
-  // Nullable columns - null = not filled in (../backend src/merchants/entities/merchant.entity.ts).
-  payoutDetails: z.string().nullable(),
-  contact: z.string().nullable(),
+  // Required on every merchant (../backend src/merchants/entities/merchant.entity.ts).
+  payoutDetails: z.string(),
+  contact: z.string(),
   createdAt: z.string(),
   // The owner's users row, found by telegramId (../backend merchants.service.ts
   // toAccounts). lastSeenAt null = never opened the app; botReachable null =

@@ -2,21 +2,14 @@ import { useTranslation } from "react-i18next";
 
 import { useAdminMerchantQuery } from "@entities/merchant";
 
-import { getAdminMerchantEditRoute } from "@shared/constants";
-import { useHaptic, useNavigateTo } from "@shared/hooks";
-
 interface Props {
   merchantId: number;
 }
 
 // Where to transfer the money - next to the amount, so the admin doesn't open
-// the owner's card mid-payout. From the admin's merchant notes.
+// the owner's card mid-payout. Every merchant has them.
 export const PayoutDetails = ({ merchantId }: Props) => {
   const { t } = useTranslation();
-
-  const navigateTo = useNavigateTo();
-
-  const haptic = useHaptic();
 
   const { merchant, isLoading } = useAdminMerchantQuery(String(merchantId));
 
@@ -27,26 +20,9 @@ export const PayoutDetails = ({ merchantId }: Props) => {
   return (
     <span className="flex flex-col gap-0.5 text-xs">
       <span className="font-bold text-(--color-hint)">{t("merchantForm.payoutDetails")}</span>
-      {merchant.payoutDetails ? (
-        <span className="font-semibold text-(--color-ink) whitespace-pre-wrap wrap-break-word">
-          {merchant.payoutDetails}
-        </span>
-      ) : (
-        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span className="font-semibold text-(--color-amber)">{t("admin.payouts.noDetails")}</span>
-          {/* Straight to the field; saving the form goes back here. */}
-          <button
-            type="button"
-            onClick={() => {
-              haptic.light();
-              navigateTo(getAdminMerchantEditRoute(merchantId, { focus: "payoutDetails" }));
-            }}
-            className="py-1 font-bold text-(--color-primary) cursor-pointer"
-          >
-            {t("admin.payouts.addDetails")}
-          </button>
-        </span>
-      )}
+      <span className="font-semibold text-(--color-ink) whitespace-pre-wrap wrap-break-word">
+        {merchant.payoutDetails}
+      </span>
     </span>
   );
 };

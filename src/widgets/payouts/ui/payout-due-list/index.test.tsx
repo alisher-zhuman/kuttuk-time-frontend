@@ -7,15 +7,12 @@ import { describe, expect, it } from "vitest";
 
 import { PayoutDueList } from "./index";
 
-const answer = ({
-  due = fixtures.payoutDue,
-  details = "Mbank 0555 123 456, Асанов А."
-}: { due?: typeof fixtures.payoutDue; details?: string | null } = {}) => {
+const answer = ({ due = fixtures.payoutDue }: { due?: typeof fixtures.payoutDue } = {}) => {
   const state = { sent: [] as unknown[] };
 
   server.use(
     http.get(api("/admin/payouts/due"), () => HttpResponse.json(due)),
-    http.get(api("/admin/merchants/10"), () => HttpResponse.json(fixtures.adminMerchant({ payoutDetails: details }))),
+    http.get(api("/admin/merchants/10"), () => HttpResponse.json(fixtures.adminMerchant())),
     http.post(api("/admin/payouts"), async ({ request }) => {
       state.sent.push(await request.json());
 
@@ -35,18 +32,6 @@ describe("«Все долги»", () => {
     expect(screen.getByText("12.10-18.10.2026")).toBeInTheDocument();
     expect(screen.getByText("19.10-25.10.2026")).toBeInTheDocument();
     expect(await screen.findByText("Mbank 0555 123 456, Асанов А.")).toBeInTheDocument();
-  });
-
-  it("no payout details: «Указать реквизиты» opens the owner's form on that field", async () => {
-    answer({ details: null });
-    const { router } = renderWithProviders(<PayoutDueList />);
-
-    expect(await screen.findByText("Реквизиты не указаны")).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Указать реквизиты" }));
-
-    expect(`${router.state.location.pathname}${router.state.location.search}`).toBe(
-      "/app/admin/merchant-edit/10?focus=payoutDetails"
-    );
   });
 
   it("marks one week: POST with that week's `from` and the amount on screen", async () => {

@@ -20,7 +20,7 @@ export const MerchantFormSchema = z.object({
       message: "merchantForm.telegramIdInvalid"
     }),
   isActive: z.boolean(),
-  // Admin-only notes; blank = none (sent as null).
-  payoutDetails: z.string().max(NOTE_MAX_LENGTH, "merchantForm.noteTooLong"),
-  contact: z.string().max(NOTE_MAX_LENGTH, "merchantForm.noteTooLong")
+  // Admin-only notes, both required - the payout goes by them.
+  payoutDetails: z.string().trim().min(1, "merchantForm.required").max(NOTE_MAX_LENGTH, "merchantForm.noteTooLong"),
+  contact: z.string().trim().min(1, "merchantForm.required").max(NOTE_MAX_LENGTH, "merchantForm.noteTooLong")
 });

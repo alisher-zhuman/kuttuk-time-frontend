@@ -52,6 +52,11 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
   });
 
   const isActive = useWatch({ control, name: "isActive" });
+  const payoutDetails = useWatch({ control, name: "payoutDetails" });
+  const contact = useWatch({ control, name: "contact" });
+
+  // No saving without both - the payout goes by them.
+  const hasNotes = payoutDetails.trim() !== "" && contact.trim() !== "";
 
   const setIsActive = (next: boolean) =>
     setValue("isActive", next, { shouldValidate: true, shouldDirty: true });
@@ -71,9 +76,8 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
     const payload = {
       name: values.name.trim(),
       telegramId: Number(values.telegramId),
-      // Blank clears the note (the backend takes null).
-      payoutDetails: values.payoutDetails.trim() || null,
-      contact: values.contact.trim() || null
+      payoutDetails: values.payoutDetails.trim(),
+      contact: values.contact.trim()
     };
 
     const onError = (error: unknown) => {
@@ -123,6 +127,7 @@ export const useMerchantForm = (variant: MerchantFormVariant) => {
     isPending: isCreating || isUpdating,
     isDirty,
     isActive,
+    hasNotes,
     setIsActive,
     submit
   };

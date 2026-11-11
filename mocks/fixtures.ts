@@ -169,7 +169,7 @@ export const adminMerchant = (overrides: Record<string, unknown> = {}) => ({
   telegramId: 123456789,
   isActive: true,
   payoutDetails: "Mbank 0555 123 456, Асанов А.",
-  contact: null,
+  contact: "@asanov, 0555 000 111",
   createdAt: "2026-09-01T04:00:00.000Z",
   owner: { lastSeenAt: "2026-11-09T08:00:00.000Z", botReachable: true },
   venues: [],

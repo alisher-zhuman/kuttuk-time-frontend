@@ -18,13 +18,10 @@ interface Props {
   onOpenOrders: () => void;
 }
 
-// Free text as typed (line breaks kept), or a muted "not set".
-const Note = ({ text, empty }: { text: string | null; empty: string }) =>
-  text ? (
-    <span className="font-semibold whitespace-pre-wrap wrap-break-word">{text}</span>
-  ) : (
-    <span className="font-semibold text-(--color-hint)">{empty}</span>
-  );
+// Free text as typed - line breaks kept.
+const Note = ({ text }: { text: string }) => (
+  <span className="font-semibold whitespace-pre-wrap wrap-break-word">{text}</span>
+);
 
 export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOpenOrders }: Props) => {
   const { t } = useTranslation();
@@ -73,13 +70,13 @@ export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOp
         <div className="col-span-2">
           <MetaField
             label={t("merchantForm.payoutDetails")}
-            value={<Note text={merchant.payoutDetails} empty={t("admin.merchants.detail.notSet")} />}
+            value={<Note text={merchant.payoutDetails} />}
           />
         </div>
         <div className="col-span-2">
           <MetaField
             label={t("merchantForm.contact")}
-            value={<Note text={merchant.contact} empty={t("admin.merchants.detail.notSet")} />}
+            value={<Note text={merchant.contact} />}
           />
         </div>
       </div>

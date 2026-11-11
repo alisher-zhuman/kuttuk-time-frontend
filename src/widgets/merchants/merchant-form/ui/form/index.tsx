@@ -10,23 +10,23 @@ import { MerchantFormTelegramId } from "../telegram-id-field";
 
 interface Props {
   variant: MerchantFormVariant;
-  // Opened to fill in the payout details - the cursor goes there. Saving goes
-  // back to where it came from (payouts).
-  focusPayoutDetails?: boolean;
 }
 
-export const MerchantForm = ({ variant, focusPayoutDetails = false }: Props) => {
+export const MerchantForm = ({ variant }: Props) => {
   const { t } = useTranslation();
 
   const isCreate = variant.kind === "create";
 
-  const { register, errors, isPending, isDirty, isActive, setIsActive, submit } =
+  const { register, errors, isPending, isDirty, isActive, hasNotes, setIsActive, submit } =
     useMerchantForm(variant);
 
   useMainButton({
     text: t(isCreate ? "merchantForm.create" : "merchantForm.save"),
-    onClick: () => void submit(),
+    onClick: () => {
+      if (hasNotes) void submit();
+    },
     loading: isPending,
+    disabled: !hasNotes,
     hidden: !isCreate && !isDirty
   });
 
@@ -48,7 +48,6 @@ export const MerchantForm = ({ variant, focusPayoutDetails = false }: Props) => 
       <Textarea
         label={t("merchantForm.payoutDetails")}
         placeholder={t("merchantForm.payoutDetailsPlaceholder")}
-        autoFocus={focusPayoutDetails}
         maxLength={NOTE_MAX_LENGTH}
         error={errors.payoutDetails?.message && t(errors.payoutDetails.message, { max: NOTE_MAX_LENGTH })}
         {...register("payoutDetails")}

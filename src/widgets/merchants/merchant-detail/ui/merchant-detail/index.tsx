@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 
-import { ClipboardList, Pencil, UserRound } from "lucide-react";
+import { ClipboardList, MessageCircle, Pencil, UserRound } from "lucide-react";
 
 import { type AdminMerchantDetail, MerchantOwnerStatus } from "@entities/merchant";
 
-import { formatDate } from "@shared/helpers";
+import { formatDate, openTelegramChat } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
 import { MetaField, RowButton, StatusBadge } from "@shared/ui";
 
@@ -83,6 +83,12 @@ export const MerchantDetail = ({ merchant, onEdit, onOpenVenue, onAddVenue, onOp
           />
         </div>
       </div>
+
+      <RowButton
+        icon={<MessageCircle size={20} />}
+        label={t("admin.merchants.detail.message")}
+        onClick={() => openTelegramChat(merchant.telegramId)}
+      />
 
       <RowButton
         icon={<ClipboardList size={20} />}

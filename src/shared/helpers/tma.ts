@@ -39,6 +39,13 @@ const BROWSER_PLATFORMS = new Set(["weba", "webk", "web"]);
 export const canDownloadFiles = () =>
   BROWSER_PLATFORMS.has(getLaunchParams()?.tgWebAppPlatform ?? "");
 
+// A chat with a Telegram user by their numeric ID. tg:// isn't accepted by
+// openTelegramLink (https://t.me only) or openLink (http/https), so the page
+// navigates to it and the Telegram client takes the scheme over.
+export const openTelegramChat = (telegramId: number) => {
+  window.location.href = `tg://user?id=${telegramId}`;
+};
+
 // openLink keeps the Mini App open (unlike openTelegramLink / location
 // changes), so polling survives while the user pays in the bank's page.
 // Telegram may ignore it outside a user gesture - callers after an await

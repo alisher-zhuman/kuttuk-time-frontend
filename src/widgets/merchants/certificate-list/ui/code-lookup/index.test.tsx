@@ -212,4 +212,42 @@ describe("redeeming by code", () => {
     expect(await screen.findByText("Сертификат не найден")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Повторить" })).not.toBeInTheDocument();
   });
+
+  it("a scanned QR asks «Погасить?» right away, with the amount and the venue", async () => {
+    const state = answer();
+    window.__telegram.replies.qr = "04718263";
+    window.__telegram.replies.popup = "redeem";
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Сканировать QR" }));
+
+    expect(await screen.findByText("Сертификат погашен")).toBeInTheDocument();
+    const message = String(window.__telegram.calls.find((call) => call.name === "web_app_open_popup")?.params?.["message"]);
+    expect(message).toContain("1 000 сом");
+    expect(message).toContain("Coffeeroom");
+    expect(state.redeems).toBe(1);
+  });
+
+  it("«Отмена» after a scan leaves the card at the counter, asked once", async () => {
+    const state = answer();
+    window.__telegram.replies.qr = "04718263";
+    window.__telegram.replies.popup = "cancel";
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Сканировать QR" }));
+
+    expect(await screen.findByRole("button", { name: "Погасить" })).toBeInTheDocument();
+    await waitFor(() => expect(window.__telegram.calls.filter((call) => call.name === "web_app_open_popup")).toHaveLength(1));
+    expect(state.redeems).toBe(0);
+  });
+
+  it("a typed code waits for «Погасить» - no popup by itself", async () => {
+    answer();
+    renderWithProviders(<CodeLookup />);
+
+    await userEvent.type(screen.getByPlaceholderText("Введите код сертификата"), CODE);
+
+    expect(await screen.findByRole("button", { name: "Погасить" })).toBeInTheDocument();
+    expect(window.__telegram.calls.some((call) => call.name === "web_app_open_popup")).toBe(false);
+  });
 });

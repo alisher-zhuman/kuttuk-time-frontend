@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -26,6 +26,9 @@ interface Props {
   // Instead of the in-place "redeemed" card - the code field clears itself
   // for the next customer and shows the result on its own.
   onRedeemed?: (certificate: Extract<MerchantCertificate, { status: "used" }>) => void;
+  // Scanned from the customer's QR: ask «Погасить?» as soon as it's found
+  // active - the scan already said "this one". Typed codes wait for the tap.
+  confirmOnLoad?: boolean;
 }
 
 // One certificate by its code: looked up fresh (the status changes at the
@@ -50,7 +53,7 @@ const isLostAnswer = (error: unknown) => isAxiosError(error) && !error.response;
 const isRetryable = (error: unknown) =>
   !isAxiosError(error) || !error.response || error.response.status >= 500 || error.response.status === 429;
 
-export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
+export const CertificateLookup = ({ code, fallback, onRedeemed, confirmOnLoad = false }: Props) => {
   const [justRedeemed, setJustRedeemed] = useState(false);
   const [isConfirmFailed, setIsConfirmFailed] = useState(false);
 
@@ -65,6 +68,9 @@ export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
   const isRedeemingRef = useRef(false);
 
   const { certificate = fallback, error, isError, isFetching, refetch } = useMerchantCertificateQuery(code);
+
+  // Once per scan - Отмена in the confirmation leaves the card at the counter.
+  const hasAutoConfirmedRef = useRef(false);
 
   // On success it puts the "used" certificate into this lookup's cache.
   const { mutate: redeem, isPending } = useRedeemCertificateMutation();
@@ -148,6 +154,17 @@ export const CertificateLookup = ({ code, fallback, onRedeemed }: Props) => {
       }
     );
   };
+
+  const confirmScanned = useEffectEvent((active: MerchantCertificate) => void handleRedeem(active));
+
+  // The fresh look-up, not a cached one: the status changes at the counter.
+  useEffect(() => {
+    if (!confirmOnLoad || hasAutoConfirmedRef.current || isFetching) return;
+    if (certificate?.status !== "active") return;
+
+    hasAutoConfirmedRef.current = true;
+    confirmScanned(certificate);
+  }, [confirmOnLoad, certificate, isFetching]);
 
   if (isError && !certificate) {
     return (

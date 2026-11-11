@@ -27,6 +27,8 @@ export const CodeLookup = () => {
   // The last redeemed certificate - shown after the field clears for the next
   // customer, until they start typing.
   const [redeemed, setRedeemed] = useState<MerchantCertificate | null>(null);
+  // The code came from the scanner (not typed) - confirm right away.
+  const [scanned, setScanned] = useState<string | null>(null);
 
   const { t } = useTranslation();
 
@@ -49,8 +51,11 @@ export const CodeLookup = () => {
     // Closed without scanning.
     if (text === undefined) return;
 
+    const code = text.replace(/\D/g, "");
+
     setRedeemed(null);
-    setDigits(text.replace(/\D/g, ""));
+    setDigits(code);
+    setScanned(code);
   };
 
   return (
@@ -65,6 +70,7 @@ export const CodeLookup = () => {
           onChange={(event) => {
             setDigits(toCertificateCodeDigits(event.target.value));
             setRedeemed(null);
+            setScanned(null);
           }}
         />
 
@@ -85,10 +91,14 @@ export const CodeLookup = () => {
 
       {isFull && (
         <CertificateLookup
+          // A new mount per code: the «confirm once» guard starts fresh.
+          key={digits}
           code={digits}
+          confirmOnLoad={scanned === digits}
           onRedeemed={(result) => {
             setRedeemed(result);
             setDigits("");
+            setScanned(null);
           }}
         />
       )}

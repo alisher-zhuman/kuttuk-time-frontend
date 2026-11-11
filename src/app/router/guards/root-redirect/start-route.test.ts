@@ -43,7 +43,7 @@ describe("getStartRoute - where a launch lands", () => {
   });
 
   it("startapp=admin_payouts for anyone else is the usual start, not a venue", () => {
-    expect(getStartRoute("admin_payouts", "merchant")).toBe("/app/merchant");
+    expect(getStartRoute("admin_payouts", "merchant")).toBe("/app/merchant/certificates");
     expect(getStartRoute("admin_payouts", "user")).toBe("/app");
   });
 
@@ -59,7 +59,7 @@ describe("getStartRoute - where a launch lands", () => {
 
   it("sends the admin and the owner to their own home without a link", () => {
     expect(getStartRoute(undefined, "admin")).toBe("/app/admin/venues");
-    expect(getStartRoute(undefined, "merchant")).toBe("/app/merchant");
+    expect(getStartRoute(undefined, "merchant")).toBe("/app/merchant/certificates");
   });
 
   it("opens the catalog without a start param", () => {

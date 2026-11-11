@@ -53,8 +53,9 @@ export const getVenueRoute = (handle: string | number) =>
 export const getOrderRoute = (orderId: string) =>
   `/${ROUTES.APP}/${ROUTES.ORDERS}/${orderId}`;
 
-export const getCertificateRoute = (certificateId: string) =>
-  `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/${certificateId}`;
+// justClaimed: opened by «Забрать подарок» - the screen says what to do now.
+export const getCertificateRoute = (certificateId: string, { justClaimed = false } = {}) =>
+  `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/${certificateId}` + (justClaimed ? "?claimed=1" : "");
 
 export const getGiftRoute = (token: string) => `/${ROUTES.APP}/${ROUTES.GIFTS}/${token}`;
 
@@ -103,7 +104,8 @@ export const getAdminMerchantEditRoute = (id: string | number) =>
 
 export const getHomeRoute = (mode: string | null) => {
   if (mode === "admin") return ROUTE_PATTERNS.ADMIN_VENUES;
-  if (mode === "merchant") return ROUTE_PATTERNS.MERCHANT_HOME;
+  // The counter (code field), not the venues - what the owner opens it for.
+  if (mode === "merchant") return ROUTE_PATTERNS.MERCHANT_CERTIFICATES;
   return ROUTE_PATTERNS.HOME;
 };
 

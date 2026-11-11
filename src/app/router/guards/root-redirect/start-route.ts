@@ -38,7 +38,8 @@ export const getStartRoute = (startParam: string | undefined, viewMode: ViewMode
   }
 
   if (viewMode === "admin") return ROUTE_PATTERNS.ADMIN_VENUES;
-  if (viewMode === "merchant") return ROUTE_PATTERNS.MERCHANT_HOME;
+  // The owner's everyday job is the counter - the cabinet opens on it.
+  if (viewMode === "merchant") return ROUTE_PATTERNS.MERCHANT_CERTIFICATES;
 
   return ROUTE_PATTERNS.HOME;
 };

@@ -4,9 +4,9 @@ export { MAX_UPLOAD_SIZE, uploadImage } from "./upload";
 export {
   getWebsiteUser,
   isTelegramRequired,
-  logInWithTelegramWidget,
+  logInWithTelegram,
   signInOnWebsite,
   signOutOnWebsite,
-  type TelegramAuthData,
+  type TelegramLoginClaims,
   type WebSignIn
 } from "./web-auth";

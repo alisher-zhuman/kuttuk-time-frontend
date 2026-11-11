@@ -61,3 +61,5 @@ export const renderHookWithProviders = <T,>(hook: () => T, options: Options = {}
 
   return { ...renderHook(hook, { wrapper }), queryClient };
 };
+
+export { fakeIdToken, installTelegramLogin } from "./telegram-login";

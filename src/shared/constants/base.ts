@@ -1,5 +1,9 @@
 export const BOT_USERNAME = "kuttuk_time_bot";
 export const BOT_URL = `https://t.me/${BOT_USERNAME}`;
+
+// «Log In With Telegram» on the website: the Client ID is the bot's id
+// (BotFather → the bot → Login Widget). Public - it is in every login URL.
+export const TELEGRAM_LOGIN_CLIENT_ID = 8215578063;
 export const SUPPORT_URL = "https://t.me/alisher_zh";
 
 // startapp=order_<uuid> - where Finik sends the buyer back after paying.

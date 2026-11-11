@@ -2,6 +2,6 @@ export {
   GuestLogInResponseSchema,
   LogInPayloadSchema,
   LogInResponseSchema,
-  WidgetLogInResponseSchema
+  TelegramLogInResponseSchema
 } from "./auth";
 export { UserRoleSchema } from "./user-role";

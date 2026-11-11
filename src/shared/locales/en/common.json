@@ -500,7 +500,9 @@
       "claim": "Sign in with Telegram to take the gift: the certificate is kept in your account, the code and reminders come in Telegram",
       "signedIn": "You are signed in with Telegram",
       "signOut": "Sign out",
-      "signOutConfirm": "Sign out of your Telegram account on this site? You can buy and take gifts again after signing in."
+      "signOutConfirm": "Sign out of your Telegram account on this site? You can buy and take gifts again after signing in.",
+      "button": "Log in with Telegram",
+      "failed": "Could not log in, please try again"
     },
     "privacy": {
       "title": "Privacy policy"

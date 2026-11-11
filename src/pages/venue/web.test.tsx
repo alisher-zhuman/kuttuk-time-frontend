@@ -1,7 +1,7 @@
 import { api, server } from "@mocks";
 import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { renderWithProviders } from "@tests";
+import { installTelegramLogin, renderWithProviders } from "@tests";
 import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -21,7 +21,6 @@ beforeEach(() => {
   goToUrl.mockClear();
 });
 
-const AUTH_DATA = { id: 777, first_name: "Айбек", auth_date: 1793780000, hash: "abc" };
 const INVITE =
   "Войдите через Telegram, чтобы купить: сертификат сохранится в вашем аккаунте, код и напоминания придут в Telegram";
 
@@ -69,7 +68,7 @@ describe("buying on the website", () => {
     const orders: unknown[] = [];
     server.use(
       http.get(api("/venues/1"), () => HttpResponse.json(venue)),
-      http.post(api("/auth/telegram-widget"), () => HttpResponse.json({ accessToken: "tg-jwt", role: "user", merged: true })),
+      http.post(api("/auth/telegram-oidc"), () => HttpResponse.json({ accessToken: "tg-jwt", role: "user", merged: true })),
       http.post(api("/orders"), async ({ request }) => {
         orders.push({ body: await request.json(), auth: request.headers.get("Authorization") });
         return HttpResponse.json(
@@ -80,6 +79,7 @@ describe("buying on the website", () => {
     );
     useAppModeStore.setState({ mode: "web" });
     useAuthStore.setState({ accessToken: "guest-jwt", role: "user", isGuest: true });
+    const login = installTelegramLogin();
     renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
 
     await userEvent.click(await screen.findByRole("button", { name: /^1\s000/ }));
@@ -88,8 +88,9 @@ describe("buying on the website", () => {
     expect(await screen.findByText(INVITE)).toBeInTheDocument();
     expect(orders).toEqual([]);
 
-    // Telegram's widget calls this once the buyer confirms.
-    act(() => window.onKuttukTelegramAuth?.(AUTH_DATA));
+    // «Войти через Telegram» in the sheet → Telegram's popup answers.
+    await userEvent.click(screen.getByRole("button", { name: "Войти через Telegram" }));
+    login.signIn();
 
     await waitFor(() => expect(goToUrl).toHaveBeenCalledWith("https://pay.finik.test/o-1"));
     expect(orders).toEqual([{ body: { venueId: 1, nominal: 1000, channel: "web" }, auth: "Bearer tg-jwt" }]);

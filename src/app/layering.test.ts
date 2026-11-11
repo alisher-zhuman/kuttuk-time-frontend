@@ -100,3 +100,14 @@ describe("dashes", () => {
     expect(offenders).toEqual([]);
   });
 });
+
+describe("the website's sign-in is Log In With Telegram (OIDC)", () => {
+  // The old Login Widget is archived by Telegram (core.telegram.org/widgets/login-legacy).
+  it("nothing of the old Login Widget is left in the app", () => {
+    const offenders = FILES.filter((path) =>
+      /telegram-widget|data-onauth|onKuttukTelegramAuth/.test(SOURCES[path] ?? "")
+    );
+
+    expect(offenders).toEqual([]);
+  });
+});

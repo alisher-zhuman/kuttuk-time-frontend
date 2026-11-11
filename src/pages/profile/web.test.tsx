@@ -10,13 +10,17 @@ import { useAppModeStore, useAuthStore } from "@shared/store";
 import { ProfilePage } from "./index";
 
 describe("the website's profile", () => {
-  it("signed in with Telegram: the name from the widget", async () => {
+  it("signed in with Telegram: the name from Telegram's id_token", async () => {
     server.use(http.get(api("/certificates/my"), () => HttpResponse.json([])));
     useAppModeStore.setState({ mode: "web" });
     useAuthStore.setState({ accessToken: "tg-jwt", role: "user", isGuest: false });
     localStorage.setItem(
-      "kuttuk-time-telegram-auth",
-      JSON.stringify({ id: 777, first_name: "Айбек", last_name: "Асанов", username: "aibek", hash: "abc" })
+      "kuttuk-time-telegram-session",
+      JSON.stringify({
+        accessToken: "tg-jwt",
+        role: "user",
+        user: { id: 777, fullName: "Айбек Асанов", username: "aibek", photoUrl: null }
+      })
     );
     renderWithProviders(<ProfilePage />, { route: ROUTE_PATTERNS.PROFILE, path: ROUTE_PATTERNS.PROFILE });
 

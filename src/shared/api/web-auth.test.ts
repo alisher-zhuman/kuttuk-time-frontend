@@ -10,19 +10,25 @@ import { api } from "./api";
 import {
   getWebsiteUser,
   logInAsGuest,
-  logInWithTelegramWidget,
+  logInWithTelegram,
   signInOnWebsite,
   signOutOnWebsite
 } from "./web-auth";
 
 const GUEST = apiUrl("/auth/guest");
-const WIDGET = apiUrl("/auth/telegram-widget");
+const TELEGRAM = apiUrl("/auth/telegram-oidc");
 
-const AUTH_DATA = { id: 777, first_name: "Айбек", auth_date: 1793780000, hash: "abc" };
+const CLAIMS = { id: 777, name: "Айбек Асанов", preferred_username: "aibek", picture: "https://t.me/i/userpic/1.jpg" };
+
+// Our JWT with an expiry (seconds from now) - the session checks it locally.
+const jwt = (expiresIn: number) =>
+  `h.${btoa(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + expiresIn }))}.s`;
+
+const SESSION_KEY = "kuttuk-time-telegram-session";
 
 // What each sign-in sent, and the guest the backend hands out.
-const answer = ({ widget = "ok" }: { widget?: "ok" | "expired" } = {}) => {
-  const sent = { guest: [] as unknown[], widget: [] as unknown[] };
+const answer = ({ telegram = "ok", accessToken = jwt(7200) }: { telegram?: "ok" | 401 | 400; accessToken?: string } = {}) => {
+  const sent = { guest: [] as unknown[], telegram: [] as unknown[] };
 
   server.use(
     http.post(GUEST, async ({ request }) => {
@@ -31,12 +37,12 @@ const answer = ({ widget = "ok" }: { widget?: "ok" | "expired" } = {}) => {
 
       return HttpResponse.json({ accessToken: `guest-jwt-${sent.guest.length}`, role: "user", guestToken: body.guestToken ?? "g-new" });
     }),
-    http.post(WIDGET, async ({ request }) => {
-      sent.widget.push(await request.json());
+    http.post(TELEGRAM, async ({ request }) => {
+      sent.telegram.push(await request.json());
 
-      return widget === "expired"
-        ? HttpResponse.json({ message: "Telegram login expired" }, { status: 401 })
-        : HttpResponse.json({ accessToken: "tg-jwt", role: "user", merged: true });
+      return telegram === "ok"
+        ? HttpResponse.json({ accessToken, role: "user", merged: true })
+        : HttpResponse.json({ message: "Invalid Telegram login" }, { status: telegram });
     })
   );
 
@@ -80,34 +86,60 @@ describe("the website's guest", () => {
   });
 });
 
-describe("«Войти через Telegram»", () => {
-  it("sends the widget's data unchanged with the guest's token; the guest's token goes", async () => {
+describe("«Войти через Telegram» (Log In With Telegram)", () => {
+  it("sends Telegram's id_token with the guest's token; the guest's token goes, our JWT and the profile are kept - not the id_token", async () => {
     const sent = answer();
     localStorage.setItem("kuttuk-time-guest-token", "g-1");
 
-    const result = await logInWithTelegramWidget(AUTH_DATA);
+    const result = await logInWithTelegram("telegram-id-token", CLAIMS);
 
-    expect(sent.widget[0]).toEqual({ authData: AUTH_DATA, guestToken: "g-1" });
-    expect(result).toMatchObject({ accessToken: "tg-jwt", isGuest: false, merged: true });
+    expect(sent.telegram[0]).toEqual({ idToken: "telegram-id-token", guestToken: "g-1" });
+    expect(result).toMatchObject({ role: "user", isGuest: false });
     expect(localStorage.getItem("kuttuk-time-guest-token")).toBeNull();
-    expect(JSON.parse(localStorage.getItem("kuttuk-time-telegram-auth") ?? "null")).toEqual(AUTH_DATA);
+    expect(localStorage.getItem(SESSION_KEY)).not.toContain("telegram-id-token");
+    expect(getWebsiteUser()).toEqual({ id: 777, fullName: "Айбек Асанов", username: "aibek", photoUrl: "https://t.me/i/userpic/1.jpg" });
   });
 
-  it("the next visit signs in with the kept widget data", async () => {
+  it.each([401, 400] as const)("Telegram's token refused (%i): an error, still the guest", async (status) => {
+    answer({ telegram: status });
+    localStorage.setItem("kuttuk-time-guest-token", "g-1");
+
+    await expect(logInWithTelegram("bad", CLAIMS)).rejects.toMatchObject({ response: { status } });
+    expect(localStorage.getItem("kuttuk-time-guest-token")).toBe("g-1");
+    expect(localStorage.getItem(SESSION_KEY)).toBeNull();
+  });
+
+  it("a reload while our JWT lives: still signed in, no request", async () => {
     const sent = answer();
-    localStorage.setItem("kuttuk-time-telegram-auth", JSON.stringify(AUTH_DATA));
+    await logInWithTelegram("telegram-id-token", CLAIMS);
 
-    expect(await signInOnWebsite()).toEqual({ accessToken: "tg-jwt", role: "user", isGuest: false });
-    expect(sent.widget[0]).toEqual({ authData: AUTH_DATA });
+    expect(await signInOnWebsite()).toMatchObject({ isGuest: false });
     expect(sent.guest).toEqual([]);
+    expect(sent.telegram).toHaveLength(1);
   });
 
-  it("widget data older than 24 h (401): dropped, a guest again", async () => {
-    const sent = answer({ widget: "expired" });
-    localStorage.setItem("kuttuk-time-telegram-auth", JSON.stringify(AUTH_DATA));
+  it("our JWT expired: the session goes, a quiet guest - the next purchase asks Telegram again", async () => {
+    const sent = answer({ accessToken: jwt(-60) });
+    await logInWithTelegram("telegram-id-token", CLAIMS);
 
     expect(await signInOnWebsite()).toMatchObject({ isGuest: true });
-    expect(sent.guest).toHaveLength(1);
+    expect(sent.guest).toEqual([{}]);
+    expect(localStorage.getItem(SESSION_KEY)).toBeNull();
+  });
+
+  it("the backend refused the JWT (a 401 on a request): the session goes too", async () => {
+    answer();
+    await logInWithTelegram("telegram-id-token", CLAIMS);
+
+    expect(await signInOnWebsite({ afterRejection: true })).toMatchObject({ isGuest: true });
+    expect(getWebsiteUser()).toBeNull();
+  });
+
+  it("the old Login Widget's data is wiped from the browser", async () => {
+    answer();
+    localStorage.setItem("kuttuk-time-telegram-auth", JSON.stringify({ id: 777, hash: "abc" }));
+
+    expect(await signInOnWebsite()).toMatchObject({ isGuest: true });
     expect(localStorage.getItem("kuttuk-time-telegram-auth")).toBeNull();
   });
 });
@@ -153,17 +185,15 @@ describe("one quiet guest", () => {
 });
 
 describe("«Выйти»", () => {
-  it("forgets the widget's data and signs in as a new quiet guest", async () => {
+  it("forgets the Telegram session and signs in as a new quiet guest", async () => {
     const sent = answer();
-    localStorage.setItem("kuttuk-time-telegram-auth", JSON.stringify(AUTH_DATA));
-
-    expect(getWebsiteUser()).toEqual({ id: 777, fullName: "Айбек", username: null, photoUrl: null });
+    await logInWithTelegram("telegram-id-token", CLAIMS);
 
     const result = await signOutOnWebsite();
 
     expect(result).toEqual({ accessToken: "guest-jwt-1", role: "user", isGuest: true });
     expect(sent.guest).toEqual([{}]);
-    expect(localStorage.getItem("kuttuk-time-telegram-auth")).toBeNull();
+    expect(localStorage.getItem(SESSION_KEY)).toBeNull();
     expect(getWebsiteUser()).toBeNull();
   });
 });

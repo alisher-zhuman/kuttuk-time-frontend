@@ -67,9 +67,16 @@ export class MiniApp {
     { role = "user", routes, startParam, web = false }: { role?: string; routes: Route; startParam?: string; web?: boolean }
   ) {
     if (!web) await this.page.addInitScript(installTelegram);
-    // Telegram's login widget script: never fetched - tests answer for it
-    // through signInWithTelegram().
-    if (web) await this.page.route("https://telegram.org/**", (route) => route.abort());
+    // Telegram's «Log In With Telegram» library: never fetched - a stand-in
+    // that keeps the callback, and signInWithTelegram() answers as the popup.
+    if (web) {
+      await this.page.route("https://oauth.telegram.org/js/**", (route) =>
+        route.fulfill({
+          contentType: "text/javascript",
+          body: "window.Telegram = window.Telegram || {}; window.Telegram.Login = { auth: function (options, callback) { window.__telegramLogin = { options: options, callback: callback }; } };"
+        })
+      );
+    }
     await this.page.route(`${API}/**`, async (route) => {
       const request = route.request();
       const url = new URL(request.url());
@@ -89,7 +96,7 @@ export class MiniApp {
           ? ([201, { accessToken: "t", role }] as [number, unknown])
           : path === "/auth/guest"
             ? ([200, { accessToken: "guest", role: "user", guestToken: "g-1" }] as [number, unknown])
-            : path === "/auth/telegram-widget"
+            : path === "/auth/telegram-oidc"
               ? ([200, { accessToken: "tg", role: "user", merged: true }] as [number, unknown])
             : routes({ path, method: request.method(), query: url.searchParams, body });
 
@@ -101,13 +108,14 @@ export class MiniApp {
     await this.page.goto(web ? path : `${path}#${launchParams(startParam)}`);
   }
 
-  // The website: what Telegram's login widget does once the buyer confirms.
+  // The website: «Войти через Telegram» - the button opens Telegram's popup,
+  // which answers with an id_token.
   async signInWithTelegram() {
+    await this.page.getByRole("button", { name: "Войти через Telegram" }).click();
     await this.page.evaluate(() => {
-      // Set by the app's TelegramLoginWidget for Telegram's script.
-      const onAuth = (window as unknown as { onKuttukTelegramAuth?: (user: object) => void }).onKuttukTelegramAuth;
+      const login = (window as unknown as { __telegramLogin?: { callback: (result: object) => void } }).__telegramLogin;
 
-      onAuth?.({ id: 777, first_name: "Айбек", auth_date: 1793780000, hash: "abc" });
+      login?.callback({ id_token: "h.eyJpZCI6Nzc3fQ.s", user: { id: 777, name: "Aibek" } });
     });
   }
 

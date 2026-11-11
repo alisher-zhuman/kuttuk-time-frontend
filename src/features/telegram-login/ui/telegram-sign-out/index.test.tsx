@@ -12,11 +12,11 @@ import { TelegramSignOut } from "./index";
 const signedIn = () => {
   useAppModeStore.setState({ mode: "web" });
   useAuthStore.setState({ accessToken: "tg-jwt", role: "user", isGuest: false });
-  localStorage.setItem("kuttuk-time-telegram-auth", JSON.stringify({ id: 777, first_name: "Айбек", hash: "abc" }));
+  localStorage.setItem("kuttuk-time-telegram-session", JSON.stringify({ accessToken: "tg-jwt", role: "user", user: { id: 777, fullName: "Айбек", username: null, photoUrl: null } }));
 };
 
 describe("«Выйти» on the website", () => {
-  it("after a confirm: the widget's data goes, a quiet guest again", async () => {
+  it("after a confirm: the Telegram session goes, a quiet guest again", async () => {
     const sent: unknown[] = [];
     server.use(
       http.post(api("/auth/guest"), async ({ request }) => {
@@ -33,7 +33,7 @@ describe("«Выйти» on the website", () => {
 
     await waitFor(() => expect(useAuthStore.getState()).toMatchObject({ accessToken: "guest-jwt", isGuest: true }));
     expect(sent).toEqual([{}]);
-    expect(localStorage.getItem("kuttuk-time-telegram-auth")).toBeNull();
+    expect(localStorage.getItem("kuttuk-time-telegram-session")).toBeNull();
     expect(screen.queryByRole("button", { name: "Выйти" })).not.toBeInTheDocument();
   });
 
@@ -45,7 +45,7 @@ describe("«Выйти» on the website", () => {
     await userEvent.click(screen.getByRole("button", { name: "Выйти" }));
 
     expect(useAuthStore.getState().accessToken).toBe("tg-jwt");
-    expect(localStorage.getItem("kuttuk-time-telegram-auth")).not.toBeNull();
+    expect(localStorage.getItem("kuttuk-time-telegram-session")).not.toBeNull();
   });
 
   it("nothing for a guest or in the Mini App", () => {

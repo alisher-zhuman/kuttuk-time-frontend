@@ -17,8 +17,8 @@ export const GuestLogInResponseSchema = LogInResponseSchema.extend({
   guestToken: z.string().min(1)
 });
 
-// POST /auth/telegram-widget - «Войти через Telegram» on the website; merged:
-// the guest's purchases moved to the Telegram account.
-export const WidgetLogInResponseSchema = LogInResponseSchema.extend({
+// POST /auth/telegram-oidc - «Войти через Telegram» on the website (Log In
+// With Telegram); merged: the guest's purchases moved to the Telegram account.
+export const TelegramLogInResponseSchema = LogInResponseSchema.extend({
   merged: z.boolean()
 });

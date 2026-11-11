@@ -2,8 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { BottomSheet } from "@shared/ui";
 
-import { useTelegramSignIn } from "../../hooks/useTelegramSignIn";
-import { TelegramLoginWidget } from "../telegram-login-widget";
+import { TelegramLoginButton } from "../telegram-login-button";
 
 interface Props {
   // Why: «чтобы купить…» / «чтобы забрать подарок…».
@@ -18,22 +17,16 @@ interface Props {
 export const TelegramLoginSheet = ({ message, onClose, onSignedIn }: Props) => {
   const { t } = useTranslation();
 
-  const signIn = useTelegramSignIn();
-
   return (
     <BottomSheet title={t("site.login.title")} onClose={onClose}>
       {(close) => (
         <div className="flex flex-col items-center gap-4 pb-2 text-center">
           <p className="text-sm text-(--color-slate)">{message}</p>
-          <TelegramLoginWidget
-            onAuth={(authData) =>
-              void signIn(authData).then((isSignedIn) => {
-                if (!isSignedIn) return;
-
-                close();
-                onSignedIn();
-              })
-            }
+          <TelegramLoginButton
+            onSignedIn={() => {
+              close();
+              onSignedIn();
+            }}
           />
         </div>
       )}

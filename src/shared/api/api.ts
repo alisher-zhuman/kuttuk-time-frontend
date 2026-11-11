@@ -43,10 +43,11 @@ api.interceptors.response.use(
       original._retry = true;
 
       try {
-        // The website signs in again as the Telegram account (while the
-        // widget's data holds) or the guest; the Mini App by its initData.
+        // The website: the JWT was refused - a kept Telegram session goes and
+        // a quiet guest takes over (the next purchase asks to sign in with
+        // Telegram again). The Mini App signs in again by its initData.
         const signIn = () => {
-          if (isWebsite()) return signInOnWebsite();
+          if (isWebsite()) return signInOnWebsite({ afterRejection: true });
 
           const initData = retrieveRawInitData();
 

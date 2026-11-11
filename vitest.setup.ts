@@ -7,6 +7,7 @@ import "@testing-library/jest-dom/vitest";
 
 import { server } from "./mocks/server";
 import { installTelegram } from "./test-utils/telegram";
+import { removeTelegramLogin } from "./test-utils/telegram-login";
 
 // Telegram first: the SDK reads the launch params and the bridge as soon as
 // the app's modules load (TMAProvider calls init() at import).
@@ -55,6 +56,7 @@ afterEach(() => {
   cleanup();
   server.resetHandlers();
   window.__telegram.reset();
+  removeTelegramLogin();
   // Back to the Mini App between tests; the website's tests switch it on.
   useAppModeStore.setState({ mode: "telegram" });
   useWebMainButtonStore.setState({ button: null });

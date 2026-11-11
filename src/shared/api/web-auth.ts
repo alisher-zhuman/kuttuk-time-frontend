@@ -1,28 +1,42 @@
 import i18n from "i18next";
 
+import { z } from "zod";
+
 import axios, { isAxiosError } from "axios";
 
 import { API_PATHS, API_URL, LOG_IN_TIMEOUT_MS } from "@shared/constants";
-import { GuestLogInResponseSchema, WidgetLogInResponseSchema } from "@shared/schemas";
+import { GuestLogInResponseSchema, TelegramLogInResponseSchema, UserRoleSchema } from "@shared/schemas";
 import type { TmaUserInfo, UserRole } from "@shared/types";
 
-// The website's sign-in (../backend docs/web-version.md). The JWT stays in
-// memory (useAuthStore); the browser keeps only what signs in again:
+// The website's sign-in (../backend docs/web-version.md). The browser keeps:
 // - the guest's secret - the same guest, their orders and certificates;
-// - the Telegram Login Widget's data - valid for 24 h, reused until the
-//   backend answers 401.
+// - after «Войти через Telegram» (Log In With Telegram, OIDC): our own JWT
+//   and who it is, until the JWT stops working. Telegram's id_token is
+//   short-lived and never kept - an expired session becomes a quiet guest, and
+//   the next purchase asks to sign in with Telegram again.
 const GUEST_TOKEN_KEY = "kuttuk-time-guest-token";
-const TELEGRAM_AUTH_KEY = "kuttuk-time-telegram-auth";
-
-// What the widget hands over (id, first_name, auth_date, hash, …) - sent back
-// unchanged: the backend checks its signature.
-export type TelegramAuthData = Record<string, string | number>;
+const TELEGRAM_SESSION_KEY = "kuttuk-time-telegram-session";
+// The old Login Widget's data - removed from every browser at start.
+const LEGACY_TELEGRAM_AUTH_KEY = "kuttuk-time-telegram-auth";
 
 export interface WebSignIn {
   accessToken: string;
   role: UserRole;
   isGuest: boolean;
 }
+
+const TelegramSessionSchema = z.object({
+  accessToken: z.string().min(1),
+  role: UserRoleSchema,
+  user: z.object({
+    id: z.number(),
+    fullName: z.string(),
+    username: z.string().nullable(),
+    photoUrl: z.string().nullable()
+  })
+});
+
+type TelegramSession = z.infer<typeof TelegramSessionSchema>;
 
 // Private mode / blocked storage: works for this visit, a new guest next time.
 const read = (key: string) => {
@@ -42,9 +56,22 @@ const write = (key: string, value: string | null) => {
   }
 };
 
-const readTelegramAuth = (): TelegramAuthData | null => {
+// The JWT's own expiry (seconds) - an expired session isn't even tried.
+const isExpired = (jwt: string) => {
   try {
-    return JSON.parse(read(TELEGRAM_AUTH_KEY) ?? "null") as TelegramAuthData | null;
+    const payload = JSON.parse(atob(jwt.split(".")[1]!.replace(/-/g, "+").replace(/_/g, "/"))) as { exp?: number };
+
+    return typeof payload.exp === "number" && payload.exp * 1000 <= Date.now();
+  } catch {
+    return false;
+  }
+};
+
+const readTelegramSession = (): TelegramSession | null => {
+  try {
+    const session = TelegramSessionSchema.safeParse(JSON.parse(read(TELEGRAM_SESSION_KEY) ?? "null"));
+
+    return session.success && !isExpired(session.data.accessToken) ? session.data : null;
   } catch {
     return null;
   }
@@ -70,38 +97,53 @@ export const logInAsGuest = async (): Promise<WebSignIn> => {
   return { accessToken: data.accessToken, role: data.role, isGuest: true };
 };
 
-// «Войти через Telegram»: with the guest's token the backend moves their
-// purchases to the Telegram account and deletes the guest - so its token goes
-// too, and the caller must switch to the new JWT at once.
-export const logInWithTelegramWidget = async (authData: TelegramAuthData) => {
-  const guestToken = read(GUEST_TOKEN_KEY);
+// What Telegram.Login hands over with the id_token: its decoded claims
+// (https://core.telegram.org/bots/telegram-login - id, name, preferred_username,
+// picture). Only shown in the profile; the backend trusts the token alone.
+export type TelegramLoginClaims = Record<string, unknown>;
 
-  const response = await post(API_PATHS.WIDGET_LOG_IN, { authData, ...(guestToken && { guestToken }) });
-  const data = WidgetLogInResponseSchema.parse(response.data);
+const toUser = (claims: TelegramLoginClaims): TelegramSession["user"] => {
+  const text = (key: string) => (typeof claims[key] === "string" && claims[key] ? claims[key] : null);
+  const id = Number(claims["id"] ?? claims["sub"]);
 
-  write(TELEGRAM_AUTH_KEY, JSON.stringify(authData));
-  write(GUEST_TOKEN_KEY, null);
-
-  return { accessToken: data.accessToken, role: data.role, isGuest: false, merged: data.merged };
+  return {
+    id: Number.isSafeInteger(id) ? id : 0,
+    fullName: text("name") ?? [text("given_name"), text("family_name")].filter(Boolean).join(" "),
+    username: text("preferred_username"),
+    photoUrl: text("picture")
+  };
 };
 
-// At start and on a 401: Telegram while the widget's data still works, else
-// the guest. A 401 on the widget's data (older than 24 h) drops it - the
-// «Войти через Telegram» button shows again.
-const signIn = async (): Promise<WebSignIn> => {
-  const telegramAuth = readTelegramAuth();
+// «Войти через Telegram»: Telegram's id_token with the guest's token - the
+// backend moves the guest's purchases to the Telegram account and deletes the
+// guest, so its token goes too, and the caller must switch to the new JWT at
+// once. 401 / 400 - Telegram's token was refused.
+export const logInWithTelegram = async (idToken: string, claims: TelegramLoginClaims): Promise<WebSignIn> => {
+  const guestToken = read(GUEST_TOKEN_KEY);
 
-  if (telegramAuth) {
-    try {
-      const { accessToken, role, isGuest } = await logInWithTelegramWidget(telegramAuth);
+  const response = await post(API_PATHS.TELEGRAM_LOG_IN, { idToken, ...(guestToken && { guestToken }) });
+  const data = TelegramLogInResponseSchema.parse(response.data);
 
-      return { accessToken, role, isGuest };
-    } catch (error) {
-      if (!(isAxiosError(error) && error.response?.status === 401)) throw error;
+  const session: TelegramSession = { accessToken: data.accessToken, role: data.role, user: toUser(claims) };
+  write(TELEGRAM_SESSION_KEY, JSON.stringify(session));
+  write(GUEST_TOKEN_KEY, null);
 
-      write(TELEGRAM_AUTH_KEY, null);
-    }
-  }
+  return { accessToken: data.accessToken, role: data.role, isGuest: false };
+};
+
+// At start and on a 401: the Telegram session while its JWT lives, else the
+// guest. afterRejection - the backend just refused the current JWT: a kept
+// session is dropped (a quiet guest; the next purchase asks to sign in again).
+const signIn = (afterRejection: boolean) => async (): Promise<WebSignIn> => {
+  write(LEGACY_TELEGRAM_AUTH_KEY, null);
+
+  if (afterRejection) write(TELEGRAM_SESSION_KEY, null);
+
+  const session = readTelegramSession();
+
+  if (session) return { accessToken: session.accessToken, role: session.role, isGuest: false };
+
+  write(TELEGRAM_SESSION_KEY, null);
 
   return logInAsGuest();
 };
@@ -125,38 +167,19 @@ const oneAtATime = (run: () => Promise<WebSignIn>): Promise<WebSignIn> => {
   return pendingSignIn;
 };
 
-export const signInOnWebsite = () => oneAtATime(signIn);
+export const signInOnWebsite = ({ afterRejection = false } = {}) => oneAtATime(signIn(afterRejection));
 
-// «Выйти»: forget the widget's data and go back to a quiet guest. The guest
+// «Выйти»: forget the Telegram session and go back to a quiet guest. The guest
 // was merged into the Telegram account at sign-in, so this is a new, empty one.
 export const signOutOnWebsite = () => {
-  write(TELEGRAM_AUTH_KEY, null);
+  write(TELEGRAM_SESSION_KEY, null);
 
   return oneAtATime(logInAsGuest);
 };
 
-// Who signed in through the widget - the profile shows them like the Mini
-// App's user. Null for a guest.
-export const getWebsiteUser = (): TmaUserInfo | null => {
-  const data = readTelegramAuth();
-
-  const id = data?.["id"];
-
-  if (!data || typeof id !== "number") return null;
-
-  const text = (key: string) => {
-    const value = data[key];
-
-    return typeof value === "string" ? value : null;
-  };
-
-  return {
-    id,
-    fullName: [text("first_name"), text("last_name")].filter(Boolean).join(" "),
-    username: text("username"),
-    photoUrl: text("photo_url")
-  };
-};
+// Who signed in with Telegram - the profile shows them like the Mini App's
+// user. Null for a guest.
+export const getWebsiteUser = (): TmaUserInfo | null => readTelegramSession()?.user ?? null;
 
 // The backend's answer to a website guest buying or claiming a gift
 // (../backend src/auth/require-telegram.ts): log in with Telegram first.

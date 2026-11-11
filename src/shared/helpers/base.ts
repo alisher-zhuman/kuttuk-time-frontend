@@ -45,6 +45,16 @@ export const formatIsoDate = (date: string): string => {
   return `${day}.${month}.${year}`;
 };
 
+// A week «09.11-15.11.2026»: the year once - it fits a 320 px screen on one
+// line. Across the new year both dates keep theirs.
+export const formatIsoRange = (from: string, to: string): string => {
+  const [fromYear, fromMonth, fromDay] = from.split("-");
+
+  return fromYear === to.slice(0, 4)
+    ? `${fromDay}.${fromMonth}-${formatIsoDate(to)}`
+    : `${formatIsoDate(from)}-${formatIsoDate(to)}`;
+};
+
 export const shiftIsoDate = (date: string, days: number): string => {
   const [year, month, day] = date.split("-").map(Number);
 

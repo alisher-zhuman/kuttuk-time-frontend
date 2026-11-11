@@ -32,8 +32,8 @@ describe("«Все долги»", () => {
     renderWithProviders(<PayoutDueList />);
 
     expect(await screen.findAllByText("54 сом")).toHaveLength(2); // the total and the merchant
-    expect(screen.getByText("12.10.2026-18.10.2026")).toBeInTheDocument();
-    expect(screen.getByText("19.10.2026-25.10.2026")).toBeInTheDocument();
+    expect(screen.getByText("12.10-18.10.2026")).toBeInTheDocument();
+    expect(screen.getByText("19.10-25.10.2026")).toBeInTheDocument();
     expect(await screen.findByText("Mbank 0555 123 456, Асанов А.")).toBeInTheDocument();
   });
 
@@ -61,7 +61,7 @@ describe("«Все долги»", () => {
     answer();
     const { router } = renderWithProviders(<PayoutDueList />);
 
-    await userEvent.click(await screen.findByRole("button", { name: /19\.10\.2026-25\.10\.2026/ }));
+    await userEvent.click(await screen.findByRole("button", { name: /19\.10-25\.10\.2026/ }));
 
     expect(router.state.location.search).toBe("?week=2026-10-19");
   });

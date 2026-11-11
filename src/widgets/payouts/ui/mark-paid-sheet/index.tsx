@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { cn, formatIsoDate, formatMoney } from "@shared/helpers";
+import { cn, formatIsoRange, formatMoney } from "@shared/helpers";
 import { BottomSheet, Textarea } from "@shared/ui";
 
 import { PayoutDetails } from "../payout-details";
@@ -48,8 +48,7 @@ export const MarkPaidSheet = ({
             {t("admin.payouts.confirmMessage", {
               amount: formatMoney(amount, t("certificate.currency")),
               merchant: merchantName,
-              from: formatIsoDate(from),
-              to: formatIsoDate(to)
+              week: formatIsoRange(from, to)
             })}
           </p>
 

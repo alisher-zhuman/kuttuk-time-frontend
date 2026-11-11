@@ -3,6 +3,7 @@ export {
   formatDate,
   formatDateTime,
   formatIsoDate,
+  formatIsoRange,
   formatMoney,
   shiftIsoDate
 } from "./base";
@@ -18,5 +19,6 @@ export {
   getTMAUserInfo,
   hasWriteAccess,
   openExternalLink,
+  openTelegramChat,
   requestBotMessages
 } from "./tma";

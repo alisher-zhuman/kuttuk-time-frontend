@@ -109,7 +109,7 @@ describe("marking a payout", () => {
     const state = answer();
     renderWithProviders(<PayoutReport />);
 
-    expect(await screen.findByText("19.10.2026-25.10.2026")).toBeInTheDocument();
+    expect(await screen.findByText("19.10-25.10.2026")).toBeInTheDocument();
     expect(state.weeks).toContain("2026-10-19");
   });
 

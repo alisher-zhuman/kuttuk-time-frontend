@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { formatIsoDate } from "@shared/helpers";
+import { formatIsoRange } from "@shared/helpers";
 
 interface Props {
   // The shown week (YYYY-MM-DD, Bishkek); undefined while it loads.
@@ -12,7 +12,7 @@ interface Props {
   onShift: (from: string, days: number) => void;
 }
 
-// "‹ Prev · 19.10.2026-25.10.2026 · Next ›" for weekly reports.
+// "‹ Prev · 19.10-25.10.2026 · Next ›" for weekly reports.
 export const WeekSwitcher = ({ range, isCurrent, onShift }: Props) => {
   const { t } = useTranslation();
 
@@ -30,7 +30,7 @@ export const WeekSwitcher = ({ range, isCurrent, onShift }: Props) => {
 
       <span className="text-sm font-bold text-(--color-slate) text-center">
         {range
-          ? t("week.range", { from: formatIsoDate(range.from), to: formatIsoDate(range.to) })
+          ? formatIsoRange(range.from, range.to)
           : "…"}
       </span>
 

@@ -5,7 +5,7 @@ import { ChevronRight, Wallet } from "lucide-react";
 import { usePayoutDueQuery } from "@entities/payout";
 
 import { getAdminMerchantDetailRoute, getAdminPayoutsRoute } from "@shared/constants";
-import { formatIsoDate, formatMoney } from "@shared/helpers";
+import { formatIsoRange, formatMoney } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { EmptyState, ErrorState } from "@shared/ui";
 
@@ -90,7 +90,7 @@ export const PayoutDueList = () => {
                   >
                     <span className="flex flex-col min-w-0">
                       <span className="text-sm font-bold text-(--color-ink)">
-                        {formatIsoDate(week.from)}-{formatIsoDate(week.to)}
+                        {formatIsoRange(week.from, week.to)}
                       </span>
                       <span className="text-xs text-(--color-slate)">
                         {t("admin.payouts.orders", { count: week.ordersCount })} · {formatMoney(week.due, currency)}

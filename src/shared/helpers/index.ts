@@ -19,6 +19,5 @@ export {
   getTMAUserInfo,
   hasWriteAccess,
   openExternalLink,
-  openTelegramChat,
   requestBotMessages
 } from "./tma";

@@ -27,7 +27,9 @@ class NoopObserver {
 globalThis.ResizeObserver = NoopObserver;
 globalThis.IntersectionObserver = NoopObserver as unknown as typeof IntersectionObserver;
 Element.prototype.scrollIntoView = () => {};
-window.matchMedia ??= ((query: string) => ({
+// jsdom has no matchMedia.
+if (typeof window.matchMedia !== "function") {
+  window.matchMedia = ((query: string) => ({
   matches: false,
   media: query,
   onchange: null,
@@ -36,7 +38,8 @@ window.matchMedia ??= ((query: string) => ({
   addEventListener: () => {},
   removeEventListener: () => {},
   dispatchEvent: () => false
-})) as typeof window.matchMedia;
+  }));
+}
 
 beforeAll(() => {
   server.listen({ onUnhandledRequest: "error" });

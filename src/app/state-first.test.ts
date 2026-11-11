@@ -36,7 +36,7 @@ const isDisplaced = (hooks: string[]) => {
 describe("useState comes first in components", () => {
   it("holds across the project", () => {
     const offenders = Object.entries(SOURCES)
-      .map(([path, source]) => [path, hooksOf(source as string)] as const)
+      .map(([path, source]) => [path, hooksOf(source)] as const)
       .filter(([, hooks]) => isDisplaced(hooks))
       .map(([path, hooks]) => `${path} → ${hooks.slice(0, 5).join(" · ")}`);
 

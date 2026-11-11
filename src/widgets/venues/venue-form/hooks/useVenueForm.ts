@@ -85,8 +85,8 @@ export const useVenueForm = (
           nominals: venue.nominals,
           validityMonths: venue.validityMonths,
           isActive: venue.isActive,
-          address: venue.address ?? "",
-          mapUrl: venue.mapUrl ?? ""
+          address: venue.address,
+          mapUrl: venue.mapUrl
         }
       : {
           logo: "",
@@ -114,6 +114,11 @@ export const useVenueForm = (
   const nominals = useWatch({ control, name: "nominals" });
   const validityMonths = useWatch({ control, name: "validityMonths" });
   const isActive = useWatch({ control, name: "isActive" });
+  const address = useWatch({ control, name: "address" });
+  const mapUrl = useWatch({ control, name: "mapUrl" });
+
+  // Every venue says where it is - no saving without both.
+  const hasPlace = address.trim() !== "" && mapUrl.trim() !== "";
 
   const setValueOptions = { shouldValidate: true, shouldDirty: true };
 
@@ -149,8 +154,8 @@ export const useVenueForm = (
       nominals: values.nominals,
       validityMonths: values.validityMonths,
       logo: values.logo,
-      address: values.address.trim() || null,
-      mapUrl: values.mapUrl.trim() || null
+      address: values.address.trim(),
+      mapUrl: values.mapUrl.trim()
     };
 
     const onMapUrlRejected = (error: unknown) => {
@@ -236,6 +241,7 @@ export const useVenueForm = (
     nominals,
     validityMonths,
     isActive,
+    hasPlace,
     setLogo,
     setMerchantId,
     setCategories,

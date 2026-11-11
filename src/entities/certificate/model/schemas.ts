@@ -7,10 +7,10 @@ const CertificateVenueSchema = z.object({
   name: z.string(),
   slug: z.string(),
   logo: z.string(),
-  // Nullable venue columns (../backend src/venues/entities/venue.entity.ts):
-  // where to use the certificate. null = not filled in.
-  address: z.string().nullable(),
-  mapUrl: z.string().nullable()
+  // Where to use the certificate - required venue columns (../backend
+  // src/venues/entities/venue.entity.ts).
+  address: z.string(),
+  mapUrl: z.string()
 });
 
 const CertificateBaseSchema = z.object({

@@ -13,7 +13,7 @@ interface Props {
 }
 
 // Where the venue is: the buyer and the gift's recipient see the address and
-// «Открыть на карте». Both optional - blank clears.
+// «Открыть на карте». Both required - «Сохранить» stays off without them.
 export const VenueFormPlace = ({ register, errors }: Props) => {
   const { t } = useTranslation();
 

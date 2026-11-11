@@ -13,17 +13,4 @@ describe("where the venue is", () => {
     await userEvent.click(screen.getByRole("button", { name: "Открыть на карте" }));
     expect(window.__telegram.last("web_app_open_link")?.["url"]).toBe("https://go.2gis.com/abc");
   });
-
-  it("only the address when there's no map link", () => {
-    renderWithProviders(<VenuePlace address="ул. Киевская 95" mapUrl={null} />);
-
-    expect(screen.getByText("ул. Киевская 95")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Открыть на карте" })).not.toBeInTheDocument();
-  });
-
-  it("nothing at all without either", () => {
-    const { container } = renderWithProviders(<VenuePlace address={null} mapUrl={null} />);
-
-    expect(container).toBeEmptyDOMElement();
-  });
 });

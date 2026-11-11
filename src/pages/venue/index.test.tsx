@@ -15,8 +15,8 @@ const venue = (nominals: number[]) => ({
   logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",
   nominals,
   validityMonths: 3,
-  address: null,
-  mapUrl: null
+  address: "ул. Киевская 95",
+  mapUrl: "https://go.2gis.com/abc"
 });
 
 const pressBuy = () => act(() => window.__telegram.emit("main_button_pressed"));
@@ -68,22 +68,12 @@ describe("«Купить» on a page that went stale", () => {
 describe("the storefront", () => {
   it("says the certificate can be a gift, and where the venue is", async () => {
     server.use(
-      http.get(api("/venues/1"), () =>
-        HttpResponse.json({ ...venue([500]), address: "ул. Киевская 95", mapUrl: "https://go.2gis.com/abc" })
-      )
+      http.get(api("/venues/1"), () => HttpResponse.json(venue([500])))
     );
     renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
 
     expect(await screen.findByText("После оплаты сертификат можно подарить другу")).toBeInTheDocument();
     expect(screen.getByText("ул. Киевская 95")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Открыть на карте" })).toBeInTheDocument();
-  });
-
-  it("no address - no place block", async () => {
-    server.use(http.get(api("/venues/1"), () => HttpResponse.json(venue([500]))));
-    renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
-
-    await screen.findByText("После оплаты сертификат можно подарить другу");
-    expect(screen.queryByRole("button", { name: "Открыть на карте" })).not.toBeInTheDocument();
   });
 });

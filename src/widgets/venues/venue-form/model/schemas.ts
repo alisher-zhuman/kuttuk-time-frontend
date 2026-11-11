@@ -5,8 +5,8 @@ import type { VenueOptions } from "@entities/venue";
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 // ../backend src/venues/venue.constants.ts (VENUE_ADDRESS_MAX, MAP_URL_MAX).
-// Which map sites are allowed is the backend's call (400 → «Нужна ссылка
-// из 2GIS…»); here only that it's a https link at all.
+// Both required. Which map sites are allowed is the backend's call (400 →
+// «Нужна ссылка из 2GIS…»); here only that it's a https link at all.
 export const ADDRESS_MAX_LENGTH = 200;
 const MAP_URL_MAX_LENGTH = 500;
 
@@ -68,10 +68,12 @@ export const createVenueFormSchema = (
         message: "venueForm.validityUnavailable"
       }),
     isActive: z.boolean(),
-    address: z.string().max(ADDRESS_MAX_LENGTH, "venueForm.addressTooLong"),
+    // Both required - every venue says where it is.
+    address: z.string().trim().min(1, "venueForm.required").max(ADDRESS_MAX_LENGTH, "venueForm.addressTooLong"),
     mapUrl: z
       .string()
       .trim()
+      .min(1, "venueForm.required")
       .max(MAP_URL_MAX_LENGTH, "venueForm.mapUrlInvalid")
       .refine((value) => value === "" || value.startsWith("https://"), { message: "venueForm.mapUrlInvalid" })
   });

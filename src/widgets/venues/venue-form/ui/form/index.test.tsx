@@ -16,8 +16,8 @@ const venue = (overrides: Partial<AdminVenueDetail> = {}): AdminVenueDetail => (
   categories: [1],
   nominals: [500, 1000],
   validityMonths: 12,
-  address: null,
-  mapUrl: null,
+  address: "ул. Киевская 95",
+  mapUrl: "https://go.2gis.com/abc",
   logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",
   slug: "coffeeroom",
   isActive: true,
@@ -135,19 +135,32 @@ describe("the venue form", () => {
     expect(patches).toHaveLength(1);
   });
 
-  it("sends the address and the map link; a cleared one goes as null", async () => {
+  it("sends the address and the map link as typed, trimmed", async () => {
     const patches = answer();
-    renderWithProviders(
-      <VenueForm options={options} variant={{ kind: "edit", venue: venue({ address: "ул. Киевская 95" }) }} />
-    );
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
 
     await screen.findByRole("button", { name: "Кофейни" });
-    await userEvent.clear(screen.getByLabelText("Адрес"));
-    await userEvent.type(screen.getByLabelText("Ссылка на карту"), "https://go.2gis.com/abc");
+    // Taken once: while it's empty its error joins the label's text.
+    const address = screen.getByLabelText("Адрес");
+    await userEvent.clear(address);
+    await userEvent.type(address, "  ул. Токтогула 1  ");
     save();
 
     await waitFor(() => expect(patches).toHaveLength(1));
-    expect(patches[0]).toMatchObject({ address: null, mapUrl: "https://go.2gis.com/abc" });
+    expect(patches[0]).toMatchObject({ address: "ул. Токтогула 1", mapUrl: "https://go.2gis.com/abc" });
+  });
+
+  it.each(["Адрес", "Ссылка на карту"])("won't save without «%s» - «Сохранить» is off", async (field) => {
+    const patches = answer();
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
+
+    await screen.findByRole("button", { name: "Кофейни" });
+    await userEvent.clear(screen.getByLabelText(field));
+
+    await waitFor(() => expect(mainButton()?.["is_active"]).toBe(false));
+    save();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(patches).toEqual([]);
   });
 
   it("a map link the backend refuses (not 2GIS / Google / Yandex) says which ones work", async () => {
@@ -155,7 +168,9 @@ describe("the venue form", () => {
     renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
 
     await screen.findByRole("button", { name: "Кофейни" });
-    await userEvent.type(screen.getByLabelText("Ссылка на карту"), "https://example.com/map");
+    const mapUrl = screen.getByLabelText("Ссылка на карту");
+    await userEvent.clear(mapUrl);
+    await userEvent.type(mapUrl, "https://example.com/map");
     save();
 
     expect(await screen.findByText("Нужна ссылка из 2GIS, Google Maps или Яндекс Карт")).toBeInTheDocument();

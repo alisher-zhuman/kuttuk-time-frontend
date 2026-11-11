@@ -36,6 +36,15 @@ describe("giftedAt - given away and claimed by a friend", () => {
   });
 });
 
+describe("the venue on a certificate and a gift says where it is", () => {
+  it("rejects a venue without an address or a map link", () => {
+    const [certificate] = fixtures.myCertificates;
+
+    expect(CertificatesSchema.safeParse([{ ...certificate, venue: { ...certificate!.venue, address: null } }]).success).toBe(false);
+    expect(GiftSchema.safeParse({ ...fixtures.gift(), venue: { ...fixtures.gift().venue, mapUrl: null } }).success).toBe(false);
+  });
+});
+
 describe("GiftSchema - GET /gifts/:token", () => {
   it.each(["available", "own", "received", "claimed"] as const)("parses state %s", (state) => {
     expect(GiftSchema.safeParse(fixtures.gift(state)).success).toBe(true);

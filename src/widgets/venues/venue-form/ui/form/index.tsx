@@ -45,6 +45,7 @@ export const VenueForm = ({ options, variant }: Props) => {
     nominals,
     validityMonths,
     isActive,
+    hasPlace,
     setLogo,
     setMerchantId,
     setCategories,
@@ -58,10 +59,10 @@ export const VenueForm = ({ options, variant }: Props) => {
   useMainButton({
     text: t(isCreate ? "venueForm.create" : "venueForm.save"),
     onClick: () => {
-      if (!isLogoUploading) void submit();
+      if (!isLogoUploading && hasPlace) void submit();
     },
     loading: isPending,
-    disabled: isLogoUploading,
+    disabled: isLogoUploading || !hasPlace,
     hidden: !isCreate && !isDirty
   });
 

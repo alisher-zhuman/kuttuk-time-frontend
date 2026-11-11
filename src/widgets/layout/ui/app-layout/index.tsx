@@ -14,6 +14,7 @@ import { BottomNav } from "../bottom-nav";
 import { Footer } from "../footer";
 import { Header } from "../header";
 import { TopBlur } from "../top-blur";
+import { WebMainButton } from "../web-main-button";
 
 export const AppLayout = () => {
   useSettingsButton();
@@ -68,6 +69,8 @@ export const AppLayout = () => {
           ) : (
             <Footer />
           ))}
+
+        <WebMainButton />
       </div>
     </>
   );

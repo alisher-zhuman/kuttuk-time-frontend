@@ -9,7 +9,7 @@ export {
 } from "./base";
 export { resolveLang } from "./i18n";
 export { logoUrl } from "./image";
-export { canGoBack } from "./navigation";
+export { canGoBack, goToUrl } from "./navigation";
 export { downloadQrPng, encodeQr } from "./qr";
 export { getScopedStorageKey } from "./storage";
 export { applyTheme, detectTheme } from "./theme";

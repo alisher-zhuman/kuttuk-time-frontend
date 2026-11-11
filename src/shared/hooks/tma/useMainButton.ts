@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { mainButton, type RGB, themeParams, useSignal } from "@tma.js/sdk-react";
 
-import { useThemeStore } from "@shared/store";
+import { useAppModeStore, useThemeStore, useWebMainButtonStore } from "@shared/store";
 
 interface Options {
   text: string;
@@ -24,10 +24,23 @@ export const useMainButton = ({
 }: Options) => {
   const theme = useThemeStore((s) => s.theme);
 
+  const isWeb = useAppModeStore((s) => s.mode === "web");
+
   const isTelegramDark = useSignal(themeParams.isDark);
 
+  // The website: the same action as a plain button the layout draws.
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (!isWeb) return;
+
+    const { setButton } = useWebMainButtonStore.getState();
+
+    setButton(hidden ? null : { text, onClick, disabled, loading });
+
+    return () => setButton(null);
+  }, [isWeb, hidden, text, onClick, disabled, loading]);
+
+  useEffect(() => {
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     mainButton.mount();
 
@@ -35,35 +48,35 @@ export const useMainButton = ({
       mainButton.hide();
       mainButton.unmount();
     };
-  }, []);
+  }, [isWeb]);
 
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     if (hidden) {
       mainButton.hide();
     } else {
       mainButton.show();
     }
-  }, [hidden]);
+  }, [isWeb, hidden]);
 
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     mainButton.setParams({
       bgColor: cssVar("--color-primary"),
       textColor: cssVar("--color-card")
     });
-  }, [theme, isTelegramDark]);
+  }, [isWeb, theme, isTelegramDark]);
 
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     mainButton.setText(text);
-  }, [text]);
+  }, [isWeb, text]);
 
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     // The loader alone doesn't stop taps - disable the button while loading.
     if (disabled || loading) {
@@ -71,23 +84,23 @@ export const useMainButton = ({
     } else {
       mainButton.enable();
     }
-  }, [disabled, loading]);
+  }, [isWeb, disabled, loading]);
 
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     if (loading) {
       mainButton.showLoader();
     } else {
       mainButton.hideLoader();
     }
-  }, [loading]);
+  }, [isWeb, loading]);
 
   useEffect(() => {
-    if (!mainButton.mount.isAvailable()) return;
+    if (isWeb || !mainButton.mount.isAvailable()) return;
 
     const off = mainButton.onClick(onClick);
 
     return () => off();
-  }, [onClick]);
+  }, [isWeb, onClick]);
 };

@@ -4,3 +4,10 @@
 // type, not whether there is actually a previous entry to return to.
 export const canGoBack = () =>
   ((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0;
+
+// Leave the app for another page in this tab (the website: the bank's page,
+// the Mini App's t.me link). One place, so tests can stand in for it - jsdom
+// can't stub window.location.
+export const goToUrl = (url: string) => {
+  window.location.assign(url);
+};

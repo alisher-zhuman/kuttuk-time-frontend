@@ -4,7 +4,7 @@ import axios, { isAxiosError } from "axios";
 
 import { API_PATHS, API_URL, LOG_IN_TIMEOUT_MS } from "@shared/constants";
 import { GuestLogInResponseSchema, WidgetLogInResponseSchema } from "@shared/schemas";
-import type { UserRole } from "@shared/types";
+import type { TmaUserInfo, UserRole } from "@shared/types";
 
 // The website's sign-in (../backend docs/web-version.md). The JWT stays in
 // memory (useAuthStore); the browser keeps only what signs in again:
@@ -88,7 +88,7 @@ export const logInWithTelegramWidget = async (authData: TelegramAuthData) => {
 // At start and on a 401: Telegram while the widget's data still works, else
 // the guest. A 401 on the widget's data (older than 24 h) drops it - the
 // «Войти через Telegram» button shows again.
-export const signInOnWebsite = async (): Promise<WebSignIn> => {
+const signIn = async (): Promise<WebSignIn> => {
   const telegramAuth = readTelegramAuth();
 
   if (telegramAuth) {
@@ -105,3 +105,62 @@ export const signInOnWebsite = async (): Promise<WebSignIn> => {
 
   return logInAsGuest();
 };
+
+// One sign-in at a time. A guest's token is stored only when the backend
+// answers, so two sign-ins started before that each made a new guest - the
+// start and a 401 in this tab, or two tabs opened together. In this tab the
+// callers share one promise; across tabs a Web Lock queues them, and the
+// second reads the token the first one stored.
+let pendingSignIn: Promise<WebSignIn> | null = null;
+
+const oneAtATime = (run: () => Promise<WebSignIn>): Promise<WebSignIn> => {
+  if (!pendingSignIn) {
+    const locks = typeof navigator === "undefined" ? undefined : navigator.locks;
+
+    pendingSignIn = (locks ? locks.request("kuttuk-time-sign-in", run) : run()).finally(() => {
+      pendingSignIn = null;
+    });
+  }
+
+  return pendingSignIn;
+};
+
+export const signInOnWebsite = () => oneAtATime(signIn);
+
+// «Выйти»: forget the widget's data and go back to a quiet guest. The guest
+// was merged into the Telegram account at sign-in, so this is a new, empty one.
+export const signOutOnWebsite = () => {
+  write(TELEGRAM_AUTH_KEY, null);
+
+  return oneAtATime(logInAsGuest);
+};
+
+// Who signed in through the widget - the profile shows them like the Mini
+// App's user. Null for a guest.
+export const getWebsiteUser = (): TmaUserInfo | null => {
+  const data = readTelegramAuth();
+
+  const id = data?.["id"];
+
+  if (!data || typeof id !== "number") return null;
+
+  const text = (key: string) => {
+    const value = data[key];
+
+    return typeof value === "string" ? value : null;
+  };
+
+  return {
+    id,
+    fullName: [text("first_name"), text("last_name")].filter(Boolean).join(" "),
+    username: text("username"),
+    photoUrl: text("photo_url")
+  };
+};
+
+// The backend's answer to a website guest buying or claiming a gift
+// (../backend src/auth/require-telegram.ts): log in with Telegram first.
+export const isTelegramRequired = (error: unknown) =>
+  isAxiosError<{ error?: string }>(error) &&
+  error.response?.status === 403 &&
+  error.response.data?.error === "telegram_required";

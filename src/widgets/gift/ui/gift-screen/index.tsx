@@ -1,8 +1,10 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
 import { CircleCheck, Gift as GiftIcon } from "lucide-react";
+
+import { needsTelegramLogin, TelegramLoginSheet } from "@features/telegram-login";
 
 import {
   type Gift,
@@ -12,9 +14,11 @@ import {
 } from "@entities/certificate";
 import { VenuePlace } from "@entities/venue";
 
+import { isTelegramRequired } from "@shared/api";
 import { getCertificateRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { formatDate, formatMoney, logoUrl, requestBotMessages } from "@shared/helpers";
 import { useHaptic, useMainButton, useNavigateTo, usePopup } from "@shared/hooks";
+import { useAuthStore } from "@shared/store";
 import { PillButton } from "@shared/ui";
 
 interface Props {
@@ -37,6 +41,9 @@ const getMessageKey = ({ state, status, from }: Gift) => {
 // «Забрать подарок»: a friend's gift link. Claiming moves the certificate to
 // whoever opened it; the code only comes with the claim.
 export const GiftScreen = ({ token, gift }: Props) => {
+  // The website's guest tapped «Забрать подарок»: sign in with Telegram first.
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -56,6 +63,12 @@ export const GiftScreen = ({ token, gift }: Props) => {
   const handleClaim = async () => {
     if (isClaimingRef.current) return;
 
+    // After the sign-in the sheet calls this again.
+    if (needsTelegramLogin()) {
+      setIsLoginOpen(true);
+      return;
+    }
+
     isClaimingRef.current = true;
     haptic.light();
 
@@ -70,6 +83,14 @@ export const GiftScreen = ({ token, gift }: Props) => {
         navigateTo(getCertificateRoute(certificate.id, { justClaimed: true }), { replace: true });
       },
       onError: (error) => {
+        // The backend still sees a guest (a sign-out in another tab, an old
+        // tab) - the same invitation as the check above.
+        if (isTelegramRequired(error)) {
+          useAuthStore.setState({ isGuest: true });
+          setIsLoginOpen(true);
+          return;
+        }
+
         // The link changed since it was shown - the mutation looks it up
         // again and the screen shows why.
         if (isGiftConflict(error) || isGiftNotFound(error)) {
@@ -145,6 +166,14 @@ export const GiftScreen = ({ token, gift }: Props) => {
         >
           {t(toMyCertificates ? "gift.toMyCertificates" : "certificates.toCatalog")}
         </PillButton>
+      )}
+
+      {isLoginOpen && (
+        <TelegramLoginSheet
+          message={t("site.login.claim")}
+          onClose={() => setIsLoginOpen(false)}
+          onSignedIn={() => void handleClaim()}
+        />
       )}
     </div>
   );

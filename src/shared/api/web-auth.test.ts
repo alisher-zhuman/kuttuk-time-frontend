@@ -1,13 +1,19 @@
 import { api as apiUrl, server } from "@mocks";
 import { http, HttpResponse } from "msw";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useAppModeStore, useAuthStore, useViewModeStore } from "@shared/store";
 
 import "@tests";
 
 import { api } from "./api";
-import { logInAsGuest, logInWithTelegramWidget, signInOnWebsite } from "./web-auth";
+import {
+  getWebsiteUser,
+  logInAsGuest,
+  logInWithTelegramWidget,
+  signInOnWebsite,
+  signOutOnWebsite
+} from "./web-auth";
 
 const GUEST = apiUrl("/auth/guest");
 const WIDGET = apiUrl("/auth/telegram-widget");
@@ -103,5 +109,61 @@ describe("«Войти через Telegram»", () => {
     expect(await signInOnWebsite()).toMatchObject({ isGuest: true });
     expect(sent.guest).toHaveLength(1);
     expect(localStorage.getItem("kuttuk-time-telegram-auth")).toBeNull();
+  });
+});
+
+describe("one quiet guest", () => {
+  afterEach(() => {
+    Reflect.deleteProperty(navigator, "locks");
+  });
+
+  it("in one tab: the start and a 401 at the same moment share one sign-in", async () => {
+    const sent = answer();
+
+    const [first, second] = await Promise.all([signInOnWebsite(), signInOnWebsite()]);
+
+    expect(sent.guest).toEqual([{}]);
+    expect(second).toEqual(first);
+  });
+
+  it("two tabs opened together: the second waits for the first and signs in as the same guest", async () => {
+    const sent = answer();
+    // The browser's Web Locks, shared by the tabs: one holder at a time.
+    let tail = Promise.resolve();
+    Object.defineProperty(navigator, "locks", {
+      configurable: true,
+      value: {
+        request: (_name: string, run: () => Promise<unknown>) => {
+          const turn = tail.then(run);
+          tail = turn.then(() => undefined, () => undefined);
+          return turn;
+        }
+      }
+    });
+    // Each tab has its own copy of the module; localStorage is shared.
+    vi.resetModules();
+    const tabA = await import("./web-auth");
+    vi.resetModules();
+    const tabB = await import("./web-auth");
+
+    await Promise.all([tabA.signInOnWebsite(), tabB.signInOnWebsite()]);
+
+    expect(sent.guest).toEqual([{}, { guestToken: "g-new" }]);
+  });
+});
+
+describe("«Выйти»", () => {
+  it("forgets the widget's data and signs in as a new quiet guest", async () => {
+    const sent = answer();
+    localStorage.setItem("kuttuk-time-telegram-auth", JSON.stringify(AUTH_DATA));
+
+    expect(getWebsiteUser()).toEqual({ id: 777, fullName: "Айбек", username: null, photoUrl: null });
+
+    const result = await signOutOnWebsite();
+
+    expect(result).toEqual({ accessToken: "guest-jwt-1", role: "user", isGuest: true });
+    expect(sent.guest).toEqual([{}]);
+    expect(localStorage.getItem("kuttuk-time-telegram-auth")).toBeNull();
+    expect(getWebsiteUser()).toBeNull();
   });
 });

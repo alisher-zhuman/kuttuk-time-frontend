@@ -10,8 +10,9 @@ interface Options {
   token?: string;
   // What GET /gifts/:token finds; "missing" - unknown or replaced link (404).
   preview?: { state: GiftState; status?: GiftStatus; from?: string | null } | "missing";
-  // What POST …/claim answers: the certificate, a 409 error, or 404.
-  claim?: "ok" | "own" | "already_claimed" | "already_used" | "expired" | "missing";
+  // What POST …/claim answers: the certificate, a 409 error, 404, or 403 for a
+  // website guest.
+  claim?: "ok" | "own" | "already_claimed" | "already_used" | "expired" | "missing" | "telegram_required";
   // GET after a failed claim - the link as it is now.
   afterClaim?: { state: GiftState; status?: GiftStatus } | "missing";
 }
@@ -35,6 +36,10 @@ export const giftHandlers = ({ token = GIFT_TOKEN, preview = { state: "available
 
       if (claim === "missing") {
         return HttpResponse.json({ message: "Gift not found", error: "Not Found", statusCode: 404 }, { status: 404 });
+      }
+
+      if (claim === "telegram_required") {
+        return HttpResponse.json({ message: "Log in with Telegram first", error: claim, statusCode: 403 }, { status: 403 });
       }
 
       return HttpResponse.json({ message: "Conflict", error: claim }, { status: 409 });

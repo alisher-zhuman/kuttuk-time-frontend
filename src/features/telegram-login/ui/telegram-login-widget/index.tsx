@@ -30,7 +30,9 @@ export const TelegramLoginWidget = ({ onAuth }: Props) => {
 
     if (!container) return;
 
-    window.onKuttukTelegramAuth = (user) => onAuthRef.current(user);
+    // One global for Telegram's script: the widget mounted last owns it.
+    const handleAuth = (user: TelegramAuthData) => onAuthRef.current(user);
+    window.onKuttukTelegramAuth = handleAuth;
 
     const script = document.createElement("script");
     script.src = "https://telegram.org/js/telegram-widget.js?22";
@@ -45,7 +47,7 @@ export const TelegramLoginWidget = ({ onAuth }: Props) => {
 
     return () => {
       container.replaceChildren();
-      delete window.onKuttukTelegramAuth;
+      if (window.onKuttukTelegramAuth === handleAuth) delete window.onKuttukTelegramAuth;
     };
   }, []);
 

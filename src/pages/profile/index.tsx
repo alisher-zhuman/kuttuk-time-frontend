@@ -6,13 +6,14 @@ import {
   useProfileTab
 } from "@widgets/profile";
 
+import { getWebsiteUser } from "@shared/api";
 import { getHomeRoute } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
 import { useHaptic, useNavigateTo } from "@shared/hooks";
-import { useViewModeStore } from "@shared/store";
+import { useAppModeStore, useAuthStore, useViewModeStore } from "@shared/store";
 import { Logo } from "@shared/ui";
 
-const user = getTMAUserInfo();
+const tmaUser = getTMAUserInfo();
 
 export const ProfilePage = () => {
   const { activeTab, contentAnimation, handleTabChange } = useProfileTab();
@@ -22,6 +23,11 @@ export const ProfilePage = () => {
   const haptic = useHaptic();
 
   const viewMode = useViewModeStore((s) => s.viewMode);
+  const isWeb = useAppModeStore((s) => s.mode === "web");
+  const isGuest = useAuthStore((s) => s.isGuest);
+
+  // The website: whoever signed in with the widget; a guest has no one.
+  const user = isWeb ? (isGuest ? null : getWebsiteUser()) : tmaUser;
 
   const homeRoute = getHomeRoute(viewMode);
 

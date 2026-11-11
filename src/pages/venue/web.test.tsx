@@ -1,11 +1,12 @@
 import { api, server } from "@mocks";
 import { act, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { http, HttpResponse } from "msw";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ROUTE_PATTERNS } from "@shared/constants";
-import { useAppModeStore, useWebMainButtonStore } from "@shared/store";
+import { useAppModeStore, useAuthStore, useWebMainButtonStore } from "@shared/store";
 
 import { VenuePage } from "./index";
 
@@ -15,6 +16,14 @@ vi.mock("@shared/helpers", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   goToUrl
 }));
+
+beforeEach(() => {
+  goToUrl.mockClear();
+});
+
+const AUTH_DATA = { id: 777, first_name: "Айбек", auth_date: 1793780000, hash: "abc" };
+const INVITE =
+  "Войдите через Telegram, чтобы купить: сертификат сохранится в вашем аккаунте, код и напоминания придут в Telegram";
 
 const venue = {
   id: 1,
@@ -54,5 +63,56 @@ describe("buying on the website", () => {
     expect(body).toEqual({ venueId: 1, nominal: 500, channel: "web" });
     // Finik brings the buyer back to /orders/<id> - no hop to the order here.
     expect(router.state.location.pathname).toBe("/app/venues/1");
+  });
+
+  it("a guest's «Купить» asks to sign in with Telegram first - then the same nominal goes to payment", async () => {
+    const orders: unknown[] = [];
+    server.use(
+      http.get(api("/venues/1"), () => HttpResponse.json(venue)),
+      http.post(api("/auth/telegram-widget"), () => HttpResponse.json({ accessToken: "tg-jwt", role: "user", merged: true })),
+      http.post(api("/orders"), async ({ request }) => {
+        orders.push({ body: await request.json(), auth: request.headers.get("Authorization") });
+        return HttpResponse.json(
+          { orderId: "o-1", paymentUrl: "https://pay.finik.test/o-1", expiresAt: "2026-11-11T10:00:00.000Z" },
+          { status: 201 }
+        );
+      })
+    );
+    useAppModeStore.setState({ mode: "web" });
+    useAuthStore.setState({ accessToken: "guest-jwt", role: "user", isGuest: true });
+    renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
+
+    await userEvent.click(await screen.findByRole("button", { name: /^1\s000/ }));
+    act(() => useWebMainButtonStore.getState().button?.onClick());
+
+    expect(await screen.findByText(INVITE)).toBeInTheDocument();
+    expect(orders).toEqual([]);
+
+    // Telegram's widget calls this once the buyer confirms.
+    act(() => window.onKuttukTelegramAuth?.(AUTH_DATA));
+
+    await waitFor(() => expect(goToUrl).toHaveBeenCalledWith("https://pay.finik.test/o-1"));
+    expect(orders).toEqual([{ body: { venueId: 1, nominal: 1000, channel: "web" }, auth: "Bearer tg-jwt" }]);
+  });
+
+  it("403 telegram_required (an old tab, a sign-out elsewhere) - the same invitation, no error popup", async () => {
+    server.use(
+      http.get(api("/venues/1"), () => HttpResponse.json(venue)),
+      http.post(api("/orders"), () =>
+        HttpResponse.json({ message: "Log in with Telegram first", error: "telegram_required", statusCode: 403 }, { status: 403 })
+      )
+    );
+    const alert = vi.spyOn(window, "alert").mockImplementation(() => undefined);
+    useAppModeStore.setState({ mode: "web" });
+    useAuthStore.setState({ accessToken: "jwt", role: "user", isGuest: false });
+    renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
+
+    await screen.findByText("Действует 3 месяца");
+    act(() => useWebMainButtonStore.getState().button?.onClick());
+
+    expect(await screen.findByText(INVITE)).toBeInTheDocument();
+    expect(useAuthStore.getState().isGuest).toBe(true);
+    expect(alert).not.toHaveBeenCalled();
+    expect(goToUrl).not.toHaveBeenCalled();
   });
 });

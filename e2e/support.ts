@@ -67,6 +67,9 @@ export class MiniApp {
     { role = "user", routes, startParam, web = false }: { role?: string; routes: Route; startParam?: string; web?: boolean }
   ) {
     if (!web) await this.page.addInitScript(installTelegram);
+    // Telegram's login widget script: never fetched - tests answer for it
+    // through signInWithTelegram().
+    if (web) await this.page.route("https://telegram.org/**", (route) => route.abort());
     await this.page.route(`${API}/**`, async (route) => {
       const request = route.request();
       const url = new URL(request.url());
@@ -86,6 +89,8 @@ export class MiniApp {
           ? ([201, { accessToken: "t", role }] as [number, unknown])
           : path === "/auth/guest"
             ? ([200, { accessToken: "guest", role: "user", guestToken: "g-1" }] as [number, unknown])
+            : path === "/auth/telegram-widget"
+              ? ([200, { accessToken: "tg", role: "user", merged: true }] as [number, unknown])
             : routes({ path, method: request.method(), query: url.searchParams, body });
 
       // An unmocked request fails the test by name, as in the unit suite.
@@ -94,6 +99,16 @@ export class MiniApp {
       await route.fulfill({ status: answer[0], contentType: "application/json", body: JSON.stringify(answer[1]) });
     });
     await this.page.goto(web ? path : `${path}#${launchParams(startParam)}`);
+  }
+
+  // The website: what Telegram's login widget does once the buyer confirms.
+  async signInWithTelegram() {
+    await this.page.evaluate(() => {
+      // Set by the app's TelegramLoginWidget for Telegram's script.
+      const onAuth = (window as unknown as { onKuttukTelegramAuth?: (user: object) => void }).onKuttukTelegramAuth;
+
+      onAuth?.({ id: 777, first_name: "Айбек", auth_date: 1793780000, hash: "abc" });
+    });
   }
 
   // The native MainButton: Telegram draws it, so tests read its params and

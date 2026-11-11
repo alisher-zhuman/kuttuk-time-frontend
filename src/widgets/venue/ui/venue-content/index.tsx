@@ -5,13 +5,16 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 
+import { needsTelegramLogin, TelegramLoginSheet } from "@features/telegram-login";
+
 import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
 import { type VenueDetail, VenuePlace } from "@entities/venue";
 
+import { isTelegramRequired } from "@shared/api";
 import { getOrderRoute } from "@shared/constants";
 import { goToUrl, openExternalLink, requestBotMessages } from "@shared/helpers";
 import { useHaptic, useMainButton, useNavigateTo, usePopup } from "@shared/hooks";
-import { isWebsite } from "@shared/store";
+import { isWebsite, useAuthStore } from "@shared/store";
 
 import { CertPreviewCard } from "../cert-preview-card";
 import { NominalList } from "../nominal-list";
@@ -24,6 +27,8 @@ interface Props {
 
 export const VenueContent = ({ venue }: Props) => {
   const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
+  // The website's guest tapped «Купить»: sign in with Telegram first.
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const { t } = useTranslation();
 
@@ -53,6 +58,12 @@ export const VenueContent = ({ venue }: Props) => {
       return;
     }
 
+    // After the sign-in the sheet calls this again - the same nominal.
+    if (needsTelegramLogin()) {
+      setIsLoginOpen(true);
+      return;
+    }
+
     isSubmittingRef.current = true;
     haptic.medium();
 
@@ -79,6 +90,14 @@ export const VenueContent = ({ venue }: Props) => {
           navigateTo(getOrderRoute(orderId));
         },
         onError: (error) => {
+          // The backend still sees a guest (a sign-out in another tab, an old
+          // tab) - the same invitation as the check above.
+          if (isTelegramRequired(error)) {
+            useAuthStore.setState({ isGuest: true });
+            setIsLoginOpen(true);
+            return;
+          }
+
           haptic.error();
 
           // 400: the nominal was removed or the venue switched off while the
@@ -134,6 +153,14 @@ export const VenueContent = ({ venue }: Props) => {
       <p className="text-sm text-(--color-slate) px-1">{t("venue.giftHint")}</p>
 
       <PurchaseAgreement />
+
+      {isLoginOpen && (
+        <TelegramLoginSheet
+          message={t("site.login.buy")}
+          onClose={() => setIsLoginOpen(false)}
+          onSignedIn={() => void handleBuy()}
+        />
+      )}
     </div>
   );
 };

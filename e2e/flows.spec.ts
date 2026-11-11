@@ -193,7 +193,32 @@ test.describe("the website", () => {
   await expect(page.getByText("Оплата через Finik")).toBeVisible();
 });
 
-  test("the website: a gift link /gift/<token> opens directly and claims as a guest", async ({ app, page }) => {
+  test("the website: a guest buys only after «Войти через Telegram» - then the same nominal goes to Finik", async ({ app, page }) => {
+  await page.route("https://pay.finik.test/**", (route) => route.fulfill({ contentType: "text/html", body: "Finik" }));
+  await app.open("/app/venues/1", {
+    web: true,
+    routes: ({ path, method }) => {
+      if (path === "/venues/1") return [200, venueDetail];
+      if (path === "/orders" && method === "POST") {
+        return [201, { orderId: fixtures.ORDER_ID, paymentUrl: "https://pay.finik.test/x", expiresAt: fixtures.orders.paid.expiresAt }];
+      }
+      return undefined;
+    }
+  });
+
+  await page.getByRole("button", { name: /^1\s000/ }).click();
+  await page.getByRole("button", { name: "Купить" }).click();
+
+  await expect(page.getByText(/Войдите через Telegram, чтобы купить/)).toBeVisible();
+  expect(app.sent.filter((call) => call.path === "/orders")).toEqual([]);
+
+  await app.signInWithTelegram();
+
+  await expect(page).toHaveURL("https://pay.finik.test/x");
+  expect(app.sent.find((call) => call.path === "/orders")?.body).toEqual({ venueId: 1, nominal: 1000, channel: "web" });
+});
+
+  test("the website: a gift link /gift/<token> opens directly and is claimed after «Войти через Telegram»", async ({ app, page }) => {
   let claimed = false;
 
   await app.open(`/gift/${fixtures.GIFT_TOKEN}`, {
@@ -211,6 +236,10 @@ test.describe("the website", () => {
 
   await expect(page.getByText("Вам подарок")).toBeVisible();
   await page.getByRole("button", { name: "Забрать подарок" }).click();
+
+  await expect(page.getByText(/Войдите через Telegram, чтобы забрать подарок/)).toBeVisible();
+  expect(claimed).toBe(false);
+  await app.signInWithTelegram();
 
   await expect(page).toHaveURL(/\/app\/certificates\/c7/);
   await expect(page.getByText("7777 8888")).toBeVisible();

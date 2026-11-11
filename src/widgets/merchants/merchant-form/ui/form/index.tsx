@@ -10,9 +10,12 @@ import { MerchantFormTelegramId } from "../telegram-id-field";
 
 interface Props {
   variant: MerchantFormVariant;
+  // Opened to fill in the payout details - the cursor goes there. Saving goes
+  // back to where it came from (payouts).
+  focusPayoutDetails?: boolean;
 }
 
-export const MerchantForm = ({ variant }: Props) => {
+export const MerchantForm = ({ variant, focusPayoutDetails = false }: Props) => {
   const { t } = useTranslation();
 
   const isCreate = variant.kind === "create";
@@ -45,6 +48,7 @@ export const MerchantForm = ({ variant }: Props) => {
       <Textarea
         label={t("merchantForm.payoutDetails")}
         placeholder={t("merchantForm.payoutDetailsPlaceholder")}
+        autoFocus={focusPayoutDetails}
         maxLength={NOTE_MAX_LENGTH}
         error={errors.payoutDetails?.message && t(errors.payoutDetails.message, { max: NOTE_MAX_LENGTH })}
         {...register("payoutDetails")}

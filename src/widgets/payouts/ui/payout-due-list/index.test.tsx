@@ -37,11 +37,16 @@ describe("«Все долги»", () => {
     expect(await screen.findByText("Mbank 0555 123 456, Асанов А.")).toBeInTheDocument();
   });
 
-  it("says when the owner has no payout details", async () => {
+  it("no payout details: «Указать реквизиты» opens the owner's form on that field", async () => {
     answer({ details: null });
-    renderWithProviders(<PayoutDueList />);
+    const { router } = renderWithProviders(<PayoutDueList />);
 
-    expect(await screen.findByText("Реквизиты не указаны - добавьте их в карточке владельца")).toBeInTheDocument();
+    expect(await screen.findByText("Реквизиты не указаны")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Указать реквизиты" }));
+
+    expect(`${router.state.location.pathname}${router.state.location.search}`).toBe(
+      "/app/admin/merchant-edit/10?focus=payoutDetails"
+    );
   });
 
   it("marks one week: POST with that week's `from` and the amount on screen", async () => {

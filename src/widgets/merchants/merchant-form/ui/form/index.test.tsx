@@ -54,4 +54,11 @@ describe("the owner form - payout details and contact", () => {
 
     await waitFor(() => expect(sent).toMatchObject({ payoutDetails: null, contact: null }));
   });
+
+  it("opened from «Указать реквизиты» - the cursor is in the payout details", () => {
+    const merchant = fixtures.adminMerchant({ payoutDetails: null }) as unknown as AdminMerchant;
+    renderWithProviders(<MerchantForm variant={{ kind: "edit", merchant }} focusPayoutDetails />);
+
+    expect(screen.getByLabelText("Реквизиты для выплаты")).toHaveFocus();
+  });
 });

@@ -99,8 +99,9 @@ export const getAdminOrdersRoute = (
 export const getCategoryEditRoute = (id: string | number) =>
   `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.CATEGORY_EDIT}/${id}`;
 
-export const getAdminMerchantEditRoute = (id: string | number) =>
-  `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANT_EDIT}/${id}`;
+// focus: the field to put the cursor in («Указать реквизиты» from payouts).
+export const getAdminMerchantEditRoute = (id: string | number, { focus }: { focus?: "payoutDetails" } = {}) =>
+  `/${ROUTES.APP}/${ROUTES.ADMIN}/${ROUTES.MERCHANT_EDIT}/${id}` + (focus ? `?focus=${focus}` : "");
 
 export const getHomeRoute = (mode: string | null) => {
   if (mode === "admin") return ROUTE_PATTERNS.ADMIN_VENUES;

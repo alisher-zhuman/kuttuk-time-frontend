@@ -38,6 +38,17 @@ Source of truth: `../backend/CLAUDE.md`, section **Product decisions** - don't d
 - **merchant ≠ venue.** `merchant` = the owner's business account (role, cabinet, payouts, `isActive`, `telegramId`); `venue` = a storefront the buyer sees and buys from. One merchant owns one or more venues. `venue` is data, not a role
 - A certificate is redeemed in full - no partial redemption
 
+## Где остановились - читать первым (обновлено 2026-11-11)
+
+**Rule (Alisher, 2026-11-11, same as the backend's):** after every step - a commit, a push, a report - update this section: what's on prod, what's waiting on the backend / on Alisher, what's next. A new chat must be able to continue from here without asking. It's a docs-only change: it rides with the next code push, never pushed alone.
+
+- **On prod** (`dev` = prod, last push `d8ab47d`, CI green, Vercel Production): everything in this file. Latest: venue `address` / `mapUrl` and merchant `payoutDetails` / `contact` required; `Select` / `Combobox` (no text inputs in bottom sheets); orders - one search + status / venue / owner filters; cabinet opens on the counter, scan → «Погасить?»; «Подарок от»; admin support (order number, «Все долги», owner status).
+- **Committed, not pushed:** only this section and its rule (docs) - goes with the next code push.
+- **Waiting on Alisher:** a phone check of the latest - the owner `Combobox` with the iPhone keyboard open, «Номиналы» («Готово» on the title line), orders filters, «Открыть на карте», scan → «Погасить?», the owner form with empty «Реквизиты» / «Контакт».
+- **Waiting on the backend:** nothing. On prod the venues' addresses / map links and the merchants' payout details / contacts are test placeholders (to be replaced when real venues join).
+- **Next:** no open task - the next prompt from the backend agent / Alisher. Parked («когда понадобится»): `shareStory`, inline mode, venue-QR PNG for phones, «Сегодня: N продаж», `ClosingBehavior` confirmation, a toast.
+- **How tasks arrive:** Alisher pastes a prompt written by the backend agent (contract in `../backend/CLAUDE.md`); report what's done / committed / on prod, kg texts for review, the commit list before a push; push only on «пуш» (or «можно сразу»).
+
 ## Who decides what
 
 (Alisher, 2026-11-04, sharpened 2026-11-10)

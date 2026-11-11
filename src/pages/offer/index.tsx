@@ -1,13 +1,18 @@
 import { useTranslation } from "react-i18next";
 
-// «Оферта» - a placeholder until Alisher sends the offer's text.
+import { resolveLang } from "@shared/helpers";
+import { LEGAL_TEXTS } from "@shared/legal";
+import { Markdown } from "@shared/ui";
+
+// Russian only (the backend's docs/legal/offer.ru.md) - other languages get a
+// note above it.
 export const OfferPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <article className="flex flex-col gap-4 py-6">
-      <h1 className="text-2xl font-extrabold tracking-tight text-(--color-ink)">{t("site.offer.title")}</h1>
-      <p className="text-base text-(--color-slate)">{t("site.offer.soon")}</p>
+      {resolveLang(i18n.language) !== "ru" && <p className="text-sm font-semibold text-(--color-hint)">{t("site.russianOnly")}</p>}
+      <Markdown text={LEGAL_TEXTS.offer} />
     </article>
   );
 };

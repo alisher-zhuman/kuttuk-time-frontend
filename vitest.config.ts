@@ -14,6 +14,11 @@ export default mergeConfig(
         "@mocks": fileURLToPath(new URL("./mocks", import.meta.url))
       }
     },
+    // The legal texts' sync test reads the backend's originals when the backend
+    // sits next to this repo (src/shared/legal/legal.test.ts) - that folder only.
+    server: {
+      fs: { allow: [".", "../backend/docs/legal"] }
+    },
     test: {
       environment: "jsdom",
       // Colocated unit / component tests only; e2e/ is Playwright's.

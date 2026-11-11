@@ -82,6 +82,10 @@ export const ROUTER = createBrowserRouter([
         lazy: page(() => import("@pages/offer"), "OfferPage")
       },
       {
+        path: ROUTE_PATTERNS.PRIVACY,
+        lazy: page(() => import("@pages/privacy"), "PrivacyPage")
+      },
+      {
         element: <RequireRole role="admin" />,
         children: [
           {

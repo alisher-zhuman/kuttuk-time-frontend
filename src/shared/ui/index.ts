@@ -12,6 +12,7 @@ export { LangSwitcher } from './lang-switcher';
 export { LoadMore } from './load-more';
 export { Logo } from './logo';
 export { LogoUpload } from './logo-upload';
+export { Markdown } from './markdown';
 export { MetaField } from './meta-field';
 export { PageLoader } from './page-loader';
 export { PillButton } from './pill-button';

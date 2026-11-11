@@ -91,7 +91,8 @@
     "validity_other": "Valid for {{count}} months",
     "notFound": "Venue not found",
     "openMap": "Open on the map",
-    "giftHint": "After paying, you can gift the certificate to a friend"
+    "giftHint": "After paying, you can gift the certificate to a friend",
+    "agreement": "By paying, you agree to the <offer>offer</offer> and the <privacy>privacy policy</privacy>"
   },
   "venueForm": {
     "title": "New venue",
@@ -481,15 +482,12 @@
   },
   "site": {
     "about": {
-      "title": "About us",
-      "text": "KuttukTime - gift certificates for Bishkek's coffee shops, restaurants, spas and studios. Pick a venue and an amount, pay - the certificate is yours, and you can gift it by a link."
+      "title": "About us"
     },
     "payment": "Payments via Finik",
-    "detailsSoon": "The sole proprietor's details will appear here",
     "support": "Support: @alisher_zh",
     "offer": {
-      "title": "Offer",
-      "soon": "The public offer will appear here"
+      "title": "Offer"
     },
     "telegramOnly": {
       "title": "The owner's cabinet works in Telegram",
@@ -497,6 +495,10 @@
     },
     "login": {
       "hint": "Sign in with Telegram to keep your certificates and get expiry reminders"
-    }
+    },
+    "privacy": {
+      "title": "Privacy policy"
+    },
+    "russianOnly": "The text is in Russian"
   }
 }

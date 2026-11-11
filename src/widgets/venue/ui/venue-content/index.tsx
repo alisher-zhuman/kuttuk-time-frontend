@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
@@ -8,7 +8,7 @@ import { isAxiosError } from "axios";
 import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
 import { type VenueDetail, VenuePlace } from "@entities/venue";
 
-import { getOrderRoute } from "@shared/constants";
+import { getOrderRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { goToUrl, openExternalLink, requestBotMessages } from "@shared/helpers";
 import { useHaptic, useMainButton, useNavigateTo, usePopup } from "@shared/hooks";
 import { isWebsite } from "@shared/store";
@@ -20,6 +20,13 @@ import { VenueHeader } from "../venue-header";
 interface Props {
   venue: VenueDetail;
 }
+
+// Trans puts the translated words in as children.
+const AgreementLink = ({ onClick, children }: { onClick: () => void; children?: ReactNode }) => (
+  <button type="button" onClick={onClick} className="font-semibold text-(--color-primary) underline cursor-pointer">
+    {children}
+  </button>
+);
 
 export const VenueContent = ({ venue }: Props) => {
   const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
@@ -131,6 +138,17 @@ export const VenueContent = ({ venue }: Props) => {
 
       {/* Many buy for themselves, not knowing it can be a gift. */}
       <p className="text-sm text-(--color-slate) px-1">{t("venue.giftHint")}</p>
+
+      {/* Right above «Купить» (the main button): paying accepts both texts. */}
+      <p className="text-xs text-(--color-hint) px-1">
+        <Trans
+          i18nKey="venue.agreement"
+          components={{
+            offer: <AgreementLink onClick={() => navigateTo(ROUTE_PATTERNS.OFFER)} />,
+            privacy: <AgreementLink onClick={() => navigateTo(ROUTE_PATTERNS.PRIVACY)} />
+          }}
+        />
+      </p>
     </div>
   );
 };

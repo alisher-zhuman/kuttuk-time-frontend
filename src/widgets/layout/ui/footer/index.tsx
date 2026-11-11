@@ -26,6 +26,9 @@ export const Footer = () => {
           <button type="button" className={link} onClick={() => navigateTo(ROUTE_PATTERNS.OFFER)}>
             {t("site.offer.title")}
           </button>
+          <button type="button" className={link} onClick={() => navigateTo(ROUTE_PATTERNS.PRIVACY)}>
+            {t("site.privacy.title")}
+          </button>
           <button type="button" className={link} onClick={() => openExternalLink(SUPPORT_URL)}>
             {t("site.support")}
           </button>

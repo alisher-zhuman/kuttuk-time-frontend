@@ -1,26 +1,35 @@
 import { useTranslation } from "react-i18next";
 
-import { SUPPORT_URL } from "@shared/constants";
-import { openExternalLink } from "@shared/helpers";
+import { ROUTE_PATTERNS } from "@shared/constants";
+import { resolveLang } from "@shared/helpers";
+import { useNavigateTo } from "@shared/hooks";
+import { getAboutText } from "@shared/legal";
+import { Markdown } from "@shared/ui";
 
-// «О нас» - a placeholder until Alisher sends the texts and the sole
-// proprietor's details.
+// The text is the backend's (docs/legal/about.md), one section per language.
 export const AboutPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const navigateTo = useNavigateTo();
+
+  const openOffer = () => navigateTo(ROUTE_PATTERNS.OFFER);
+  const openPrivacy = () => navigateTo(ROUTE_PATTERNS.PRIVACY);
 
   return (
     <article className="flex flex-col gap-4 py-6">
       <h1 className="text-2xl font-extrabold tracking-tight text-(--color-ink)">{t("site.about.title")}</h1>
-      <p className="text-base text-(--color-ink)">{t("site.about.text")}</p>
-      <p className="text-sm text-(--color-slate)">{t("site.payment")}</p>
-      <p className="text-sm text-(--color-slate)">{t("site.detailsSoon")}</p>
-      <button
-        type="button"
-        onClick={() => openExternalLink(SUPPORT_URL)}
-        className="self-start text-sm font-bold text-(--color-primary) cursor-pointer"
-      >
-        {t("site.support")}
-      </button>
+      <Markdown
+        text={getAboutText(resolveLang(i18n.language))}
+        // The labels as the text writes them, in every language.
+        links={{
+          "Публичная оферта": openOffer,
+          "Политика конфиденциальности": openPrivacy,
+          "Ачык оферта": openOffer,
+          "Купуялуулук саясаты": openPrivacy,
+          "Public offer": openOffer,
+          "Privacy policy": openPrivacy
+        }}
+      />
     </article>
   );
 };

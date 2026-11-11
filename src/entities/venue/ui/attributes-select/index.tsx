@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { formatMoney } from "@shared/helpers";
-import { ChipSelect } from "@shared/ui";
+import { ChipSelect, Select } from "@shared/ui";
 
 import type { VenueOptions } from "../../model/types";
 
@@ -75,21 +75,19 @@ export const VenueAttributesSelect = ({
         }
       />
 
-      <ChipSelect
+      {/* A list, not chips: there are a dozen nominals; the chosen ones stay
+          visible inside the field. */}
+      <Select
+        multiple
         label={t("merchantAttributes.nominals")}
+        placeholder={t("merchantAttributes.nominalsPlaceholder")}
         error={nominalsError}
-        items={withSelected(options.nominals, nominals).map((nominal) => ({
+        options={withSelected(options.nominals, nominals).map((nominal) => ({
           value: nominal,
           label: formatMoney(nominal, currency)
         }))}
-        isSelected={(nominal) => nominals.includes(nominal)}
-        onSelect={(nominal) =>
-          onNominalsChange(
-            nominals.includes(nominal)
-              ? nominals.filter((item) => item !== nominal)
-              : [...nominals, nominal].sort((a, b) => a - b)
-          )
-        }
+        value={nominals}
+        onChange={(next) => onNominalsChange([...next].sort((a, b) => a - b))}
       />
 
       <ChipSelect

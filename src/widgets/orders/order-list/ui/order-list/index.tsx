@@ -1,47 +1,23 @@
 import { useTranslation } from "react-i18next";
 
-import { ClipboardList, SearchX, X } from "lucide-react";
+import { ClipboardList, SearchX } from "lucide-react";
 
-import {
-  isAdminOrderSearchError,
-  ORDER_STATUSES,
-  type OrderStatus,
-  useAdminOrdersQuery
-} from "@entities/order";
+import { isAdminOrderSearchError, useAdminOrdersQuery } from "@entities/order";
 
 import { getAdminOrderDetailRoute } from "@shared/constants";
 import { useHaptic, useLoadMoreOnScroll, useNavigateTo } from "@shared/hooks";
-import { ChipSelect, EmptyState, ErrorState, LoadMore } from "@shared/ui";
+import { EmptyState, ErrorState, LoadMore } from "@shared/ui";
 
+import { OrderFilters, type OrderFilterValues } from "../order-filters";
 import { OrderRow } from "../order-row";
 
-// «На проверке» first - the queue to watch; the rest in the backend's order.
-const STATUSES = [
-  "all",
-  "needs_review",
-  ...ORDER_STATUSES.filter((status) => status !== "needs_review")
-] as const;
-
 interface Props {
-  status: OrderStatus | null;
-  onStatusChange: (status: OrderStatus | null) => void;
   search: string;
-  venueId: number | null;
-  merchantId: number | null;
-  userId: number | null;
-  // «Заведение: Coffeeroom» / «Владелец: …» while one is picked, with a way out.
-  scope?: { label: string; onClear: () => void } | undefined;
+  filters: OrderFilterValues;
+  onFiltersChange: (patch: Partial<OrderFilterValues>) => void;
 }
 
-export const OrderList = ({
-  status,
-  onStatusChange,
-  search,
-  venueId,
-  merchantId,
-  userId,
-  scope
-}: Props) => {
+export const OrderList = ({ search, filters, onFiltersChange }: Props) => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -59,7 +35,7 @@ export const OrderList = ({
     hasNextPage,
     fetchNextPage,
     retry
-  } = useAdminOrdersQuery({ status, search, venueId, merchantId, userId });
+  } = useAdminOrdersQuery({ ...filters, search });
 
   const setSentinel = useLoadMoreOnScroll(
     fetchNextPage,
@@ -69,29 +45,7 @@ export const OrderList = ({
 
   return (
     <div className="flex flex-col gap-4 mt-3.5 pb-5">
-      {scope && (
-        <button
-          type="button"
-          onClick={() => {
-            haptic.light();
-            scope.onClear();
-          }}
-          aria-label={`${scope.label} - ${t("admin.orders.clearScope")}`}
-          className="self-start max-w-full flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-(--color-primary-tint) text-(--color-primary) text-sm font-bold cursor-pointer"
-        >
-          <span className="truncate">{scope.label}</span>
-          <X size={14} className="shrink-0" />
-        </button>
-      )}
-
-      <ChipSelect
-        items={STATUSES.map((value) => ({
-          value,
-          label: value === "all" ? t("admin.orders.all") : t(`admin.orders.status.${value}`)
-        }))}
-        isSelected={(value) => value === (status ?? "all")}
-        onSelect={(value) => onStatusChange(value === "all" ? null : value)}
-      />
+      <OrderFilters filters={filters} onChange={onFiltersChange} />
 
       {isLoading ? (
         <ul className="flex flex-col gap-2.5 list-none">

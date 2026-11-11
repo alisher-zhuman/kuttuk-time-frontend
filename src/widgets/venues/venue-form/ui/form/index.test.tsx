@@ -1,5 +1,5 @@
 import { api, fixtures, server } from "@mocks";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { delay, http, HttpResponse } from "msw";
@@ -33,8 +33,16 @@ const answer = ({ rejectMapUrl = false } = {}) => {
 
   server.use(
     http.get(api("/categories"), () => HttpResponse.json([{ id: 1, name: "Кофейни", order: 0 }])),
-    http.get(api("/admin/merchants"), () =>
-      HttpResponse.json([fixtures.adminMerchant()])
+    http.get(api("/admin/merchants"), ({ request }) =>
+      HttpResponse.json(
+        new URL(request.url).searchParams.get("search") === "Sierra"
+          ? [fixtures.adminMerchant({ id: 11, name: "Sierra LLC", telegramId: 222 })]
+          : [fixtures.adminMerchant()]
+      )
+    ),
+    http.get(api("/admin/merchants/10"), () => HttpResponse.json(fixtures.adminMerchant())),
+    http.get(api("/admin/merchants/11"), () =>
+      HttpResponse.json(fixtures.adminMerchant({ id: 11, name: "Sierra LLC", telegramId: 222 }))
     ),
     http.patch(api("/admin/venues/1"), async ({ request }) => {
       patches.push((await request.json()) as Record<string, unknown>);
@@ -174,5 +182,34 @@ describe("the venue form", () => {
     save();
 
     expect(await screen.findByText("Нужна ссылка из 2GIS, Google Maps или Яндекс Карт")).toBeInTheDocument();
+  });
+
+  it("picks the owner from a searched list - name and Telegram ID", async () => {
+    const patches = answer();
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
+
+    await userEvent.click(await screen.findByRole("button", { name: "Владелец: ИП Асанов" }));
+    await userEvent.type(screen.getByRole("searchbox"), "Sierra");
+
+    const sheet = screen.getByRole("dialog");
+    expect(await within(sheet).findByText("Telegram ID 222")).toBeInTheDocument();
+    await userEvent.click(within(sheet).getByRole("button", { name: /Sierra LLC/ }));
+    save();
+
+    await waitFor(() => expect(patches).toHaveLength(1));
+    expect(patches[0]).toMatchObject({ merchantId: 11 });
+  });
+
+  it("nominals: a multi-select list, the chosen inside the field", async () => {
+    const patches = answer();
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
+
+    await userEvent.click(await screen.findByRole("button", { name: /^Номинал: 500 сом, 1\s000 сом$/ }));
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: /2\s000 сом/ }));
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Готово" }));
+    save();
+
+    await waitFor(() => expect(patches).toHaveLength(1));
+    expect(patches[0]).toMatchObject({ nominals: [500, 1000, 2000] });
   });
 });

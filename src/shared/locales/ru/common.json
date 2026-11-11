@@ -127,7 +127,8 @@
     "addressTooLong": "Не больше {{max}} символов",
     "mapUrl": "Ссылка на карту",
     "mapUrlHint": "Откройте заведение в 2GIS → Поделиться → Скопировать ссылку",
-    "mapUrlInvalid": "Нужна ссылка из 2GIS, Google Maps или Яндекс Карт"
+    "mapUrlInvalid": "Нужна ссылка из 2GIS, Google Maps или Яндекс Карт",
+    "ownerPlaceholder": "Выберите владельца"
   },
   "merchantForm": {
     "title": "Новый владелец",
@@ -161,7 +162,8 @@
     "nominals": "Номинал",
     "validity": "Срок действия (мес.)",
     "months": "{{months}} мес.",
-    "removedCategory": "Удалённая категория"
+    "removedCategory": "Удалённая категория",
+    "nominalsPlaceholder": "Выберите номиналы"
   },
   "aria": {
     "changeLanguage": "Сменить язык",
@@ -207,8 +209,7 @@
         "noVenues": "У владельца пока нет заведений",
         "notFound": "Владелец не найден",
         "orders": "Заказы владельца",
-        "notSet": "Не указано",
-        "message": "Написать владельцу"
+        "notSet": "Не указано"
       },
       "searchPlaceholder": "Поиск владельцев",
       "owner": {
@@ -289,12 +290,13 @@
       "amountChanged": "Сумма изменилась - проверьте и подтвердите снова.",
       "doneNotified": "{{merchant}}: {{amount}}. Владелец получил сообщение.",
       "doneNotNotified": "{{merchant}}: {{amount}}. Сообщение не дошло - напишите владельцу сами.",
-      "noDetails": "Реквизиты не указаны - добавьте их в карточке владельца",
+      "noDetails": "Реквизиты не указаны",
       "viewWeek": "По неделям",
       "viewDue": "Все долги",
       "dueTotal": "Всего к выплате",
       "noDebts": "Долгов нет - всё выплачено",
-      "markShort": "Отметить"
+      "markShort": "Отметить",
+      "addDetails": "Указать реквизиты"
     },
     "orders": {
       "all": "Все",
@@ -340,10 +342,13 @@
         "copyCommand": "скопировать команду"
       },
       "paidOut": "Выплачен",
-      "scopeVenue": "Заведение: {{name}}",
-      "scopeMerchant": "Владелец: {{name}}",
-      "clearScope": "убрать фильтр",
-      "buyerId": "ID покупателя"
+      "filters": {
+        "status": "Статус",
+        "venue": "Заведение",
+        "merchant": "Владелец",
+        "venueSearch": "Поиск заведений",
+        "buyer": "Покупатель: ID {{id}}"
+      }
     }
   },
   "certificate": {
@@ -474,5 +479,11 @@
   },
   "connection": {
     "waking": "Запускаем сервер, это может занять до 30 секунд"
+  },
+  "select": {
+    "clear": "сбросить",
+    "loading": "Загружаем…",
+    "empty": "Ничего не найдено",
+    "done": "Готово"
   }
 }

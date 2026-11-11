@@ -127,7 +127,8 @@
     "addressTooLong": "{{max}} белгиден ашпасын",
     "mapUrl": "Картадагы шилтеме",
     "mapUrlHint": "Мекемени 2GISте ачыңыз → Бөлүшүү → Шилтемени көчүрүү",
-    "mapUrlInvalid": "2GIS, Google Maps же Яндекс Карталардан шилтеме керек"
+    "mapUrlInvalid": "2GIS, Google Maps же Яндекс Карталардан шилтеме керек",
+    "ownerPlaceholder": "Ээсин тандаңыз"
   },
   "merchantForm": {
     "title": "Жаңы ээси",
@@ -161,7 +162,8 @@
     "nominals": "Номинал",
     "validity": "Жарактуулук мөөнөтү (ай)",
     "months": "{{months}} ай",
-    "removedCategory": "Өчүрүлгөн категория"
+    "removedCategory": "Өчүрүлгөн категория",
+    "nominalsPlaceholder": "Номиналдарды тандаңыз"
   },
   "aria": {
     "changeLanguage": "Тил алмаштыруу",
@@ -207,8 +209,7 @@
         "noVenues": "Ээсинин азырынча мекемелери жок",
         "notFound": "Ээси табылган жок",
         "orders": "Ээсинин буйрутмалары",
-        "notSet": "Көрсөтүлгөн эмес",
-        "message": "Ээсине жазуу"
+        "notSet": "Көрсөтүлгөн эмес"
       },
       "searchPlaceholder": "Ээлерди издөө",
       "owner": {
@@ -289,12 +290,13 @@
       "amountChanged": "Сумма өзгөрдү - текшерип, кайра ырастаңыз.",
       "doneNotified": "{{merchant}} үчүн {{amount}}. Ээси билдирүү алды.",
       "doneNotNotified": "{{merchant}} үчүн {{amount}}. Билдирүү жеткен жок - ээсине өзүңүз жазыңыз.",
-      "noDetails": "Реквизиттер көрсөтүлгөн эмес - ээсинин карточкасына кошуңуз",
+      "noDetails": "Реквизиттер көрсөтүлгөн эмес",
       "viewWeek": "Апталар боюнча",
       "viewDue": "Бардык карыздар",
       "dueTotal": "Жалпы төлөнө турган",
       "noDebts": "Карыз жок - баары төлөнгөн",
-      "markShort": "Белгилөө"
+      "markShort": "Белгилөө",
+      "addDetails": "Реквизиттерди көрсөтүү"
     },
     "orders": {
       "all": "Баары",
@@ -340,10 +342,13 @@
         "copyCommand": "буйрукту көчүрүү"
       },
       "paidOut": "Төлөп берилген",
-      "scopeVenue": "Мекеме: {{name}}",
-      "scopeMerchant": "Ээси: {{name}}",
-      "clearScope": "чыпканы алып салуу",
-      "buyerId": "Сатып алуучунун ID"
+      "filters": {
+        "status": "Статус",
+        "venue": "Мекеме",
+        "merchant": "Ээси",
+        "venueSearch": "Мекемелерди издөө",
+        "buyer": "Сатып алуучу: ID {{id}}"
+      }
     }
   },
   "certificate": {
@@ -474,5 +479,11 @@
   },
   "connection": {
     "waking": "Серверди иштетип жатабыз, бул 30 секундга чейин созулушу мүмкүн"
+  },
+  "select": {
+    "clear": "тазалоо",
+    "loading": "Жүктөлүүдө…",
+    "empty": "Эч нерсе табылган жок",
+    "done": "Даяр"
   }
 }

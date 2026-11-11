@@ -1,9 +1,9 @@
 import { api, fixtures, server } from "@mocks";
-import { screen } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { http, HttpResponse } from "msw";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { OrderList } from "./index";
 
@@ -33,6 +33,42 @@ afterEach(() => {
   globalThis.IntersectionObserver = original;
 });
 
+const NO_FILTERS = { status: null, venueId: null, merchantId: null, userId: null };
+
+// The filter row's lists: venues and owners (searched), and a chosen one's name.
+const filterLists = () => {
+  const searches: string[] = [];
+
+  server.use(
+    http.get(api("/admin/venues"), ({ request }) => {
+      searches.push(new URL(request.url).searchParams.get("search") ?? "");
+      return HttpResponse.json([
+        { id: 7, name: "Coffeeroom", logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png", isActive: true, merchantId: 10 }
+      ]);
+    }),
+    http.get(api("/admin/venues/7"), () =>
+      HttpResponse.json({
+        id: 7,
+        name: "Coffeeroom",
+        description: { ru: "Кофе", kg: "Кофе", en: "Coffee" },
+        categories: [1],
+        nominals: [500],
+        validityMonths: 12,
+        logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",
+        slug: "coffeeroom",
+        address: "ул. Киевская 95",
+        mapUrl: "https://go.2gis.com/abc",
+        isActive: true,
+        createdAt: "2026-06-01T00:00:00.000Z",
+        merchantId: 10
+      })
+    ),
+    http.get(api("/admin/merchants"), () => HttpResponse.json([fixtures.adminMerchant()]))
+  );
+
+  return searches;
+};
+
 const order = (n: number) => ({ ...fixtures.adminOrder(`${n}1111111-1111-4111-8111-111111111111`, "pending"), venue: { id: n, name: `Venue ${n}` } });
 
 describe("an infinite list", () => {
@@ -56,9 +92,8 @@ describe("an infinite list", () => {
       })
     );
 
-    renderWithProviders(
-      <OrderList status={null} onStatusChange={() => {}} search="" venueId={null} merchantId={null} userId={null} />
-    );
+    filterLists();
+    renderWithProviders(<OrderList search="" filters={NO_FILTERS} onFiltersChange={() => {}} />);
 
     const retry = await screen.findByRole("button", { name: "Повторить" }, { timeout: 4000 });
     expect(screen.getByText("Venue 1")).toBeInTheDocument();
@@ -71,50 +106,67 @@ describe("an infinite list", () => {
     expect(screen.getByText("Venue 1")).toBeInTheDocument();
   });
 
-  it("asks for one venue's orders and shows the scope, which clears", async () => {
+  it("one venue's orders: the pill names it, × resets it", async () => {
     let query: URLSearchParams | undefined;
-
+    filterLists();
     server.use(
       http.get(api("/admin/orders"), ({ request }) => {
         query = new URL(request.url).searchParams;
         return HttpResponse.json({ items: [order(1)], nextCursor: null });
       })
     );
+    const onFiltersChange = vi.fn();
+    renderWithProviders(<OrderList search="" filters={{ ...NO_FILTERS, venueId: 7 }} onFiltersChange={onFiltersChange} />);
 
-    let cleared = false;
-    renderWithProviders(
-      <OrderList
-        status={null}
-        onStatusChange={() => {}}
-        search=""
-        venueId={7}
-        merchantId={null}
-        userId={null}
-        scope={{ label: "Заведение: Coffeeroom", onClear: () => (cleared = true) }}
-      />
-    );
-
-    expect(await screen.findByText("Venue 1")).toBeInTheDocument();
+    expect(await screen.findByText("Заведение: Coffeeroom")).toBeInTheDocument();
     expect(query?.get("venueId")).toBe("7");
-    expect(query?.has("merchantId")).toBe(false);
 
-    await userEvent.click(screen.getByRole("button", { name: /Заведение: Coffeeroom/ }));
-    expect(cleared).toBe(true);
+    await userEvent.click(screen.getByRole("button", { name: "Заведение: сбросить" }));
+    expect(onFiltersChange).toHaveBeenCalledWith({ venueId: null });
   });
 
-  it("asks for one buyer's orders and shows each order's number", async () => {
+  it("picks a status from the list", async () => {
+    filterLists();
+    server.use(http.get(api("/admin/orders"), () => HttpResponse.json({ items: [], nextCursor: null })));
+    const onFiltersChange = vi.fn();
+    renderWithProviders(<OrderList search="" filters={NO_FILTERS} onFiltersChange={onFiltersChange} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Статус" }));
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "На проверке" }));
+
+    expect(onFiltersChange).toHaveBeenCalledWith({ status: "needs_review" });
+  });
+
+  it("searches venues on the server and picks one", async () => {
+    const searches = filterLists();
+    server.use(http.get(api("/admin/orders"), () => HttpResponse.json({ items: [], nextCursor: null })));
+    const onFiltersChange = vi.fn();
+    renderWithProviders(<OrderList search="" filters={NO_FILTERS} onFiltersChange={onFiltersChange} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Заведение" }));
+    await userEvent.type(screen.getByRole("searchbox", { name: "Поиск заведений" }), "cof");
+
+    await waitFor(() => expect(searches).toContain("cof"));
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Coffeeroom" }));
+    expect(onFiltersChange).toHaveBeenCalledWith({ venueId: 7 });
+  });
+
+  it("one buyer's orders (from an order's link): a pill with ×, each row's number", async () => {
     let query: URLSearchParams | undefined;
+    filterLists();
     server.use(
       http.get(api("/admin/orders"), ({ request }) => {
         query = new URL(request.url).searchParams;
         return HttpResponse.json({ items: [order(1)], nextCursor: null });
       })
     );
-    renderWithProviders(
-      <OrderList status={null} onStatusChange={() => {}} search="" venueId={null} merchantId={null} userId={42} />
-    );
+    const onFiltersChange = vi.fn();
+    renderWithProviders(<OrderList search="" filters={{ ...NO_FILTERS, userId: 42 }} onFiltersChange={onFiltersChange} />);
 
     expect(await screen.findByText("№11111111")).toBeInTheDocument();
     expect(query?.get("userId")).toBe("42");
+
+    await userEvent.click(screen.getByRole("button", { name: "Покупатель: ID 42: сбросить" }));
+    expect(onFiltersChange).toHaveBeenCalledWith({ userId: null });
   });
 });

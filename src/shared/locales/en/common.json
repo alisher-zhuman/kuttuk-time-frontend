@@ -127,7 +127,8 @@
     "addressTooLong": "At most {{max}} characters",
     "mapUrl": "Map link",
     "mapUrlHint": "Open the venue in 2GIS → Share → Copy link",
-    "mapUrlInvalid": "Needs a link from 2GIS, Google Maps or Yandex Maps"
+    "mapUrlInvalid": "Needs a link from 2GIS, Google Maps or Yandex Maps",
+    "ownerPlaceholder": "Choose the owner"
   },
   "merchantForm": {
     "title": "New merchant",
@@ -161,7 +162,8 @@
     "nominals": "Amount",
     "validity": "Validity (months)",
     "months": "{{months}} mo",
-    "removedCategory": "Deleted category"
+    "removedCategory": "Deleted category",
+    "nominalsPlaceholder": "Choose the amounts"
   },
   "aria": {
     "changeLanguage": "Change language",
@@ -207,8 +209,7 @@
         "noVenues": "This merchant has no venues yet",
         "notFound": "Merchant not found",
         "orders": "This owner's orders",
-        "notSet": "Not set",
-        "message": "Message the owner"
+        "notSet": "Not set"
       },
       "searchPlaceholder": "Search merchants",
       "owner": {
@@ -289,12 +290,13 @@
       "amountChanged": "The amount changed - check it and confirm again.",
       "doneNotified": "{{amount}} to {{merchant}}. The owner got a message.",
       "doneNotNotified": "{{amount}} to {{merchant}}. The message didn't reach the owner - write to them yourself.",
-      "noDetails": "No payout details - add them on the owner's card",
+      "noDetails": "No payout details",
       "viewWeek": "By week",
       "viewDue": "All debts",
       "dueTotal": "Total due",
       "noDebts": "No debts - everything is paid out",
-      "markShort": "Mark paid"
+      "markShort": "Mark paid",
+      "addDetails": "Add payout details"
     },
     "orders": {
       "all": "All",
@@ -340,10 +342,13 @@
         "copyCommand": "copy the command"
       },
       "paidOut": "Paid out",
-      "scopeVenue": "Venue: {{name}}",
-      "scopeMerchant": "Owner: {{name}}",
-      "clearScope": "clear the filter",
-      "buyerId": "Buyer ID"
+      "filters": {
+        "status": "Status",
+        "venue": "Venue",
+        "merchant": "Owner",
+        "venueSearch": "Search venues",
+        "buyer": "Buyer: ID {{id}}"
+      }
     }
   },
   "certificate": {
@@ -474,5 +479,11 @@
   },
   "connection": {
     "waking": "Starting the server, this can take up to 30 seconds"
+  },
+  "select": {
+    "clear": "clear",
+    "loading": "Loading…",
+    "empty": "Nothing found",
+    "done": "Done"
   }
 }

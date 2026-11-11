@@ -14,8 +14,8 @@ concurrency:
 
 jobs:
   check:
-    # Pinned: ubuntu-latest moved to 26.04, where Playwright 1.57 has no Chromium.
-    runs-on: ubuntu-24.04
+    # ubuntu-latest is 26.04 - Playwright supports it since 1.61.
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

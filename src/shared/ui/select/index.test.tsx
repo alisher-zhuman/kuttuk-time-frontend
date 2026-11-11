@@ -32,7 +32,7 @@ describe("Select - one picker for lists", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("many: taps toggle, the chosen show inside the field, «Готово» closes", async () => {
+  it("many: taps toggle, the chosen show inside the field, «Готово» on the title's line closes", async () => {
     const onChange = vi.fn();
     renderWithProviders(
       <Select multiple label="Номиналы" placeholder="Выберите номиналы" options={OPTIONS} value={[1]} onChange={onChange} />
@@ -48,29 +48,23 @@ describe("Select - one picker for lists", () => {
     await userEvent.click(within(sheet).getByRole("button", { name: /Coffeeroom/ }));
     expect(onChange).toHaveBeenLastCalledWith([]);
 
-    await userEvent.click(within(sheet).getByRole("button", { name: "Готово" }));
+    const done = within(sheet).getByRole("button", { name: "Готово" });
+    // On the title's line, before the list.
+    expect(within(sheet).getByRole("heading", { name: "Номиналы" }).parentElement).toContainElement(done);
+    await userEvent.click(done);
     endSlide();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("the search box hands the text to the caller; nothing found says so", async () => {
-    const onSearch = vi.fn();
-    renderWithProviders(
-      <Select
-        label="Владелец"
-        placeholder="Выберите"
-        options={[]}
-        value={[]}
-        onChange={() => {}}
-        search={{ value: "", onChange: onSearch, placeholder: "Поиск" }}
-      />
-    );
+  it("an empty list says nothing was found", async () => {
+    renderWithProviders(<Select label="Владелец" placeholder="Выберите" options={[]} value={[]} onChange={() => {}} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Владелец" }));
-    await userEvent.type(screen.getByRole("searchbox", { name: "Поиск" }), "к");
 
-    expect(onSearch).toHaveBeenCalledWith("к");
     expect(screen.getByText("Ничего не найдено")).toBeInTheDocument();
+    // No text field in a sheet - the iPhone keyboard breaks it.
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect(screen.queryByRole("searchbox")).not.toBeInTheDocument();
   });
 
   it("a filter pill shows the choice and resets with ×", async () => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Check, ChevronDown, Loader2, Search, X } from "lucide-react";
+import { Check, ChevronDown, X } from "lucide-react";
 
 import { cn } from "@shared/helpers";
 import { useHaptic } from "@shared/hooks";
@@ -30,19 +30,17 @@ interface Props<V extends string | number> {
   variant?: "field" | "filter";
   // A × that resets to nothing (filters).
   clearable?: boolean;
-  // A search box in the sheet; the caller filters the options (the server or
-  // locally) and passes the result.
-  search?: { value: string; onChange: (value: string) => void; placeholder: string } | undefined;
   isLoading?: boolean;
-  // The name of a chosen value that isn't among the options right now (a
-  // server search narrowed them) - else the trigger would show nothing.
+  // The name of a chosen value that isn't among the options (not loaded yet)
+  // - else the trigger would show its id.
   selectedLabel?: string | undefined;
   error?: string | undefined;
 }
 
 // One picker for lists: a field or a filter pill opens a bottom sheet with
-// big rows (48 px), an optional search, one or many choices. Instead of chip
-// rows that don't fit a 320 px screen once there are a dozen values.
+// big rows (48 px), one or many choices. Instead of chip rows that don't fit a
+// 320 px screen once there are a dozen values. No text input in the sheet: on
+// iPhone the keyboard breaks a fixed sheet - a searched pick is `Combobox`.
 export const Select = <V extends string | number>({
   label,
   placeholder,
@@ -52,7 +50,6 @@ export const Select = <V extends string | number>({
   multiple = false,
   variant = "field",
   clearable = false,
-  search,
   isLoading = false,
   selectedLabel,
   error
@@ -156,27 +153,25 @@ export const Select = <V extends string | number>({
       {trigger}
 
       {isOpen && (
-        <BottomSheet title={label} onClose={() => setIsOpen(false)}>
+        <BottomSheet
+          title={label}
+          onClose={() => setIsOpen(false)}
+          action={
+            multiple
+              ? (close) => (
+                  <button
+                    type="button"
+                    onClick={close}
+                    className="px-4 h-10 rounded-full bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer"
+                  >
+                    {t("select.done")}
+                  </button>
+                )
+              : undefined
+          }
+        >
           {(close) => (
             <>
-              {search && (
-                <label className="flex items-center gap-2.5 h-12 px-4 bg-(--color-field) rounded-xl border border-(--color-line)">
-                  {isLoading ? (
-                    <Loader2 size={18} className="animate-spin shrink-0 text-(--color-hint)" />
-                  ) : (
-                    <Search size={18} className="shrink-0 text-(--color-hint)" />
-                  )}
-                  <input
-                    type="search"
-                    value={search.value}
-                    onChange={(event) => search.onChange(event.target.value)}
-                    placeholder={search.placeholder}
-                    aria-label={search.placeholder}
-                    className="flex-1 min-w-0 bg-transparent text-base text-(--color-ink) placeholder:text-(--color-hint) outline-none"
-                  />
-                </label>
-              )}
-
               <ul role="listbox" aria-label={label} aria-multiselectable={multiple} className="max-h-96 overflow-y-auto -mx-1 list-none">
                 {options.length === 0 ? (
                   <li className="px-1 py-4 text-sm text-(--color-hint) text-center">
@@ -222,15 +217,6 @@ export const Select = <V extends string | number>({
                 )}
               </ul>
 
-              {multiple && (
-                <button
-                  type="button"
-                  onClick={close}
-                  className="py-3 rounded-2xl bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer"
-                >
-                  {t("select.done")}
-                </button>
-              )}
             </>
           )}
         </BottomSheet>

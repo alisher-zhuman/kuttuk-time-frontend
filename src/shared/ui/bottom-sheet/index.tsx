@@ -10,6 +10,8 @@ interface Props {
   dismissible?: boolean;
   // A function gets the animated close - for a "Cancel" button inside.
   children: ReactNode | ((close: () => void) => ReactNode);
+  // On the title's line, right («Готово») - gets the animated close.
+  action?: ((close: () => void) => ReactNode) | undefined;
 }
 
 const DURATION_MS = 220;
@@ -22,7 +24,7 @@ const CLOSE_VELOCITY = 0.5; // px per ms
 // still scroll / select). Portaled to <body>: <main>'s enter animation makes
 // its own stacking context, so inside it even z-50 would sit under the bottom
 // nav. The parent unmounting it closes it instantly (e.g. after a save).
-export const BottomSheet = ({ title, onClose, dismissible = true, children }: Props) => {
+export const BottomSheet = ({ title, onClose, dismissible = true, children, action }: Props) => {
   const [isShown, setIsShown] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -148,7 +150,11 @@ export const BottomSheet = ({ title, onClose, dismissible = true, children }: Pr
           className="flex flex-col gap-3 pt-2.5 touch-none select-none cursor-grab"
         >
           <span className="self-center w-10 h-1 rounded-full bg-(--color-line)" />
-          <h2 className="text-lg font-extrabold text-(--color-ink)">{title}</h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="min-w-0 text-lg font-extrabold text-(--color-ink)">{title}</h2>
+            {/* Not a drag start: the header swipes the sheet down. */}
+            {action && <span onPointerDown={(event) => event.stopPropagation()}>{action(close)}</span>}
+          </div>
         </div>
 
         {typeof children === "function" ? children(close) : children}

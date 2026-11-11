@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { miniApp, useSignal } from "@tma.js/sdk-react";
 
+import { useAppModeStore } from "@shared/store";
+
 import { getOrder } from "../api";
 import { orderKeys } from "../model/keys";
 import { hasGivenUp, isNotFoundError, isSettled, POLL_INTERVAL_MS } from "../model/polling";
@@ -11,8 +13,12 @@ export const useOrderPolling = (orderId: string | undefined) => {
   // False while another mini app / the bank app is in front (visibility_changed,
   // v8.0+; stays true on older clients). Document visibility alone doesn't
   // cover it. Disabling pauses the interval; re-enabling with staleTime 0
-  // refetches at once - the user is back from paying.
-  const isAppActive = useSignal(miniApp.isActive);
+  // refetches at once - the user is back from paying. The website has no such
+  // signal (unmounted it reads false and would never poll) - the hidden tab
+  // pauses the interval there.
+  const isMiniAppActive = useSignal(miniApp.isActive);
+  const isWeb = useAppModeStore((s) => s.mode === "web");
+  const isAppActive = isWeb || isMiniAppActive;
 
   const queryClient = useQueryClient();
 

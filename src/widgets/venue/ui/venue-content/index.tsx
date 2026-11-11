@@ -9,8 +9,9 @@ import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
 import { type VenueDetail, VenuePlace } from "@entities/venue";
 
 import { getOrderRoute } from "@shared/constants";
-import { openExternalLink, requestBotMessages } from "@shared/helpers";
+import { goToUrl, openExternalLink, requestBotMessages } from "@shared/helpers";
 import { useHaptic, useMainButton, useNavigateTo, usePopup } from "@shared/hooks";
+import { isWebsite } from "@shared/store";
 
 import { CertPreviewCard } from "../cert-preview-card";
 import { NominalList } from "../nominal-list";
@@ -59,10 +60,19 @@ export const VenueContent = ({ venue }: Props) => {
     // makes "allow messages" make sense. The answer doesn't matter for buying.
     await requestBotMessages({ oncePerSession: true });
 
+    const isWeb = isWebsite();
+
     createOrder(
-      { venueId: venue.id, nominal: activeNominal },
+      { venueId: venue.id, nominal: activeNominal, ...(isWeb && { channel: "web" as const }) },
       {
         onSuccess: ({ orderId, paymentUrl }) => {
+          // The website goes to the bank's page in this tab; Finik brings the
+          // buyer back to <site>/orders/<id>.
+          if (isWeb) {
+            goToUrl(paymentUrl);
+            return;
+          }
+
           openExternalLink(paymentUrl);
           // Push, not replace: Back from the order screen returns here.
           navigateTo(getOrderRoute(orderId));

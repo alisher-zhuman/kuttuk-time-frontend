@@ -1,3 +1,5 @@
+import { WEB_GIFT_PATH, WEB_ORDER_PATH } from "./base";
+
 export const ROUTES = {
   APP: "app",
   PROFILE: "profile",
@@ -17,7 +19,9 @@ export const ROUTES = {
   VENUE_EDIT: "venue-edit",
   MERCHANT_HOME: "merchant",
   EDIT: "edit",
-  SUMMARY: "summary"
+  SUMMARY: "summary",
+  ABOUT: "about",
+  OFFER: "offer"
 } as const;
 
 export const ROUTE_PATTERNS = {
@@ -27,6 +31,11 @@ export const ROUTE_PATTERNS = {
   ORDER: `/${ROUTES.APP}/${ROUTES.ORDERS}/:orderId`,
   CERTIFICATE: `/${ROUTES.APP}/${ROUTES.CERTIFICATES}/:certificateId`,
   GIFT: `/${ROUTES.APP}/${ROUTES.GIFTS}/:token`,
+  // The website's addresses the backend links to (Finik's return, gift links).
+  WEB_ORDER: `${WEB_ORDER_PATH}:orderId`,
+  WEB_GIFT: `${WEB_GIFT_PATH}:token`,
+  ABOUT: `/${ROUTES.APP}/${ROUTES.ABOUT}`,
+  OFFER: `/${ROUTES.APP}/${ROUTES.OFFER}`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
   MERCHANT_VENUE_EDIT: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.VENUES}/:venueId/${ROUTES.EDIT}`,
   MERCHANT_SUMMARY: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.SUMMARY}`,

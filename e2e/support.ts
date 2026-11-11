@@ -60,11 +60,13 @@ export class MiniApp {
   }
 
   // role: what log-in answers; routes: the rest of the API for this test.
+  // web: a plain browser - no Telegram bridge, no launch params; the app signs
+  // in as a website guest (POST /auth/guest).
   async open(
     path: string,
-    { role = "user", routes, startParam }: { role?: string; routes: Route; startParam?: string }
+    { role = "user", routes, startParam, web = false }: { role?: string; routes: Route; startParam?: string; web?: boolean }
   ) {
-    await this.page.addInitScript(installTelegram);
+    if (!web) await this.page.addInitScript(installTelegram);
     await this.page.route(`${API}/**`, async (route) => {
       const request = route.request();
       const url = new URL(request.url());
@@ -82,14 +84,16 @@ export class MiniApp {
       const answer =
         path === "/auth/log-in"
           ? ([201, { accessToken: "t", role }] as [number, unknown])
-          : routes({ path, method: request.method(), query: url.searchParams, body });
+          : path === "/auth/guest"
+            ? ([200, { accessToken: "guest", role: "user", guestToken: "g-1" }] as [number, unknown])
+            : routes({ path, method: request.method(), query: url.searchParams, body });
 
       // An unmocked request fails the test by name, as in the unit suite.
       if (!answer) throw new Error(`Nothing answered ${request.method()} ${path}`);
 
       await route.fulfill({ status: answer[0], contentType: "application/json", body: JSON.stringify(answer[1]) });
     });
-    await this.page.goto(`${path}#${launchParams(startParam)}`);
+    await this.page.goto(web ? path : `${path}#${launchParams(startParam)}`);
   }
 
   // The native MainButton: Telegram draws it, so tests read its params and

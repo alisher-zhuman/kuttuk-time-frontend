@@ -169,3 +169,50 @@ test("the giver sees the claimed certificate as «Подарен», without its 
   await expect(page.getByText("5555 6666")).toHaveCount(0);
   await expect(page.getByRole("img", { name: "Покажите QR на кассе" })).toHaveCount(0);
 });
+
+test.describe("the website", () => {
+  // Outside Telegram the language comes from the browser.
+  test.use({ locale: "ru-RU" });
+
+  test("the website: Finik's return /orders/<id> opens directly - a guest, no Telegram", async ({ app, page }) => {
+  await app.open(`/orders/${fixtures.ORDER_ID}`, {
+    web: true,
+    routes: ({ path }) => {
+      if (path === `/orders/${fixtures.ORDER_ID}`) return [200, fixtures.orders.paid];
+      if (path === "/venues/1") return [200, venueDetail];
+      return undefined;
+    }
+  });
+
+  await expect(page.getByText("Сертификат готов!")).toBeVisible();
+  await expect(page.getByText("0471 8263")).toBeVisible();
+  // The guest is offered to keep it with Telegram; the action is a plain button.
+  await expect(page.getByText(/Войдите через Telegram/)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Подарить" })).toBeVisible();
+  // The website's footer: who runs it, how payment works.
+  await expect(page.getByText("Оплата через Finik")).toBeVisible();
+});
+
+  test("the website: a gift link /gift/<token> opens directly and claims as a guest", async ({ app, page }) => {
+  let claimed = false;
+
+  await app.open(`/gift/${fixtures.GIFT_TOKEN}`, {
+    web: true,
+    routes: ({ path, method }) => {
+      if (path === `/gifts/${fixtures.GIFT_TOKEN}`) return [200, fixtures.gift(claimed ? "received" : "available")];
+      if (path === `/gifts/${fixtures.GIFT_TOKEN}/claim` && method === "POST") {
+        claimed = true;
+        return [200, fixtures.claimedCertificate];
+      }
+      if (path === "/certificates/my") return [200, claimed ? [fixtures.claimedCertificate] : []];
+      return undefined;
+    }
+  });
+
+  await expect(page.getByText("Вам подарок")).toBeVisible();
+  await page.getByRole("button", { name: "Забрать подарок" }).click();
+
+  await expect(page).toHaveURL(/\/app\/certificates\/c7/);
+  await expect(page.getByText("7777 8888")).toBeVisible();
+});
+});

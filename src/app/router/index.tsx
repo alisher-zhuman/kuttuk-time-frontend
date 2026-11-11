@@ -63,6 +63,24 @@ export const ROUTER = createBrowserRouter([
         path: ROUTE_PATTERNS.GIFT,
         element: <GiftPage />
       },
+      // The website's addresses (opened directly from Finik / a shared link) -
+      // the same screens as /app/orders/:orderId and /app/gifts/:token.
+      {
+        path: ROUTE_PATTERNS.WEB_ORDER,
+        element: <OrderPage />
+      },
+      {
+        path: ROUTE_PATTERNS.WEB_GIFT,
+        element: <GiftPage />
+      },
+      {
+        path: ROUTE_PATTERNS.ABOUT,
+        lazy: page(() => import("@pages/about"), "AboutPage")
+      },
+      {
+        path: ROUTE_PATTERNS.OFFER,
+        lazy: page(() => import("@pages/offer"), "OfferPage")
+      },
       {
         element: <RequireRole role="admin" />,
         children: [

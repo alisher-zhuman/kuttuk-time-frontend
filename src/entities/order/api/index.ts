@@ -12,6 +12,9 @@ import type { OrderStatus } from "../model/types";
 export interface CreateOrderPayload {
   venueId: number;
   nominal: number;
+  // web - bought on the website: Finik returns the buyer to <site>/orders/<id>
+  // instead of the Mini App (../backend payment-redirect-url.ts). Not stored.
+  channel?: "web";
 }
 
 export const createOrder = async (payload: CreateOrderPayload) => {

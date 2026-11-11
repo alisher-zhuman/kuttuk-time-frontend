@@ -1,9 +1,11 @@
 import { useLayoutEffect } from "react";
 import { Outlet } from "react-router";
 
+import { TelegramOnlyPage } from "@pages/telegram-only";
+
 import { getHomeRoute } from "@shared/constants";
 import { useNavigateTo } from "@shared/hooks";
-import { useAuthStore } from "@shared/store";
+import { useAppModeStore,useAuthStore } from "@shared/store";
 
 interface Props {
   role: "admin" | "merchant";
@@ -20,11 +22,16 @@ export const RequireRole = ({ role }: Props) => {
 
   const currentRole = useAuthStore((s) => s.role);
 
+  const isWeb = useAppModeStore((s) => s.mode === "web");
+
   useLayoutEffect(() => {
-    if (currentRole !== role) {
+    if (!isWeb && currentRole !== role) {
       navigateTo(getHomeRoute(currentRole), { replace: true });
     }
-  }, [currentRole, role, navigateTo]);
+  }, [isWeb, currentRole, role, navigateTo]);
+
+  // The website has no cabinet or admin panel - only a way to the Mini App.
+  if (isWeb) return <TelegramOnlyPage />;
 
   if (currentRole !== role) return null;
 

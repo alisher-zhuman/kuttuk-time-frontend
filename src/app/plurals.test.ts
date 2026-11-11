@@ -30,3 +30,11 @@ describe("months are declined", () => {
     expect(i18n.t("admin.venues.detail.validityValue", { lng: "ru", count: 3 })).toBe("3 месяца");
   });
 });
+
+describe("the website's gift text, the buyer's own words", () => {
+  it("kg: «1 000 сомдук», the currency once", () => {
+    expect(i18n.t("certificate.webGiftText", { lng: "kg", venue: "Coffeeroom", amount: "1 000 сом", number: "1 000" })).toBe(
+      "🎁 Сага белек - Coffeeroom мекемесиндеги 1 000 сомдук сертификат"
+    );
+  });
+});

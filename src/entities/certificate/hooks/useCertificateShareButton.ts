@@ -85,7 +85,9 @@ export const useCertificateShareButton = ({
   const shareLink = async (url: string) => {
     const text = t("certificate.webGiftText", {
       venue: venueName ?? "",
-      amount: formatMoney(amount, t("certificate.currency"))
+      amount: formatMoney(amount, t("certificate.currency")),
+      // kg puts its own suffix on the number («1 000 сомдук»).
+      number: formatMoney(amount, "").trim()
     });
 
     if (typeof navigator.share === "function") {

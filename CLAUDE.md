@@ -42,10 +42,10 @@ Source of truth: `../backend/CLAUDE.md`, section **Product decisions** - don't d
 
 **Rule (Alisher, 2026-11-11, same as the backend's):** after every step - a commit, a push, a report - update this section: what's on prod, what's waiting on the backend / on Alisher, what's next. A new chat must be able to continue from here without asking. It's a docs-only change: it rides with the next code push, never pushed alone.
 
-- **On prod** (`dev` = prod, last push `d8ab47d`): everything in this file up to the required merchant notes.
-- **Committed, not pushed - task 8, the website mode** (see «Website mode»): waits for Alisher's word that the backend's web endpoints are on prod (`/auth/guest`, `/auth/telegram-widget`, `channel` on `POST /orders`, `/payments/return/:id/web`, `/certificates/:id/gift-link`). Plus the «Где остановились» docs commit `8eec9b0`.
-- **Waiting on Alisher:** «бэк на проде» for task 8 → push; BotFather `/setdomain` with the Vercel address for the login widget; texts of «О нас» / «Оферта» and the sole proprietor's details; a phone check of the website (guest buy → Finik → `/orders/<id>`, «Подарить» share menu, «Войти через Telegram»).
-- **Waiting on the backend:** nothing beyond deploying task 8. On prod the venues' addresses / map links and the merchants' payout details / contacts are test placeholders.
+- **On prod** (`dev` = prod, pushed 2026-11-11 after the backend went to Neon): everything in this file, including task 8 - the website mode (see «Website mode»).
+- **Committed, not pushed:** nothing.
+- **Waiting on Alisher:** BotFather `/setdomain` with the Vercel address (the login widget shows nothing until then); texts of «О нас» / «Оферта» and the sole proprietor's details; a phone check of the website in a plain browser (guest buy → Finik → `/orders/<id>`, «Подарить» share menu, «Войти через Telegram»).
+- **Waiting on the backend:** nothing. On prod the venues' addresses / map links and the merchants' payout details / contacts are test placeholders.
 - **Next:** after the push - check the website on a phone with Alisher; then the next prompt. Parked («когда понадобится»): `shareStory`, inline mode, venue-QR PNG for phones, «Сегодня: N продаж», `ClosingBehavior` confirmation, a toast; a custom domain, SEO pages, SMS sign-in (backend plan).
 - **How tasks arrive:** Alisher pastes a prompt written by the backend agent (contract in `../backend/CLAUDE.md`); report what's done / committed / on prod, kg texts for review, the commit list before a push; push only on «пуш» (or «можно сразу»).
 

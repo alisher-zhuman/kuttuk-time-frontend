@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 
 import { Gift } from "lucide-react";
 
+import { TelegramLoginPrompt } from "@features/telegram-login";
+
 import {
   CertificateCard,
   CertificateCardSkeleton,
@@ -43,7 +45,9 @@ export const CertificatesTab = () => {
 
   if (certificates.length === 0) {
     return (
-      <EmptyState
+      <>
+        <TelegramLoginPrompt />
+        <EmptyState
         icon={<Gift size={32} strokeWidth={1.5} />}
         message={t("certificates.empty")}
         action={
@@ -57,11 +61,14 @@ export const CertificatesTab = () => {
           </PillButton>
         }
       />
+      </>
     );
   }
 
   // Order comes from the backend: active first, newest first within a status.
   return (
+    <div className="flex flex-col gap-2.5">
+      <TelegramLoginPrompt />
     <ul className="flex flex-col gap-2.5 list-none">
       {certificates.map((certificate, index) => (
         <li key={certificate.id}>
@@ -80,5 +87,6 @@ export const CertificatesTab = () => {
         </li>
       ))}
     </ul>
+    </div>
   );
 };

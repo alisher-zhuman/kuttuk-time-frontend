@@ -4,6 +4,7 @@ import { API_PATHS } from "@shared/constants";
 import {
   CertificateSchema,
   CertificatesSchema,
+  GiftLinkSchema,
   GiftSchema,
   MerchantCertificatePageSchema,
   MerchantCertificateSchema,
@@ -73,4 +74,10 @@ export const claimGift = async (token: string) => {
   const response = await api.post(`${giftPath(token)}/claim`);
 
   return CertificateSchema.parse(response.data);
+};
+
+export const createGiftLink = async (id: string) => {
+  const response = await api.post(`${API_PATHS.CERTIFICATES}/${id}/gift-link`);
+
+  return GiftLinkSchema.parse(response.data);
 };

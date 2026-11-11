@@ -92,3 +92,7 @@ export const GiftSchema = z.object({
 export const GiftConflictSchema = z.object({
   error: z.enum(["own", "already_claimed", "already_used", "expired"])
 });
+
+// POST /certificates/:id/gift-link - the website's «Подарить»: a link
+// <site>/gift/<token> for the phone's share menu; replaces an open link.
+export const GiftLinkSchema = z.object({ url: z.string() });

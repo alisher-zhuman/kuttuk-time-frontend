@@ -4,8 +4,9 @@ import { Loader2 } from "lucide-react";
 
 import { type ExpiredOrder, type PendingOrder } from "@entities/order";
 
-import { formatMoney, openExternalLink } from "@shared/helpers";
+import { formatMoney, goToUrl, openExternalLink } from "@shared/helpers";
 import { useMainButton } from "@shared/hooks";
+import { isWebsite } from "@shared/store";
 
 import { useCountdown } from "../../hooks/useCountdown";
 
@@ -37,7 +38,12 @@ export const OrderPending = ({ order, venueName }: Props) => {
     text: t("orders.pending.openPayment"),
     onClick: () => {
       if (order.status === "pending") {
-        openExternalLink(order.paymentUrl);
+        // The website - the bank's page in this tab, like at purchase.
+        if (isWebsite()) {
+          goToUrl(order.paymentUrl);
+        } else {
+          openExternalLink(order.paymentUrl);
+        }
       }
     },
     hidden: isExpired || order.status !== "pending"

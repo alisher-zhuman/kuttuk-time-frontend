@@ -8,9 +8,10 @@ import { isAxiosError } from "axios";
 
 import { BOT_URL } from "@shared/constants";
 import { formatMoney } from "@shared/helpers";
-import { useHaptic, useMainButton, usePopup } from "@shared/hooks";
+import { useCopyToClipboard, useHaptic, useMainButton, usePopup } from "@shared/hooks";
+import { useAppModeStore } from "@shared/store";
 
-import { prepareGift } from "../api";
+import { createGiftLink, prepareGift } from "../api";
 import { formatCertificateCode } from "../model/code";
 // …/share answers 409 with the same body as …/redeem.
 import { RedeemConflictSchema } from "../model/schemas";
@@ -46,19 +47,78 @@ export const useCertificateShareButton = ({
 
   const queryClient = useQueryClient();
 
-  const canGift = id !== undefined && shareMessage.isAvailable();
+  const copyToClipboard = useCopyToClipboard();
 
-  // A new card per tap - it expires, so never cached.
-  const { mutate: gift, isPending } = useMutation({ mutationFn: prepareGift });
+  const isWeb = useAppModeStore((s) => s.mode === "web");
+
+  // The website gifts by a link («Забрать подарок» on the site), the Mini App
+  // by the bot's card.
+  const canGift = id !== undefined && (isWeb || shareMessage.isAvailable());
+
+  // A new card / link per tap - a new one replaces the open one, never cached.
+  const { mutate: gift, isPending: isPreparing } = useMutation({ mutationFn: prepareGift });
+  const { mutate: giftLink, isPending: isLinking } = useMutation({ mutationFn: createGiftLink });
+
+  const isPending = isPreparing || isLinking;
 
   // isPending lands a render late - a double tap would prepare two cards and
   // open the chat picker twice.
   const isGiftingRef = useRef(false);
 
+  // 409 - used / expired meanwhile: refresh so the screen shows it (and the
+  // button hides); anything else - try again.
+  const onGiftError = (error: unknown) => {
+    haptic.error();
+
+    if (isAxiosError(error) && error.response?.status === 409 && RedeemConflictSchema.safeParse(error.response.data).success) {
+      void queryClient.invalidateQueries({ queryKey: ["certificates"] });
+      void showPopup({ message: t("certificate.giftUnavailable") });
+      return;
+    }
+
+    void showPopup({ message: t("certificate.giftFailed") });
+  };
+
+  // The phone's share menu (WhatsApp, Instagram, SMS…) with the buyer's own
+  // words; without one - or when the browser refuses it after the request -
+  // the link is copied.
+  const shareLink = async (url: string) => {
+    const text = t("certificate.webGiftText", {
+      venue: venueName ?? "",
+      amount: formatMoney(amount, t("certificate.currency"))
+    });
+
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: "KuttukTime", text, url });
+        haptic.success();
+        return;
+      } catch (error) {
+        // Closed by the buyer - nothing to do.
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      }
+    }
+
+    if (await copyToClipboard(`${text}\n${url}`)) {
+      void showPopup({ message: t("certificate.linkCopied") });
+    }
+  };
+
   const handleGift = (certificateId: string) => {
     if (isGiftingRef.current) return;
 
     isGiftingRef.current = true;
+
+    if (isWeb) {
+      giftLink(certificateId, {
+        onSettled: () => {
+          isGiftingRef.current = false;
+        },
+        onSuccess: ({ url }) => void shareLink(url),
+        onError: onGiftError
+      });
+      return;
+    }
 
     gift(certificateId, {
       onSettled: () => {
@@ -71,20 +131,7 @@ export const useCertificateShareButton = ({
           () => undefined
         );
       },
-      onError: (error) => {
-        haptic.error();
-
-        // Used / expired meanwhile: refresh so the screen shows it (and the
-        // button hides).
-        if (isAxiosError(error) && error.response?.status === 409 && RedeemConflictSchema.safeParse(error.response.data).success) {
-          void queryClient.invalidateQueries({ queryKey: ["certificates"] });
-          void showPopup({ message: t("certificate.giftUnavailable") });
-          return;
-        }
-
-        // 502: Telegram didn't store the card; anything else - same advice.
-        void showPopup({ message: t("certificate.giftFailed") });
-      }
+      onError: onGiftError
     });
   };
 

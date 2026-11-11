@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { Gift } from "lucide-react";
 
+import { TelegramLoginPrompt } from "@features/telegram-login";
+
 import {
   CertificateCodeBlock,
   CertificateGiftHint,
@@ -55,6 +57,8 @@ export const OrderPaid = ({ order, venueName }: Props) => {
       <CertificateCodeBlock certificate={order.certificate} />
 
       {canGift && <CertificateGiftHint />}
+
+      <TelegramLoginPrompt />
     </OrderResult>
   );
 };

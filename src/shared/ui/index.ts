@@ -2,6 +2,7 @@ export { ActiveFilter } from './active-filter';
 export { ActiveToggle } from './active-toggle';
 export { BottomSheet } from './bottom-sheet';
 export { ChipSelect } from './chip-select';
+export { Combobox } from './combobox';
 export { EmptyState } from './empty-state';
 export { ErrorState } from './error-state';
 export { Fab } from './fab';

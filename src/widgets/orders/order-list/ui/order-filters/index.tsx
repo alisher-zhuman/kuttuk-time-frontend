@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
 
 import { X } from "lucide-react";
@@ -8,7 +6,7 @@ import { useAdminMerchantQuery, useAdminMerchantsQuery } from "@entities/merchan
 import { type AdminOrderFilters, ORDER_STATUSES, type OrderStatus } from "@entities/order";
 import { useAdminVenueQuery, useAdminVenuesQuery } from "@entities/venue";
 
-import { useDebounce, useHaptic } from "@shared/hooks";
+import { useHaptic } from "@shared/hooks";
 import { Select } from "@shared/ui";
 
 export type OrderFilterValues = Omit<AdminOrderFilters, "search">;
@@ -21,27 +19,17 @@ interface Props {
 // «На проверке» first - the queue to watch; the rest in the backend's order.
 const STATUSES: OrderStatus[] = ["needs_review", ...ORDER_STATUSES.filter((status) => status !== "needs_review")];
 
-// The orders' filter row: status, venue and owner as lists (venue and owner
-// searched on the server), each reset by its ×. The buyer has no picker - it
+// The orders' filter row: status, venue and owner as lists, each reset by its
+// ×. The buyer has no picker - it
 // comes from an order's «ID покупателя» link and shows as a pill.
 export const OrderFilters = ({ filters, onChange }: Props) => {
-  const [venueSearch, setVenueSearch] = useState("");
-  const [merchantSearch, setMerchantSearch] = useState("");
-
   const { t } = useTranslation();
 
   const haptic = useHaptic();
 
-  const debouncedVenueSearch = useDebounce(venueSearch);
-  const debouncedMerchantSearch = useDebounce(merchantSearch);
-
-  const venues = useAdminVenuesQuery({
-    search: debouncedVenueSearch.trim(),
-    category: null,
-    isActive: null,
-    merchantId: null
-  });
-  const merchants = useAdminMerchantsQuery({ search: debouncedMerchantSearch.trim(), isActive: null });
+  // The whole lists - no search box in a sheet (the iPhone keyboard breaks it).
+  const venues = useAdminVenuesQuery({ search: "", category: null, isActive: null, merchantId: null });
+  const merchants = useAdminMerchantsQuery({ search: "", isActive: null });
 
   // Names of the chosen ones - a link may open the list already filtered.
   const { venue } = useAdminVenueQuery(filters.venueId !== null ? String(filters.venueId) : undefined);
@@ -69,7 +57,6 @@ export const OrderFilters = ({ filters, onChange }: Props) => {
         options={venues.venues.map((item) => ({ value: item.id, label: item.name }))}
         value={filters.venueId !== null ? [filters.venueId] : []}
         onChange={([venueId]) => onChange({ venueId: venueId ?? null })}
-        search={{ value: venueSearch, onChange: setVenueSearch, placeholder: t("admin.orders.filters.venueSearch") }}
         isLoading={venues.isFetching}
         selectedLabel={venue?.name}
       />
@@ -86,7 +73,6 @@ export const OrderFilters = ({ filters, onChange }: Props) => {
         }))}
         value={filters.merchantId !== null ? [filters.merchantId] : []}
         onChange={([merchantId]) => onChange({ merchantId: merchantId ?? null })}
-        search={{ value: merchantSearch, onChange: setMerchantSearch, placeholder: t("admin.merchants.searchPlaceholder") }}
         isLoading={merchants.isFetching}
         selectedLabel={merchant?.name}
       />

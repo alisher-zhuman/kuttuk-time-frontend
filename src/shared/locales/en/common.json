@@ -346,7 +346,6 @@
         "status": "Status",
         "venue": "Venue",
         "merchant": "Owner",
-        "venueSearch": "Search venues",
         "buyer": "Buyer: ID {{id}}"
       }
     }

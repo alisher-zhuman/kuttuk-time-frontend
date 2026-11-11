@@ -184,16 +184,22 @@ describe("the venue form", () => {
     expect(await screen.findByText("Нужна ссылка из 2GIS, Google Maps или Яндекс Карт")).toBeInTheDocument();
   });
 
-  it("picks the owner from a searched list - name and Telegram ID", async () => {
+  it("the owner: type in the field, the matches open under it - name and Telegram ID", async () => {
     const patches = answer();
     renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
 
-    await userEvent.click(await screen.findByRole("button", { name: "Владелец: ИП Асанов" }));
-    await userEvent.type(screen.getByRole("searchbox"), "Sierra");
+    const owner = await screen.findByRole("combobox", { name: "Владелец" });
+    await waitFor(() => expect(owner).toHaveValue("ИП Асанов"));
 
-    const sheet = screen.getByRole("dialog");
-    expect(await within(sheet).findByText("Telegram ID 222")).toBeInTheDocument();
-    await userEvent.click(within(sheet).getByRole("button", { name: /Sierra LLC/ }));
+    await userEvent.click(owner);
+    await userEvent.type(owner, "Sierra");
+
+    const list = screen.getByRole("listbox", { name: "Владелец" });
+    expect(await within(list).findByText("Telegram ID 222")).toBeInTheDocument();
+    await userEvent.click(within(list).getByRole("button", { name: /Sierra LLC/ }));
+
+    expect(screen.queryByRole("listbox", { name: "Владелец" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     save();
 
     await waitFor(() => expect(patches).toHaveLength(1));

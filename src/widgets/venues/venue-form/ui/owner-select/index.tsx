@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAdminMerchantQuery, useAdminMerchantsQuery } from "@entities/merchant";
 
 import { useDebounce } from "@shared/hooks";
-import { Select } from "@shared/ui";
+import { Combobox } from "@shared/ui";
 
 interface Props {
   value: number;
@@ -13,38 +13,37 @@ interface Props {
   error?: string | undefined;
 }
 
-// Admin-only: picks the merchant account that owns the venue - searched by
-// name on the server, the Telegram ID under each to tell namesakes apart.
-// Inactive merchants are listed too - the admin may prepare a venue before
-// activation.
+// Admin-only: picks the merchant account that owns the venue - type in the
+// field, the matches (searched by name on the server) open under it, the
+// Telegram ID under each tells namesakes apart. Inactive merchants are listed
+// too - the admin may prepare a venue before activation.
 export const VenueFormOwnerSelect = ({ value, onChange, error }: Props) => {
-  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
 
   const { t } = useTranslation();
 
-  const debouncedSearch = useDebounce(search);
+  const debouncedQuery = useDebounce(query);
 
-  const { merchants, isFetching } = useAdminMerchantsQuery({ search: debouncedSearch.trim(), isActive: null });
+  const { merchants, isFetching } = useAdminMerchantsQuery({ search: debouncedQuery.trim(), isActive: null });
 
-  // The chosen owner's name even when the search narrowed the list past it.
+  // The chosen owner's name for the field, whatever the list shows.
   const { merchant: chosen } = useAdminMerchantQuery(value > 0 ? String(value) : undefined);
 
   return (
-    <Select
+    <Combobox
       label={t("venueForm.owner")}
       placeholder={t("venueForm.ownerPlaceholder")}
+      value={value > 0 ? value : null}
+      selectedLabel={chosen?.name}
+      query={query}
+      onQueryChange={setQuery}
       options={merchants.map((merchant) => ({
         value: merchant.id,
         label: merchant.name,
         hint: `Telegram ID ${merchant.telegramId}`
       }))}
-      value={value > 0 ? [value] : []}
-      onChange={([merchantId]) => {
-        if (merchantId !== undefined) onChange(merchantId);
-      }}
-      search={{ value: search, onChange: setSearch, placeholder: t("admin.merchants.searchPlaceholder") }}
+      onChange={onChange}
       isLoading={isFetching}
-      selectedLabel={chosen?.name}
       error={error}
     />
   );

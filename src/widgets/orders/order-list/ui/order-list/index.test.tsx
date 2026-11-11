@@ -1,5 +1,5 @@
 import { api, fixtures, server } from "@mocks";
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { http, HttpResponse } from "msw";
@@ -137,17 +137,17 @@ describe("an infinite list", () => {
     expect(onFiltersChange).toHaveBeenCalledWith({ status: "needs_review" });
   });
 
-  it("searches venues on the server and picks one", async () => {
-    const searches = filterLists();
+  it("picks a venue from the list - no search box in the sheet", async () => {
+    filterLists();
     server.use(http.get(api("/admin/orders"), () => HttpResponse.json({ items: [], nextCursor: null })));
     const onFiltersChange = vi.fn();
     renderWithProviders(<OrderList search="" filters={NO_FILTERS} onFiltersChange={onFiltersChange} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Заведение" }));
-    await userEvent.type(screen.getByRole("searchbox", { name: "Поиск заведений" }), "cof");
+    const sheet = screen.getByRole("dialog");
+    expect(within(sheet).queryByRole("searchbox")).not.toBeInTheDocument();
 
-    await waitFor(() => expect(searches).toContain("cof"));
-    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Coffeeroom" }));
+    await userEvent.click(await within(sheet).findByRole("button", { name: "Coffeeroom" }));
     expect(onFiltersChange).toHaveBeenCalledWith({ venueId: 7 });
   });
 

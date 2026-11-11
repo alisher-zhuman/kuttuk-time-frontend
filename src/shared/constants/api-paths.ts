@@ -1,5 +1,7 @@
 export const API_PATHS = {
   LOG_IN: "/auth/log-in",
+  GUEST_LOG_IN: "/auth/guest",
+  WIDGET_LOG_IN: "/auth/telegram-widget",
   MERCHANTS: "/merchants",
   ADMIN_MERCHANTS: "/admin/merchants",
   VENUES: "/venues",

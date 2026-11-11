@@ -1,6 +1,8 @@
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll } from "vitest";
 
+import { useAppModeStore, useAuthStore, useWebMainButtonStore } from "@shared/store";
+
 import "@testing-library/jest-dom/vitest";
 
 import { server } from "./mocks/server";
@@ -53,6 +55,11 @@ afterEach(() => {
   cleanup();
   server.resetHandlers();
   window.__telegram.reset();
+  // Back to the Mini App between tests; the website's tests switch it on.
+  useAppModeStore.setState({ mode: "telegram" });
+  useWebMainButtonStore.setState({ button: null });
+  useAuthStore.setState({ isGuest: false });
+  localStorage.clear();
 
   const missed = unanswered.splice(0);
 

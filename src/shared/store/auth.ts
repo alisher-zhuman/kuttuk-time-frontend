@@ -8,7 +8,10 @@ export interface AuthState {
   isReady: boolean;
   // initData rejected by log-in (401, older than 24h) - only a relaunch helps.
   isSessionExpired: boolean;
-  setAuth: (accessToken: string, role: UserRole) => void;
+  // The website's guest (no Telegram account linked yet) - offered «Войти
+  // через Telegram». Always false in the Mini App.
+  isGuest: boolean;
+  setAuth: (accessToken: string, role: UserRole, isGuest?: boolean) => void;
   clearAuth: () => void;
   setReady: () => void;
   setSessionExpired: () => void;
@@ -19,8 +22,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   role: null,
   isReady: false,
   isSessionExpired: false,
-  setAuth: (accessToken, role) => set({ accessToken, role }),
-  clearAuth: () => set({ accessToken: null, role: null }),
+  isGuest: false,
+  setAuth: (accessToken, role, isGuest = false) => set({ accessToken, role, isGuest }),
+  clearAuth: () => set({ accessToken: null, role: null, isGuest: false }),
   setReady: () => set({ isReady: true }),
   setSessionExpired: () => set({ isSessionExpired: true })
 }));

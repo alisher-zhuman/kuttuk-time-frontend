@@ -8,15 +8,17 @@ import axios, {
 } from "axios";
 
 import { API_URL, REQUEST_TIMEOUT_MS } from "@shared/constants";
-import { useAuthStore, useViewModeStore } from "@shared/store";
+import { isWebsite, useAuthStore, useViewModeStore } from "@shared/store";
 
 import { logIn } from "./auth";
+import { signInOnWebsite } from "./web-auth";
 
 export const api = axios.create({ baseURL: API_URL, timeout: REQUEST_TIMEOUT_MS });
 
 // Shared across concurrent 401s: when the token expires, every in-flight
 // request fails at once - they should all wait on a single re-login.
-let pendingLogIn: ReturnType<typeof logIn> | null = null;
+let pendingLogIn: Promise<{ accessToken: string; role: "user" | "merchant" | "admin"; isGuest?: boolean }> | null =
+  null;
 
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accessToken;
@@ -41,32 +43,46 @@ api.interceptors.response.use(
       original._retry = true;
 
       try {
-        const initData = retrieveRawInitData();
+        // The website signs in again as the Telegram account (while the
+        // widget's data holds) or the guest; the Mini App by its initData.
+        const signIn = () => {
+          if (isWebsite()) return signInOnWebsite();
 
-        if (!initData) {
-          return Promise.reject(error);
+          const initData = retrieveRawInitData();
+
+          return initData ? logIn({ initData }) : null;
+        };
+
+        if (!pendingLogIn) {
+          const started = signIn();
+
+          if (!started) {
+            return Promise.reject(error);
+          }
+
+          pendingLogIn = started.finally(() => {
+            pendingLogIn = null;
+          });
         }
 
-        pendingLogIn ??= logIn({ initData }).finally(() => {
-          pendingLogIn = null;
-        });
-
-        const { accessToken, role } = await pendingLogIn;
+        const { accessToken, role, isGuest = false } = await pendingLogIn;
 
         // The role can change while the app is open (a merchant deactivated
         // or created meanwhile) - the screens follow it, like on a fresh start.
-        if (role !== useAuthStore.getState().role) {
+        // The website always shows the buyer's screens.
+        if (!isWebsite() && role !== useAuthStore.getState().role) {
           useViewModeStore.getState().setViewMode(role);
         }
 
-        useAuthStore.getState().setAuth(accessToken, role);
+        useAuthStore.getState().setAuth(accessToken, role, isGuest);
         original.headers.Authorization = `Bearer ${accessToken}`;
         return api.request(original);
       } catch (logInError) {
-        // Only a rejected initData ends the session. A network error, 5xx,
-        // 429 or a cold-starting backend keeps the token and role: dropping
-        // them would kick an owner out of the cabinet mid-redemption.
-        if (isAxiosError(logInError) && logInError.response?.status === 401) {
+        // Only a rejected initData ends the session (the website falls back to
+        // the guest instead). A network error, 5xx, 429 or a cold-starting
+        // backend keeps the token and role: dropping them would kick an owner
+        // out of the cabinet mid-redemption.
+        if (!isWebsite() && isAxiosError(logInError) && logInError.response?.status === 401) {
           useAuthStore.getState().clearAuth();
           useAuthStore.getState().setSessionExpired();
         }

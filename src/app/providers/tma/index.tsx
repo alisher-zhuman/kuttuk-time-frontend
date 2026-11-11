@@ -9,22 +9,20 @@ import {
   viewport
 } from "@tma.js/sdk-react";
 
-import { AppNotFoundPage } from "@pages/app-not-found";
-
 import { detectTheme, getLaunchParams } from "@shared/helpers";
-import { useThemeStore } from "@shared/store";
+import { useAppModeStore, useThemeStore } from "@shared/store";
 
 const TMA_COLORS = {
   light: { header: "#FFFFFF", bg: "#F4F5F7" },
   dark: { header: "#161D2E", bg: "#0F1422" }
 } as const;
 
-let isTMA = true;
-
+// Outside Telegram init() throws - a plain browser: the website. Set before
+// anything renders; the SDK's isAvailable() checks then just say false.
 try {
   init();
 } catch {
-  isTMA = false;
+  useAppModeStore.getState().setMode("web");
 }
 
 interface Props {
@@ -107,8 +105,6 @@ export const TMAProvider = ({ children }: Props) => {
       miniApp.setBottomBarColor(bg);
     }
   }, [theme, isTelegramDark]);
-
-  if (!isTMA) return <AppNotFoundPage />;
 
   return <>{children}</>;
 };

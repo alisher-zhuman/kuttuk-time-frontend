@@ -8,8 +8,8 @@ import { isAxiosError } from "axios";
 import { ConnectionFailedPage } from "@pages/connection-failed";
 import { SessionExpiredPage } from "@pages/session-expired";
 
-import { logIn } from "@shared/api";
-import { useAuthStore, useViewModeStore } from "@shared/store";
+import { logIn, signInOnWebsite } from "@shared/api";
+import { isWebsite, useAuthStore, useViewModeStore } from "@shared/store";
 import { PageLoader } from "@shared/ui";
 
 interface Props {
@@ -35,25 +35,35 @@ export const AuthProvider = ({ children }: Props) => {
     const { setAuth, setReady, setSessionExpired } = useAuthStore.getState();
     const { setViewMode } = useViewModeStore.getState();
 
-    const initData = retrieveRawInitData();
+    const isWeb = isWebsite();
 
-    if (!initData) {
+    // retrieveRawInitData throws outside Telegram - the website never asks.
+    const initData = isWeb ? null : retrieveRawInitData();
+
+    if (!isWeb && !initData) {
       setReady();
       return;
     }
 
     const slowTimer = setTimeout(() => setIsSlow(true), SLOW_LOG_IN_MS);
 
-    logIn({ initData })
-      .then(({ accessToken, role }) => {
-        setAuth(accessToken, role);
-        setViewMode(role);
+    // The website: the Telegram account (widget) or a guest, by itself - no
+    // sign-up. The Mini App: by initData.
+    const signIn = isWeb
+      ? signInOnWebsite()
+      : logIn({ initData: initData! }).then((result) => ({ ...result, isGuest: false }));
+
+    signIn
+      .then(({ accessToken, role, isGuest }) => {
+        setAuth(accessToken, role, isGuest);
+        // The website shows only the buyer's screens, whatever the role.
+        setViewMode(isWeb ? "user" : role);
         setReady();
       })
       .catch((error: unknown) => {
         // A reload inside Telegram keeps the old initData, so the very first
         // log-in can already be rejected as expired.
-        if (isAxiosError(error) && error.response?.status === 401) {
+        if (!isWeb && isAxiosError(error) && error.response?.status === 401) {
           setSessionExpired();
           return;
         }

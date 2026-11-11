@@ -42,11 +42,11 @@ Source of truth: `../backend/CLAUDE.md`, section **Product decisions** - don't d
 
 **Rule (Alisher, 2026-11-11, same as the backend's):** after every step - a commit, a push, a report - update this section: what's on prod, what's waiting on the backend / on Alisher, what's next. A new chat must be able to continue from here without asking. It's a docs-only change: it rides with the next code push, never pushed alone.
 
-- **On prod** (`dev` = prod, last push `d8ab47d`, CI green, Vercel Production): everything in this file. Latest: venue `address` / `mapUrl` and merchant `payoutDetails` / `contact` required; `Select` / `Combobox` (no text inputs in bottom sheets); orders - one search + status / venue / owner filters; cabinet opens on the counter, scan → «Погасить?»; «Подарок от»; admin support (order number, «Все долги», owner status).
-- **Committed, not pushed:** only this section and its rule (docs) - goes with the next code push.
-- **Waiting on Alisher:** a phone check of the latest - the owner `Combobox` with the iPhone keyboard open, «Номиналы» («Готово» on the title line), orders filters, «Открыть на карте», scan → «Погасить?», the owner form with empty «Реквизиты» / «Контакт».
-- **Waiting on the backend:** nothing. On prod the venues' addresses / map links and the merchants' payout details / contacts are test placeholders (to be replaced when real venues join).
-- **Next:** no open task - the next prompt from the backend agent / Alisher. Parked («когда понадобится»): `shareStory`, inline mode, venue-QR PNG for phones, «Сегодня: N продаж», `ClosingBehavior` confirmation, a toast.
+- **On prod** (`dev` = prod, last push `d8ab47d`): everything in this file up to the required merchant notes.
+- **Committed, not pushed - task 8, the website mode** (see «Website mode»): waits for Alisher's word that the backend's web endpoints are on prod (`/auth/guest`, `/auth/telegram-widget`, `channel` on `POST /orders`, `/payments/return/:id/web`, `/certificates/:id/gift-link`). Plus the «Где остановились» docs commit `8eec9b0`.
+- **Waiting on Alisher:** «бэк на проде» for task 8 → push; BotFather `/setdomain` with the Vercel address for the login widget; texts of «О нас» / «Оферта» and the sole proprietor's details; a phone check of the website (guest buy → Finik → `/orders/<id>`, «Подарить» share menu, «Войти через Telegram»).
+- **Waiting on the backend:** nothing beyond deploying task 8. On prod the venues' addresses / map links and the merchants' payout details / contacts are test placeholders.
+- **Next:** after the push - check the website on a phone with Alisher; then the next prompt. Parked («когда понадобится»): `shareStory`, inline mode, venue-QR PNG for phones, «Сегодня: N продаж», `ClosingBehavior` confirmation, a toast; a custom domain, SEO pages, SMS sign-in (backend plan).
 - **How tasks arrive:** Alisher pastes a prompt written by the backend agent (contract in `../backend/CLAUDE.md`); report what's done / committed / on prod, kg texts for review, the commit list before a push; push only on «пуш» (or «можно сразу»).
 
 ## Who decides what
@@ -126,6 +126,17 @@ Path aliases: `@app`, `@pages`, `@widgets`, `@features`, `@entities`, `@shared`
   - fields that depend on a status/type → `z.discriminatedUnion`, not nullable (e.g. `OrderSchema`: each variant lists only the fields its status guarantees; `z.object` strips the backend's nulls for the rest)
   - a backend null the UI doesn't care about → normalize in the schema at the boundary (`.transform`), don't carry it into components
   - also check the reverse: a backend column that's `nullable: true` but required in our schema fails Zod for the whole response (one bad row breaks a list)
+
+## Website mode (2026-11-11, task 8)
+
+The same app outside Telegram is the buyer's **website** (../backend `docs/web-version.md`): in Kyrgyzstan Telegram reads as spam to many - buyers need a plain site.
+- **Mode:** `useAppModeStore` (`@shared/store`, `isWebsite()`), set once at start by `TMAProvider`: the SDK's `init()` works only with Telegram's launch params - otherwise `web`. Outside Telegram the SDK's `isAvailable()` / `isSupported()` just answer false, but `retrieveRawInitData` throws and `miniApp.isActive` reads false - never use them on the website
+- **Screens:** buyer only - catalog, venue, order, «Мои сертификаты», gift, «О нас» / «Оферта» (placeholders until Alisher sends the texts and the sole proprietor's details). Cabinet / admin routes → `TelegramOnlyPage` («Кабинет владельца работает в Telegram» + the Mini App link); `viewMode` is always `user`; profile settings hide the Telegram-only sections
+- **Sign-in** (`shared/api/web-auth.ts`): a guest by itself - `POST /auth/guest { guestToken? }`, the guest's token in `localStorage`, the JWT only in memory, a 401 signs the same guest in again. «Войти через Telegram» (`features/telegram-login`, Telegram Login Widget, bot `kuttuk_time_bot`, `request-access=write`) on «Мои сертификаты» and the paid order while `isGuest`: `POST /auth/telegram-widget { authData (unchanged), guestToken }` → the new JWT **at once** (the guest is deleted by the merge), the guest token goes, `authData` is kept and reused until a 401 (24 h) - then a guest again. The widget needs the site's domain in BotFather `/setdomain` (Alisher)
+- **Telegram stand-ins:** `useMainButton` → a plain button the layout draws (`useWebMainButtonStore` → `WebMainButton`); `usePopup` → `window.confirm` / `alert`; Back - the browser; no edge-swipe back (Safari has its own); theme - `prefers-color-scheme`
+- **Buying:** `POST /orders { …, channel: "web" }` → `goToUrl(paymentUrl)` (this tab); Finik returns to `<site>/orders/<id>`. «Подарить»: `POST /certificates/:id/gift-link` → `navigator.share` with the buyer's own words («🎁 Тебе подарок…» - «ты», it's their message), else the link is copied
+- **Addresses shared with the backend** (`@shared/constants`, change both sides together - ../backend `src/orders/payment-redirect-url.ts`): `WEB_ORDER_PATH = "/orders/"`, `WEB_GIFT_PATH = "/gift/"` → routes `/orders/:orderId`, `/gift/:token` (the same pages as `/app/orders/…`, `/app/gifts/…`). `vercel.json` already sends every path to `index.html`
+- **Footer:** «О нас», «Оферта», «Поддержка: @alisher_zh», «Оплата через Finik»
 
 ## TMA SDK
 

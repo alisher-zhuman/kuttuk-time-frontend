@@ -18,6 +18,7 @@ export { QrCode } from './qr-code';
 export { RowButton } from './row-button';
 export { SearchBar } from './search-bar';
 export { SegmentedControl } from './segmented-control';
+export { Select, type SelectOption } from './select';
 export { StatusBadge } from './status-badge';
 export { StatusScreen } from './status-screen';
 export { Textarea } from './textarea';

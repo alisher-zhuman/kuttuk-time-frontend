@@ -56,7 +56,14 @@ export const orders = {
   refunded: { ...orderBase, status: "refunded", paymentUrl: null, paidAt: "2026-10-21T04:30:00.000Z", certificate: null }
 };
 
-const venueRef = { id: 1, name: "Coffeeroom", slug: "coffeeroom", logo: `${CLOUDINARY}sample.jpg` };
+const venueRef = {
+  id: 1,
+  name: "Coffeeroom",
+  slug: "coffeeroom",
+  logo: `${CLOUDINARY}sample.jpg`,
+  address: "ул. Киевская 95, 2 этаж",
+  mapUrl: "https://2gis.kg/bishkek/firm/70000001234567"
+};
 
 // GET /certificates/my - src/certificates/certificates.service.ts.
 export const myCertificates = [
@@ -84,8 +91,9 @@ export const GIFT_TOKEN = "aB3_dE6-gH9iJ2kL5mN8oP";
 
 export const gift = (
   state: "available" | "own" | "received" | "claimed" = "available",
-  status: "active" | "used" | "expired" = "active"
-) => ({ state, status, amount: 1000, validUntil: "2027-10-21T04:30:00.000Z", venue: venueRef });
+  status: "active" | "used" | "expired" = "active",
+  from: string | null = null
+) => ({ state, from, status, amount: 1000, validUntil: "2027-10-21T04:30:00.000Z", venue: venueRef });
 
 // POST /gifts/:token/claim - the certificate as in /certificates/my, now the caller's.
 export const claimedCertificate = {

@@ -26,3 +26,4 @@ export { AdminVenueCardSkeleton } from "./ui/admin-card-skeleton";
 export { VenueAttributesSelect } from "./ui/attributes-select";
 export { VenueCard } from "./ui/card";
 export { VenueCardSkeleton } from "./ui/card-skeleton";
+export { VenuePlace } from "./ui/place";

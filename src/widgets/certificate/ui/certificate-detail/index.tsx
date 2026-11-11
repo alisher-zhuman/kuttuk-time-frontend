@@ -7,14 +7,17 @@ import {
   isUsable,
   useCertificateShareButton
 } from "@entities/certificate";
+import { VenuePlace } from "@entities/venue";
 
 import { formatMoney, logoUrl } from "@shared/helpers";
 
 interface Props {
   certificate: Certificate;
+  // Opened right after «Забрать подарок»: say what to do with it now.
+  isJustClaimed?: boolean;
 }
 
-export const CertificateDetail = ({ certificate }: Props) => {
+export const CertificateDetail = ({ certificate, isJustClaimed = false }: Props) => {
   const { t } = useTranslation();
 
   const { venue, amount, code } = certificate;
@@ -31,6 +34,12 @@ export const CertificateDetail = ({ certificate }: Props) => {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-5 py-8 text-center">
+      {isJustClaimed && isUsable(certificate) && (
+        <p role="status" className="px-4 py-3 rounded-2xl bg-(--color-green-tint) text-sm font-semibold text-(--color-ink) max-w-xs">
+          {t("gift.claimedHint")}
+        </p>
+      )}
+
       <img
         src={logoUrl(venue.logo, 64)}
         width={64}
@@ -45,6 +54,8 @@ export const CertificateDetail = ({ certificate }: Props) => {
           {formatMoney(amount, t("certificate.currency"))}
         </span>
       </div>
+
+      <VenuePlace address={venue.address} mapUrl={venue.mapUrl} align="center" />
 
       <CertificateCodeBlock certificate={certificate} />
 

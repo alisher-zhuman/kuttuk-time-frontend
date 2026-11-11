@@ -3,7 +3,7 @@ import { expect, test } from "./support";
 
 const LOGO = "https://res.cloudinary.com/demo/image/upload/v1/logo.png";
 
-const venueDetail = { id: 1, name: "Coffeeroom", description: "Кофейня в центре", logo: LOGO, nominals: [500, 1000], validityMonths: 12 };
+const venueDetail = { id: 1, name: "Coffeeroom", description: "Кофейня в центре", logo: LOGO, nominals: [500, 1000], validityMonths: 12, address: "ул. Киевская 95", mapUrl: "https://2gis.kg/bishkek/firm/70000001234567" };
 
 const managedVenue = {
   id: 1,
@@ -12,6 +12,8 @@ const managedVenue = {
   categories: [1],
   nominals: [500, 1000],
   validityMonths: 12,
+  address: null,
+  mapUrl: null,
   logo: LOGO,
   slug: "coffeeroom",
   isActive: true,
@@ -120,7 +122,7 @@ test("the Monday reminder's button opens «Все долги» for an admin", as
   });
 
   await expect(page).toHaveURL(/\/app\/admin\/payouts\?view=due/);
-  await expect(page.getByText("12.10.2026-18.10.2026")).toBeVisible();
+  await expect(page.getByText("12.10-18.10.2026")).toBeVisible();
   await expect(page.getByText("Mbank 0555 123 456, Асанов А.")).toBeVisible();
 });
 

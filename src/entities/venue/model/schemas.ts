@@ -20,7 +20,12 @@ export const VenueDetailSchema = z.object({
   description: z.string(),
   logo: z.string(),
   nominals: z.array(z.number()).nonempty(),
-  validityMonths: z.number()
+  validityMonths: z.number(),
+  // Where it is - a nullable column each (../backend src/venues/entities/
+  // venue.entity.ts): one address text for every language, and a https map
+  // link (2GIS / Google Maps / Yandex Maps only). null = not filled in.
+  address: z.string().nullable(),
+  mapUrl: z.string().nullable()
 });
 
 // GET /venues/options (no JWT): VALID_NOMINALS / VALID_VALIDITY_MONTHS sorted
@@ -43,6 +48,9 @@ export const ManagedVenueSchema = z.object({
   validityMonths: z.number(),
   logo: z.string(),
   slug: z.string(),
+  // Nullable columns - see VenueDetailSchema.
+  address: z.string().nullable(),
+  mapUrl: z.string().nullable(),
   isActive: z.boolean(),
   createdAt: z.string()
 });

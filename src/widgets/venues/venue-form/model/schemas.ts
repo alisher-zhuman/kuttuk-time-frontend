@@ -4,6 +4,12 @@ import type { VenueOptions } from "@entities/venue";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+// ../backend src/venues/venue.constants.ts (VENUE_ADDRESS_MAX, MAP_URL_MAX).
+// Which map sites are allowed is the backend's call (400 → «Нужна ссылка
+// из 2GIS…»); here only that it's a https link at all.
+export const ADDRESS_MAX_LENGTH = 200;
+const MAP_URL_MAX_LENGTH = 500;
+
 // Static GET /venues/* routes on the backend (RESERVED_SLUGS) - a venue with
 // such a slug would be unreachable, so the backend rejects it with 400.
 const RESERVED_SLUGS = ["me", "options"];
@@ -61,5 +67,11 @@ export const createVenueFormSchema = (
       .refine((value) => options.validityMonths.includes(value), {
         message: "venueForm.validityUnavailable"
       }),
-    isActive: z.boolean()
+    isActive: z.boolean(),
+    address: z.string().max(ADDRESS_MAX_LENGTH, "venueForm.addressTooLong"),
+    mapUrl: z
+      .string()
+      .trim()
+      .max(MAP_URL_MAX_LENGTH, "venueForm.mapUrlInvalid")
+      .refine((value) => value === "" || value.startsWith("https://"), { message: "venueForm.mapUrlInvalid" })
   });

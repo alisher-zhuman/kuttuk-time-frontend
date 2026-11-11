@@ -19,6 +19,13 @@ import { createVenueFormSchema } from "../model/schemas";
 import type { VenueFormValues, VenueFormVariant } from "../model/types";
 
 // 409 = slug already taken: `slug "sierra-coffee" is already in use`.
+// 400 on the map link: not 2GIS / Google Maps / Yandex Maps (the backend's
+// list) - «mapUrl must be a 2GIS, Google Maps or Yandex Maps https link».
+const isMapUrlRejected = (error: unknown) =>
+  isAxiosError(error) &&
+  error.response?.status === 400 &&
+  JSON.stringify((error.response.data as { message?: unknown } | undefined)?.message ?? "").includes("mapUrl");
+
 const isSlugConflict = (error: unknown) =>
   isAxiosError(error) &&
   error.response?.status === 409 &&
@@ -77,7 +84,9 @@ export const useVenueForm = (
           categories: venue.categories,
           nominals: venue.nominals,
           validityMonths: venue.validityMonths,
-          isActive: venue.isActive
+          isActive: venue.isActive,
+          address: venue.address ?? "",
+          mapUrl: venue.mapUrl ?? ""
         }
       : {
           logo: "",
@@ -93,7 +102,9 @@ export const useVenueForm = (
           validityMonths: options.validityMonths.includes(DEFAULT_VALIDITY_MONTHS)
             ? DEFAULT_VALIDITY_MONTHS
             : options.validityMonths[0]!,
-          isActive: true
+          isActive: true,
+          address: "",
+          mapUrl: ""
         }
   });
 
@@ -137,7 +148,17 @@ export const useVenueForm = (
       categories: values.categories,
       nominals: values.nominals,
       validityMonths: values.validityMonths,
-      logo: values.logo
+      logo: values.logo,
+      address: values.address.trim() || null,
+      mapUrl: values.mapUrl.trim() || null
+    };
+
+    const onMapUrlRejected = (error: unknown) => {
+      if (!isMapUrlRejected(error)) return false;
+
+      haptic.error();
+      setError("mapUrl", { message: "venueForm.mapUrlInvalid" });
+      return true;
     };
 
     if (variant.kind === "own") {
@@ -155,6 +176,8 @@ export const useVenueForm = (
               haptic.error();
               return;
             }
+
+            if (onMapUrlRejected(error)) return;
 
             showGenericError();
           },
@@ -179,6 +202,8 @@ export const useVenueForm = (
           setError("slug", { message: "venueForm.alreadyInUse" });
           return;
         }
+
+        if (onMapUrlRejected(error)) return;
 
         showGenericError();
       },

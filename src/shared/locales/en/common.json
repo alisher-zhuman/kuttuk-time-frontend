@@ -89,7 +89,9 @@
     "validity_few": "Valid for {{count}} months",
     "validity_many": "Valid for {{count}} months",
     "validity_other": "Valid for {{count}} months",
-    "notFound": "Venue not found"
+    "notFound": "Venue not found",
+    "openMap": "Open on the map",
+    "giftHint": "After paying, you can gift the certificate to a friend"
   },
   "venueForm": {
     "title": "New venue",
@@ -119,7 +121,13 @@
     "ownerRequired": "Choose a merchant",
     "slugReserved": "This word is reserved, choose another",
     "categoryRemoved": "This category was deleted - deselect it",
-    "nameTooLong": "No longer than {{max}} characters"
+    "nameTooLong": "No longer than {{max}} characters",
+    "address": "Address",
+    "addressPlaceholder": "e.g. 95 Kievskaya St, 2nd floor",
+    "addressTooLong": "At most {{max}} characters",
+    "mapUrl": "Map link",
+    "mapUrlHint": "Open the venue in 2GIS → Share → Copy link",
+    "mapUrlInvalid": "Needs a link from 2GIS, Google Maps or Yandex Maps"
   },
   "merchantForm": {
     "title": "New merchant",
@@ -199,7 +207,8 @@
         "noVenues": "This merchant has no venues yet",
         "notFound": "Merchant not found",
         "orders": "This owner's orders",
-        "notSet": "Not set"
+        "notSet": "Not set",
+        "message": "Message the owner"
       },
       "searchPlaceholder": "Search merchants",
       "owner": {
@@ -270,7 +279,7 @@
       "totalDue": "Still due: {{amount}}",
       "markPaid": "Mark as paid out",
       "confirmTitle": "Mark payout",
-      "confirmMessage": "Mark a payout of {{amount}} to {{merchant}} for {{from}}-{{to}}? This can't be undone.",
+      "confirmMessage": "Mark a payout of {{amount}} to {{merchant}} for {{week}}? This can't be undone.",
       "note": "Note (optional)",
       "notePlaceholder": "E.g. Mbank transfer 27.10",
       "confirm": "Mark",
@@ -377,7 +386,9 @@
     "received": "The gift is already yours",
     "claimed": "Someone has already claimed this gift",
     "notFound": "This link no longer works - a new one may have been sent. Ask for it again",
-    "toMyCertificates": "My certificates"
+    "toMyCertificates": "My certificates",
+    "titleFrom": "A gift from {{name}}",
+    "claimedHint": "The certificate is yours - show the QR at the counter"
   },
   "orders": {
     "pending": {
@@ -448,8 +459,7 @@
   },
   "week": {
     "prev": "Prev",
-    "next": "Next",
-    "range": "{{from}}-{{to}}"
+    "next": "Next"
   },
   "venueLink": {
     "title": "Link for social media",

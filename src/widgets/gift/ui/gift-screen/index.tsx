@@ -10,6 +10,7 @@ import {
   isGiftNotFound,
   useClaimGiftMutation
 } from "@entities/certificate";
+import { VenuePlace } from "@entities/venue";
 
 import { getCertificateRoute, ROUTE_PATTERNS } from "@shared/constants";
 import { formatDate, formatMoney, logoUrl, requestBotMessages } from "@shared/helpers";
@@ -23,14 +24,14 @@ interface Props {
 
 // What the person who opened the link sees, by the link's state and the
 // certificate's effective status.
-const getMessageKey = ({ state, status }: Gift) => {
+const getMessageKey = ({ state, status, from }: Gift) => {
   if (state === "own") return "gift.own";
   if (state === "received") return "gift.received";
   if (state === "claimed") return "gift.claimed";
   if (status === "used") return "gift.used";
   if (status === "expired") return "gift.expired";
 
-  return "gift.title";
+  return from ? "gift.titleFrom" : "gift.title";
 };
 
 // «Забрать подарок»: a friend's gift link. Claiming moves the certificate to
@@ -66,7 +67,7 @@ export const GiftScreen = ({ token, gift }: Props) => {
       onSuccess: (certificate) => {
         haptic.success();
         // Replace: Back from the certificate shouldn't return to a claimed link.
-        navigateTo(getCertificateRoute(certificate.id), { replace: true });
+        navigateTo(getCertificateRoute(certificate.id, { justClaimed: true }), { replace: true });
       },
       onError: (error) => {
         // The link changed since it was shown - the mutation looks it up
@@ -105,7 +106,7 @@ export const GiftScreen = ({ token, gift }: Props) => {
       </span>
 
       <h1 className="text-xl font-extrabold tracking-tight text-(--color-ink) max-w-xs">
-        {t(getMessageKey(gift))}
+        {t(getMessageKey(gift), { name: gift.from })}
       </h1>
 
       <div className="w-full max-w-sm flex items-center gap-3 px-4 py-3 rounded-2xl bg-(--color-card) border border-(--color-line) text-left">
@@ -132,6 +133,8 @@ export const GiftScreen = ({ token, gift }: Props) => {
           {t("certificate.validUntil", { date: formatDate(gift.validUntil) })}
         </span>
       )}
+
+      <VenuePlace address={gift.venue.address} mapUrl={gift.venue.mapUrl} align="center" />
 
       {!canClaim && (
         <PillButton

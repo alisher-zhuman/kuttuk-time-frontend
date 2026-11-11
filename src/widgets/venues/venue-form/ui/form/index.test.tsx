@@ -16,6 +16,8 @@ const venue = (overrides: Partial<AdminVenueDetail> = {}): AdminVenueDetail => (
   categories: [1],
   nominals: [500, 1000],
   validityMonths: 12,
+  address: null,
+  mapUrl: null,
   logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",
   slug: "coffeeroom",
   isActive: true,
@@ -26,16 +28,23 @@ const venue = (overrides: Partial<AdminVenueDetail> = {}): AdminVenueDetail => (
 
 const options = fixtures.venueOptions;
 
-const answer = () => {
+const answer = ({ rejectMapUrl = false } = {}) => {
   const patches: Record<string, unknown>[] = [];
 
   server.use(
     http.get(api("/categories"), () => HttpResponse.json([{ id: 1, name: "Кофейни", order: 0 }])),
     http.get(api("/admin/merchants"), () =>
-      HttpResponse.json([{ id: 10, name: "ИП Асанов", telegramId: 777, isActive: true, createdAt: "2026-06-01T00:00:00.000Z" }])
+      HttpResponse.json([fixtures.adminMerchant()])
     ),
     http.patch(api("/admin/venues/1"), async ({ request }) => {
       patches.push((await request.json()) as Record<string, unknown>);
+
+      if (rejectMapUrl) {
+        return HttpResponse.json(
+          { message: ["mapUrl must be a 2GIS, Google Maps or Yandex Maps https link"], error: "Bad Request", statusCode: 400 },
+          { status: 400 }
+        );
+      }
 
       return HttpResponse.json(venue());
     })
@@ -124,5 +133,31 @@ describe("the venue form", () => {
     await waitFor(() => expect(patches).toHaveLength(1));
     await new Promise((resolve) => setTimeout(resolve, 100));
     expect(patches).toHaveLength(1);
+  });
+
+  it("sends the address and the map link; a cleared one goes as null", async () => {
+    const patches = answer();
+    renderWithProviders(
+      <VenueForm options={options} variant={{ kind: "edit", venue: venue({ address: "ул. Киевская 95" }) }} />
+    );
+
+    await screen.findByRole("button", { name: "Кофейни" });
+    await userEvent.clear(screen.getByLabelText("Адрес"));
+    await userEvent.type(screen.getByLabelText("Ссылка на карту"), "https://go.2gis.com/abc");
+    save();
+
+    await waitFor(() => expect(patches).toHaveLength(1));
+    expect(patches[0]).toMatchObject({ address: null, mapUrl: "https://go.2gis.com/abc" });
+  });
+
+  it("a map link the backend refuses (not 2GIS / Google / Yandex) says which ones work", async () => {
+    answer({ rejectMapUrl: true });
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
+
+    await screen.findByRole("button", { name: "Кофейни" });
+    await userEvent.type(screen.getByLabelText("Ссылка на карту"), "https://example.com/map");
+    save();
+
+    expect(await screen.findByText("Нужна ссылка из 2GIS, Google Maps или Яндекс Карт")).toBeInTheDocument();
   });
 });

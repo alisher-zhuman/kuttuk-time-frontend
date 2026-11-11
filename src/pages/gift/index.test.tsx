@@ -41,6 +41,8 @@ describe("«Забрать подарок»", () => {
     pressClaim();
 
     await waitFor(() => expect(router.state.location.pathname).toBe("/app/certificates/c7"));
+    // The certificate screen says what to do with it now.
+    expect(router.state.location.search).toBe("?claimed=1");
     expect(calls.claims).toBe(1);
     expect(window.__telegram.calls.some((call) => call.name === "web_app_request_write_access")).toBe(true);
     // The certificate screen reads this list - the claimed one is already in it.
@@ -124,5 +126,19 @@ describe("«Забрать подарок»", () => {
     expect(
       await screen.findByText("Ссылка недействительна - возможно, отправили новую. Попросите прислать ещё раз")
     ).toBeInTheDocument();
+  });
+
+  it("names the giver when Telegram gave a name", async () => {
+    open({ preview: { state: "available", from: "Айбек" } });
+
+    expect(await screen.findByText("Айбек дарит вам подарок")).toBeInTheDocument();
+  });
+
+  it("shows where to use it - the address and «Открыть на карте»", async () => {
+    open();
+
+    expect(await screen.findByText("ул. Киевская 95, 2 этаж")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Открыть на карте" }));
+    expect(window.__telegram.last("web_app_open_link")?.["url"]).toBe("https://2gis.kg/bishkek/firm/70000001234567");
   });
 });

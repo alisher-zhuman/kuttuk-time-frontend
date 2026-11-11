@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 
 import {
   CertificateDetail,
@@ -14,6 +14,9 @@ import { ErrorState } from "@shared/ui";
 // already cached from the profile tab).
 export const CertificatePage = () => {
   const { certificateId } = useParams<{ certificateId: string }>();
+
+  // ?claimed - opened by «Забрать подарок».
+  const [searchParams] = useSearchParams();
 
   const { certificates, isLoading, isError, isFetching, retry } = useMyCertificatesQuery();
 
@@ -31,5 +34,5 @@ export const CertificatePage = () => {
     return <CertificateNotFound />;
   }
 
-  return <CertificateDetail certificate={certificate} />;
+  return <CertificateDetail certificate={certificate} isJustClaimed={searchParams.has("claimed")} />;
 };

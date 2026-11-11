@@ -9,7 +9,7 @@ type GiftStatus = Parameters<typeof gift>[1];
 interface Options {
   token?: string;
   // What GET /gifts/:token finds; "missing" - unknown or replaced link (404).
-  preview?: { state: GiftState; status?: GiftStatus } | "missing";
+  preview?: { state: GiftState; status?: GiftStatus; from?: string | null } | "missing";
   // What POST …/claim answers: the certificate, a 409 error, or 404.
   claim?: "ok" | "own" | "already_claimed" | "already_used" | "expired" | "missing";
   // GET after a failed claim - the link as it is now.
@@ -24,7 +24,7 @@ export const giftHandlers = ({ token = GIFT_TOKEN, preview = { state: "available
   const answer = (found: Options["preview"]) =>
     found === "missing" || found === undefined
       ? HttpResponse.json({ message: "Gift not found", error: "Not Found", statusCode: 404 }, { status: 404 })
-      : HttpResponse.json(gift(found.state, found.status));
+      : HttpResponse.json(gift(found.state, found.status, found.from ?? null));
 
   const handlers = [
     http.get(api(`/gifts/${token}`), () => answer(calls.claims > 0 && afterClaim ? afterClaim : preview)),

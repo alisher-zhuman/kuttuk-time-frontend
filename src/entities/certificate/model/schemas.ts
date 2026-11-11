@@ -6,7 +6,11 @@ const CertificateVenueSchema = z.object({
   id: z.number(),
   name: z.string(),
   slug: z.string(),
-  logo: z.string()
+  logo: z.string(),
+  // Nullable venue columns (../backend src/venues/entities/venue.entity.ts):
+  // where to use the certificate. null = not filled in.
+  address: z.string().nullable(),
+  mapUrl: z.string().nullable()
 });
 
 const CertificateBaseSchema = z.object({
@@ -75,6 +79,9 @@ export const PreparedGiftSchema = z.object({ preparedMessageId: z.string() });
 // caller's own link; received - the caller claimed it; claimed - someone else.
 export const GiftSchema = z.object({
   state: z.enum(["available", "own", "received", "claimed"]),
+  // The giver's first name from Telegram (../backend gifts.service.ts) - null
+  // when Telegram had none to give.
+  from: z.string().nullable(),
   status: z.enum(["active", "used", "expired"]),
   amount: z.number(),
   validUntil: z.string(),

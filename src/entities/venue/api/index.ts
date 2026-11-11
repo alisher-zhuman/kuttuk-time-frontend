@@ -67,6 +67,9 @@ export interface VenueStorefrontPayload {
   nominals: number[];
   validityMonths: number;
   logo: string;
+  // null clears it (the backend trims; a blank string clears too).
+  address: string | null;
+  mapUrl: string | null;
 }
 
 export interface CreateVenuePayload extends VenueStorefrontPayload {

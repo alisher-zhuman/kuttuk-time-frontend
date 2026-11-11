@@ -12,6 +12,7 @@ import type { VenueFormVariant } from "../../model/types";
 import { VenueFormDescription } from "../description";
 import { VenueFormIdentity } from "../identity";
 import { VenueFormOwnerSelect } from "../owner-select";
+import { VenueFormPlace } from "../place";
 
 interface Props {
   options: VenueOptions;
@@ -92,6 +93,8 @@ export const VenueForm = ({ options, variant }: Props) => {
       )}
 
       <VenueFormDescription register={register} errors={errors} />
+
+      <VenueFormPlace register={register} errors={errors} />
 
       <VenueAttributesSelect
         options={options}

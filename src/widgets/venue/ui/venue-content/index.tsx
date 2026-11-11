@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 
 import { getOrderErrorKey, useCreateOrderMutation } from "@entities/order";
-import { type VenueDetail } from "@entities/venue";
+import { type VenueDetail, VenuePlace } from "@entities/venue";
 
 import { getOrderRoute } from "@shared/constants";
 import { openExternalLink, requestBotMessages } from "@shared/helpers";
@@ -105,6 +105,8 @@ export const VenueContent = ({ venue }: Props) => {
         description={venue.description}
       />
 
+      <VenuePlace address={venue.address} mapUrl={venue.mapUrl} />
+
       <CertPreviewCard
         venueName={venue.name}
         amount={activeNominal}
@@ -116,6 +118,9 @@ export const VenueContent = ({ venue }: Props) => {
         selected={activeNominal}
         onSelect={setSelectedNominal}
       />
+
+      {/* Many buy for themselves, not knowing it can be a gift. */}
+      <p className="text-sm text-(--color-slate) px-1">{t("venue.giftHint")}</p>
     </div>
   );
 };

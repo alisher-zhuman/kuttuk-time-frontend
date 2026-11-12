@@ -1,4 +1,15 @@
 {
+  "headers": [
+    {
+      "source": "/_seo/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/",
@@ -79,7 +90,7 @@
       "destination": "/_seo/ru/:page.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!venues/).*)",
       "destination": "/_seo/app.html"
     }
   ]

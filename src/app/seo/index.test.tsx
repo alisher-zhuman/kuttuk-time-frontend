@@ -87,8 +87,10 @@ describe("the website's pre-rendered pages", () => {
     expect(files["robots.txt"]).toContain(`Sitemap: ${SITE}/sitemap.xml`);
   });
 
-  it("vercel.json serves each page's file by its public address and ?lang", () => {
-    // Vercel's order: the first matching rewrite whose `has` holds.
+  it("vercel.json serves each page's file by its public address and ?lang; an unknown venue is a 404", () => {
+    const exists = (dest: string) => dest === "/404.html" || files[dest.slice(1)] !== undefined;
+    // Vercel's order: the first matching rewrite whose `has` holds and whose
+    // file exists (a missing one falls through to the next rule); none - 404.
     const serve = (path: string, lang?: string) => {
       for (const rule of vercel.rewrites) {
         const names: string[] = [];
@@ -100,9 +102,13 @@ describe("the website's pre-rendered pages", () => {
         const has = "has" in rule ? rule.has : [];
 
         if (match && has.every((condition) => condition.value === lang)) {
-          return names.reduce((dest, name, index) => dest.replace(`:${name}`, match[index + 1]!), rule.destination);
+          const dest = names.reduce((to, name, index) => to.replace(`:${name}`, match[index + 1]!), rule.destination);
+
+          if (exists(dest)) return dest;
         }
       }
+
+      return "404";
     };
 
     for (const lang of ["ru", "kg", "en"]) {
@@ -111,10 +117,8 @@ describe("the website's pre-rendered pages", () => {
       expect(serve("/", query)).toBe(`/_seo/${lang}/index.html`);
       expect(serve("/venues/sierra-coffee", query)).toBe(`/_seo/${lang}/venues/sierra-coffee.html`);
       expect(serve("/about", query)).toBe(`/_seo/${lang}/about.html`);
-
-      for (const file of [`_seo/${lang}/index.html`, `_seo/${lang}/venues/sierra-coffee.html`, `_seo/${lang}/about.html`]) {
-        expect(files[file]).toBeDefined();
-      }
+      // Not an empty shell with 200 for search engines - 404.html (the app).
+      expect(serve("/venues/no-such-venue", query)).toBe("404");
     }
 
     // Everything else - the app, as before.
@@ -122,5 +126,10 @@ describe("the website's pre-rendered pages", () => {
     expect(serve("/gift/t-1")).toBe("/_seo/app.html");
     expect(serve("/app/merchant")).toBe("/_seo/app.html");
     expect(files["_seo/app.html"]).toBe(SHELL);
+    expect(files["404.html"]).toBe(SHELL);
+  });
+
+  it("the pre-rendered files' own addresses are noindex - only the public ones are indexed", () => {
+    expect(vercel.headers).toContainEqual({ source: "/_seo/(.*)", headers: [{ key: "X-Robots-Tag", value: "noindex" }] });
   });
 });

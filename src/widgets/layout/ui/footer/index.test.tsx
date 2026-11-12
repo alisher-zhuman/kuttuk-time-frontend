@@ -21,11 +21,19 @@ describe("the website's footer", () => {
     expect(router.state.location.pathname).toBe(path);
   });
 
-  it("only on the catalog - other screens have no footer", () => {
+  it("only on the catalog - other screens keep the brand line", () => {
     useAppModeStore.setState({ mode: "web" });
     renderWithProviders(<Footer />, { route: "/app/venues/coffeeroom" });
 
     expect(screen.queryByRole("button", { name: "Оферта" })).toBeNull();
     expect(screen.queryByText("Оплата через Finik")).toBeNull();
+    expect(screen.getByText("С любовью KuttukTime ♥")).toBeTruthy();
+  });
+
+  it("the catalog ends with the brand line too", () => {
+    useAppModeStore.setState({ mode: "web" });
+    renderWithProviders(<Footer />, { route: ROUTE_PATTERNS.HOME });
+
+    expect(screen.getByText("С любовью KuttukTime ♥")).toBeTruthy();
   });
 });

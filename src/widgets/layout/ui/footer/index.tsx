@@ -17,8 +17,9 @@ export const Footer = () => {
   const isWeb = useAppModeStore((s) => s.mode === "web");
 
   // The website's catalog is a stranger's first sight of the service: who runs
-  // it, how to reach them, how payment works. Other screens stay clean - the
-  // venue page links the offer and the policy above «Купить».
+  // it, how to reach them, how payment works. Other screens keep only the
+  // brand line, like the Mini App; the venue page links the offer and the
+  // policy above «Купить».
   if (isWeb && pathname === ROUTE_PATTERNS.HOME) {
     const link = "text-xs font-semibold text-(--color-slate) cursor-pointer";
 
@@ -39,11 +40,10 @@ export const Footer = () => {
           </button>
         </nav>
         <span className="text-xs text-(--color-hint)">{t("site.payment")}</span>
+        <span className="text-xs text-(--color-hint)">{t("footer.madeWithLove")}</span>
       </footer>
     );
   }
-
-  if (isWeb) return null;
 
   return (
     <footer className="flex justify-center py-3">

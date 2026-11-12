@@ -508,5 +508,28 @@
       "title": "Privacy policy"
     },
     "russianOnly": "The text is in Russian"
+  },
+  "seo": {
+    "home": {
+      "title": "Gift certificates for places in Kyrgyzstan - KuttukTime",
+      "description": "Gift certificates for coffee shops, restaurants and other places in Kyrgyzstan. Pick a place and an amount, pay online - and gift it to a friend in a minute.",
+      "heading": "Gift certificates",
+      "intro": "Pick a place and an amount, pay online - and gift the certificate to a friend in a minute: by a link in WhatsApp, Instagram or Telegram."
+    },
+    "venue": {
+      "title": "{{name}} gift certificate - KuttukTime",
+      "description": "{{name}} gift certificate, {{price}}. {{description}}",
+      "offer": "{{name}} gift certificate for {{amount}}"
+    },
+    "pageTitle": "{{page}} - KuttukTime",
+    "about": {
+      "description": "Who we are and how KuttukTime works - gift certificates for local places in Kyrgyzstan."
+    },
+    "offer": {
+      "description": "KuttukTime public offer: buying, using and refunding gift certificates."
+    },
+    "privacy": {
+      "description": "KuttukTime privacy policy: what data we keep and why."
+    }
   }
 }

@@ -20,6 +20,10 @@ interface Props {
 // likely waking up (Koyeb sleeps when idle) - say so instead of a bare spinner.
 const SLOW_LOG_IN_MS = 3000;
 
+// The website's pre-rendered page (the build's seo step): the reader already
+// sees the page while the app signs in, instead of a spinner.
+const getPrerendered = () => document.getElementById("seo");
+
 export const AuthProvider = ({ children }: Props) => {
   // Bumped by "Retry" on the connection-failed screen to log in again.
   const [attempt, setAttempt] = useState(0);
@@ -30,6 +34,12 @@ export const AuthProvider = ({ children }: Props) => {
 
   const isReady = useAuthStore((s) => s.isReady);
   const isSessionExpired = useAuthStore((s) => s.isSessionExpired);
+
+  // The app takes over from the pre-rendered page once it has a screen of
+  // its own - the page or «connection failed».
+  useEffect(() => {
+    if (isReady || isFailed || isSessionExpired) getPrerendered()?.remove();
+  }, [isReady, isFailed, isSessionExpired]);
 
   useEffect(() => {
     const { setAuth, setReady, setSessionExpired } = useAuthStore.getState();
@@ -96,6 +106,9 @@ export const AuthProvider = ({ children }: Props) => {
   }
 
   if (!isReady) {
+    // In Telegram the page is hidden (index.html) - the loader as before.
+    if (isWebsite() && getPrerendered()) return null;
+
     return <PageLoader fullScreen message={isSlow ? t("connection.waking") : undefined} />;
   }
 

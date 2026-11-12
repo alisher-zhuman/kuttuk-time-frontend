@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+# The pre-render step's bundle (pnpm build:seo)
+dist-seo
 # The e2e build and Playwright's output
 dist-e2e
 test-results

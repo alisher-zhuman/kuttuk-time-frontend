@@ -1,5 +1,86 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "kg"
+        }
+      ],
+      "destination": "/_seo/kg/index.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en"
+        }
+      ],
+      "destination": "/_seo/en/index.html"
+    },
+    {
+      "source": "/",
+      "destination": "/_seo/ru/index.html"
+    },
+    {
+      "source": "/venues/:slug",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "kg"
+        }
+      ],
+      "destination": "/_seo/kg/venues/:slug.html"
+    },
+    {
+      "source": "/venues/:slug",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en"
+        }
+      ],
+      "destination": "/_seo/en/venues/:slug.html"
+    },
+    {
+      "source": "/venues/:slug",
+      "destination": "/_seo/ru/venues/:slug.html"
+    },
+    {
+      "source": "/:page(about|offer|privacy)",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "kg"
+        }
+      ],
+      "destination": "/_seo/kg/:page.html"
+    },
+    {
+      "source": "/:page(about|offer|privacy)",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en"
+        }
+      ],
+      "destination": "/_seo/en/:page.html"
+    },
+    {
+      "source": "/:page(about|offer|privacy)",
+      "destination": "/_seo/ru/:page.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/_seo/app.html"
+    }
   ]
 }

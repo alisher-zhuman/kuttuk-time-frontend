@@ -14,6 +14,17 @@
     <link rel="icon" type="image/svg+xml" href="/icons/logo-dark.svg" media="(prefers-color-scheme: dark)" />
 
     <title>KuttukTime</title>
+
+    <!-- In Telegram (launch params in the address, or kept by tma.js over a
+         reload) the Mini App shows its own screens at once - never the
+         website's pre-rendered page (#seo). -->
+    <script>
+      try {
+        if (/tgWebApp/.test(location.hash) || sessionStorage.getItem("tapps/launchParams")) {
+          document.documentElement.classList.add("tma");
+        }
+      } catch {}
+    </script>
   </head>
 
   <body>

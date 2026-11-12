@@ -59,6 +59,11 @@ html:not([data-mode="web"]) body {
   overscroll-behavior: none;
 }
 
+/* The website's pre-rendered page (the build's seo step) - not in the Mini App. */
+.tma #seo {
+  display: none;
+}
+
 body {
   background-color: var(--color-bg);
   font-family: "Manrope Variable", system-ui, sans-serif;

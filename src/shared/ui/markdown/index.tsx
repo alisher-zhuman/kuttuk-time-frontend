@@ -7,8 +7,9 @@ type Block =
 
 interface Props {
   text: string;
-  // «[Публичная оферта]» → what a tap on it does (our own pages).
-  links?: Record<string, () => void>;
+  // «[Публичная оферта]» → what a tap on it does (our own pages), or the
+  // address it leads to (the pre-rendered website - a plain link).
+  links?: Record<string, (() => void) | string>;
 }
 
 // The legal texts' Markdown (../backend docs/legal): headings, paragraphs,
@@ -66,6 +67,14 @@ const inline = (text: string, links: Props["links"] = {}): ReactNode[] =>
     if (link) {
       const [, label, url] = link;
       const onOpen = links[label!];
+
+      if (typeof onOpen === "string") {
+        return (
+          <a key={index} href={onOpen} className="font-bold text-(--color-primary)">
+            {label}
+          </a>
+        );
+      }
 
       if (onOpen) {
         return (

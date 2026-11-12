@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && pnpm build:seo",
+    "build:seo": "vite build --ssr src/app/seo/build.ts --outDir dist-seo --emptyOutDir && node dist-seo/build.js",
     "preview": "vite preview",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint . --max-warnings=0",

@@ -8,7 +8,7 @@ import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(["dist", "dist-e2e", "coverage", "playwright-report", "test-results", "steiger.config.ts"]),
+  globalIgnores(["dist", "dist-e2e", "dist-seo", "coverage", "playwright-report", "test-results", "steiger.config.ts"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [

@@ -1,10 +1,10 @@
 import { api, server } from "@mocks";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw/http";
 import { delay } from "msw/utils/delay";
 import { describe, expect, it } from "vitest";
 
-import { useAuthStore } from "@shared/store";
+import { useAppModeStore, useAuthStore } from "@shared/store";
 
 import "@tests";
 
@@ -34,5 +34,28 @@ describe("log-in at start", () => {
     render(<AuthProvider>app</AuthProvider>);
 
     expect(await screen.findByRole("button", { name: "Повторить" })).toBeInTheDocument();
+  });
+
+  it("the website: the pre-rendered page stays while the app signs in, then the app takes over", async () => {
+    useAuthStore.setState({ isReady: false, isSessionExpired: false });
+    useAppModeStore.setState({ mode: "web" });
+    const page = document.createElement("div");
+    page.id = "seo";
+    page.textContent = "Sierra Coffee";
+    document.body.append(page);
+    server.use(
+      http.post(api("/auth/guest"), async () => {
+        await delay(300);
+        return HttpResponse.json({ accessToken: "g", role: "user", guestToken: "g-1" });
+      })
+    );
+    const { container } = render(<AuthProvider>app</AuthProvider>);
+
+    // No spinner over the page the reader already sees.
+    expect(container).toBeEmptyDOMElement();
+    expect(document.getElementById("seo")).toBeInTheDocument();
+
+    expect(await screen.findByText("app")).toBeInTheDocument();
+    await waitFor(() => expect(document.getElementById("seo")).not.toBeInTheDocument());
   });
 });

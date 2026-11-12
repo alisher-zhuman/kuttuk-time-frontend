@@ -7,6 +7,9 @@ const SITE = "https://kuttuk.test";
 const SHELL = `<!doctype html>
 <html lang="en">
   <head>
+    <!-- not a page to index -->
+    <meta name="robots" content="noindex" />
+
     <title>KuttukTime</title>
   </head>
   <body>
@@ -127,6 +130,15 @@ describe("the website's pre-rendered pages", () => {
     expect(serve("/app/merchant")).toBe("/_seo/app.html");
     expect(files["_seo/app.html"]).toBe(SHELL);
     expect(files["404.html"]).toBe(SHELL);
+  });
+
+  it("the app's shell is noindex (an unknown venue, the private screens); the public pages are not", () => {
+    expect(files["_seo/app.html"]).toContain(`<meta name="robots" content="noindex" />`);
+    expect(files["404.html"]).toContain(`<meta name="robots" content="noindex" />`);
+
+    for (const file of ["_seo/ru/index.html", "_seo/kg/venues/sierra-coffee.html", "_seo/en/about.html"]) {
+      expect(files[file]).not.toContain("noindex");
+    }
   });
 
   it("the pre-rendered files' own addresses are noindex - only the public ones are indexed", () => {

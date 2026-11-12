@@ -16,6 +16,11 @@
     <!-- Search Console ownership (the pre-rendered pages are built from this file). -->
     <meta name="google-site-verification" content="HZtP262qceOniOXY_mL6wGY2dM2g5Mw4OXtvHIH1uQo" />
 
+    <!-- The app's shell is not a page to index (/app, /orders, /gift, a venue
+         Vercel can't find - it answers those with 200); the build's
+         pre-rendered public pages drop this tag. -->
+    <meta name="robots" content="noindex" />
+
     <title>KuttukTime</title>
 
     <!-- In Telegram (launch params in the address, or kept by tma.js over a

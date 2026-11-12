@@ -53,5 +53,6 @@ export const renderHead = (siteUrl: string, meta: PageMeta) => {
 export const fillShell = (shell: string, lang: SeoLanguage, head: string, body: string) =>
   shell
     .replace(/<html lang="[^"]*">/, `<html lang="${HREFLANG[lang]}">`)
+    .replace(/\s*<!--[^>]*?-->\s*<meta name="robots" content="noindex" \/>/, "")
     .replace(/<title>[^<]*<\/title>/, head)
     .replace(`<div id="root"></div>`, `<div id="seo">${body}</div>\n    <div id="root"></div>`);

@@ -11,7 +11,7 @@ import {
   ThemeProvider,
   TMAProvider
 } from "@app/providers";
-import { ROUTER } from "@app/router";
+import { createAppRouter } from "@app/router";
 
 import { applyTheme } from "@shared/helpers";
 import { useThemeStore } from "@shared/store";
@@ -24,6 +24,8 @@ import "./configs/i18n";
 
 applyTheme(useThemeStore.getState());
 
+const router = createAppRouter();
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
@@ -31,7 +33,7 @@ createRoot(document.getElementById("root")!).render(
         <TMAProvider>
           <AuthProvider>
             <QueryClientProvider client={QUERY_CLIENT}>
-              <RouterProvider router={ROUTER} />
+              <RouterProvider router={router} />
             </QueryClientProvider>
           </AuthProvider>
         </TMAProvider>

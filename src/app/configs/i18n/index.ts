@@ -4,10 +4,13 @@ import { initReactI18next } from "react-i18next";
 import {
   DEFAULT_LANGUAGE,
   I18N_STORAGE_KEY,
+  SITE_DEFAULT_LANGUAGE,
+  SITE_LANG_PARAM,
   SUPPORTED_LANGUAGES
 } from "@shared/constants";
 import { getLaunchParams, getScopedStorageKey } from "@shared/helpers";
 import { enCommon, kgCommon, ruCommon } from "@shared/locales";
+import { isWebsite } from "@shared/store";
 
 import LanguageDetector from "i18next-browser-languagedetector";
 
@@ -24,9 +27,22 @@ const tmaLanguageDetector = {
   }
 };
 
+// The website: the address says the language - ?lang=kg / ?lang=en, none is
+// Russian. Each version is its own indexed page, so a stored choice or the
+// browser's language must not show another one under it.
+const siteLanguageDetector = {
+  name: "siteLanguage",
+  lookup: (): string => {
+    const lang = new URLSearchParams(window.location.search).get(SITE_LANG_PARAM);
+
+    return lang && (SUPPORTED_LANGUAGES as readonly string[]).includes(lang) ? lang : SITE_DEFAULT_LANGUAGE;
+  }
+};
+
 const detector = new LanguageDetector();
 
 detector.addDetector(tmaLanguageDetector);
+detector.addDetector(siteLanguageDetector);
 
 void i18n
   .use(detector)
@@ -40,11 +56,15 @@ void i18n
     supportedLngs: [...SUPPORTED_LANGUAGES],
     fallbackLng: DEFAULT_LANGUAGE,
     defaultNS: "common",
-    detection: {
-      order: ["localStorage", "tmaLanguage", "navigator"],
-      lookupLocalStorage: getScopedStorageKey(I18N_STORAGE_KEY),
-      caches: ["localStorage"]
-    },
+    // isWebsite() is already known: TMAProvider's module (imported before
+    // this one in app/index.tsx) sets the mode.
+    detection: isWebsite()
+      ? { order: ["siteLanguage"], caches: [] }
+      : {
+          order: ["localStorage", "tmaLanguage", "navigator"],
+          lookupLocalStorage: getScopedStorageKey(I18N_STORAGE_KEY),
+          caches: ["localStorage"]
+        },
     interpolation: { escapeValue: false },
     returnNull: false
   });

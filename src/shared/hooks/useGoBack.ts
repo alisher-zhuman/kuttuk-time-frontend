@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useLocation } from "react-router";
 
-import { getHomeRoute, ROUTE_PATTERNS } from "@shared/constants";
+import { getHomeRoute, ROUTE_PATTERNS, SITE_PATTERNS } from "@shared/constants";
 import { canGoBack } from "@shared/helpers";
 import { useViewModeStore } from "@shared/store";
 
@@ -10,6 +10,7 @@ import { useNavigateTo } from "./useNavigateTo";
 // Each mode's root screens (home, bottom-nav tabs): nothing to go back to.
 const ROOT_PATHS: string[] = [
   ROUTE_PATTERNS.HOME,
+  SITE_PATTERNS.HOME,
   ROUTE_PATTERNS.ADMIN_VENUES,
   ROUTE_PATTERNS.ADMIN_MERCHANTS,
   ROUTE_PATTERNS.ADMIN_ORDERS,

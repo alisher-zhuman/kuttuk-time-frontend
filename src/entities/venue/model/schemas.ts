@@ -6,6 +6,9 @@ const TranslationsSchema = z.object({ ru: z.string(), kg: z.string(), en: z.stri
 // description resolved to one language via Accept-Language.
 export const VenueSchema = z.object({
   id: z.number(),
+  // The address of its page (/venues/sierra on the website) - ../backend
+  // src/venues/venues.service.ts.
+  slug: z.string(),
   name: z.string(),
   description: z.string(),
   logo: z.string(),
@@ -16,6 +19,7 @@ export const VenuesSchema = z.array(VenueSchema);
 
 export const VenueDetailSchema = z.object({
   id: z.number(),
+  slug: z.string(),
   name: z.string(),
   description: z.string(),
   logo: z.string(),

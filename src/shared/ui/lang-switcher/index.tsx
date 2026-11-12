@@ -1,8 +1,11 @@
+import { useLocation } from "react-router";
+
 import { useTranslation } from "react-i18next";
 
 import { LANGUAGE_BADGE, SUPPORTED_LANGUAGES } from "@shared/constants";
 import { resolveLang } from "@shared/helpers";
-import { useHaptic } from "@shared/hooks";
+import { useHaptic, useNavigateTo } from "@shared/hooks";
+import { isWebsite } from "@shared/store";
 
 import { SegmentedControl } from "../segmented-control";
 
@@ -15,14 +18,25 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
   
   const haptic = useHaptic();
 
+  const navigateTo = useNavigateTo();
+
+  const { pathname, search } = useLocation();
+
   const lang = resolveLang(i18n.language);
   const badge = LANGUAGE_BADGE[lang];
+
+  // The website: the language is in the address (?lang) - the same page in
+  // the new language, without a new history entry.
+  const changeLanguage = (next: string) =>
+    void i18n.changeLanguage(next).then(() => {
+      if (isWebsite()) navigateTo(pathname + search, { replace: true });
+    });
 
   const cycleLanguage = () => {
     haptic.light();
     const idx = SUPPORTED_LANGUAGES.indexOf(lang);
-    const next = SUPPORTED_LANGUAGES[(idx + 1) % SUPPORTED_LANGUAGES.length];
-    void i18n.changeLanguage(next);
+    const next = SUPPORTED_LANGUAGES[(idx + 1) % SUPPORTED_LANGUAGES.length]!;
+    changeLanguage(next);
   };
 
   if (variant === "segmented") {
@@ -44,7 +58,7 @@ export const LangSwitcher = ({ variant = "compact" }: Props) => {
       <SegmentedControl
         items={items}
         value={lang}
-        onChange={(l) => void i18n.changeLanguage(l)}
+        onChange={changeLanguage}
       />
     );
   }

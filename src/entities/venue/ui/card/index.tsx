@@ -29,7 +29,7 @@ export const VenueCard = ({ venue, priority = false }: Props) => {
 
   const handleClick = () => {
     haptic.light();
-    navigateTo(getVenueRoute(venue.id));
+    navigateTo(getVenueRoute(venue.slug));
   };
 
   return (

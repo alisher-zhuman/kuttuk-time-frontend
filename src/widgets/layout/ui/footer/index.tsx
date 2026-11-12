@@ -2,7 +2,7 @@ import { useLocation } from "react-router";
 
 import { useTranslation } from "react-i18next";
 
-import { ROUTE_PATTERNS, SUPPORT_URL } from "@shared/constants";
+import { ROUTE_PATTERNS, SITE_PATTERNS, SUPPORT_URL } from "@shared/constants";
 import { openExternalLink } from "@shared/helpers";
 import { useNavigateTo } from "@shared/hooks";
 import { useAppModeStore } from "@shared/store";
@@ -20,7 +20,7 @@ export const Footer = () => {
   // it, how to reach them, how payment works. Other screens keep only the
   // brand line, like the Mini App; the venue page links the offer and the
   // policy above «Купить».
-  if (isWeb && pathname === ROUTE_PATTERNS.HOME) {
+  if (isWeb && pathname === SITE_PATTERNS.HOME) {
     const link = "text-xs font-semibold text-(--color-slate) cursor-pointer";
 
     return (

@@ -18,6 +18,7 @@ describe("VenueOptionsSchema - GET /venues/options", () => {
 describe("VenueDetailSchema - GET /venues/:idOrSlug", () => {
   const venue = {
     id: 1,
+    slug: "coffeeroom",
     name: "Coffeeroom",
     description: "Кофейня",
     logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",

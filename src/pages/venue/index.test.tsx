@@ -11,6 +11,7 @@ import { VenuePage } from "./index";
 
 const venue = (nominals: number[]) => ({
   id: 1,
+  slug: "coffeeroom",
   name: "Coffeeroom",
   description: "Кофейня",
   logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",

@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import { Outlet, useLocation, useMatches } from "react-router";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { useTranslation } from "react-i18next";
+
+import {
+  ROUTE_PATTERNS,
+  SITE_DEFAULT_LANGUAGE,
+  SITE_LANG_PARAM,
+  SITE_PATTERNS,
+  SUPPORTED_LANGUAGES
+} from "@shared/constants";
 import {
   useBackButton,
   useSafeArea,
@@ -24,7 +33,9 @@ export const AppLayout = () => {
 
   const swipe = useSwipeNavigation();
 
-  const { pathname } = useLocation();
+  const { i18n } = useTranslation();
+
+  const { pathname, search } = useLocation();
 
   const matches = useMatches();
 
@@ -32,6 +43,18 @@ export const AppLayout = () => {
 
   const viewMode = useViewModeStore((s) => s.viewMode);
   const isWeb = useAppModeStore((s) => s.mode === "web");
+
+  // The website: the address says the language, also after Back / Forward to
+  // a page in another one (?lang=kg, none - Russian).
+  useEffect(() => {
+    if (!isWeb) return;
+
+    const lang = new URLSearchParams(search).get(SITE_LANG_PARAM) ?? SITE_DEFAULT_LANGUAGE;
+
+    if ((SUPPORTED_LANGUAGES as readonly string[]).includes(lang) && lang !== i18n.language) {
+      void i18n.changeLanguage(lang);
+    }
+  }, [isWeb, search, i18n]);
 
   // Only on the mode's root screens; nested ones (forms, details) get the
   // native Back button instead.
@@ -42,7 +65,8 @@ export const AppLayout = () => {
   // Telegram Desktop window): the catalog's card grid is wide, every other
   // screen one centered column the width of a phone's. On a phone both are
   // just the screen's width.
-  const width = pathname === ROUTE_PATTERNS.HOME ? "max-w-6xl" : "max-w-xl";
+  const isCatalog = pathname === (isWeb ? SITE_PATTERNS.HOME : ROUTE_PATTERNS.HOME);
+  const width = isCatalog ? "max-w-6xl" : "max-w-xl";
 
   return (
     <>

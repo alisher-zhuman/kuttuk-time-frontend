@@ -3,7 +3,7 @@ import { expect, test } from "./support";
 
 const LOGO = "https://res.cloudinary.com/demo/image/upload/v1/logo.png";
 
-const venueDetail = { id: 1, name: "Coffeeroom", description: "Кофейня в центре", logo: LOGO, nominals: [500, 1000], validityMonths: 12, address: "ул. Киевская 95", mapUrl: "https://2gis.kg/bishkek/firm/70000001234567" };
+const venueDetail = { id: 1, slug: "coffeeroom", name: "Coffeeroom", description: "Кофейня в центре", logo: LOGO, nominals: [500, 1000], validityMonths: 12, address: "ул. Киевская 95", mapUrl: "https://2gis.kg/bishkek/firm/70000001234567" };
 
 const managedVenue = {
   id: 1,
@@ -171,8 +171,9 @@ test("the giver sees the claimed certificate as «Подарен», without its 
 });
 
 test.describe("the website", () => {
-  // Outside Telegram the language comes from the browser.
-  test.use({ locale: "ru-RU" });
+  // Outside Telegram the address says the language (?lang); a browser in
+  // another one must not change it.
+  test.use({ locale: "en-US" });
 
   test("the website: Finik's return /orders/<id> opens directly - a guest, no Telegram", async ({ app, page }) => {
   await app.open(`/orders/${fixtures.ORDER_ID}`, {
@@ -195,10 +196,10 @@ test.describe("the website", () => {
 
   test("the website: a guest buys only after «Войти через Telegram» - then the same nominal goes to Finik", async ({ app, page }) => {
   await page.route("https://pay.finik.test/**", (route) => route.fulfill({ contentType: "text/html", body: "Finik" }));
-  await app.open("/app/venues/1", {
+  await app.open("/venues/coffeeroom", {
     web: true,
     routes: ({ path, method }) => {
-      if (path === "/venues/1") return [200, venueDetail];
+      if (path === "/venues/coffeeroom") return [200, venueDetail];
       if (path === "/orders" && method === "POST") {
         return [201, { orderId: fixtures.ORDER_ID, paymentUrl: "https://pay.finik.test/x", expiresAt: fixtures.orders.paid.expiresAt }];
       }
@@ -243,5 +244,15 @@ test.describe("the website", () => {
 
   await expect(page).toHaveURL(/\/app\/certificates\/c7/);
   await expect(page.getByText("7777 8888")).toBeVisible();
+});
+
+  test("the website: an old /app/venues/<id> link moves to /venues/<slug>; ?lang=kg shows the page in Kyrgyz", async ({ app, page }) => {
+  await app.open("/app/venues/1?lang=kg", {
+    web: true,
+    routes: ({ path }) => (path === "/venues/1" || path === "/venues/coffeeroom" ? [200, venueDetail] : undefined)
+  });
+
+  await expect(page).toHaveURL(/\/venues\/coffeeroom\?lang=kg$/);
+  await expect(page.getByRole("button", { name: "Сатып алуу" })).toBeVisible();
 });
 });

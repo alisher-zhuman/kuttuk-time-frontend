@@ -3,19 +3,19 @@ import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
 import { describe, expect, it } from "vitest";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { SITE_PATTERNS } from "@shared/constants";
 import { useAppModeStore } from "@shared/store";
 
 import { Footer } from "./index";
 
 describe("the website's footer", () => {
   it.each([
-    ["О нас", ROUTE_PATTERNS.ABOUT],
-    ["Оферта", ROUTE_PATTERNS.OFFER],
-    ["Политика конфиденциальности", ROUTE_PATTERNS.PRIVACY]
+    ["О нас", SITE_PATTERNS.ABOUT],
+    ["Оферта", SITE_PATTERNS.OFFER],
+    ["Политика конфиденциальности", SITE_PATTERNS.PRIVACY]
   ])("«%s»", async (name, path) => {
     useAppModeStore.setState({ mode: "web" });
-    const { router } = renderWithProviders(<Footer />, { route: ROUTE_PATTERNS.HOME });
+    const { router } = renderWithProviders(<Footer />, { route: SITE_PATTERNS.HOME });
 
     await userEvent.click(screen.getByRole("button", { name }));
     expect(router.state.location.pathname).toBe(path);
@@ -32,7 +32,7 @@ describe("the website's footer", () => {
 
   it("the catalog ends with the brand line too", () => {
     useAppModeStore.setState({ mode: "web" });
-    renderWithProviders(<Footer />, { route: ROUTE_PATTERNS.HOME });
+    renderWithProviders(<Footer />, { route: SITE_PATTERNS.HOME });
 
     expect(screen.getByText("С любовью KuttukTime ♥")).toBeTruthy();
   });

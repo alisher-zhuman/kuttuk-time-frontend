@@ -5,7 +5,7 @@ import { installTelegramLogin, renderWithProviders } from "@tests";
 import { http, HttpResponse } from "msw/http";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ROUTE_PATTERNS } from "@shared/constants";
+import { SITE_PATTERNS } from "@shared/constants";
 import { useAppModeStore, useAuthStore, useWebMainButtonStore } from "@shared/store";
 
 import { VenuePage } from "./index";
@@ -26,6 +26,7 @@ const INVITE =
 
 const venue = {
   id: 1,
+  slug: "coffeeroom",
   name: "Coffeeroom",
   description: "Кофейня",
   logo: "https://res.cloudinary.com/demo/image/upload/v1/logo.png",
@@ -39,7 +40,7 @@ describe("buying on the website", () => {
   it("«Купить» is a plain button; the order goes with channel web and the bank's page opens in this tab", async () => {
     let body: unknown;
     server.use(
-      http.get(api("/venues/1"), () => HttpResponse.json(venue)),
+      http.get(api("/venues/coffeeroom"), () => HttpResponse.json(venue)),
       http.post(api("/orders"), async ({ request }) => {
         body = await request.json();
         return HttpResponse.json(
@@ -49,7 +50,7 @@ describe("buying on the website", () => {
       })
     );
     useAppModeStore.setState({ mode: "web" });
-    const { router } = renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
+    const { router } = renderWithProviders(<VenuePage />, { route: "/venues/coffeeroom", path: SITE_PATTERNS.VENUE });
 
     await screen.findByText("Действует 3 месяца");
     // No Telegram MainButton - the layout draws this one.
@@ -61,13 +62,13 @@ describe("buying on the website", () => {
     await waitFor(() => expect(goToUrl).toHaveBeenCalledWith("https://pay.finik.test/o-1"));
     expect(body).toEqual({ venueId: 1, nominal: 500, channel: "web" });
     // Finik brings the buyer back to /orders/<id> - no hop to the order here.
-    expect(router.state.location.pathname).toBe("/app/venues/1");
+    expect(router.state.location.pathname).toBe("/venues/coffeeroom");
   });
 
   it("a guest's «Купить» asks to sign in with Telegram first - then the same nominal goes to payment", async () => {
     const orders: unknown[] = [];
     server.use(
-      http.get(api("/venues/1"), () => HttpResponse.json(venue)),
+      http.get(api("/venues/coffeeroom"), () => HttpResponse.json(venue)),
       http.post(api("/auth/telegram-oidc"), () => HttpResponse.json({ accessToken: "tg-jwt", role: "user", merged: true })),
       http.post(api("/orders"), async ({ request }) => {
         orders.push({ body: await request.json(), auth: request.headers.get("Authorization") });
@@ -80,7 +81,7 @@ describe("buying on the website", () => {
     useAppModeStore.setState({ mode: "web" });
     useAuthStore.setState({ accessToken: "guest-jwt", role: "user", isGuest: true });
     const login = installTelegramLogin();
-    renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
+    renderWithProviders(<VenuePage />, { route: "/venues/coffeeroom", path: SITE_PATTERNS.VENUE });
 
     await userEvent.click(await screen.findByRole("button", { name: /^1\s000/ }));
     act(() => useWebMainButtonStore.getState().button?.onClick());
@@ -98,7 +99,7 @@ describe("buying on the website", () => {
 
   it("403 telegram_required (an old tab, a sign-out elsewhere) - the same invitation, no error popup", async () => {
     server.use(
-      http.get(api("/venues/1"), () => HttpResponse.json(venue)),
+      http.get(api("/venues/coffeeroom"), () => HttpResponse.json(venue)),
       http.post(api("/orders"), () =>
         HttpResponse.json({ message: "Log in with Telegram first", error: "telegram_required", statusCode: 403 }, { status: 403 })
       )
@@ -106,7 +107,7 @@ describe("buying on the website", () => {
     const alert = vi.spyOn(window, "alert").mockImplementation(() => undefined);
     useAppModeStore.setState({ mode: "web" });
     useAuthStore.setState({ accessToken: "jwt", role: "user", isGuest: false });
-    renderWithProviders(<VenuePage />, { route: "/app/venues/1", path: ROUTE_PATTERNS.VENUE });
+    renderWithProviders(<VenuePage />, { route: "/venues/coffeeroom", path: SITE_PATTERNS.VENUE });
 
     await screen.findByText("Действует 3 месяца");
     act(() => useWebMainButtonStore.getState().button?.onClick());
@@ -115,5 +116,15 @@ describe("buying on the website", () => {
     expect(useAuthStore.getState().isGuest).toBe(true);
     expect(alert).not.toHaveBeenCalled();
     expect(goToUrl).not.toHaveBeenCalled();
+  });
+
+  it("an old link by id moves to the venue's address by slug - one page for search engines", async () => {
+    server.use(http.get(api("/venues/1"), () => HttpResponse.json(venue)), http.get(api("/venues/coffeeroom"), () => HttpResponse.json(venue)));
+    useAppModeStore.setState({ mode: "web" });
+
+    const { router } = renderWithProviders(<VenuePage />, { route: "/venues/1?lang=kg", path: SITE_PATTERNS.VENUE, language: "kg" });
+
+    await waitFor(() => expect(router.state.location.pathname).toBe("/venues/coffeeroom"));
+    expect(router.state.location.search).toBe("?lang=kg");
   });
 });

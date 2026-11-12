@@ -8,7 +8,7 @@ import { useAppModeStore } from "@shared/store";
 
 import { VenueList } from "./index";
 
-const venue = { id: 1, name: "Coffeeroom", description: "Кофейня", logo: "https://res.cloudinary.com/demo/image/upload/a.jpg", minNominal: 500 };
+const venue = { id: 1, slug: "coffeeroom", name: "Coffeeroom", description: "Кофейня", logo: "https://res.cloudinary.com/demo/image/upload/a.jpg", minNominal: 500 };
 
 const renderList = async (mode: "telegram" | "web") => {
   useAppModeStore.setState({ mode });

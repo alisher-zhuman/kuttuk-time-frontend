@@ -15,9 +15,17 @@ describe("the website's footer", () => {
     ["Политика конфиденциальности", ROUTE_PATTERNS.PRIVACY]
   ])("«%s»", async (name, path) => {
     useAppModeStore.setState({ mode: "web" });
-    const { router } = renderWithProviders(<Footer />);
+    const { router } = renderWithProviders(<Footer />, { route: ROUTE_PATTERNS.HOME });
 
     await userEvent.click(screen.getByRole("button", { name }));
     expect(router.state.location.pathname).toBe(path);
+  });
+
+  it("only on the catalog - other screens have no footer", () => {
+    useAppModeStore.setState({ mode: "web" });
+    renderWithProviders(<Footer />, { route: "/app/venues/coffeeroom" });
+
+    expect(screen.queryByRole("button", { name: "Оферта" })).toBeNull();
+    expect(screen.queryByText("Оплата через Finik")).toBeNull();
   });
 });

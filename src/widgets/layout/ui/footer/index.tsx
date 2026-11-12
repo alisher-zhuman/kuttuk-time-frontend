@@ -1,3 +1,5 @@
+import { useLocation } from "react-router";
+
 import { useTranslation } from "react-i18next";
 
 import { ROUTE_PATTERNS, SUPPORT_URL } from "@shared/constants";
@@ -10,11 +12,14 @@ export const Footer = () => {
 
   const navigateTo = useNavigateTo();
 
+  const { pathname } = useLocation();
+
   const isWeb = useAppModeStore((s) => s.mode === "web");
 
-  // The website is a stranger's first sight of the service: who runs it,
-  // how to reach them, how payment works.
-  if (isWeb) {
+  // The website's catalog is a stranger's first sight of the service: who runs
+  // it, how to reach them, how payment works. Other screens stay clean - the
+  // venue page links the offer and the policy above «Купить».
+  if (isWeb && pathname === ROUTE_PATTERNS.HOME) {
     const link = "text-xs font-semibold text-(--color-slate) cursor-pointer";
 
     return (
@@ -37,6 +42,8 @@ export const Footer = () => {
       </footer>
     );
   }
+
+  if (isWeb) return null;
 
   return (
     <footer className="flex justify-center py-3">

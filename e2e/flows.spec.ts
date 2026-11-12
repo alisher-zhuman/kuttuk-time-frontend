@@ -189,8 +189,8 @@ test.describe("the website", () => {
   // The guest is offered to keep it with Telegram; the action is a plain button.
   await expect(page.getByText(/Войдите через Telegram/)).toBeVisible();
   await expect(page.getByRole("button", { name: "Подарить" })).toBeVisible();
-  // The website's footer: who runs it, how payment works.
-  await expect(page.getByText("Оплата через Finik")).toBeVisible();
+  // The website's footer (who runs it, how payment works) is the catalog's only.
+  await expect(page.getByText("Оплата через Finik")).toHaveCount(0);
 });
 
   test("the website: a guest buys only after «Войти через Telegram» - then the same nominal goes to Finik", async ({ app, page }) => {

@@ -2,7 +2,7 @@ import { api, fixtures, server } from "@mocks";
 import { act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { type Certificate } from "@entities/certificate";

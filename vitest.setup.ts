@@ -42,7 +42,7 @@ if (typeof window.matchMedia !== "function") {
 }
 
 beforeAll(() => {
-  server.listen({ onUnhandledRequest: "error" });
+  server.listen({ onUnhandledFrame: "error" });
 });
 
 // "error" alone only refuses the request - the screen shows its error state

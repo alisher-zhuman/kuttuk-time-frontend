@@ -1,7 +1,7 @@
 import { api, fixtures, server } from "@mocks";
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "@tests";
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 import { describe, expect, it } from "vitest";
 
 import { CertificatesTab } from "./index";

@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig, mergeConfig } from "vitest/config";
 
-import viteConfig from "./vite.config";
+import viteConfig from "./vite.config.ts";
 
 // The app's aliases and plugins come from vite.config - one source of truth.
 export default mergeConfig(
@@ -21,6 +21,11 @@ export default mergeConfig(
     },
     test: {
       environment: "jsdom",
+      // The page's origin = the API's in tests: MSW 3 intercepts at the socket,
+      // so jsdom's own CORS check runs, and a mocked response from another
+      // origin (no CORS headers) would fail as a network error
+      // (github.com/mswjs/msw/issues/2803 - the maintainer's recommended fix).
+      environmentOptions: { jsdom: { url: "http://api.test/" } },
       // Colocated unit / component tests only; e2e/ is Playwright's.
       include: ["src/**/*.test.{ts,tsx}"],
       setupFiles: ["./vitest.setup.ts"],

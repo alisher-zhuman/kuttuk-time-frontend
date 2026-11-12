@@ -2,7 +2,7 @@ import { api, server } from "@mocks";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { fakeIdToken, installTelegramLogin, renderWithProviders } from "@tests";
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 import { describe, expect, it, vi } from "vitest";
 
 import { useAppModeStore, useAuthStore } from "@shared/store";

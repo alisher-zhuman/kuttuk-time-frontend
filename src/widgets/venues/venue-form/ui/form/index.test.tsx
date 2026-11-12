@@ -2,7 +2,8 @@ import { api, fixtures, server } from "@mocks";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests";
-import { delay, http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
+import { delay } from "msw/utils/delay";
 import { describe, expect, it } from "vitest";
 
 import { type AdminVenueDetail } from "@entities/venue";

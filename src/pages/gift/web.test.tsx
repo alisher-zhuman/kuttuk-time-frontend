@@ -2,7 +2,7 @@ import { api, fixtures, giftHandlers, server } from "@mocks";
 import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { installTelegramLogin, renderWithProviders } from "@tests";
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 import { describe, expect, it } from "vitest";
 
 import { ROUTE_PATTERNS } from "@shared/constants";

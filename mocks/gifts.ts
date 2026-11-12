@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 
 import { api } from "./api";
 import { claimedCertificate, gift, GIFT_TOKEN } from "./fixtures";

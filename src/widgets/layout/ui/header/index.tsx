@@ -1,3 +1,5 @@
+import { useLocation } from "react-router";
+
 import { useTranslation } from "react-i18next";
 
 import { Shield, Store, User } from "lucide-react";
@@ -15,6 +17,8 @@ export const Header = () => {
   const haptic = useHaptic();
 
   const viewMode = useViewModeStore((s) => s.viewMode);
+
+  const isOnProfile = useLocation().pathname === ROUTE_PATTERNS.PROFILE;
 
   return (
     <header className="px-4 h-12 flex items-center justify-between gap-2.5">
@@ -50,7 +54,10 @@ export const Header = () => {
         <button
           type="button"
           aria-label={t("aria.profile")}
+          aria-current={isOnProfile ? "page" : undefined}
           onClick={() => {
+            if (isOnProfile) return;
+
             haptic.light();
             navigateTo(ROUTE_PATTERNS.PROFILE);
           }}

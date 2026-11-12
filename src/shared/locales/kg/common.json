@@ -63,9 +63,9 @@
       "venuesTitle": "МЕКЕМЕЛЕР"
     },
     "nav": {
-      "venues": "Мекемелер",
+      "venues": "Мекеме",
       "summary": "Жыйынтык",
-      "certificates": "Сертификаттар"
+      "certificates": "Сертификат"
     },
     "notifications": {
       "title": "Сатуулар тууралуу билдирүүлөр",
@@ -129,7 +129,8 @@
     "mapUrl": "Картадагы шилтеме",
     "mapUrlHint": "Мекемени 2GISте ачыңыз → Бөлүшүү → Шилтемени көчүрүү",
     "mapUrlInvalid": "2GIS, Google Maps же Яндекс Карталардан шилтеме керек",
-    "ownerPlaceholder": "Ээсин тандаңыз"
+    "ownerPlaceholder": "Ээсин тандаңыз",
+    "description": "Сүрөттөмө"
   },
   "merchantForm": {
     "title": "Жаңы ээси",
@@ -194,7 +195,7 @@
     "viewAsUser": "Сатып алуучу",
     "viewAsAdmin": "Админ",
     "nav": {
-      "venues": "Мекемелер",
+      "venues": "Мекеме",
       "merchants": "Ээлер",
       "orders": "Заказ",
       "payouts": "Төлөм"

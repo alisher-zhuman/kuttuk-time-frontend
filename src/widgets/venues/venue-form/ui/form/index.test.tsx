@@ -218,4 +218,45 @@ describe("the venue form", () => {
     await waitFor(() => expect(patches).toHaveLength(1));
     expect(patches[0]).toMatchObject({ nominals: [500, 1000, 2000] });
   });
+
+  it("the description: one field with RU | KG | EN - switching keeps what was typed, ✓ on filled tabs", async () => {
+    const patches = answer();
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
+
+    const ruTab = await screen.findByRole("tab", { name: "Описание на русском" });
+    expect(ruTab).toHaveAttribute("aria-selected", "true");
+    expect(screen.getAllByRole("textbox", { name: /^Описание на/ })).toHaveLength(1);
+
+    await userEvent.click(screen.getByRole("tab", { name: "Описание на кыргызском" }));
+    const kg = screen.getByRole("textbox", { name: "Описание на кыргызском" });
+    expect(kg).toHaveValue("Кофе");
+    await userEvent.type(kg, " жана десерт");
+
+    await userEvent.click(ruTab);
+    expect(screen.getByRole("textbox", { name: "Описание на русском" })).toHaveValue("Кофе");
+    // Every language is filled - each tab has its ✓.
+    for (const tab of screen.getAllByRole("tab")) expect(tab.querySelector("svg")).not.toBeNull();
+
+    save();
+
+    await waitFor(() => expect(patches).toHaveLength(1));
+    expect(patches[0]).toMatchObject({ description: { ru: "Кофе", kg: "Кофе жана десерт", en: "Coffee" } });
+  });
+
+  it("saving with a language empty marks its tab and switches to it - nothing is sent", async () => {
+    const patches = answer();
+    renderWithProviders(<VenueForm options={options} variant={{ kind: "edit", venue: venue() }} />);
+
+    await userEvent.click(await screen.findByRole("tab", { name: "Описание на английском" }));
+    await userEvent.clear(screen.getByRole("textbox", { name: "Описание на английском" }));
+    await userEvent.click(screen.getByRole("tab", { name: "Описание на русском" }));
+
+    save();
+
+    const enTab = screen.getByRole("tab", { name: "Описание на английском" });
+    await waitFor(() => expect(enTab).toHaveAttribute("aria-selected", "true"));
+    expect(enTab.className).toContain("color-accent");
+    expect(screen.getByRole("textbox", { name: "Описание на английском" })).toHaveValue("");
+    expect(patches).toEqual([]);
+  });
 });

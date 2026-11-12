@@ -36,6 +36,8 @@ export const VenueForm = ({ options, variant }: Props) => {
 
   const {
     register,
+    control,
+    submitCount,
     errors,
     isPending,
     isDirty,
@@ -93,7 +95,7 @@ export const VenueForm = ({ options, variant }: Props) => {
         />
       )}
 
-      <VenueFormDescription register={register} errors={errors} />
+      <VenueFormDescription register={register} control={control} errors={errors} submitCount={submitCount} />
 
       <VenueFormPlace register={register} errors={errors} />
 

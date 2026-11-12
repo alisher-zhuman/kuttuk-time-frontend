@@ -129,7 +129,8 @@
     "mapUrl": "Map link",
     "mapUrlHint": "Open the venue in 2GIS → Share → Copy link",
     "mapUrlInvalid": "Needs a link from 2GIS, Google Maps or Yandex Maps",
-    "ownerPlaceholder": "Choose the owner"
+    "ownerPlaceholder": "Choose the owner",
+    "description": "Description"
   },
   "merchantForm": {
     "title": "New merchant",

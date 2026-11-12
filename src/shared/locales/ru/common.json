@@ -129,7 +129,8 @@
     "mapUrl": "Ссылка на карту",
     "mapUrlHint": "Откройте заведение в 2GIS → Поделиться → Скопировать ссылку",
     "mapUrlInvalid": "Нужна ссылка из 2GIS, Google Maps или Яндекс Карт",
-    "ownerPlaceholder": "Выберите владельца"
+    "ownerPlaceholder": "Выберите владельца",
+    "description": "Описание"
   },
   "merchantForm": {
     "title": "Новый владелец",

@@ -7,7 +7,7 @@ import {
   useSettingsButton,
   useSwipeNavigation
 } from "@shared/hooks";
-import { useViewModeStore } from "@shared/store";
+import { useAppModeStore, useViewModeStore } from "@shared/store";
 
 import { NAV_TABS } from "../../constants";
 import { BottomNav } from "../bottom-nav";
@@ -31,6 +31,7 @@ export const AppLayout = () => {
   const isNotFound = matches.some((match) => match.id === "not-found");
 
   const viewMode = useViewModeStore((s) => s.viewMode);
+  const isWeb = useAppModeStore((s) => s.mode === "web");
 
   // Only on the mode's root screens; nested ones (forms, details) get the
   // native Back button instead.
@@ -52,7 +53,7 @@ export const AppLayout = () => {
           paddingLeft: insets.left
         }}
       >
-        {pathname !== ROUTE_PATTERNS.PROFILE && <Header />}
+        <Header />
 
         <main
           key={pathname}
@@ -67,7 +68,9 @@ export const AppLayout = () => {
               <BottomNav tabs={navTabs} />
             </div>
           ) : (
-            <Footer />
+            // The Mini App's profile ends with its own content - no brand strip.
+            // The website keeps its footer everywhere (the offer, the policy).
+            (isWeb || pathname !== ROUTE_PATTERNS.PROFILE) && <Footer />
           ))}
 
         <WebMainButton />

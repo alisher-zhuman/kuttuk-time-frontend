@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { ChevronRight } from "lucide-react";
 
-import { cn, formatDate, formatMoney, logoUrl } from "@shared/helpers";
+import { formatDate, formatMoney, logoUrl } from "@shared/helpers";
 
 import { getCertificateDate, isUsable } from "../../model/date";
 import type { Certificate } from "../../model/types";
@@ -23,6 +23,33 @@ export const CertificateCard = ({ certificate, onOpen, priority = false }: Props
   const { venue, amount, code } = certificate;
 
   const { key, date } = getCertificateDate(certificate);
+
+  const status = t(key, { date: formatDate(date) });
+
+  // Used / expired / given away: nothing to show at the counter - one compact
+  // row, no code: the venue, then the amount and what happened when.
+  if (!isUsable(certificate)) {
+    return (
+      <div className="flex items-center gap-3 px-3 py-2.5 bg-(--color-card) rounded-2xl border border-(--color-line) opacity-70">
+        <img
+          src={logoUrl(venue.logo, 36)}
+          alt=""
+          width={36}
+          height={36}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          className="size-9 rounded-lg shrink-0 object-cover"
+        />
+
+        <span className="flex-1 min-w-0 flex flex-col">
+          <span className="text-sm font-bold text-(--color-ink) line-clamp-2 wrap-break-word">{venue.name}</span>
+          <span className="text-xs text-(--color-slate)">
+            {formatMoney(amount, t("certificate.currency"))} · {status}
+          </span>
+        </span>
+      </div>
+    );
+  }
 
   const header = (
     <>
@@ -51,12 +78,7 @@ export const CertificateCard = ({ certificate, onOpen, priority = false }: Props
   );
 
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-3 p-3 bg-(--color-card) rounded-2xl border border-(--color-line)",
-        !isUsable(certificate) && "opacity-55"
-      )}
-    >
+    <div className="flex flex-col gap-3 p-3 bg-(--color-card) rounded-2xl border border-(--color-line)">
       {onOpen ? (
         <button
           type="button"
@@ -69,14 +91,7 @@ export const CertificateCard = ({ certificate, onOpen, priority = false }: Props
         <div className="flex items-center gap-3">{header}</div>
       )}
 
-      {/* Given away: the code is the friend's now - nothing to copy or show. */}
-      {certificate.giftedAt ? (
-        <span className="text-xs font-semibold text-(--color-hint)">
-          {t(key, { date: formatDate(date) })}
-        </span>
-      ) : (
-        <CertificateCode code={code} caption={t(key, { date: formatDate(date) })} />
-      )}
+      <CertificateCode code={code} caption={status} />
     </div>
   );
 };

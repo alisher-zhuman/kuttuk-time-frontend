@@ -68,7 +68,7 @@ export const useVenueForm = (
     setValue,
     setError,
     control,
-    formState: { errors, isDirty }
+    formState: { errors, isDirty, submitCount }
   } = useForm<VenueFormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -232,7 +232,9 @@ export const useVenueForm = (
 
   return {
     register,
+    control,
     errors,
+    submitCount,
     isPending,
     isDirty,
     logo,

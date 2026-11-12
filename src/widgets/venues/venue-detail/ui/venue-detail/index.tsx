@@ -6,7 +6,7 @@ import { type Category } from "@entities/category";
 import { type ManagedVenue } from "@entities/venue";
 
 import { formatMoney } from "@shared/helpers";
-import { RowButton } from "@shared/ui";
+import { RowButton, RowGroup } from "@shared/ui";
 
 import { VenueDetailChips } from "../venue-detail-chips";
 import { VenueDetailDescription } from "../venue-detail-description";
@@ -45,15 +45,17 @@ export const VenueDetail = ({ venue, categories, onEdit, owner, onOpenOrders }: 
 
       <VenueDetailDescription description={venue.description} />
 
-      <VenueShareLink slug={venue.slug} venueName={venue.name} />
+      <RowGroup>
+        <VenueShareLink slug={venue.slug} venueName={venue.name} />
 
-      {onOpenOrders && (
-        <RowButton
-          icon={<ClipboardList size={20} />}
-          label={t("admin.venues.detail.orders")}
-          onClick={onOpenOrders}
-        />
-      )}
+        {onOpenOrders && (
+          <RowButton
+            icon={<ClipboardList size={20} />}
+            label={t("admin.venues.detail.orders")}
+            onClick={onOpenOrders}
+          />
+        )}
+      </RowGroup>
 
       {venueCategories.length > 0 && (
         <VenueDetailChips

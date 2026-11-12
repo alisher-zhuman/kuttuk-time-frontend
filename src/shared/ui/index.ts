@@ -18,6 +18,7 @@ export { PageLoader } from './page-loader';
 export { PillButton } from './pill-button';
 export { QrCode } from './qr-code';
 export { RowButton } from './row-button';
+export { RowGroup } from './row-group';
 export { SearchBar } from './search-bar';
 export { SegmentedControl } from './segmented-control';
 export { Select, type SelectOption } from './select';

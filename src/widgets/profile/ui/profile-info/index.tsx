@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -9,9 +9,11 @@ import type { TmaUserInfo } from "@shared/types";
 
 interface Props {
   user: TmaUserInfo | null;
+  // On the name's line, right - e.g. the website's «Выйти».
+  action?: ReactNode;
 }
 
-export const ProfileInfo = ({ user }: Props) => {
+export const ProfileInfo = ({ user, action }: Props) => {
   const [copied, setCopied] = useState(false);
 
   const { t } = useTranslation();
@@ -45,9 +47,9 @@ export const ProfileInfo = ({ user }: Props) => {
         </div>
       )}
 
-      <div className="flex flex-col gap-1 min-w-0">
+      <div className="flex-1 flex flex-col gap-1 min-w-0">
         {user?.fullName && (
-          <span className="text-lg font-bold text-(--color-ink) truncate">
+          <span className="text-lg font-bold text-(--color-ink) line-clamp-2 wrap-break-word">
             {user.fullName}
           </span>
         )}
@@ -67,6 +69,8 @@ export const ProfileInfo = ({ user }: Props) => {
           </button>
         )}
       </div>
+
+      {action}
     </div>
   );
 };

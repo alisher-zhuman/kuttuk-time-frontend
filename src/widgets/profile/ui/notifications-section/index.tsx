@@ -19,7 +19,7 @@ export const NotificationsSection = () => {
         {t("merchant.notifications.title")}
       </span>
 
-      <div className="flex items-center gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line)">
+      <div className="flex items-center gap-3 min-h-14 px-3 py-1.5 rounded-2xl bg-(--color-card) border border-(--color-line)">
         <Icon size={20} className="text-(--color-primary) shrink-0" />
 
         <span className="flex-1 min-w-0 text-sm text-(--color-ink)">
@@ -35,7 +35,7 @@ export const NotificationsSection = () => {
             type="button"
             disabled={isRequesting}
             onClick={() => void allow()}
-            className="shrink-0 px-3.5 py-2 rounded-full bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer disabled:opacity-60"
+            className="shrink-0 min-h-11 px-2 -mr-2 text-sm font-bold text-(--color-primary) cursor-pointer disabled:opacity-60"
           >
             {t("merchant.notifications.enable")}
           </button>

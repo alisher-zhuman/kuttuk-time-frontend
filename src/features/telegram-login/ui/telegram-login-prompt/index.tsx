@@ -17,9 +17,9 @@ export const TelegramLoginPrompt = () => {
   if (!isWeb || !isGuest) return null;
 
   return (
-    <section className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-(--color-card) border border-(--color-line) text-center">
-      <p className="text-sm text-(--color-slate) max-w-xs">{t("site.login.hint")}</p>
-      <TelegramLoginButton />
+    <section className="flex flex-col items-start gap-2.5 p-3 rounded-2xl bg-(--color-card) border border-(--color-line)">
+      <p className="text-sm text-(--color-slate)">{t("site.login.hint")}</p>
+      <TelegramLoginButton compact />
     </section>
   );
 };

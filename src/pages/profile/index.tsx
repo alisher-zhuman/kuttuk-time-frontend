@@ -6,6 +6,8 @@ import {
   useProfileTab
 } from "@widgets/profile";
 
+import { TelegramSignOut } from "@features/telegram-login";
+
 import { getWebsiteUser } from "@shared/api";
 import { getHomeRoute } from "@shared/constants";
 import { getTMAUserInfo } from "@shared/helpers";
@@ -33,7 +35,7 @@ export const ProfilePage = () => {
 
   return (
     <div className="flex-1 flex flex-col gap-4 py-4">
-      <ProfileInfo user={user} />
+      <ProfileInfo user={user} action={<TelegramSignOut />} />
 
       <ProfileTabs activeTab={activeTab} onTabChange={handleTabChange} />
 

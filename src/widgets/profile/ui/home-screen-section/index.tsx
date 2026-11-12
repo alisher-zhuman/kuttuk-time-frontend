@@ -24,7 +24,7 @@ export const HomeScreenSection = () => {
         {t("merchant.homeScreen.title")}
       </span>
 
-      <div className="flex items-center gap-3 p-3 rounded-2xl bg-(--color-card) border border-(--color-line)">
+      <div className="flex items-center gap-3 min-h-14 px-3 py-1.5 rounded-2xl bg-(--color-card) border border-(--color-line)">
         {isAdded ? (
           <CircleCheck size={20} className="text-(--color-green) shrink-0" />
         ) : (
@@ -42,7 +42,7 @@ export const HomeScreenSection = () => {
               haptic.light();
               add();
             }}
-            className="shrink-0 px-3.5 py-2 rounded-full bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer"
+            className="shrink-0 min-h-11 px-2 -mr-2 text-sm font-bold text-(--color-primary) cursor-pointer"
           >
             {t("merchant.homeScreen.add")}
           </button>

@@ -28,7 +28,6 @@ describe("«Выйти» on the website", () => {
     signedIn();
     renderWithProviders(<TelegramSignOut />);
 
-    expect(screen.getByText("Вы вошли через Telegram")).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Выйти" }));
 
     await waitFor(() => expect(useAuthStore.getState()).toMatchObject({ accessToken: "guest-jwt", isGuest: true }));

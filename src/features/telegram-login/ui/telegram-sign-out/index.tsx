@@ -11,8 +11,8 @@ import { useAppModeStore, useAuthStore } from "@shared/store";
 
 const SIGN_OUT = "sign-out";
 
-// The website, signed in with Telegram: who it is and «Выйти» - back to a
-// quiet guest (browsing only). Nothing for a guest or in the Mini App.
+// The website, signed in with Telegram: «Выйти» - back to a quiet guest
+// (browsing only). Nothing for a guest or in the Mini App.
 export const TelegramSignOut = () => {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -56,18 +56,17 @@ export const TelegramSignOut = () => {
     }
   };
 
+  // A small text button beside the name in the profile - the name already
+  // says who is signed in.
   return (
-    <section className="flex flex-col gap-3 p-4 rounded-2xl bg-(--color-card) border border-(--color-line)">
-      <span className="text-sm text-(--color-slate)">{t("site.login.signedIn")}</span>
-      <button
-        type="button"
-        disabled={isSigningOut}
-        onClick={() => void handleSignOut()}
-        className="flex items-center gap-2 self-start text-sm font-bold text-(--color-accent) cursor-pointer disabled:opacity-50"
-      >
-        <LogOut size={18} />
-        {t("site.login.signOut")}
-      </button>
-    </section>
+    <button
+      type="button"
+      disabled={isSigningOut}
+      onClick={() => void handleSignOut()}
+      className="shrink-0 flex items-center gap-1.5 min-h-11 px-2 -mr-2 text-sm font-semibold text-(--color-slate) cursor-pointer disabled:opacity-50"
+    >
+      <LogOut size={16} />
+      {t("site.login.signOut")}
+    </button>
   );
 };

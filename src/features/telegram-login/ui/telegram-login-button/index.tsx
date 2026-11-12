@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Send } from "lucide-react";
 
 import { TELEGRAM_LOGIN_CLIENT_ID } from "@shared/constants";
+import { cn } from "@shared/helpers";
 import { useHaptic, usePopup } from "@shared/hooks";
 import { PillButton } from "@shared/ui";
 
@@ -14,12 +15,14 @@ import { getTelegramLogin, loadTelegramLogin, toTelegramLang } from "../../model
 interface Props {
   // Right after the sign-in - e.g. carries on with the purchase.
   onSignedIn?: () => void;
+  // A secondary spot (a hint beside a list): a smaller button.
+  compact?: boolean;
 }
 
 // «Войти через Telegram» - Log In With Telegram (OIDC): Telegram's popup asks
 // for the profile and lets the bot write (receipts, expiry reminders); never
 // the phone number.
-export const TelegramLoginButton = ({ onSignedIn }: Props) => {
+export const TelegramLoginButton = ({ onSignedIn, compact = false }: Props) => {
   const [isReady, setIsReady] = useState(() => Boolean(getTelegramLogin()));
   const [isSigningIn, setIsSigningIn] = useState(false);
 
@@ -83,7 +86,7 @@ export const TelegramLoginButton = ({ onSignedIn }: Props) => {
       type="button"
       onClick={handleClick}
       disabled={!isReady || isSigningIn}
-      className="flex items-center gap-2 disabled:opacity-50"
+      className={cn("flex items-center gap-2 disabled:opacity-50", compact && "min-h-11 px-4 py-2.5")}
     >
       <Send size={18} />
       {t("site.login.button")}

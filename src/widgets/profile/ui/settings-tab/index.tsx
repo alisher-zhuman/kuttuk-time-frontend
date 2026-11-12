@@ -2,8 +2,6 @@ import { useTranslation } from "react-i18next";
 
 import { Send } from "lucide-react";
 
-import { TelegramSignOut } from "@features/telegram-login";
-
 import { BOT_URL } from "@shared/constants";
 import { goToUrl } from "@shared/helpers";
 import { useAppModeStore, useAuthStore, useViewModeStore } from "@shared/store";
@@ -27,8 +25,6 @@ export const SettingsTab = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* The website, signed in with Telegram: «Выйти». */}
-      <TelegramSignOut />
       <LanguageSection />
       <ThemeSection />
 

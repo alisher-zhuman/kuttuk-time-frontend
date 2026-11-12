@@ -49,7 +49,25 @@ export const PayoutRow = ({ row, onOpen, onMarkPaid }: Props) => {
         <ChevronRight size={17} color="var(--color-hint)" className="shrink-0" />
       </button>
 
-      <PayoutStatus paidOut={row.paidOut} due={row.due} />
+      {/* The status and, while something is owed, the mark - one line, like
+          «Все долги». */}
+      <div className="flex items-center justify-between gap-2">
+        <PayoutStatus paidOut={row.paidOut} due={row.due} />
+
+        {row.due > 0 && (
+          <button
+            type="button"
+            aria-label={t("admin.payouts.markPaid")}
+            onClick={() => {
+              haptic.light();
+              onMarkPaid();
+            }}
+            className="shrink-0 px-3 py-2 rounded-full bg-(--color-primary) text-(--color-card) text-xs font-bold cursor-pointer"
+          >
+            {t("admin.payouts.markShort")}
+          </button>
+        )}
+      </div>
 
       {row.payouts.length > 0 && (
         <ul className="flex flex-col gap-1 list-none">
@@ -69,18 +87,6 @@ export const PayoutRow = ({ row, onOpen, onMarkPaid }: Props) => {
         </ul>
       )}
 
-      {row.due > 0 && (
-        <button
-          type="button"
-          onClick={() => {
-            haptic.light();
-            onMarkPaid();
-          }}
-          className="py-2.5 rounded-xl bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer"
-        >
-          {t("admin.payouts.markPaid")}
-        </button>
-      )}
     </div>
   );
 };

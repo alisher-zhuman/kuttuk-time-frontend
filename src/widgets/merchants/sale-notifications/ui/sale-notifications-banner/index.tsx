@@ -15,19 +15,19 @@ export const SaleNotificationsBanner = () => {
   if (isAllowed) return null;
 
   return (
-    <div className="flex items-center gap-3 p-3 rounded-2xl bg-(--color-primary-tint) border border-(--color-line)">
-      <BellRing size={20} className="text-(--color-primary) shrink-0" />
+    // One line: what's off and the switch - the explanation lives in settings.
+    <div className="flex items-center gap-3 pl-3 pr-3 py-1 rounded-2xl bg-(--color-primary-tint)">
+      <BellRing size={18} className="text-(--color-primary) shrink-0" />
 
-      <span className="flex-1 min-w-0 flex flex-col gap-0.5">
-        <span className="text-sm font-bold text-(--color-ink)">{t("merchant.notifications.bannerTitle")}</span>
-        <span className="text-xs text-(--color-slate)">{t("merchant.notifications.hint")}</span>
+      <span className="flex-1 min-w-0 text-sm font-semibold text-(--color-ink)">
+        {t("merchant.notifications.bannerTitle")}
       </span>
 
       <button
         type="button"
         disabled={isRequesting}
         onClick={() => void allow()}
-        className="shrink-0 px-3.5 py-2 rounded-full bg-(--color-primary) text-(--color-card) text-sm font-bold cursor-pointer disabled:opacity-60"
+        className="shrink-0 min-h-11 px-2 -mr-2 text-sm font-bold text-(--color-primary) cursor-pointer disabled:opacity-60"
       >
         {t("merchant.notifications.enable")}
       </button>

@@ -52,8 +52,10 @@
   --cert-to: #a78bfa;
 }
 
-html,
-body {
+/* The Mini App: no rubber-band bounce. Not on the website - there it would
+   also block the browser's back / forward swipe (Chrome, Edge). */
+html:not([data-mode="web"]),
+html:not([data-mode="web"]) body {
   overscroll-behavior: none;
 }
 

@@ -23,6 +23,8 @@ try {
   init();
 } catch {
   useAppModeStore.getState().setMode("web");
+  // For CSS: the website keeps the browser's own scroll and swipe gestures.
+  document.documentElement.setAttribute("data-mode", "web");
 }
 
 interface Props {

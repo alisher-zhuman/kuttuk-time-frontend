@@ -38,6 +38,11 @@ export const AppLayout = () => {
   const navTabs = NAV_TABS[viewMode];
   const showNav = navTabs?.some((tab) => tab.path === pathname) && !isNotFound;
 
+  // The website on a tablet / computer: the catalog's card grid is wide, every
+  // other screen one column the width of a phone's, both centered. The Mini
+  // App keeps the full width of Telegram's window.
+  const width = !isWeb ? "" : pathname === ROUTE_PATTERNS.HOME ? "w-full max-w-6xl mx-auto" : "w-full max-w-xl mx-auto";
+
   return (
     <>
       <TopBlur height={insets.top} />
@@ -53,11 +58,11 @@ export const AppLayout = () => {
           paddingLeft: insets.left
         }}
       >
-        <Header />
+        <Header className={isWeb ? "w-full max-w-6xl mx-auto" : ""} />
 
         <main
           key={pathname}
-          className="flex-1 flex flex-col px-4 animate-page-enter"
+          className={`flex-1 flex flex-col px-4 animate-page-enter ${width}`}
         >
           <Outlet />
         </main>

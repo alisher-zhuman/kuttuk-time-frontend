@@ -8,6 +8,7 @@ import {
   VenueCardSkeleton
 } from "@entities/venue";
 
+import { useAppModeStore } from "@shared/store";
 import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
@@ -26,6 +27,12 @@ export const VenueList = ({ category, search }: Props) => {
     category
   });
 
+  const isWeb = useAppModeStore((s) => s.mode === "web");
+
+  // The website on a tablet / computer: 2-3 cards a row. The Mini App stays
+  // one column even in a wide Telegram Desktop window.
+  const list = `pb-5 grid grid-cols-1 gap-2.5 list-none ${isWeb ? "sm:grid-cols-2 lg:grid-cols-3" : ""}`;
+
   return (
     <section aria-label={t("home.venuesSection")}>
       <h2 className="text-xs font-bold text-(--color-hint) tracking-wider pt-5.5 pb-2.5 px-1">
@@ -33,7 +40,7 @@ export const VenueList = ({ category, search }: Props) => {
       </h2>
 
       {isLoading ? (
-        <ul className="pb-5 flex flex-col gap-2.5 list-none">
+        <ul className={list}>
           {Array.from({ length: 6 }).map((_, i) => (
             <li key={i}>
               <VenueCardSkeleton />
@@ -48,7 +55,7 @@ export const VenueList = ({ category, search }: Props) => {
           message={t("home.empty")}
         />
       ) : (
-        <ul className="pb-5 flex flex-col gap-2.5 list-none">
+        <ul className={list}>
           {venues.map((venue, index) => (
             <li key={venue.id}>
               <VenueCard venue={venue} priority={index < ABOVE_THE_FOLD} />

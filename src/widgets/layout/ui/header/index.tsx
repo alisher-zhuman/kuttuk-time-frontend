@@ -9,7 +9,11 @@ import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 import { LangSwitcher, Logo } from "@shared/ui";
 
-export const Header = () => {
+interface Props {
+  className?: string;
+}
+
+export const Header = ({ className = "" }: Props) => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -21,7 +25,7 @@ export const Header = () => {
   const isOnProfile = useLocation().pathname === ROUTE_PATTERNS.PROFILE;
 
   return (
-    <header className="px-4 h-12 flex items-center justify-between gap-2.5">
+    <header className={`px-4 h-12 flex items-center justify-between gap-2.5 ${className}`}>
       <button
         type="button"
         onClick={() => {

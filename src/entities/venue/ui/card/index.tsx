@@ -36,7 +36,7 @@ export const VenueCard = ({ venue, priority = false }: Props) => {
     <button
       type="button"
       onClick={handleClick}
-      className="w-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
+      className="w-full h-full bg-(--color-card) rounded-2xl p-3 border border-(--color-line) shadow-xs flex items-center gap-3.5 text-left cursor-pointer"
     >
       <img
         src={logoUrl(venue.logo, 48)}

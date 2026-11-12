@@ -33,6 +33,7 @@ const loader = <PageLoader fullScreen />;
 const aboutPage = page(() => import("@pages/about"), "AboutPage");
 const offerPage = page(() => import("@pages/offer"), "OfferPage");
 const privacyPage = page(() => import("@pages/privacy"), "PrivacyPage");
+const faqPage = page(() => import("@pages/faq"), "FaqPage");
 
 // The buyer's public pages: under /app in the Mini App; at the root on the
 // website - the addresses search engines index and the build pre-renders
@@ -45,12 +46,14 @@ const publicPages = (web: boolean) =>
         { path: SITE_PATTERNS.ABOUT, lazy: aboutPage },
         { path: SITE_PATTERNS.OFFER, lazy: offerPage },
         { path: SITE_PATTERNS.PRIVACY, lazy: privacyPage },
+        { path: SITE_PATTERNS.FAQ, lazy: faqPage },
         ...[
           ROUTE_PATTERNS.HOME,
           ROUTE_PATTERNS.VENUE,
           ROUTE_PATTERNS.ABOUT,
           ROUTE_PATTERNS.OFFER,
-          ROUTE_PATTERNS.PRIVACY
+          ROUTE_PATTERNS.PRIVACY,
+          ROUTE_PATTERNS.FAQ
         ].map((path) => ({ path, element: <SiteRedirect /> }))
       ]
     : [
@@ -58,7 +61,8 @@ const publicPages = (web: boolean) =>
         { path: ROUTE_PATTERNS.VENUE, element: <VenuePage /> },
         { path: ROUTE_PATTERNS.ABOUT, lazy: aboutPage },
         { path: ROUTE_PATTERNS.OFFER, lazy: offerPage },
-        { path: ROUTE_PATTERNS.PRIVACY, lazy: privacyPage }
+        { path: ROUTE_PATTERNS.PRIVACY, lazy: privacyPage },
+        { path: ROUTE_PATTERNS.FAQ, lazy: faqPage }
       ];
 
 // Called once the mode is known (TMAProvider's module sets it): the website

@@ -9,6 +9,7 @@ describe("the website's public addresses", () => {
     ["/app/about", "/about"],
     ["/app/offer", "/offer"],
     ["/app/privacy", "/privacy"],
+    ["/app/faq", "/faq"],
     // Not public pages - stay under /app.
     ["/app/profile", "/app/profile"],
     ["/app/orders/o-1", "/app/orders/o-1"],

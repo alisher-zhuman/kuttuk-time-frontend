@@ -10,6 +10,7 @@ import { Footer } from "./index";
 
 describe("the website's footer", () => {
   it.each([
+    ["Как это работает", SITE_PATTERNS.FAQ],
     ["О нас", SITE_PATTERNS.ABOUT],
     ["Оферта", SITE_PATTERNS.OFFER],
     ["Политика конфиденциальности", SITE_PATTERNS.PRIVACY]

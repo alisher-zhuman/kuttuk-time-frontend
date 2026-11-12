@@ -17,6 +17,17 @@ export const organizationLd = (siteUrl: string, description: string) => ({
   sameAs: [BOT_URL]
 });
 
+// Questions and answers as search engines and AI answers read them.
+export const faqLd = (items: { question: string; answer: string }[]) => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: items.map(({ question, answer }) => ({
+    "@type": "Question",
+    name: question,
+    acceptedAnswer: { "@type": "Answer", text: answer }
+  }))
+});
+
 // The venue and the certificates on sale for it - one Offer per nominal,
 // sold by KuttukTime (not by the venue itself).
 export const venueLd = (

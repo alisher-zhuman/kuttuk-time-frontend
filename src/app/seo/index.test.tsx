@@ -83,7 +83,7 @@ describe("the website's pre-rendered pages", () => {
   it("sitemap.xml: every page in every language with its alternates; robots.txt closes the private parts", () => {
     const sitemap = files["sitemap.xml"]!;
 
-    expect(sitemap.match(/<url>/g)).toHaveLength(5 * 3);
+    expect(sitemap.match(/<url>/g)).toHaveLength(6 * 3);
     expect(sitemap).toContain(`<loc>${SITE}/venues/sierra-coffee?lang=kg</loc>`);
     expect(sitemap).toContain("<lastmod>2026-11-12</lastmod>");
     expect(files["robots.txt"]).toContain("Disallow: /app\n");
@@ -120,6 +120,7 @@ describe("the website's pre-rendered pages", () => {
       expect(serve("/", query)).toBe(`/_seo/${lang}/index.html`);
       expect(serve("/venues/sierra-coffee", query)).toBe(`/_seo/${lang}/venues/sierra-coffee.html`);
       expect(serve("/about", query)).toBe(`/_seo/${lang}/about.html`);
+      expect(serve("/faq", query)).toBe(`/_seo/${lang}/faq.html`);
       // Not an empty shell with 200 for search engines - 404.html (the app).
       expect(serve("/venues/no-such-venue", query)).toBe("404");
     }
@@ -143,5 +144,17 @@ describe("the website's pre-rendered pages", () => {
 
   it("the pre-rendered files' own addresses are noindex - only the public ones are indexed", () => {
     expect(vercel.headers).toContainEqual({ source: "/_seo/(.*)", headers: [{ key: "X-Robots-Tag", value: "noindex" }] });
+  });
+
+  it("the FAQ: its own page in each language, with FAQPage structured data", () => {
+    const html = files["_seo/kg/faq.html"]!;
+    const [faq] = jsonLd(html);
+
+    expect(html).toContain(`<link rel="canonical" href="${SITE}/faq?lang=kg" />`);
+    expect(html).toContain("<title>Кантип иштейт - KuttukTime</title>");
+    expect(faq).toMatchObject({ "@type": "FAQPage" });
+    expect(faq!["mainEntity"]).toHaveLength(6);
+    expect(files["_seo/ru/index.html"]).toContain(`href="${SITE}/faq"`);
+    expect(files["llms.txt"]).toContain(`${SITE}/faq`);
   });
 });

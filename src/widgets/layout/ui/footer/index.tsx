@@ -26,6 +26,9 @@ export const Footer = () => {
     return (
       <footer className="flex flex-col items-center gap-2 py-4 px-4 text-center">
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <button type="button" className={link} onClick={() => navigateTo(ROUTE_PATTERNS.FAQ)}>
+            {t("faq.title")}
+          </button>
           <button type="button" className={link} onClick={() => navigateTo(ROUTE_PATTERNS.ABOUT)}>
             {t("site.about.title")}
           </button>

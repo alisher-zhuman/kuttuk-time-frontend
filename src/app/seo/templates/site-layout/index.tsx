@@ -49,6 +49,7 @@ export const SiteLayout = ({ t, lang, siteUrl, path, wide = false, children }: P
 
       <footer className="flex flex-col items-center gap-2 py-4 px-4 text-center">
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <a className={link} href={href(STATIC_PAGES.faq.path)}>{t("faq.title")}</a>
           <a className={link} href={href(STATIC_PAGES.about.path)}>{t("site.about.title")}</a>
           <a className={link} href={href(STATIC_PAGES.offer.path)}>{t("site.offer.title")}</a>
           <a className={link} href={href(STATIC_PAGES.privacy.path)}>{t("site.privacy.title")}</a>

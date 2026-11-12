@@ -24,7 +24,8 @@ export const STATIC_PAGES = {
   home: { path: "/", file: (lang: SeoLanguage) => pageFile(lang, "index") },
   about: { path: "/about", file: (lang: SeoLanguage) => pageFile(lang, "about") },
   offer: { path: "/offer", file: (lang: SeoLanguage) => pageFile(lang, "offer") },
-  privacy: { path: "/privacy", file: (lang: SeoLanguage) => pageFile(lang, "privacy") }
+  privacy: { path: "/privacy", file: (lang: SeoLanguage) => pageFile(lang, "privacy") },
+  faq: { path: "/faq", file: (lang: SeoLanguage) => pageFile(lang, "faq") }
 } satisfies Record<string, SeoPage>;
 
 export const venuePage = (slug: string): SeoPage => ({

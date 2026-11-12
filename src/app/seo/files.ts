@@ -14,6 +14,7 @@ export const renderSitemap = (siteUrl: string, catalog: PublicCatalog) => {
   const entries: SitemapEntry[] = [
     { path: STATIC_PAGES.home.path, ...(newest && { lastmod: day(newest) }) },
     ...catalog.venues.map((venue) => ({ path: venuePage(venue.slug).path, lastmod: day(venue.updatedAt) })),
+    { path: STATIC_PAGES.faq.path },
     { path: STATIC_PAGES.about.path },
     { path: STATIC_PAGES.offer.path },
     { path: STATIC_PAGES.privacy.path }
@@ -78,6 +79,7 @@ export const renderLlms = (siteUrl: string, catalog: PublicCatalog) => {
     "## Страницы",
     "",
     `- [Каталог заведений](${siteUrl}/): все заведения и номиналы`,
+    `- [Как это работает - вопросы и ответы](${siteUrl}/faq): покупка, подарок, использование, срок, возврат`,
     `- [О нас](${siteUrl}/about): кто мы, поддержка`,
     `- [Публичная оферта](${siteUrl}/offer): покупка, использование, возврат`,
     `- [Политика конфиденциальности](${siteUrl}/privacy)`,

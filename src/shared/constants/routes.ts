@@ -22,7 +22,8 @@ export const ROUTES = {
   SUMMARY: "summary",
   ABOUT: "about",
   OFFER: "offer",
-  PRIVACY: "privacy"
+  PRIVACY: "privacy",
+  FAQ: "faq"
 } as const;
 
 export const ROUTE_PATTERNS = {
@@ -38,6 +39,7 @@ export const ROUTE_PATTERNS = {
   ABOUT: `/${ROUTES.APP}/${ROUTES.ABOUT}`,
   OFFER: `/${ROUTES.APP}/${ROUTES.OFFER}`,
   PRIVACY: `/${ROUTES.APP}/${ROUTES.PRIVACY}`,
+  FAQ: `/${ROUTES.APP}/${ROUTES.FAQ}`,
   MERCHANT_HOME: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}`,
   MERCHANT_VENUE_EDIT: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.VENUES}/:venueId/${ROUTES.EDIT}`,
   MERCHANT_SUMMARY: `/${ROUTES.APP}/${ROUTES.MERCHANT_HOME}/${ROUTES.SUMMARY}`,

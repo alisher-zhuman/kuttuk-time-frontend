@@ -1,6 +1,8 @@
 import { type ReactElement } from "react";
 import { renderToString } from "react-dom/server";
 
+import { FaqList, getFaqItems } from "@widgets/faq";
+
 import { formatMoney } from "@shared/helpers";
 import { getAboutText, LEGAL_TEXTS } from "@shared/legal";
 
@@ -8,7 +10,7 @@ import { type PublicCatalog } from "./catalog";
 import { renderLlms, renderRobots, renderSitemap } from "./files";
 import { fillShell, type PageMeta, renderHead } from "./head";
 import { createSeoT } from "./i18n";
-import { organizationLd, venueLd } from "./json-ld";
+import { faqLd, organizationLd, venueLd } from "./json-ld";
 import {
   APP_SHELL_FILE,
   pageUrl,
@@ -104,6 +106,19 @@ export const renderSite = ({ catalog, siteUrl, shell }: Input): Record<string, s
         <VenuePage t={t} lang={lang} venue={venue} />
       );
     }
+
+    const faqItems = getFaqItems(t);
+
+    page(
+      STATIC_PAGES.faq,
+      {
+        title: t("seo.pageTitle", { page: t("faq.title") }),
+        description: t("seo.faq.description"),
+        image: brandImage,
+        jsonLd: [faqLd(faqItems)]
+      },
+      <FaqList title={t("faq.title")} items={faqItems} />
+    );
 
     const href = (path: string) => pageUrl(siteUrl, path, lang);
     // The labels as about.md writes them, in every language.

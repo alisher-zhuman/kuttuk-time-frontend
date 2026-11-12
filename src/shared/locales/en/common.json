@@ -530,6 +530,24 @@
     },
     "privacy": {
       "description": "KuttukTime privacy policy: what data we keep and why."
+    },
+    "faq": {
+      "description": "How to buy, gift and use a KuttukTime gift certificate, how long it is valid and how to get a refund."
     }
+  },
+  "faq": {
+    "title": "How it works",
+    "q1": "What is KuttukTime?",
+    "a1": "Gift certificates for local places in Kyrgyzstan: coffee shops, restaurants and more. Pick a place and an amount, pay - and get a code and a QR code right away.",
+    "q2": "How do I buy one?",
+    "a2": "Open a place, choose an amount and tap «Buy». Sign in with Telegram to buy - no phone number needed. Payment goes through Finik; we never see your card details.",
+    "q3": "How do I give it as a gift?",
+    "a3": "After paying, tap «Gift» and send the link to a friend in WhatsApp, Instagram or Telegram. Your friend opens the link and claims the certificate.",
+    "q4": "How do I use it?",
+    "a4": "Show the code or QR code at the place. A certificate is used once, for its full amount: if the bill is lower, the rest isn't refunded; if it's higher, you pay the difference to the place. The code works like cash - don't show it to strangers.",
+    "q5": "How long is it valid?",
+    "a5": "Each place sets its own period - it's shown on the place's page and on the certificate. A certificate is valid up to and including the date shown.",
+    "q6": "Can I get a refund?",
+    "a6": "Yes: for an unused valid certificate - within 14 days of purchase; if the place has closed - at any time; if it refused service - after a review. Message support at @alisher_zh with your order number. Details are in the offer."
   }
 }

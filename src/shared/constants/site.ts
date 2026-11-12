@@ -6,7 +6,8 @@ export const SITE_PATTERNS = {
   VENUE: "/venues/:handle",
   ABOUT: "/about",
   OFFER: "/offer",
-  PRIVACY: "/privacy"
+  PRIVACY: "/privacy",
+  FAQ: "/faq"
 } as const;
 
 // ?lang=kg / ?lang=en; no parameter - Russian (the indexed default, x-default).
@@ -16,7 +17,7 @@ export const SITE_DEFAULT_LANGUAGE = "ru" as const;
 const APP_TO_SITE: [RegExp, string][] = [
   [/^\/app\/?$/, SITE_PATTERNS.HOME],
   [/^\/app\/venues\/([^/]+)$/, "/venues/$1"],
-  [/^\/app\/(about|offer|privacy)$/, "/$1"]
+  [/^\/app\/(about|offer|privacy|faq)$/, "/$1"]
 ];
 
 // "/app/venues/sierra" → "/venues/sierra"; anything else (profile, orders,

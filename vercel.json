@@ -64,7 +64,7 @@
       "destination": "/_seo/ru/venues/:slug.html"
     },
     {
-      "source": "/:page(about|offer|privacy)",
+      "source": "/:page(about|offer|privacy|faq)",
       "has": [
         {
           "type": "query",
@@ -75,7 +75,7 @@
       "destination": "/_seo/kg/:page.html"
     },
     {
-      "source": "/:page(about|offer|privacy)",
+      "source": "/:page(about|offer|privacy|faq)",
       "has": [
         {
           "type": "query",
@@ -86,7 +86,7 @@
       "destination": "/_seo/en/:page.html"
     },
     {
-      "source": "/:page(about|offer|privacy)",
+      "source": "/:page(about|offer|privacy|faq)",
       "destination": "/_seo/ru/:page.html"
     },
     {

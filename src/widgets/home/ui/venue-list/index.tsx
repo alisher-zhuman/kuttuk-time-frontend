@@ -8,7 +8,6 @@ import {
   VenueCardSkeleton
 } from "@entities/venue";
 
-import { useAppModeStore } from "@shared/store";
 import { EmptyState, ErrorState } from "@shared/ui";
 
 interface Props {
@@ -27,11 +26,9 @@ export const VenueList = ({ category, search }: Props) => {
     category
   });
 
-  const isWeb = useAppModeStore((s) => s.mode === "web");
-
-  // The website on a tablet / computer: 2-3 cards a row. The Mini App stays
-  // one column even in a wide Telegram Desktop window.
-  const list = `pb-5 grid grid-cols-1 gap-2.5 list-none ${isWeb ? "sm:grid-cols-2 lg:grid-cols-3" : ""}`;
+  // By the window's width, the website and the Mini App alike: a phone - one
+  // column; a tablet or a wide (Telegram Desktop) window - 2-3 cards a row.
+  const list = "pb-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 list-none";
 
   return (
     <section aria-label={t("home.venuesSection")}>

@@ -19,16 +19,11 @@ const renderList = async (mode: "telegram" | "web") => {
 };
 
 describe("the catalog's cards", () => {
-  it("on the website - 2-3 a row on a tablet / computer", async () => {
-    const list = await renderList("web");
+  // By the window's width, not the mode: a stretched Telegram Desktop window
+  // gets the grid like the website.
+  it.each(["web", "telegram"] as const)("%s - one column on a phone, 2-3 a row in a wide window", async (mode) => {
+    const list = await renderList(mode);
 
     expect(list).toHaveClass("grid-cols-1", "sm:grid-cols-2", "lg:grid-cols-3");
-  });
-
-  it("in the Mini App - one column, whatever the window's width", async () => {
-    const list = await renderList("telegram");
-
-    expect(list).toHaveClass("grid-cols-1");
-    expect(list).not.toHaveClass("sm:grid-cols-2");
   });
 });

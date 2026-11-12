@@ -38,10 +38,11 @@ export const AppLayout = () => {
   const navTabs = NAV_TABS[viewMode];
   const showNav = navTabs?.some((tab) => tab.path === pathname) && !isNotFound;
 
-  // The website on a tablet / computer: the catalog's card grid is wide, every
-  // other screen one column the width of a phone's, both centered. The Mini
-  // App keeps the full width of Telegram's window.
-  const width = !isWeb ? "" : pathname === ROUTE_PATTERNS.HOME ? "w-full max-w-6xl mx-auto" : "w-full max-w-xl mx-auto";
+  // A wide window (the website on a computer, the Mini App in a stretched
+  // Telegram Desktop window): the catalog's card grid is wide, every other
+  // screen one centered column the width of a phone's. On a phone both are
+  // just the screen's width.
+  const width = pathname === ROUTE_PATTERNS.HOME ? "max-w-6xl" : "max-w-xl";
 
   return (
     <>
@@ -58,18 +59,18 @@ export const AppLayout = () => {
           paddingLeft: insets.left
         }}
       >
-        <Header className={isWeb ? "w-full max-w-6xl mx-auto" : ""} />
+        <Header />
 
         <main
           key={pathname}
-          className={`flex-1 flex flex-col px-4 animate-page-enter ${width}`}
+          className={`flex-1 flex flex-col w-full mx-auto px-4 animate-page-enter ${width}`}
         >
           <Outlet />
         </main>
 
         {!isNotFound &&
           (showNav && navTabs ? (
-            <div className="sticky z-10" style={{ bottom: insets.bottom }}>
+            <div className="sticky z-10 w-full max-w-xl mx-auto" style={{ bottom: insets.bottom }}>
               <BottomNav tabs={navTabs} />
             </div>
           ) : (

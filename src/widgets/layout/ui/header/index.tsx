@@ -9,11 +9,7 @@ import { useHaptic, useNavigateTo } from "@shared/hooks";
 import { useViewModeStore } from "@shared/store";
 import { LangSwitcher, Logo } from "@shared/ui";
 
-interface Props {
-  className?: string;
-}
-
-export const Header = ({ className = "" }: Props) => {
+export const Header = () => {
   const { t } = useTranslation();
 
   const navigateTo = useNavigateTo();
@@ -24,8 +20,9 @@ export const Header = ({ className = "" }: Props) => {
 
   const isOnProfile = useLocation().pathname === ROUTE_PATTERNS.PROFILE;
 
+  // Lined up with the widest content - the catalog's grid.
   return (
-    <header className={`px-4 h-12 flex items-center justify-between gap-2.5 ${className}`}>
+    <header className="w-full max-w-6xl mx-auto px-4 h-12 flex items-center justify-between gap-2.5">
       <button
         type="button"
         onClick={() => {

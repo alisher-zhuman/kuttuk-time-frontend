@@ -1,5 +1,6 @@
 import { type ReactElement, type ReactNode } from "react";
-import { createMemoryRouter, RouterProvider } from "react-router";
+import { createMemoryRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
 
 import { I18nextProvider } from "react-i18next";
 

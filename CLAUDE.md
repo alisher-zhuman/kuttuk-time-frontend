@@ -58,7 +58,7 @@ Source of truth: `../backend/CLAUDE.md`, section **Product decisions** - don't d
 
 ## Only the new stable (Alisher, 2026-11-11, global)
 
-Libraries, SDKs, external APIs, sign-in methods - always the current **stable** one. Before building on anything external, read its current official docs (not from memory): is it deprecated / archived / legacy, is there a newer stable version. Pre-release only when Alisher asks. Audit order (2026-11-11, each step on Alisher's «го», a report per step): 1) minor updates + Playwright 1.65 + CI `ubuntu-latest`; 2) the test stack together - vitest 5 + jsdom 31 + msw 3 (done 2026-11-12, see Testing); 3) react-router 8; 4) i18next 27 + react-i18next 18; 5) small majors - @hookform/resolvers 7, simple-import-sort 14, steiger 0.10 + plugin 0.8; 6) Node 26 with the backend. Waiting: TypeScript 7 (no API before 7.1, typescript-eslint < 6.1), tma.js v4 (rc only). Example of what this rule catches: the website's sign-in was built on the old Telegram Login Widget (archived by Telegram) - the current one is «Log In With Telegram» (OIDC, https://core.telegram.org/bots/telegram-login).
+Libraries, SDKs, external APIs, sign-in methods - always the current **stable** one. Before building on anything external, read its current official docs (not from memory): is it deprecated / archived / legacy, is there a newer stable version. Pre-release only when Alisher asks. Audit order (2026-11-11, each step on Alisher's «го», a report per step): 1) minor updates + Playwright 1.65 + CI `ubuntu-latest`; 2) the test stack together - vitest 5 + jsdom 31 + msw 3 (done 2026-11-12, see Testing); 3) react-router 8 (done 2026-11-12); 4) i18next 27 + react-i18next 18; 5) small majors - @hookform/resolvers 7, simple-import-sort 14, steiger 0.10 + plugin 0.8; 6) Node 26 with the backend. Waiting: TypeScript 7 (no API before 7.1, typescript-eslint < 6.1), tma.js v4 (rc only). Example of what this rule catches: the website's sign-in was built on the old Telegram Login Widget (archived by Telegram) - the current one is «Log In With Telegram» (OIDC, https://core.telegram.org/bots/telegram-login).
 
 ## Stack
 
@@ -66,7 +66,7 @@ Libraries, SDKs, external APIs, sign-in methods - always the current **stable** 
 - **Tailwind CSS v4** (via `@tailwindcss/vite`)
 - **TanStack Query** - server state
 - **Zustand** - client state
-- **React Router v7** - routing
+- **React Router v8** - routing (data mode; `RouterProvider` from `react-router/dom`, everything else from `react-router`)
 - **@tma.js/sdk-react** - Telegram Mini Apps SDK
 - **react-i18next** - i18n (locales: `ru`, `kg`, `en`)
 - **Zod** - API response validation

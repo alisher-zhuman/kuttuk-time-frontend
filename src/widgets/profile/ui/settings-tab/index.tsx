@@ -7,6 +7,7 @@ import { goToUrl } from "@shared/helpers";
 import { useAppModeStore, useAuthStore, useViewModeStore } from "@shared/store";
 import { RowButton } from "@shared/ui";
 
+import { AboutServiceSection } from "../about-service-section";
 import { HomeScreenSection } from "../home-screen-section";
 import { LanguageSection } from "../language-section";
 import { NotificationsSection } from "../notifications-section";
@@ -45,6 +46,8 @@ export const SettingsTab = () => {
       {/* Buyers (incl. an admin previewing as one) and owners - owners ask the
           most, about payouts and redemption. Not the admin's own mode. */}
       {(viewMode === "user" || role === "merchant") && <SupportSection />}
+      {/* The website links them from the catalog's footer. */}
+      {!isWeb && <AboutServiceSection />}
     </div>
   );
 };
